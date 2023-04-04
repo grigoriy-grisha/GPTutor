@@ -1,0 +1,22 @@
+code,pre {
+    white-space: break-spaces !important;
+}
+
+ul,ol {
+    padding: 0;
+    list-style: none;
+}
+
+.isOneOperand {
+    padding: 4px !important;
+    margin: 0 !important;
+    display: inline;
+}
+
+
+.paragraph {
+    display: block;
+   margin-top: 12px;
+    margin-bottom: 12px;
+}
+
