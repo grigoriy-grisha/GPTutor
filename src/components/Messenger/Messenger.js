@@ -5,7 +5,7 @@ import { MessengerContainer } from "./MessengerContainer";
 import { MessengerList } from "./MessengerList";
 import MessengerWriteBar from "./MessengerWriteBar/MessengerWriteBar";
 
-const API_KEY = "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";
+const API_KEY = "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";
 
 const systemMessage = {
   role: "system",
@@ -50,6 +50,8 @@ function Messenger({ goBack, user, lesson }) {
     // determine how we want chatGPT to act.
     const apiRequestBody = {
       model: "gpt-3.5-turbo",
+      temperature: 0,
+      max_tokens: 7,
       messages: [
         systemMessage, // The system message DEFINES the logic of our chatGPT
         ...apiMessages, // The messages from our chat with ChatGPT
