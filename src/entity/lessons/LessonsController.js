@@ -1,5 +1,12 @@
+import { Subject } from "../../utils";
+
 export class LessonsController {
-  constructor(lessons) {
-    this.lessons = lessons;
+  constructor(chapters) {
+    this.chapters = chapters;
+    this.currentChapter$ = new Subject(null);
+  }
+
+  setCurrentChapter(index) {
+    this.currentChapter$.next(this.chapters[index]);
   }
 }

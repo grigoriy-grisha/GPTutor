@@ -1,9 +1,9 @@
-export function ChatGPTLogo() {
+export function ChatGPTLogo({ size = 36 }) {
   return (
     <svg
       style={{ borderRadius: "50%" }}
-      width="36"
-      height="36"
+      width={size}
+      height={size}
       xmlns="http://www.w3.org/2000/svg"
       shapeRendering="geometricPrecision"
       textRendering="geometricPrecision"

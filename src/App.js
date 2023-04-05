@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AdaptivityProvider,
   AppRoot,
@@ -12,24 +12,37 @@ import "./index.css";
 import bridge from "@vkontakte/vk-bridge";
 
 import Main from "./panels/Main";
+import { Home } from "./panels/Home";
+import Chapters from "./panels/Chapters";
+import { useSubscribe } from "./hooks";
+import { lessonsController } from "./entity/lessons";
 
 const App = () => {
-  const [activePanel, setActivePanel] = useState("main");
+  const [activePanel, setActivePanel] = useState("home");
 
   const [fetchedUser, setUser] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       const user = await bridge.send("VKWebAppGetUserInfo");
-      console.log(user);
       setUser(user);
     }
     fetchData();
   }, []);
 
-  const go = (e) => {
-    setActivePanel(e.currentTarget.dataset.to);
+  const goToChapters = () => {
+    setActivePanel("chapters");
   };
+
+  const goToMain = () => {
+    setActivePanel("main");
+  };
+
+  const goToHome = () => {
+    setActivePanel("home");
+  };
+
+  useSubscribe(lessonsController.currentChapter$);
 
   return (
     <ConfigProvider>
@@ -38,7 +51,21 @@ const App = () => {
           <SplitLayout>
             <SplitCol>
               <View activePanel={activePanel}>
-                <Main id="main" go={go} user={fetchedUser} />
+                <Home
+                  id="home"
+                  goToChapters={goToChapters}
+                  goToMain={goToMain}
+                />
+                <Chapters id="chapters" goToMain={goToMain} goBack={goToHome} />
+                <Main
+                  id="main"
+                  goBack={
+                    lessonsController.currentChapter$.getValue()
+                      ? goToChapters
+                      : goToHome
+                  }
+                  user={fetchedUser}
+                />
               </View>
             </SplitCol>
           </SplitLayout>

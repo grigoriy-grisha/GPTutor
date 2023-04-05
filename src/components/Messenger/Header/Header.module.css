@@ -1,0 +1,15 @@
+.fallbackIcon {
+    display: flex;
+    align-items: center;
+}
+
+.headerSubtitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.iconMobile {
+    color: var(--vkui--color_text_positive--active)
+}
