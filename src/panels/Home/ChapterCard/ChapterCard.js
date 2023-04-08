@@ -4,9 +4,13 @@ import { chapterTypes } from "../../../entity/lessons";
 import JSLesson from "../../../icons/JSLesson";
 import ReactLesson from "../../../icons/ReactLesson";
 import { Hovered } from "../../../components/Hovered";
+import { JSCommonLesson } from "../../../icons/JSCommonLesson";
+
+import classes from "./ChapterCard.module.css";
 
 const CardIcon = {
-  [chapterTypes.JS]: JSLesson,
+  [chapterTypes.JSCommon]: JSCommonLesson,
+  [chapterTypes.JSAdvanced]: JSLesson,
   [chapterTypes.React]: ReactLesson,
 };
 
@@ -16,25 +20,11 @@ function ChapterCard({ chapterType, onClick }) {
   const Icon = CardIcon[chapterType];
 
   return (
-    <Card
-      onClick={onClick}
-      mode="shadow"
-      style={{
-        background: "var(--vkui--color_background_accent_themed)",
-      }}
-    >
-      <Hovered
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+    <Card onClick={onClick} mode="shadow" className={classes.card}>
+      <Hovered className={classes.hovered}>
         <Div
-          style={{
-            height: sizeX === "compact" ? 144 : 192,
-            display: "flex",
-          }}
+          className={classes.div}
+          style={{ height: sizeX === "compact" ? 144 : 192 }}
         >
           {<Icon />}
         </Div>

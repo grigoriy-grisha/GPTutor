@@ -1,0 +1,17 @@
+.spinnerContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.spinner {
+    margin-bottom: 40px;
+}
+
+.bottomItem {
+    min-width: 292px;
+    box-sizing: border-box;
+    padding-left: 2px;
+    padding-right: 2px;
+    height: 100%;
+}

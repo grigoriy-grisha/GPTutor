@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState, useRef } from "react";
 
 import {
   Button,
@@ -7,6 +7,7 @@ import {
   Separator,
   usePlatform,
   WriteBar,
+  FixedLayout,
   WriteBarIcon,
 } from "@vkontakte/vkui";
 import {
@@ -16,9 +17,15 @@ import {
 
 import { IconRenderer } from "../../IconRenderer";
 
+import classes from "./MessengerWriteBar.module.css";
+import WaitBanner from "./WaitBaner/WaitBaner";
+
 function MessengerWriteBar({ additionalRequests, handleSend, isTyping }) {
   const [isAdditionalOpen, setAdditionalsOpen] = useState(true);
   const [value, setValue] = useState("");
+
+  const valueRef = useRef("");
+  valueRef.current = value;
 
   const platform = usePlatform();
 
@@ -33,27 +40,27 @@ function MessengerWriteBar({ additionalRequests, handleSend, isTyping }) {
     />
   );
 
+  useEffect(() => {
+    const send = (event) => {
+      if (event.key !== "Enter") return;
+
+      event.preventDefault();
+      handleSend(valueRef.current);
+      setValue("");
+    };
+
+    document.addEventListener("keypress", send);
+    return () => document.removeEventListener("keypress", send);
+  }, []);
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        position: "relative",
-        flexShrink: "0",
-      }}
-    >
+    <div className={classes.container}>
+      <WaitBanner />
       <div style={{ width: "100%" }}>
         {additionalRequests && isAdditionalOpen && (
           <>
             <Separator wide />
-            <Div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 8,
-                background: "var(--vkui--color_background_content)",
-              }}
-            >
+            <Div className={classes.additionalRequests}>
               {additionalRequests.map((request) => (
                 <Button
                   disabled={isTyping}

@@ -1,85 +1,73 @@
+import React from "react";
+
 import {
   Button,
-  Card,
-  CardScroll,
-  Group,
   Header,
+  HorizontalCell,
+  HorizontalScroll,
   Panel,
   PanelHeader,
   Placeholder,
 } from "@vkontakte/vkui";
-import React from "react";
-
 import { Icon28ArrowRightSquareOutline } from "@vkontakte/icons";
 
 import { ChapterCard } from "./ChapterCard";
 
 import { lessonsController } from "../../entity/lessons";
 
+import classes from "./Home.module.css";
+import { AppContainer } from "../../components/AppContainer";
+import { Issues } from "./Issues";
+
 function Home({ id, goToChapters, goToMain }) {
   return (
-    <Panel
-      id={id}
-      style={{
-        background: "var(--vkui--color_background_content)",
-        minHeight: "100vh",
-      }}
-    >
-      <PanelHeader>Чат ГПТ</PanelHeader>
-      <Group
-        mode="plain"
-        header={<Header mode="secondary">Темы для изучения</Header>}
-      >
-        <Card>
-          <div
-            style={{
-              paddingTop: 18,
-              paddingBottom: 18,
-              background: "var(--vkui--color_background_content)",
-            }}
-          >
-            <CardScroll size="m">
-              {lessonsController.chapters.map((chapter, index) => {
-                return (
-                  <ChapterCard
-                    onClick={() => {
-                      lessonsController.setCurrentChapter(index);
-                      goToChapters();
-                    }}
-                    chapterType={chapter.chapterType}
-                  />
-                );
-              })}
-            </CardScroll>
-          </div>
-        </Card>
-        <div
-          style={{
-            marginTop: "10%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Placeholder
-            style={{ width: "90%" }}
-            header="Представляем Чат ГПТ"
-            action={
-              <Button
-                mode="outline"
-                size="m"
-                after={<Icon28ArrowRightSquareOutline />}
-                onClick={goToMain}
+    <Panel id={id} className={classes.panel}>
+      <AppContainer headerChildren={<PanelHeader>Чат ГПТ</PanelHeader>}>
+        {({ height }) => (
+          <div style={{ minHeight: height }} className={classes.group}>
+            <div>
+              <Header mode="secondary">Темы для изучения</Header>
+              <div className={classes.cards}>
+                <HorizontalScroll>
+                  <div style={{ display: "flex" }}>
+                    {lessonsController.chapters.map((chapter, index) => (
+                      <HorizontalCell key={index} size="l">
+                        <ChapterCard
+                          onClick={() => {
+                            lessonsController.setCurrentChapter(index);
+                            goToChapters();
+                          }}
+                          chapterType={chapter.chapterType}
+                        />
+                      </HorizontalCell>
+                    ))}
+                  </div>
+                </HorizontalScroll>
+              </div>
+            </div>
+
+            <div className={classes.placeholder}>
+              <Placeholder
+                header="Представляем Чат ГПТ"
+                action={
+                  <Button
+                    mode="outline"
+                    size="m"
+                    after={<Icon28ArrowRightSquareOutline />}
+                    onClick={goToMain}
+                  >
+                    Опробовать
+                  </Button>
+                }
               >
-                Опробовать
-              </Button>
-            }
-          >
-            Взаимодействуйте с нейросетью в формате диалога, корректируйте
-            запросы, получайте неожиданные и полезные варианты ответов
-          </Placeholder>
-        </div>
-      </Group>
+                Взаимодействуйте с нейросетью в формате диалога, корректируйте
+                запросы, получайте неожиданные и полезные варианты ответов
+              </Placeholder>
+            </div>
+            <Issues />
+          </div>
+        )}
+      </AppContainer>
     </Panel>
   );
 }

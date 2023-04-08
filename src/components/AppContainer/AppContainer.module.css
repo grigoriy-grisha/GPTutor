@@ -2,6 +2,5 @@
     background: var(--vkui--color_background_content);
     position: relative;
     display: flex;
-    overflow: hidden;
     max-width: 100vw;
 }

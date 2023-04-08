@@ -7,7 +7,7 @@ import { ChatGPTLogo } from "../../../icons";
 function MessengerAva({ message, photo }) {
   return (
     <>
-      {message.sender === "ChatGPT" ? (
+      {message.role === "assistant" ? (
         <Avatar size={36} fallbackIcon={<ChatGPTLogo />} />
       ) : (
         <Avatar size={36} fallbackIcon={null} src={photo} />

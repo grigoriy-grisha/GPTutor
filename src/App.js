@@ -7,13 +7,13 @@ import {
   SplitLayout,
   View,
 } from "@vkontakte/vkui";
+import bridge from "@vkontakte/vk-bridge";
 import "@vkontakte/vkui/dist/vkui.css";
 import "./index.css";
-import bridge from "@vkontakte/vk-bridge";
 
-import Main from "./panels/Main";
+import { Main } from "./panels/Main";
 import { Home } from "./panels/Home";
-import Chapters from "./panels/Chapters";
+import { Chapters } from "./panels/Chapters";
 import { useSubscribe } from "./hooks";
 import { lessonsController } from "./entity/lessons";
 
@@ -23,34 +23,53 @@ const App = () => {
   const [fetchedUser, setUser] = useState(null);
 
   useEffect(() => {
-    async function fetchData() {
-      const user = await bridge.send("VKWebAppGetUserInfo");
-      setUser(user);
-    }
-    fetchData();
+    bridge.send("VKWebAppGetUserInfo").then(setUser);
   }, []);
 
   const goToChapters = () => {
     setActivePanel("chapters");
+    bridge.send("VKWebAppSetLocation", {
+      location: "chapters",
+    });
+    window.location.hash = "#chapters";
   };
 
   const goToMain = () => {
     setActivePanel("main");
+    bridge.send("VKWebAppSetLocation", {
+      location: "main",
+    });
+    window.location.hash = "#main";
   };
 
   const goToHome = () => {
     setActivePanel("home");
+    bridge.send("VKWebAppSetLocation", {
+      location: "home",
+    });
+    window.location.hash = "#home";
   };
 
   useSubscribe(lessonsController.currentChapter$);
 
+  useEffect(() => {
+    window.addEventListener("popstate", (event) => {
+      setActivePanel(window.location.hash.slice(1) || "home");
+    });
+  }, []);
   return (
     <ConfigProvider>
       <AdaptivityProvider>
         <AppRoot>
           <SplitLayout>
             <SplitCol>
-              <View activePanel={activePanel}>
+              <View
+                activePanel={activePanel}
+                isWebView={true}
+                onTransition={(a) => {
+                  console.log(a);
+                }}
+              >
                 <Home
                   id="home"
                   goToChapters={goToChapters}

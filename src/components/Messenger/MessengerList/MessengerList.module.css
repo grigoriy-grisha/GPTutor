@@ -1,5 +1,22 @@
 .container {
     display: flex;
     gap: 12px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+}
+
+.container:last-child {
     padding-bottom: 12px;
+}
+
+.placeholderContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-top: 10vh;
+}
+
+.placeholder {
+    padding-top: 30vh;
 }

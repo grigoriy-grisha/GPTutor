@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.additionalRequests {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: var(--vkui--color_background_content);
+}

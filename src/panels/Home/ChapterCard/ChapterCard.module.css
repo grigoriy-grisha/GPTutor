@@ -1,0 +1,17 @@
+.card {
+    background: var(--vkui--color_background_accent_themed);
+}
+
+.hovered {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.div {
+    display: flex;
+    justify-content: center;
+    width: 235px;
+}
+
+

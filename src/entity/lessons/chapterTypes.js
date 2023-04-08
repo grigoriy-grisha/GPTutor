@@ -1,4 +1,5 @@
 export const chapterTypes = {
-  JS: "JS",
+  JSCommon: "JS",
+  JSAdvanced: "JSAdvanced",
   React: "React",
 };

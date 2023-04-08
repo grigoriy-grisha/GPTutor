@@ -2,6 +2,19 @@ code,pre {
     white-space: break-spaces !important;
 }
 
+.code {
+    padding-right: 40px !important;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.blockquote {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+}
+
 ul,ol {
     padding: 0;
     list-style: none;
@@ -10,6 +23,7 @@ ul,ol {
 .isOneOperand {
     padding: 4px !important;
     margin: 0 !important;
+    width: auto;
     display: inline;
 }
 

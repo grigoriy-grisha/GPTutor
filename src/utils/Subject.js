@@ -9,6 +9,8 @@ export class Subject {
   }
 
   next(value) {
+    if (this.value === value) return;
+
     this.value = value;
     this._notify();
   }
