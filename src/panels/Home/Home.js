@@ -19,7 +19,7 @@ import classes from "./Home.module.css";
 import { AppContainer } from "../../components/AppContainer";
 import { Issues } from "./Issues";
 
-function Home({ id, goToChapters, goToMain }) {
+function Home({ id, goToChapters, goToChat }) {
   return (
     <Panel id={id} className={classes.panel}>
       <AppContainer headerChildren={<PanelHeader>Чат ГПТ</PanelHeader>}>
@@ -46,15 +46,16 @@ function Home({ id, goToChapters, goToMain }) {
               </div>
             </div>
 
-            <div className={classes.placeholder}>
+            <div className={classes.placeholderContainer}>
               <Placeholder
+                className={classes.placeholder}
                 header="Представляем Чат ГПТ"
                 action={
                   <Button
                     mode="outline"
                     size="m"
                     after={<Icon28ArrowRightSquareOutline />}
-                    onClick={goToMain}
+                    onClick={goToChat}
                   >
                     Опробовать
                   </Button>

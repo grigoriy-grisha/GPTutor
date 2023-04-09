@@ -13,7 +13,7 @@ import { useSubscribe } from "../../hooks";
 
 import classes from "./Chapters.module.css";
 
-function Chapters({ id, goToMain, goBack }) {
+function Chapters({ id, goToChat, goBack }) {
   useSubscribe(lessonsController.currentChapter$);
 
   const currentChapter = lessonsController.currentChapter$.getValue();
@@ -36,9 +36,10 @@ function Chapters({ id, goToMain, goBack }) {
         <div className={classes.lessons}>
           {currentChapter.lessons.map((lesson, index) => (
             <SimpleCell
+              key={index}
               after={<Icon24ArrowRightOutline />}
               onClick={() => {
-                goToMain();
+                goToChat();
                 lessonsController.setCurrentLesson(index);
               }}
             >

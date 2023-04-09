@@ -31,11 +31,7 @@ export class ChatGpt {
   send = (content) => {
     this.messages$.next([
       ...this.messages$.getValue(),
-      {
-        content,
-        role: "user",
-        inLocal: false,
-      },
+      { content, role: "user", inLocal: false },
     ]);
     this.isTyping$.next(true);
 
@@ -55,11 +51,7 @@ export class ChatGpt {
       .catch(() => {
         this.messages$.next([
           ...this.messages$.getValue(),
-          {
-            content: errorContent,
-            role: "assistant",
-            inLocal: true,
-          },
+          { content: errorContent, role: "assistant", inLocal: true },
         ]);
       })
       .finally(() => this.isTyping$.next(false));

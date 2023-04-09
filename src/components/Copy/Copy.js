@@ -1,35 +1,59 @@
 import { memo, useState } from "react";
 
-import { Icon24Copy, Icon28DoneOutline } from "@vkontakte/icons";
+import {
+  Icon24Copy,
+  Icon28CancelOutline,
+  Icon28DoneOutline,
+} from "@vkontakte/icons";
 import { IconButton, Snackbar } from "@vkontakte/vkui";
 
-import { copyToClickBoard } from "./utils";
 import { InPortal } from "../InPortal";
 
 import classes from "./Copy.module.css";
+import bridge from "@vkontakte/vk-bridge";
 
 function Copy({ className, textToClickBoard, onAfterClickBoard }) {
-  const [snackbar, setSnackbar] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
+  function copyToClickBoard(text) {
+    bridge
+      .send("VKWebAppCopyText", {
+        text,
+      })
+      .then(() => {
+        onAfterClickBoard && onAfterClickBoard();
+        setSuccess(true);
+      })
+      .catch(() => setError(true));
+  }
+
   return (
     <>
       <IconButton
         className={className}
         onClick={() => {
           copyToClickBoard(textToClickBoard);
-          onAfterClickBoard && onAfterClickBoard();
-          setSnackbar(true);
         }}
       >
         <Icon24Copy />
       </IconButton>
-      {snackbar && (
+      {(success || error) && (
         <InPortal id="root">
           <Snackbar
-            onClose={() => setSnackbar(false)}
-            onActionClick={() => setText("Добавляем метку.")}
-            before={<Icon28DoneOutline className={classes.doneIcon} />}
+            onClose={() => {
+              setSuccess(false);
+              setError(false);
+            }}
+            before={
+              success ? (
+                <Icon28DoneOutline className={classes.doneIcon} />
+              ) : (
+                <Icon28CancelOutline className={classes.doneIcon} />
+              )
+            }
           >
-            Скопировано
+            {success ? "Скопировано" : "Не удалось скопировать"}
           </Snackbar>
         </InPortal>
       )}

@@ -8,7 +8,7 @@ const lessonJS1 = new LessonItem(
   ),
   [
     new LessonRequest(
-      "Объясни подробнее const, укажи примеры",
+      "Объясни подробнее const в js, укажи примеры",
       "Переменные const"
     ),
     new LessonRequest("Объясни подробнее let, укажи примеры", "Переменные let"),
@@ -20,7 +20,7 @@ const lessonJS1 = new LessonItem(
 
 const lessonJS2 = new LessonItem(
   "Типы данных",
-  new LessonRequest("Расскажи о типах данных в javascript"),
+  new LessonRequest("Расскажи о типах данных в js"),
   [
     new LessonRequest("Объясни числа в js", "Числа"),
     new LessonRequest("Объясни строки в js", "Строки"),

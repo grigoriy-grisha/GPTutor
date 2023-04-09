@@ -8,17 +8,20 @@ import {
   View,
 } from "@vkontakte/vkui";
 import bridge from "@vkontakte/vk-bridge";
+
 import "@vkontakte/vkui/dist/vkui.css";
 import "./index.css";
 
-import { Main } from "./panels/Main";
+import { Chat } from "./panels/Chat";
 import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
-import { useSubscribe } from "./hooks";
+import { useAppNavigation, useSubscribe } from "./hooks";
 import { lessonsController } from "./entity/lessons";
 
 const App = () => {
-  const [activePanel, setActivePanel] = useState("home");
+  const { activePanel, goBack, goToPage } = useAppNavigation(["home"]);
+
+  useSubscribe(lessonsController.currentChapter$);
 
   const [fetchedUser, setUser] = useState(null);
 
@@ -26,65 +29,23 @@ const App = () => {
     bridge.send("VKWebAppGetUserInfo").then(setUser);
   }, []);
 
-  const goToChapters = () => {
-    setActivePanel("chapters");
-    bridge.send("VKWebAppSetLocation", {
-      location: "chapters",
-    });
-    window.location.hash = "#chapters";
-  };
+  const goToChapters = () => goToPage("chapters");
+  const goToChat = () => goToPage("chat");
 
-  const goToMain = () => {
-    setActivePanel("main");
-    bridge.send("VKWebAppSetLocation", {
-      location: "main",
-    });
-    window.location.hash = "#main";
-  };
-
-  const goToHome = () => {
-    setActivePanel("home");
-    bridge.send("VKWebAppSetLocation", {
-      location: "home",
-    });
-    window.location.hash = "#home";
-  };
-
-  useSubscribe(lessonsController.currentChapter$);
-
-  useEffect(() => {
-    window.addEventListener("popstate", (event) => {
-      setActivePanel(window.location.hash.slice(1) || "home");
-    });
-  }, []);
   return (
-    <ConfigProvider>
+    <ConfigProvider isWebView>
       <AdaptivityProvider>
         <AppRoot>
           <SplitLayout>
             <SplitCol>
-              <View
-                activePanel={activePanel}
-                isWebView={true}
-                onTransition={(a) => {
-                  console.log(a);
-                }}
-              >
+              <View activePanel={activePanel} onSwipeBack={goBack}>
                 <Home
                   id="home"
                   goToChapters={goToChapters}
-                  goToMain={goToMain}
+                  goToChat={goToChat}
                 />
-                <Chapters id="chapters" goToMain={goToMain} goBack={goToHome} />
-                <Main
-                  id="main"
-                  goBack={
-                    lessonsController.currentChapter$.getValue()
-                      ? goToChapters
-                      : goToHome
-                  }
-                  user={fetchedUser}
-                />
+                <Chapters id="chapters" goToChat={goToChat} goBack={goBack} />
+                <Chat id="chat" goBack={goBack} user={fetchedUser} />
               </View>
             </SplitCol>
           </SplitLayout>

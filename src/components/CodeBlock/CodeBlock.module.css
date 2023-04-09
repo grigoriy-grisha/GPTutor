@@ -5,7 +5,7 @@
 .additional {
     position: absolute;
     right: 4px;
-    top: 6px;
+    top: 4px;
     display: flex;
     color: var(--vkui--color_icon_secondary);
 }

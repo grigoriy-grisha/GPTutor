@@ -6,7 +6,7 @@
 }
 
 .container:last-child {
-    padding-bottom: 12px;
+    padding-bottom: 0;
 }
 
 .placeholderContainer {

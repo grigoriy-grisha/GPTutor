@@ -16,11 +16,13 @@
     padding-bottom: 18px;
 }
 
-.placeholder {
+.placeholderContainer {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-
-
+.placeholder {
+    margin-top: -24px;
+    margin-bottom: -24px;
+}

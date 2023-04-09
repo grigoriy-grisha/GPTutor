@@ -26,8 +26,8 @@ function MessengerList({ messages, user, onStartChat }) {
 
   return (
     <>
-      {messages.map((message) => (
-        <div className={classes.container}>
+      {messages.map((message, index) => (
+        <div className={classes.container} key={index}>
           <MessengerAva message={message} photo={user?.photo_100} />
           <div style={{ display: "grid" }}>
             <Text weight="2">
