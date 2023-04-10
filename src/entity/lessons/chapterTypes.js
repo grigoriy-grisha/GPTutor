@@ -1,5 +1,7 @@
 export const chapterTypes = {
-  JSCommon: "JS",
-  JSAdvanced: "JSAdvanced",
+  JS: "JS",
   React: "React",
+  Git: "Git",
+  Vue: "Vue",
+  HTMLCSS: "HTMLCSS",
 };

@@ -8,6 +8,7 @@ import {
   Panel,
   PanelHeader,
   Placeholder,
+  Link,
 } from "@vkontakte/vkui";
 import { Icon28ArrowRightSquareOutline } from "@vkontakte/icons";
 
@@ -22,7 +23,7 @@ import { Issues } from "./Issues";
 function Home({ id, goToChapters, goToChat }) {
   return (
     <Panel id={id} className={classes.panel}>
-      <AppContainer headerChildren={<PanelHeader>Чат ГПТ</PanelHeader>}>
+      <AppContainer headerChildren={<PanelHeader>GPTutor</PanelHeader>}>
         {({ height }) => (
           <div style={{ minHeight: height }} className={classes.group}>
             <div>
@@ -49,7 +50,7 @@ function Home({ id, goToChapters, goToChat }) {
             <div className={classes.placeholderContainer}>
               <Placeholder
                 className={classes.placeholder}
-                header="Представляем Чат ГПТ"
+                header="Задай свой вопрос"
                 action={
                   <Button
                     mode="outline"
@@ -57,12 +58,15 @@ function Home({ id, goToChapters, goToChat }) {
                     after={<Icon28ArrowRightSquareOutline />}
                     onClick={goToChat}
                   >
-                    Опробовать
+                    Начать диалог
                   </Button>
                 }
               >
-                Взаимодействуйте с нейросетью в формате диалога, корректируйте
-                запросы, получайте неожиданные и полезные варианты ответов
+                Взаимодействуй с нейросетью{" "}
+                <Link href="https://openai.com/blog/chatgpt" target="_blank">
+                  Chat GPT
+                </Link>{" "}
+                в формате чата
               </Placeholder>
             </div>
             <Issues />

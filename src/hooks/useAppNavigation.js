@@ -21,14 +21,19 @@ export function useAppNavigation(initHistory) {
   }
 
   useEffect(() => {
+    window.location.hash = "";
+
     const onPopState = () => {
       setActivePanel(window.location.hash.slice(1) || "home");
     };
 
-    bridge.send("VKWebAppEnableSwipeBack", {});
+    bridge
+      .send("VKWebAppSetSwipeSettings", { history: true })
+      .then(() => {})
+      .catch((error) => console.log(error));
+
     window.addEventListener("popstate", onPopState);
     return () => {
-      bridge.send("VKWebAppDisableSwipeBack", {});
       window.removeEventListener("popstate", onPopState);
     };
   }, []);

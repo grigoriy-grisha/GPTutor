@@ -3,7 +3,7 @@ import { Subject } from "../../utils";
 
 const errorContent = `
 \`\`\`
-Чат ГПТ приболел. Попробуйте позже
+Chat GPT приболел. Попробуйте позже
    _______  GPT
   |.-----.|       Err 
   ||x . x||  GPT Error  

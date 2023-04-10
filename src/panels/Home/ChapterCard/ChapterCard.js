@@ -1,17 +1,25 @@
 import { Card, Div, useAdaptivityWithJSMediaQueries } from "@vkontakte/vkui";
 
 import { chapterTypes } from "../../../entity/lessons";
-import JSLesson from "../../../icons/JSLesson";
-import ReactLesson from "../../../icons/ReactLesson";
-import { Hovered } from "../../../components/Hovered";
-import { JSCommonLesson } from "../../../icons/JSCommonLesson";
+
+import {
+  VueLessons,
+  GitLesson,
+  ReactLesson,
+  JSLesson,
+  HtmlCssLesson,
+} from "../../../icons";
 
 import classes from "./ChapterCard.module.css";
 
+import { Hovered } from "../../../components/Hovered";
+
 const CardIcon = {
-  [chapterTypes.JSCommon]: JSCommonLesson,
-  [chapterTypes.JSAdvanced]: JSLesson,
+  [chapterTypes.JS]: JSLesson,
+  [chapterTypes.Vue]: VueLessons,
   [chapterTypes.React]: ReactLesson,
+  [chapterTypes.Git]: GitLesson,
+  [chapterTypes.HTMLCSS]: HtmlCssLesson,
 };
 
 function ChapterCard({ chapterType, onClick }) {

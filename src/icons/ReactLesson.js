@@ -1,6 +1,6 @@
 import { useConfigProvider } from "@vkontakte/vkui";
 
-function ReactLesson() {
+export function ReactLesson() {
   const { appearance } = useConfigProvider();
   const color = appearance === "dark" ? "#000" : "#fff";
 
@@ -99,5 +99,3 @@ function ReactLesson() {
     </svg>
   );
 }
-
-export default ReactLesson;

@@ -16,9 +16,9 @@ function MessengerParagraph({ message }) {
       <ReactMarkdown
         components={{
           p: (props) => <span className="paragraph" {...props} />,
-          code: ({ children }) => {
+          code: ({ children, className }) => {
             return (
-              <CodeBlock hasCopy hasFullScreen>
+              <CodeBlock hasCopy hasFullScreen className={className}>
                 {children}
               </CodeBlock>
             );

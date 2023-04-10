@@ -4,6 +4,7 @@ import {
   HorizontalCell,
   HorizontalScroll,
   Spinner,
+  Header,
 } from "@vkontakte/vkui";
 
 import { useSubscribe } from "../../../hooks";
@@ -30,27 +31,30 @@ function Issues() {
   }
 
   return (
-    <HorizontalScroll>
-      <div style={{ display: "flex" }}>
-        {githubController.issues$.getValue().map(({ html_url, title }) => (
-          <HorizontalCell
-            target="_blank"
-            key={html_url}
-            href={html_url}
-            disabled
-            size="l"
-          >
-            <Banner
-              asideMode="expand"
-              className={classes.bottomItem}
-              before={<GithubIcon />}
-              header="Open Source"
-              subheader={<span>{title}</span>}
-            />
-          </HorizontalCell>
-        ))}
-      </div>
-    </HorizontalScroll>
+    <div>
+      <Header mode="secondary">Прими участие в разработке приложения</Header>
+      <HorizontalScroll>
+        <div style={{ display: "flex" }}>
+          {githubController.issues$.getValue().map(({ html_url, title }) => (
+            <HorizontalCell
+              target="_blank"
+              key={html_url}
+              href={html_url}
+              disabled
+              size="l"
+            >
+              <Banner
+                asideMode="expand"
+                className={classes.bottomItem}
+                before={<GithubIcon />}
+                header="Open Source"
+                subheader={<span>{title}</span>}
+              />
+            </HorizontalCell>
+          ))}
+        </div>
+      </HorizontalScroll>
+    </div>
   );
 }
 

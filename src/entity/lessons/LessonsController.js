@@ -7,8 +7,11 @@ export class LessonsController {
     this.currentLesson$ = new Subject(null);
   }
 
-  setCurrentLesson(index) {
-    this.currentLesson$.next(this.currentChapter$.getValue().lessons[index]);
+  setCurrentLesson(id) {
+    const foundLesson = this.currentChapter$.getValue().findLesson(id);
+    if (!foundLesson) return;
+
+    this.currentLesson$.next(foundLesson);
   }
 
   setCurrentChapter(index) {

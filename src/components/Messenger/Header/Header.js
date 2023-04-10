@@ -45,7 +45,7 @@ function Header({ goBack, isTyping }) {
           </div>
         }
       >
-        <Text weight="1">Чат ГПТ</Text>
+        <Text weight="1">Chat GPT</Text>
       </SimpleCell>
     </PanelHeader>
   );

@@ -31,7 +31,7 @@ function MessengerList({ messages, user, onStartChat }) {
           <MessengerAva message={message} photo={user?.photo_100} />
           <div style={{ display: "grid" }}>
             <Text weight="2">
-              {message.role === "assistant" ? "Чат ГПТ" : user?.first_name}
+              {message.role === "assistant" ? "Chat GPT" : user?.first_name}
             </Text>
             <MessengerParagraph message={message} />
           </div>

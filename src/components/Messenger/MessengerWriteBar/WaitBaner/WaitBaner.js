@@ -15,7 +15,9 @@ function WaitBanner() {
       size="m"
       header="Запаситесь терпением :)"
       asideMode="dismiss"
-      subheader={<span>Чат ГПТ может генерировать ответ достаточно долго</span>}
+      subheader={
+        <span>Chat GPT может генерировать ответ достаточно долго</span>
+      }
     />
   );
 }

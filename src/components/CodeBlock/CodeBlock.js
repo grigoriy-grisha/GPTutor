@@ -15,7 +15,13 @@ function isOneOperand(children) {
   return children[0].split(" ").length === 1;
 }
 
-function CodeBlock({ children, hasCopy }) {
+function getLanguage(className) {
+  if (className === "language-javascript") return "js";
+  if (className === "language-html") return "html";
+  return "js";
+}
+
+function CodeBlock({ children, hasCopy, className }) {
   const { appearance } = useConfigProvider();
   const oneOperand = isOneOperand(children);
   const oneOperandClass = oneOperand ? "isOneOperand" : "";
@@ -26,7 +32,7 @@ function CodeBlock({ children, hasCopy }) {
         className={`${oneOperandClass} code`}
         style={appearance === "dark" ? oneDark : oneLight}
         children={String(children).replace(/\n$/, "")}
-        language="js"
+        language={getLanguage(className)}
       />
 
       {!oneOperand && (
