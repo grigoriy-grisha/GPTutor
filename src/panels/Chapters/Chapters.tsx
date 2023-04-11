@@ -1,0 +1,79 @@
+import React from "react";
+
+import {
+  Header,
+  Panel,
+  PanelHeader,
+  PanelHeaderBack,
+  Search,
+  SimpleCell,
+} from "@vkontakte/vkui";
+import { Icon24ArrowRightOutline } from "@vkontakte/icons";
+
+import { lessonsController } from "../../entity/lessons";
+import { useSubscribe } from "../../hooks";
+
+import classes from "./Chapters.module.css";
+
+interface IProps {
+  id: string;
+  goToChat: () => void;
+  goBack: () => void;
+}
+function Chapters({ id, goToChat, goBack }: IProps) {
+  useSubscribe(lessonsController.currentChapter$);
+
+  const currentChapter = lessonsController.currentChapter$.getValue();
+  const lessons = currentChapter?.lessons$.getValue();
+
+  useSubscribe(currentChapter?.lessons$);
+
+  return (
+    <Panel id={id}>
+      <div className={classes.panel}>
+        <PanelHeader
+          shadow
+          before={
+            <PanelHeaderBack
+              onClick={() => {
+                goBack();
+                lessonsController.clearChapter();
+              }}
+            />
+          }
+        >
+          Диалоги
+        </PanelHeader>
+        {currentChapter && (
+          <div className={classes.lessons}>
+            <Search
+              onChange={({ target }) =>
+                currentChapter.searchLessons(target.value)
+              }
+              after={null}
+            />
+            {Object.entries(lessons || []).map(([key, value]) => (
+              <React.Fragment key={key}>
+                <Header mode="secondary">{key}</Header>
+                {value.map((lesson) => (
+                  <SimpleCell
+                    key={lesson.id}
+                    after={<Icon24ArrowRightOutline />}
+                    onClick={() => {
+                      goToChat();
+                      lessonsController.setCurrentLesson(lesson.id);
+                    }}
+                  >
+                    <div>{lesson.name}</div>
+                  </SimpleCell>
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
+        )}
+      </div>
+    </Panel>
+  );
+}
+
+export default Chapters;
