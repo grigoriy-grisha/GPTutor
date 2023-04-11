@@ -1,28 +1,22 @@
 import { memo, useEffect } from "react";
 import {
   Banner,
+  Header,
   HorizontalCell,
   HorizontalScroll,
   Spinner,
-  Header,
 } from "@vkontakte/vkui";
-
-import { useSubscribe } from "../../../hooks";
 import { githubController } from "../../../entity/Github";
 import { GithubIcon } from "../../../icons";
 
 import classes from "./Issues.module.css";
 
 function Issues() {
-  useSubscribe(
-    githubController.issues$,
-    githubController.issuesError$,
-    githubController.issuesLoading$
-  );
-
   useEffect(() => githubController.getIssues(), []);
 
-  if (githubController.issuesLoading$.getValue()) {
+  console.log(githubController.issuesLoading.get());
+
+  if (githubController.issuesLoading.get()) {
     return (
       <div className={classes.spinnerContainer}>
         <Spinner size="large" className={classes.spinner} />
@@ -35,7 +29,7 @@ function Issues() {
       <Header mode="secondary">Прими участие в разработке приложения</Header>
       <HorizontalScroll>
         <div style={{ display: "flex" }}>
-          {githubController.issues$.getValue().map(({ html_url, title }) => (
+          {githubController.issues.get().map(({ html_url, title }) => (
             <HorizontalCell
               target="_blank"
               key={html_url}

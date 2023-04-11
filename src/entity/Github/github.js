@@ -1,22 +1,24 @@
-import { Subject } from "../../utils";
 import { getIssues } from "../../api/github";
+import { sig } from "dignals";
 
 class GithubController {
   constructor() {
-    this.issues$ = new Subject([]);
-    this.issuesError$ = new Subject(false);
-    this.issuesLoading$ = new Subject(false);
+    this.issues = sig([]);
+    this.issuesError = sig(false);
+    this.issuesLoading = sig(false);
   }
 
   getIssues() {
-    if (this.issues$.getValue().length) return;
+    if (this.issues.get().length) return;
 
-    this.issuesLoading$.next(true);
+    this.issuesLoading.set(true);
 
     getIssues()
-      .then((issues) => this.issues$.next(issues))
-      .catch(() => this.issuesError$.next(true))
-      .finally(() => this.issuesLoading$.next(false));
+      .then((issues) => {
+        this.issues.set(issues);
+      })
+      .catch(() => this.issuesError.set(true))
+      .finally(() => this.issuesLoading.set(false));
   }
 }
 
