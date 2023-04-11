@@ -21,7 +21,7 @@ ul,ol {
 }
 
 .isOneOperand {
-    padding: 4px !important;
+    padding: 1px 6px  !important;
     margin: 0 !important;
     width: auto;
     display: inline;

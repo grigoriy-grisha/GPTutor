@@ -16,14 +16,14 @@ function isOneOperand(children) {
 }
 
 function getLanguage(className) {
-  if (className === "language-javascript") return "js";
+  if (className === "language-javascript") return "javascript";
   if (className === "language-html") return "html";
-  return "js";
+  return "javascript";
 }
 
 function CodeBlock({ children, hasCopy, className }) {
   const { appearance } = useConfigProvider();
-  const oneOperand = isOneOperand(children);
+  const oneOperand = isOneOperand(children) || !className;
   const oneOperandClass = oneOperand ? "isOneOperand" : "";
 
   return (
