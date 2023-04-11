@@ -2,8 +2,8 @@
     "name": "chat",
     "version": "0.0.0",
     "scripts": {
-        "start": "cross-env GENERATE_SOURCEMAP=false PORT=10888 HTTPS=true react-scripts start",
-        "build": "react-scripts build",
+        "start": "vite",
+        "build": "cross-env GENERATE_SOURCEMAP=false vite build",
         "predeploy": "npm run build",
         "deploy": "vk-miniapps-deploy"
     },
