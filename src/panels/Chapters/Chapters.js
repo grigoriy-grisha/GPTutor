@@ -24,47 +24,49 @@ function Chapters({ id, goToChat, goBack }) {
   useSubscribe(currentChapter?.lessons$);
 
   return (
-    <Panel id={id} className={classes.panel}>
-      <PanelHeader
-        shadow
-        before={
-          <PanelHeaderBack
-            onClick={() => {
-              goBack();
-              lessonsController.clearChapter();
-            }}
-          />
-        }
-      >
-        Диалоги
-      </PanelHeader>
-      {currentChapter && (
-        <div className={classes.lessons}>
-          <Search
-            onChange={({ target }) =>
-              currentChapter.searchLessons(target.value)
-            }
-            after={null}
-          />
-          {Object.entries(lessons).map(([key, value]) => (
-            <>
-              <Header mode="secondary">{key}</Header>
-              {value.map((lesson) => (
-                <SimpleCell
-                  key={lesson.id}
-                  after={<Icon24ArrowRightOutline />}
-                  onClick={() => {
-                    goToChat();
-                    lessonsController.setCurrentLesson(lesson.id);
-                  }}
-                >
-                  <div>{lesson.name}</div>
-                </SimpleCell>
-              ))}
-            </>
-          ))}
-        </div>
-      )}
+    <Panel id={id}>
+      <div className={classes.panel}>
+        <PanelHeader
+          shadow
+          before={
+            <PanelHeaderBack
+              onClick={() => {
+                goBack();
+                lessonsController.clearChapter();
+              }}
+            />
+          }
+        >
+          Диалоги
+        </PanelHeader>
+        {currentChapter && (
+          <div className={classes.lessons}>
+            <Search
+              onChange={({ target }) =>
+                currentChapter.searchLessons(target.value)
+              }
+              after={null}
+            />
+            {Object.entries(lessons).map(([key, value]) => (
+              <React.Fragment key={key}>
+                <Header mode="secondary">{key}</Header>
+                {value.map((lesson) => (
+                  <SimpleCell
+                    key={lesson.id}
+                    after={<Icon24ArrowRightOutline />}
+                    onClick={() => {
+                      goToChat();
+                      lessonsController.setCurrentLesson(lesson.id);
+                    }}
+                  >
+                    <div>{lesson.name}</div>
+                  </SimpleCell>
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
+        )}
+      </div>
     </Panel>
   );
 }

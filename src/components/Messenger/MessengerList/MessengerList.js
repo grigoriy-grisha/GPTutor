@@ -13,7 +13,12 @@ function MessengerList({ messages, user, onStartChat }) {
         <Placeholder
           header="Начните диалог"
           action={
-            <Button mode="outline" size="m" onClick={onStartChat}>
+            <Button
+              aria-label="Начать диалог"
+              mode="outline"
+              size="m"
+              onClick={onStartChat}
+            >
               Начать
             </Button>
           }

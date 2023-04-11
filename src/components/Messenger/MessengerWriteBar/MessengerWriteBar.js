@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState, useRef } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 
 import {
   Button,
@@ -7,7 +7,6 @@ import {
   Separator,
   usePlatform,
   WriteBar,
-  FixedLayout,
   WriteBarIcon,
 } from "@vkontakte/vkui";
 import {
@@ -61,8 +60,10 @@ function MessengerWriteBar({ additionalRequests, handleSend, isTyping }) {
           <>
             <Separator wide />
             <Div className={classes.additionalRequests}>
-              {additionalRequests.map((request) => (
+              {additionalRequests.map((request, index) => (
                 <Button
+                  aria-label={request.name}
+                  key={index}
                   disabled={isTyping}
                   mode={request.isSelected ? "outline" : "primary"}
                   size="m"
@@ -97,6 +98,7 @@ function MessengerWriteBar({ additionalRequests, handleSend, isTyping }) {
             <>
               <WriteBarIcon
                 mode="send"
+                aria-label="Отправить сообщение"
                 disabled={value.length === 0 || isTyping}
                 onClick={() => {
                   handleSend(value);

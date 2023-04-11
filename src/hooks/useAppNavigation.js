@@ -1,36 +1,44 @@
 import bridge from "@vkontakte/vk-bridge";
 import { useEffect, useRef, useState } from "react";
 
-export function useAppNavigation(initHistory) {
-  const [activePanel, setActivePanel] = useState("home");
-  const historyRef = useRef(initHistory);
+export function useAppNavigation(initPanel) {
+  const [activePanel, setActivePanel] = useState(initPanel);
+  const historyRef = useRef([initPanel]);
+  const isFirst = historyRef.current.length === 1;
 
   function goToPage(name) {
-    historyRef.current.push(name);
     window.location.hash = `#${name}`;
   }
 
   function goBack() {
     if (historyRef.current.length === 1) {
       bridge.send("VKWebAppClose", { status: "success" });
+
       return;
     }
 
-    historyRef.current.pop();
     window.history.back();
   }
+
+  useEffect(() => {
+    bridge.send("VKWebAppSetSwipeSettings", { history: isFirst });
+  }, [isFirst]);
 
   useEffect(() => {
     window.location.hash = "";
 
     const onPopState = () => {
-      setActivePanel(window.location.hash.slice(1) || "home");
-    };
+      const nextPanel = window.location.hash.slice(1) || initPanel;
+      const prevPanel = historyRef.current[historyRef.current.length - 2];
 
-    bridge
-      .send("VKWebAppSetSwipeSettings", { history: true })
-      .then(() => {})
-      .catch((error) => console.log(error));
+      if (prevPanel === nextPanel) {
+        historyRef.current.pop();
+      } else {
+        historyRef.current.push(nextPanel);
+      }
+
+      setActivePanel(nextPanel);
+    };
 
     window.addEventListener("popstate", onPopState);
     return () => {
@@ -38,5 +46,5 @@ export function useAppNavigation(initHistory) {
     };
   }, []);
 
-  return { activePanel, goToPage, goBack };
+  return { activePanel, goToPage, goBack, history: historyRef.current };
 }
