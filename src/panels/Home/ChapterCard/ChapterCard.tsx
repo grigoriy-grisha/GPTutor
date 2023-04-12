@@ -12,9 +12,9 @@ import {
   HtmlCssLesson,
 } from "../../../icons";
 
-import classes from "./ChapterCard.module.css";
-
 import { Hovered } from "../../../components/Hovered";
+
+import classes from "./ChapterCard.module.css";
 
 const CardIcon: Record<ChapterTypes, React.FC> = {
   [ChapterTypes.JS]: JSLesson,

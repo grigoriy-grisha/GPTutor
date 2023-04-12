@@ -13,7 +13,7 @@ import classes from "./Issues.module.css";
 
 function Issues() {
   useEffect(() => githubController.getIssues(), []);
-
+  if (githubController.getIssues$.error) return <div />;
 
   if (githubController.getIssues$.loading.get()) {
     return (

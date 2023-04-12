@@ -12,13 +12,13 @@ import {
 } from "@vkontakte/vkui";
 import { Icon28ArrowRightSquareOutline } from "@vkontakte/icons";
 
-import { ChapterCard } from "./ChapterCard";
-
 import { lessonsController } from "../../entity/lessons";
+import { AppContainer } from "../../components/AppContainer";
+
+import { ChapterCard } from "./ChapterCard";
+import { Issues } from "./Issues";
 
 import classes from "./Home.module.css";
-import { AppContainer } from "../../components/AppContainer";
-import { Issues } from "./Issues";
 
 interface IProps {
   id: string;

@@ -3,7 +3,6 @@ import React, { useMemo } from "react";
 import { Panel } from "@vkontakte/vkui";
 
 import { Messenger } from "../../components/Messenger";
-import { useSubscribe } from "../../hooks";
 import { lessonsController } from "../../entity/lessons";
 import { ChatGpt } from "../../entity/GPT/ChatGpt";
 
@@ -14,9 +13,7 @@ interface IProps {
 }
 
 const Chat = ({ id, user, goBack }: IProps) => {
-  useSubscribe(lessonsController.currentLesson$);
-
-  const currentLesson = lessonsController.currentLesson$?.getValue();
+  const currentLesson = lessonsController.currentLesson?.get();
 
   const chatGpt = useMemo(() => new ChatGpt(), []);
 

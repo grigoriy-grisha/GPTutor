@@ -7,7 +7,6 @@ export default class ReactivePromise<DATA> {
 
   private fn?: () => Promise<DATA>;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   static create<DATA>(fn?: () => Promise<DATA>) {
@@ -26,13 +25,9 @@ export default class ReactivePromise<DATA> {
 
     this.loading.set(true);
     this.fn()
-      .then(result => this.result.set(result))
-      .catch(err => {
-        this.error.set(err);
-      })
-      .finally(() => {
-        this.loading.set(false);
-      })
+      .then((result) => this.result.set(result))
+      .catch((err) => this.error.set(err))
+      .finally(() => this.loading.set(false));
   }
 
   reset() {

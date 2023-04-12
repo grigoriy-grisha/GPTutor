@@ -1,34 +1,33 @@
-import { Subject } from "../../utils";
+import { sig } from "dignals";
+
 import { LessonItem } from "./LessonItem";
 import { ChapterItem } from "./ChapterItem";
 import { UUID_V4 } from "../common";
 
 export class LessonsController {
-  public currentChapter$: Subject<ChapterItem | null>;
-  public currentLesson$: Subject<LessonItem | null>;
+  public currentChapter = sig<ChapterItem | null>(null);
+  public currentLesson = sig<LessonItem | null>(null);
 
   constructor(public chapters: ChapterItem[]) {
     this.chapters = chapters;
-    this.currentChapter$ = new Subject(null);
-    this.currentLesson$ = new Subject(null);
   }
 
   setCurrentLesson(id: UUID_V4) {
-    const foundLesson = this.currentChapter$.getValue()?.findLesson(id);
+    const foundLesson = this.currentChapter.get()?.findLesson(id);
     if (!foundLesson) return;
 
-    this.currentLesson$.next(foundLesson);
+    this.currentLesson.set(foundLesson);
   }
 
   setCurrentChapter(index: number) {
-    this.currentChapter$.next(this.chapters[index]);
+    this.currentChapter.set(this.chapters[index]);
   }
 
   clearChapter() {
-    this.currentChapter$.next(null);
+    this.currentChapter.set(null);
   }
 
   clearLesson() {
-    this.currentLesson$.next(null);
+    this.currentLesson.set(null);
   }
 }

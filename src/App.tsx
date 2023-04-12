@@ -5,16 +5,13 @@ import bridge from "@vkontakte/vk-bridge";
 import "@vkontakte/vkui/dist/vkui.css";
 import "./index.css";
 
-import { useAppNavigation, useSubscribe } from "./hooks";
-import { lessonsController } from "./entity/lessons";
+import { useAppNavigation } from "./hooks";
 import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
 import { Chat } from "./panels/Chat";
 
 const App = () => {
   const { activePanel, goBack, goToPage, history } = useAppNavigation("home");
-
-  useSubscribe(lessonsController.currentChapter$);
 
   const [fetchedUser, setUser] = useState<any>(null);
 
