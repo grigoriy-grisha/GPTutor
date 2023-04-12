@@ -16,4 +16,7 @@ ReactDOM.render(
   </ConfigProvider>,
   document.getElementById("root")
 );
-import("./eruda").then(({ default: eruda }) => {}); //runtime download
+
+if (process.env.NODE_ENV === "development") {
+  import("./eruda"); //runtime download
+}
