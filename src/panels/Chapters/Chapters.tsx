@@ -28,17 +28,7 @@ function Chapters({ id, goToChat, goBack }: IProps) {
   return (
     <Panel id={id}>
       <div className={classes.panel}>
-        <PanelHeader
-          shadow
-          before={
-            <PanelHeaderBack
-              onClick={() => {
-                goBack();
-                lessonsController.clearChapter();
-              }}
-            />
-          }
-        >
+        <PanelHeader shadow before={<PanelHeaderBack onClick={goBack} />}>
           Диалоги
         </PanelHeader>
         {currentChapter && (

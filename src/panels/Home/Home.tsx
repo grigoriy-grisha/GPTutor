@@ -62,7 +62,10 @@ function Home({ id, goToChapters, goToChat }: IProps) {
                     mode="outline"
                     size="m"
                     after={<Icon28ArrowRightSquareOutline />}
-                    onClick={goToChat}
+                    onClick={() => {
+                      goToChat();
+                      lessonsController.clearLesson();
+                    }}
                   >
                     Начать диалог
                   </Button>

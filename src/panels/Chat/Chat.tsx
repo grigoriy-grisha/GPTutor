@@ -21,10 +21,7 @@ const Chat = ({ id, user, goBack }: IProps) => {
     <Panel id={id}>
       <Messenger
         chatGpt={chatGpt}
-        goBack={() => {
-          lessonsController.clearLesson();
-          goBack();
-        }}
+        goBack={goBack}
         user={user}
         lesson={currentLesson}
       />
