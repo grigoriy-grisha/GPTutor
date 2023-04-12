@@ -2,10 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import bridge from "@vkontakte/vk-bridge";
 import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
+import "dignals-react";
 
 import App from "./App";
-
-import "dignals-react";
 
 bridge.send("VKWebAppInit");
 
