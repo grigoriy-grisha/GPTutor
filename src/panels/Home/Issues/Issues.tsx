@@ -1,28 +1,21 @@
 import React, { memo, useEffect } from "react";
 import {
   Banner,
+  Header,
   HorizontalCell,
   HorizontalScroll,
   Spinner,
-  Header,
 } from "@vkontakte/vkui";
-
-import { useSubscribe } from "../../../hooks";
 import { githubController } from "../../../entity/Github";
 import { GithubIcon } from "../../../icons";
 
 import classes from "./Issues.module.css";
 
 function Issues() {
-  useSubscribe(
-    githubController.issues$,
-    githubController.issuesError$,
-    githubController.issuesLoading$
-  );
-
   useEffect(() => githubController.getIssues(), []);
+  if (githubController.getIssues$.error) return <div />;
 
-  if (githubController.issuesLoading$.getValue()) {
+  if (githubController.getIssues$.loading.get()) {
     return (
       <div className={classes.spinnerContainer}>
         <Spinner size="large" className={classes.spinner} />
@@ -35,25 +28,23 @@ function Issues() {
       <Header mode="secondary">Прими участие в разработке приложения</Header>
       <HorizontalScroll>
         <div style={{ display: "flex" }}>
-          {githubController.issues$
-            .getValue()
-            .map(({ html_url, title }: any) => (
-              <HorizontalCell
-                target="_blank"
-                key={html_url}
-                href={html_url}
-                disabled
-                size="l"
-              >
-                <Banner
-                  asideMode="expand"
-                  className={classes.bottomItem}
-                  before={<GithubIcon />}
-                  header="Open Source"
-                  subheader={<span>{title}</span>}
-                />
-              </HorizontalCell>
-            ))}
+          {githubController.issues.get().map(({ html_url, title }) => (
+            <HorizontalCell
+              target="_blank"
+              key={html_url}
+              href={html_url}
+              disabled
+              size="l"
+            >
+              <Banner
+                asideMode="expand"
+                className={classes.bottomItem}
+                before={<GithubIcon />}
+                header="Open Source"
+                subheader={<span>{title}</span>}
+              />
+            </HorizontalCell>
+          ))}
         </div>
       </HorizontalScroll>
     </div>

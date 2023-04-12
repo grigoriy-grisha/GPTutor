@@ -1,10 +1,10 @@
-import { Subject } from "../../utils";
+import { sig } from "dignals";
 
 class AppController {
-  showWaitBanner$: Subject<boolean> = new Subject(true);
+  showWaitBanner$ = sig<boolean>(true);
 
   closeWaitBanner = () => {
-    this.showWaitBanner$.next(false);
+    this.showWaitBanner$.set(false);
   };
 }
 

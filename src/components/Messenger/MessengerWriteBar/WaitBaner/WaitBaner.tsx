@@ -1,13 +1,9 @@
 import React from "react";
 import { Banner } from "@vkontakte/vkui";
-
-import { useSubscribe } from "../../../../hooks";
 import { appController } from "../../../../entity/app";
 
 function WaitBanner() {
-  useSubscribe(appController.showWaitBanner$);
-
-  if (!appController.showWaitBanner$.getValue()) return null;
+  if (!appController.showWaitBanner$.get()) return null;
 
   return (
     <Banner

@@ -1,20 +1,20 @@
-import { Subject } from "../../utils";
+import { Signal, memo } from "dignals";
+
 import { getIssues } from "../../api/github";
+import ReactivePromise from "../../services/ReactivePromise";
 
 class GithubController {
-  issues$: Subject<any[]> = new Subject([]);
-  issuesError$: Subject<boolean> = new Subject(false);
-  issuesLoading$: Subject<boolean> = new Subject(false);
+  public issues: Signal<any[]>;
+
+  constructor() {
+    this.issues = memo(() => this.getIssues$.result.get() || []);
+  }
+
+  getIssues$ = ReactivePromise.create(() => getIssues());
 
   getIssues() {
-    if (this.issues$.getValue().length) return;
-
-    this.issuesLoading$.next(true);
-
-    getIssues()
-      .then((issues) => this.issues$.next(issues))
-      .catch(() => this.issuesError$.next(true))
-      .finally(() => this.issuesLoading$.next(false));
+    if (this.issues.get().length) return;
+    this.getIssues$.run();
   }
 }
 

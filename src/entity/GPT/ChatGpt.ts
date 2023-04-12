@@ -1,9 +1,12 @@
+import { sig } from "dignals";
+
 import { sendCompletions } from "../../api/completions";
-import { Subject } from "../../utils";
+import ReactivePromise from "../../services/ReactivePromise";
+
 import { GPTMessage, GPTRoles } from "./types";
 
 const errorContent = `
-\`\`\`
+\`\`\`javascript
 Chat GPT приболел. Попробуйте позже
    _______  GPT
   |.-----.|       Err 
@@ -16,25 +19,30 @@ Chat GPT приболел. Попробуйте позже
 `;
 
 export class ChatGpt {
-  public isTyping$: Subject<boolean>;
-  public messages$: Subject<GPTMessage[]>;
+  public messages$ = sig<GPTMessage[]>([]);
+
+  sendCompletions$ = ReactivePromise.create(() => {
+    return sendCompletions(
+      { model: "gpt-3.5-turbo", messages: this.getMessages() },
+      this.abortController
+    );
+  });
+
   abortController = new AbortController();
 
-  constructor(public systemMessage?: GPTMessage) {
-    this.isTyping$ = new Subject(false);
-    this.messages$ = new Subject([]);
-  }
+  constructor(public systemMessage?: GPTMessage) {}
 
   abortSend() {
     this.abortController.abort();
   }
 
   send = (content: string) => {
-    this.messages$.next([
-      ...this.messages$.getValue(),
+    this.messages$.set([
+      ...this.messages$.get(),
       { content, role: GPTRoles.user, inLocal: false },
     ]);
-    this.isTyping$.next(true);
+
+    this.sendCompletions$.run();
 
     sendCompletions(
       {
@@ -44,30 +52,29 @@ export class ChatGpt {
       this.abortController
     )
       .then((data) => {
-        this.messages$.next([
-          ...this.messages$.getValue(),
+        this.messages$.set([
+          ...this.messages$.get(),
           { ...data.choices[0].message, inLocal: false },
         ]);
       })
       .catch(() => {
-        this.messages$.next([
-          ...this.messages$.getValue(),
+        this.messages$.set([
+          ...this.messages$.get(),
           { content: errorContent, role: GPTRoles.assistant, inLocal: true },
         ]);
-      })
-      .finally(() => this.isTyping$.next(false));
+      });
   };
 
   getMessages() {
     if (!this.systemMessage) {
-      return this.filterInMemoryMessages(this.messages$.getValue()).map(
+      return this.filterInMemoryMessages(this.messages$.get()).map(
         this.toApiMessage
       );
     }
 
     return this.filterInMemoryMessages([
       this.systemMessage,
-      ...this.messages$.getValue(),
+      ...this.messages$.get(),
     ]).map(this.toApiMessage);
   }
 

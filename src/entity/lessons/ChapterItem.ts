@@ -1,4 +1,5 @@
-import { Subject } from "../../utils";
+import { sig, Signal } from "dignals";
+
 import { ChapterTypes } from "./chapterTypes";
 import { LessonItem } from "./LessonItem";
 
@@ -6,12 +7,12 @@ type Lessons = { [key in string]: LessonItem[] };
 
 export class ChapterItem {
   rawLessons: LessonItem[];
-  lessons$: Subject<Lessons>;
+  lessons: Signal<Lessons>;
 
-  constructor(public chapterType: ChapterTypes, public lessons: LessonItem[]) {
+  constructor(public chapterType: ChapterTypes, lessons: LessonItem[]) {
     this.chapterType = chapterType;
     this.rawLessons = lessons;
-    this.lessons$ = new Subject(this.prepareLessons(lessons));
+    this.lessons = sig(this.prepareLessons(lessons));
   }
 
   prepareLessons(lessons: LessonItem[]): Lessons {
@@ -32,13 +33,13 @@ export class ChapterItem {
 
   searchLessons(search: string) {
     if (search.length < 3) {
-      this.lessons$.next(this.prepareLessons(this.rawLessons));
+      this.lessons.set(this.prepareLessons(this.rawLessons));
       return;
     }
 
     const regExp = new RegExp(search.toLowerCase(), "g");
 
-    this.lessons$.next(
+    this.lessons.set(
       this.prepareLessons(
         this.rawLessons.filter((item) => regExp.test(item.name.toLowerCase()))
       )

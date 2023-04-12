@@ -3,7 +3,6 @@ import { Header } from "./Header";
 import { MessengerContainer } from "./MessengerContainer";
 import { MessengerList } from "./MessengerList";
 import { MessengerWriteBar } from "./MessengerWriteBar";
-import { useSubscribe } from "../../hooks";
 import { AppContainer } from "../AppContainer";
 import { LessonItem } from "../../entity/lessons/LessonItem";
 import { ChatGpt } from "../../entity/GPT/ChatGpt";
@@ -16,8 +15,6 @@ interface IProps {
 }
 
 function Messenger({ goBack, user, lesson, chatGpt }: IProps) {
-  useSubscribe(chatGpt.isTyping$, chatGpt.messages$);
-
   const ref = useRef<HTMLDivElement>();
 
   const onStartChat = () => {
@@ -39,7 +36,10 @@ function Messenger({ goBack, user, lesson, chatGpt }: IProps) {
     <AppContainer
       maxHeight
       headerChildren={
-        <Header goBack={goBack} isTyping={chatGpt.isTyping$.getValue()} />
+        <Header
+          goBack={goBack}
+          isTyping={chatGpt.sendCompletions$.loading.get()}
+        />
       }
       style={{ flexDirection: "column-reverse" }}
     >
@@ -47,7 +47,7 @@ function Messenger({ goBack, user, lesson, chatGpt }: IProps) {
         <>
           <MessengerContainer ref={ref}>
             <MessengerList
-              messages={chatGpt.messages$.getValue()}
+              messages={chatGpt.messages$.get()}
               user={user}
               onStartChat={onStartChat}
             />
@@ -55,7 +55,7 @@ function Messenger({ goBack, user, lesson, chatGpt }: IProps) {
           <MessengerWriteBar
             additionalRequests={lesson?.additionalRequests || []}
             handleSend={handlerSend}
-            isTyping={chatGpt.isTyping$.getValue()}
+            isTyping={chatGpt.sendCompletions$.loading.get()}
           />
         </>
       )}

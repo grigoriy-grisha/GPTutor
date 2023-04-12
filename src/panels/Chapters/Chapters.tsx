@@ -11,7 +11,6 @@ import {
 import { Icon24ArrowRightOutline } from "@vkontakte/icons";
 
 import { lessonsController } from "../../entity/lessons";
-import { useSubscribe } from "../../hooks";
 
 import classes from "./Chapters.module.css";
 
@@ -20,13 +19,11 @@ interface IProps {
   goToChat: () => void;
   goBack: () => void;
 }
+
+//todo рефатокторинг
 function Chapters({ id, goToChat, goBack }: IProps) {
-  useSubscribe(lessonsController.currentChapter$);
-
-  const currentChapter = lessonsController.currentChapter$.getValue();
-  const lessons = currentChapter?.lessons$.getValue();
-
-  useSubscribe(currentChapter?.lessons$);
+  const currentChapter = lessonsController.currentChapter.get();
+  const lessons = currentChapter?.lessons.get();
 
   return (
     <Panel id={id}>
