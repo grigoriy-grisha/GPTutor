@@ -14,9 +14,8 @@ import classes from "./Issues.module.css";
 function Issues() {
   useEffect(() => githubController.getIssues(), []);
 
-  console.log(githubController.issuesLoading.get());
 
-  if (githubController.issuesLoading.get()) {
+  if (githubController.getIssues$.loading.get()) {
     return (
       <div className={classes.spinnerContainer}>
         <Spinner size="large" className={classes.spinner} />
