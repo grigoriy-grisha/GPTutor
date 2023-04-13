@@ -19,13 +19,16 @@ export default class ReactivePromise<DATA> {
     this.fn = fn;
   }
 
-  run() {
+  async run() {
     this.reset();
-    if (!this.fn) return;
+    if (!this.fn) throw new Error("Не передан fn!");
 
     this.loading.set(true);
-    this.fn()
-      .then((result) => this.result.set(result))
+    return this.fn()
+      .then((result) => {
+        this.result.set(result);
+        return result;
+      })
       .catch((err) => this.error.set(err))
       .finally(() => this.loading.set(false));
   }

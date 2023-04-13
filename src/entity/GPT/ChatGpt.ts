@@ -1,9 +1,10 @@
 import { sig } from "dignals";
 
-import { sendCompletions } from "../../api/completions";
-import ReactivePromise from "../../services/ReactivePromise";
+import { sendChatCompletions } from "../../api/completions";
 
-import { GPTMessage, GPTRoles } from "./types";
+import { GPTRoles } from "./types";
+import { GptMessage } from "../../entity/GPT/GptMessage";
+import ReactivePromise from "../../services/ReactivePromise";
 
 const errorContent = `
 \`\`\`javascript
@@ -19,51 +20,45 @@ Chat GPT приболел. Попробуйте позже
 `;
 
 export class ChatGpt {
-  public messages$ = sig<GPTMessage[]>([]);
+  public messages$ = sig<GptMessage[]>([]);
 
-  sendCompletions$ = ReactivePromise.create(() => {
-    return sendCompletions(
-      { model: "gpt-3.5-turbo", messages: this.getMessages() },
-      this.abortController
-    );
-  });
+  sendCompletions$ = ReactivePromise.create(() => this.sendCompletion());
 
   abortController = new AbortController();
 
-  constructor(public systemMessage?: GPTMessage) {}
+  constructor(public systemMessage?: GptMessage) {}
 
   abortSend() {
     this.abortController.abort();
   }
 
   send = (content: string) => {
-    this.messages$.set([
-      ...this.messages$.get(),
-      { content, role: GPTRoles.user, inLocal: false },
-    ]);
-
+    this.addMessage(new GptMessage(content, GPTRoles.user));
     this.sendCompletions$.run();
+  };
 
-    sendCompletions(
-      {
-        model: "gpt-3.5-turbo",
-        messages: this.getMessages(),
+  private async sendCompletion() {
+    const message = new GptMessage("", GPTRoles.assistant);
+
+    this.abortController = new AbortController();
+
+    return await sendChatCompletions(
+      { model: "gpt-3.5-turbo", messages: this.getMessages() },
+      (value, isFirst) => {
+        if (isFirst) {
+          message.onSetMessageContent(value);
+          this.addMessage(message);
+          return;
+        }
+        message.onSetMessageContent(value);
+      },
+      () => {
+        this.addMessage(new GptMessage(errorContent, GPTRoles.assistant, true));
+        this.sendCompletions$.reset();
       },
       this.abortController
-    )
-      .then((data) => {
-        this.messages$.set([
-          ...this.messages$.get(),
-          { ...data.choices[0].message, inLocal: false },
-        ]);
-      })
-      .catch(() => {
-        this.messages$.set([
-          ...this.messages$.get(),
-          { content: errorContent, role: GPTRoles.assistant, inLocal: true },
-        ]);
-      });
-  };
+    );
+  }
 
   getMessages() {
     if (!this.systemMessage) {
@@ -78,10 +73,17 @@ export class ChatGpt {
     ]).map(this.toApiMessage);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  toApiMessage = ({ inLocal, ...message }: GPTMessage) => message;
+  addMessage(message: GptMessage) {
+    this.messages$.set([...this.messages$.get(), message]);
+  }
 
-  filterInMemoryMessages(messages: GPTMessage[]) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  toApiMessage = (message: GptMessage) => ({
+    content: message.content$.get(),
+    role: message.role,
+  });
+
+  filterInMemoryMessages(messages: GptMessage[]) {
     return messages.filter((message) => !message.inLocal);
   }
 }
