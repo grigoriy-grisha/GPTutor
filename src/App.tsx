@@ -29,6 +29,7 @@ const App = () => {
       onSwipeBack={goBack}
       history={history}
     >
+      Дима привет
       <Home id="home" goToChapters={goToChapters} goToChat={goToChat} />
       <Chapters id="chapters" goToChat={goToChat} goBack={goBack} />
       <Chat id="chat" goBack={goBack} user={fetchedUser} />
