@@ -8,11 +8,10 @@ import { ChatGpt } from "../../entity/GPT/ChatGpt";
 
 interface IProps {
   id: string;
-  user: any;
   goBack: () => void;
 }
 
-const Chat = ({ id, user, goBack }: IProps) => {
+const Chat = ({ id, goBack }: IProps) => {
   const currentLesson = lessonsController.currentLesson?.get();
 
   const chatGpt = useMemo(() => new ChatGpt(), []);
@@ -22,7 +21,6 @@ const Chat = ({ id, user, goBack }: IProps) => {
       <Messenger
         chatGpt={chatGpt}
         goBack={goBack}
-        user={user}
         lesson={currentLesson}
       />
     </Panel>

@@ -1,43 +1,29 @@
 import bridge from "@vkontakte/vk-bridge";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
+import { useReactiveState, useReactiveMemo } from "dignals-react";
 
 export function useAppNavigation(initPanel: string) {
-  const [activePanel, setActivePanel] = useState(initPanel);
-  const historyRef = useRef([initPanel]);
-  const isFirst = historyRef.current.length === 1;
-
-  function goToPage(name: string) {
-    window.location.hash = `#${name}`;
-  }
-
-  function goBack() {
-    if (historyRef.current.length === 1) {
-      bridge.send("VKWebAppClose", { status: "success" });
-
-      return;
-    }
-
-    window.history.back();
-  }
+  const activePanel = useReactiveState(initPanel);
+  const history = useReactiveState([initPanel]);
+  const isFirst = useReactiveMemo(() => history.get().length === 1);
 
   useEffect(() => {
-    bridge.send("VKWebAppSetSwipeSettings", { history: isFirst });
-  }, [isFirst]);
+    bridge.send("VKWebAppSetSwipeSettings", { history: isFirst.get() });
+  })
 
   useEffect(() => {
     window.location.hash = "";
-
     const onPopState = () => {
       const nextPanel = window.location.hash.slice(1) || initPanel;
-      const prevPanel = historyRef.current[historyRef.current.length - 2];
-
+      const prevPanel = history.get()[history.get().length - 2];
+      const newHistory = [...history.get()];
       if (prevPanel === nextPanel) {
-        historyRef.current.pop();
+        newHistory.pop();
       } else {
-        historyRef.current.push(nextPanel);
+        newHistory.push(nextPanel);
       }
-
-      setActivePanel(nextPanel);
+      history.set(newHistory);
+      activePanel.set(nextPanel);
     };
 
     window.addEventListener("popstate", onPopState);
@@ -46,5 +32,19 @@ export function useAppNavigation(initPanel: string) {
     };
   }, []);
 
-  return { activePanel, goToPage, goBack, history: historyRef.current };
+
+  return {
+    activePanel,
+    history,
+    goToPage(name: string) {
+      window.location.hash = `#${name}`;
+    },
+    goBack() {
+      if (isFirst.get()) {
+        bridge.send("VKWebAppClose", { status: "success" });
+        return;
+      }
+      window.history.back();
+    }
+  }
 }

@@ -9,12 +9,11 @@ import { ChatGpt } from "../../entity/GPT/ChatGpt";
 
 interface IProps {
   goBack: () => void;
-  user: any;
   lesson: LessonItem | null;
   chatGpt: ChatGpt;
 }
 
-function Messenger({ goBack, user, lesson, chatGpt }: IProps) {
+function Messenger({ goBack, lesson, chatGpt }: IProps) {
   const ref = useRef<HTMLDivElement>();
 
   const onStartChat = () => {
@@ -48,7 +47,6 @@ function Messenger({ goBack, user, lesson, chatGpt }: IProps) {
           <MessengerContainer ref={ref}>
             <MessengerList
               messages={chatGpt.messages$.get()}
-              user={user}
               onStartChat={onStartChat}
             />
           </MessengerContainer>
