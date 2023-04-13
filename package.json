@@ -2,7 +2,7 @@
     "name": "chat",
     "version": "0.0.0",
     "scripts": {
-        "start": "vite",
+        "start": "cross-env GENERATE_SOURCEMAP=false PORT=10888 HTTPS=true DISABLE_NEW_JSX_TRANSFORM=true react-scripts start",
         "build": "cross-env GENERATE_SOURCEMAP=false DISABLE_NEW_JSX_TRANSFORM=true react-scripts build",
         "predeploy": "npm run build",
         "deploy": "vk-miniapps-deploy"
@@ -13,6 +13,9 @@
     "keywords": [],
     "license": "MIT",
     "dependencies": {
+        "@bugsnag/js": "^7.20.0",
+        "@bugsnag/plugin-react": "^7.19.0",
+        "@microsoft/fetch-event-source": "^2.0.1",
         "@types/node": "^12.0.0",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",

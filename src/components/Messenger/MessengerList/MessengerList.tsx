@@ -5,11 +5,12 @@ import { MessengerParagraph } from "../MessengerParagraph";
 import { MessengerAva } from "../MessengerAva";
 
 import classes from "./MessengerList.module.css";
-import { GPTMessage } from "../../../entity/GPT/types";
+import { GptMessage } from "../../../entity/GPT/GptMessage";
 import { vkUser } from "../../../entity/user";
 
 interface IProps {
-  messages: GPTMessage[];
+  messages: GptMessage[];
+  user: any;
   onStartChat: () => void;
 }
 
@@ -41,7 +42,7 @@ function MessengerList({ messages, onStartChat }: IProps) {
       {messages.map((message, index) => (
         <div className={classes.container} key={index}>
           <MessengerAva message={message} photo={vkUser?.photo_100} />
-          <div style={{ display: "grid" }}>
+          <div style={{ display: "grid", width: "100%" }}>
             <Text weight="2">
               {message.role === "assistant" ? "Chat GPT" : vkUser?.first_name}
             </Text>

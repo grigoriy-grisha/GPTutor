@@ -3,10 +3,10 @@ import React, { memo } from "react";
 import { Avatar } from "@vkontakte/vkui";
 
 import { ChatGPTLogo } from "../../../icons";
-import { GPTMessage } from "../../../entity/GPT/types";
+import { GptMessage } from "$entity/GPT/GptMessage";
 
 interface IProps {
-  message: GPTMessage;
+  message: GptMessage;
   photo: string;
 }
 
