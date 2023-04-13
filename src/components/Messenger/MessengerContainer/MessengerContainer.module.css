@@ -3,7 +3,8 @@
     order: 1;
     flex-grow: 1;
     flex-basis: 65%;
-    overflow: auto
+    overflow: auto;
+    scroll-behavior: smooth;
 }
 
 .midContainer {
