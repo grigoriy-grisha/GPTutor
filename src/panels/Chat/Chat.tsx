@@ -10,7 +10,6 @@ import { GPTRoles } from "../../entity/GPT/types";
 
 interface IProps {
   id: string;
-  user: any;
   goBack: () => void;
 }
 
@@ -19,7 +18,7 @@ const systemMessage = new GptMessage(
   GPTRoles.system
 );
 
-const Chat = ({ id, user, goBack }: IProps) => {
+const Chat = ({ id, goBack }: IProps) => {
   const currentLesson = lessonsController.currentLesson?.get();
 
   const chatGpt = useMemo(() => new ChatGpt(systemMessage), []);
@@ -29,7 +28,6 @@ const Chat = ({ id, user, goBack }: IProps) => {
       <Messenger
         chatGpt={chatGpt}
         goBack={goBack}
-        user={user}
         lesson={currentLesson}
       />
     </Panel>

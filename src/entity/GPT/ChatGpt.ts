@@ -3,7 +3,7 @@ import { sig } from "dignals";
 import { sendChatCompletions } from "../../api/completions";
 
 import { GPTRoles } from "./types";
-import { GptMessage } from "../../entity/GPT/GptMessage";
+import { GptMessage } from "./GptMessage";
 import ReactivePromise from "../../services/ReactivePromise";
 
 const errorContent = `

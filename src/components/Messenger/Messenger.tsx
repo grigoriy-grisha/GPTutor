@@ -10,12 +10,11 @@ import { useMessengerScroll } from "./hooks/useMessengerScroll";
 
 interface IProps {
   goBack: () => void;
-  user: any;
   lesson: LessonItem | null;
   chatGpt: ChatGpt;
 }
 
-function Messenger({ goBack, user, lesson, chatGpt }: IProps) {
+function Messenger({ goBack, lesson, chatGpt }: IProps) {
   const isTyping = chatGpt.sendCompletions$.loading.get();
 
   const { scrollRef, scrollToBottom } = useMessengerScroll(isTyping);
@@ -42,7 +41,6 @@ function Messenger({ goBack, user, lesson, chatGpt }: IProps) {
           <MessengerContainer ref={scrollRef}>
             <MessengerList
               messages={chatGpt.messages$.get()}
-              user={user}
               onStartChat={onStartChat}
             />
           </MessengerContainer>
