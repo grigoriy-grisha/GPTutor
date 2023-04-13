@@ -2,7 +2,6 @@ import { LessonItem } from "../LessonItem";
 import { LessonRequest } from "../LessonRequest";
 
 const FOR_BEGINNERS = "Для новичоков";
-
 const ADVANCED = "Продвинутые темы";
 
 export const reactLessons = [
