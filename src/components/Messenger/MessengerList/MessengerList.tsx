@@ -10,7 +10,6 @@ import { vkUser } from "../../../entity/user";
 
 interface IProps {
   messages: GptMessage[];
-  user: any;
   onStartChat: () => void;
 }
 

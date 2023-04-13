@@ -1,7 +1,7 @@
 import { createReactiveModel } from "dignals-model";
 import { UserInfo } from "@vkontakte/vk-bridge";
 
-export const vkUserModel  = createReactiveModel("vkUser", {
+export const vkUserModel = createReactiveModel("vkUser", {
   fields: {
     bdate: "",
     city: { id: 0, title: "" },
@@ -13,8 +13,8 @@ export const vkUserModel  = createReactiveModel("vkUser", {
     photo_200: "",
     photo_max_orig: "",
     sex: 1,
-    timezone: 0
-  } as UserInfo
+    timezone: 0,
+  } as UserInfo,
 }).create();
 
 export const vkUser = vkUserModel.model;
