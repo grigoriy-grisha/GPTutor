@@ -1,65 +1,66 @@
-import React, { memo, useState } from "react";
+import React, { memo, useMemo } from "react";
 
 import {
   Icon24Copy,
   Icon28CancelOutline,
+  Icon28CopyOutline,
   Icon28DoneOutline,
 } from "@vkontakte/icons";
-import { IconButton, Snackbar } from "@vkontakte/vkui";
-
+import { Button, IconButton, Snackbar } from "@vkontakte/vkui";
 import { InPortal } from "../InPortal";
+import { CopyService } from "../../services/CopyService";
 
 import classes from "./Copy.module.css";
-import bridge from "@vkontakte/vk-bridge";
 
 interface IProps {
+  isButton?: boolean;
   className?: string;
   textToClickBoard: string;
   onAfterClickBoard?: () => void;
 }
 
-function Copy({ className, textToClickBoard, onAfterClickBoard }: IProps) {
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
+function Copy({
+  isButton,
+  className,
+  textToClickBoard,
+  onAfterClickBoard,
+}: IProps) {
+  const copyService = useMemo(() => new CopyService(), []);
 
   function copyToClickBoard(text: string) {
-    bridge
-      .send("VKWebAppCopyText", {
-        text,
-      })
-      .then(() => {
-        onAfterClickBoard && onAfterClickBoard();
-        setSuccess(true);
-      })
-      .catch(() => setError(true));
+    copyService.copyToClickBoard$.run(text).then(() => {
+      onAfterClickBoard?.();
+    });
   }
+
+  const onClick = () => copyToClickBoard(textToClickBoard);
 
   return (
     <>
-      <IconButton
-        className={className}
-        onClick={() => {
-          copyToClickBoard(textToClickBoard);
-        }}
-      >
-        <Icon24Copy />
-      </IconButton>
-      {(success || error) && (
+      {isButton ? (
+        <Button size="m" before={<Icon28CopyOutline />} onClick={onClick}>
+          Скопировать
+        </Button>
+      ) : (
+        <IconButton className={className} onClick={onClick}>
+          <Icon24Copy />
+        </IconButton>
+      )}
+      {copyService.copyToClickBoard$.done.get() && (
         <InPortal id="root">
           <Snackbar
-            onClose={() => {
-              setSuccess(false);
-              setError(false);
-            }}
+            onClose={() => copyService.copyToClickBoard$.reset()}
             before={
-              success ? (
+              copyService.copyToClickBoard$.success.get() ? (
                 <Icon28DoneOutline className={classes.doneIcon} />
               ) : (
                 <Icon28CancelOutline className={classes.doneIcon} />
               )
             }
           >
-            {success ? "Скопировано" : "Не удалось скопировать"}
+            {copyService.copyToClickBoard$.success.get()
+              ? "Скопировано"
+              : "Не удалось скопировать"}
           </Snackbar>
         </InPortal>
       )}

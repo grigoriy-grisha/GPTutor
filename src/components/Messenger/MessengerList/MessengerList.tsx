@@ -1,19 +1,20 @@
-import { Button, Placeholder, Text } from "@vkontakte/vkui";
+import { Button, Placeholder } from "@vkontakte/vkui";
 import React, { memo } from "react";
+import { ChatGpt } from "../../../entity/GPT/ChatGpt";
 
-import { MessengerParagraph } from "../MessengerParagraph";
-import { MessengerAva } from "../MessengerAva";
+import { Message } from "./Message";
 
 import classes from "./MessengerList.module.css";
-import { GptMessage } from "../../../entity/GPT/GptMessage";
-import { vkUser } from "../../../entity/user";
 
 interface IProps {
-  messages: GptMessage[];
+  chatGpt: ChatGpt;
+  isTyping: boolean;
   onStartChat: () => void;
 }
 
-function MessengerList({ messages, onStartChat }: IProps) {
+function MessengerList({ isTyping, chatGpt, onStartChat }: IProps) {
+  const messages = chatGpt.messages$.get();
+
   if (messages.length === 0) {
     return (
       <div className={classes.placeholderContainer}>
@@ -37,19 +38,15 @@ function MessengerList({ messages, onStartChat }: IProps) {
   }
 
   return (
-    <>
+    <div className={classes.messagesContainer}>
       {messages.map((message, index) => (
-        <div className={classes.container} key={index}>
-          <MessengerAva message={message} photo={vkUser?.photo_100} />
-          <div style={{ display: "grid", width: "100%" }}>
-            <Text weight="2">
-              {message.role === "assistant" ? "Chat GPT" : vkUser?.first_name}
-            </Text>
-            <MessengerParagraph message={message} />
-          </div>
-        </div>
+        <Message
+          key={index}
+          message={message}
+          isDisabled={messages.length - 1 === index && isTyping}
+        />
       ))}
-    </>
+    </div>
   );
 }
 

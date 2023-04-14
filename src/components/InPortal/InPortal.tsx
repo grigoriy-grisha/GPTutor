@@ -2,12 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 interface IProps {
-  id: string;
+  elem?: HTMLElement;
+  id?: string;
   children: React.ReactNode;
 }
 
 // todo поправить querySelector
-function InPortal({ id, children }: IProps) {
+function InPortal({ elem, id, children }: IProps) {
   const [hasMounted, setHasMounted] = React.useState(false);
 
   React.useEffect(() => setHasMounted(true), []);
@@ -16,7 +17,7 @@ function InPortal({ id, children }: IProps) {
 
   return ReactDOM.createPortal(
     children,
-    document.querySelector(`#${id}`) as HTMLElement
+    elem || (document.querySelector(`#${id}`) as HTMLElement)
   );
 }
 

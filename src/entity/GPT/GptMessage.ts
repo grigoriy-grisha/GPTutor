@@ -3,6 +3,7 @@ import { GPTRoles } from "./types";
 
 export class GptMessage {
   content$: Signal<string>;
+  isSelected$ = sig<boolean>(false);
 
   constructor(
     message: string,
@@ -15,4 +16,16 @@ export class GptMessage {
   onSetMessageContent = (value: string) => {
     this.content$.set(this.content$.get() + value);
   };
+
+  toggleSelected() {
+    this.isSelected$.set(!this.isSelected$.get());
+  }
+
+  select() {
+    this.isSelected$.set(true);
+  }
+
+  unselect() {
+    this.isSelected$.set(false);
+  }
 }

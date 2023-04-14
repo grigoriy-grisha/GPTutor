@@ -20,17 +20,14 @@ ul,ol {
     list-style: none;
 }
 
-.isOneOperand {
-    padding: 1px 6px  !important;
-    margin: 0 !important;
-    width: auto;
-    display: inline;
-}
-
-
 .paragraph {
-    display: block;
+   display: block;
    margin-top: 12px;
-    margin-bottom: 12px;
 }
 
+pre {
+    padding: 12px;
+    background: var(--vkui--color_background_tertiary_alpha);
+    overflow-y: auto;
+    border-radius: var(--vkui--size_border_radius--regular);
+}

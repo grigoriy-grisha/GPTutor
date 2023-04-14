@@ -38,13 +38,15 @@ function Messenger({ goBack, lesson, chatGpt }: IProps) {
     >
       {() => (
         <>
-          <MessengerContainer ref={scrollRef}>
+          <MessengerContainer withoutDiv ref={scrollRef}>
             <MessengerList
-              messages={chatGpt.messages$.get()}
+              chatGpt={chatGpt}
+              isTyping={isTyping}
               onStartChat={onStartChat}
             />
           </MessengerContainer>
           <MessengerWriteBar
+            chatGpt={chatGpt}
             additionalRequests={lesson?.additionalRequests || []}
             handleSend={handlerSend}
             isTyping={isTyping}
