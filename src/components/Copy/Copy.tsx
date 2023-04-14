@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 
 import {
   Icon24Copy,
@@ -7,8 +7,6 @@ import {
   Icon28DoneOutline,
 } from "@vkontakte/icons";
 import { Button, IconButton, Snackbar } from "@vkontakte/vkui";
-
-import ReactivePromise from "../../services/ReactivePromise";
 import { InPortal } from "../InPortal";
 import { copyService } from "../../services/CopyService";
 
@@ -21,12 +19,19 @@ interface IProps {
   onAfterClickBoard?: () => void;
 }
 
-function Copy({ isButton, className, textToClickBoard, onAfterClickBoard }: IProps) {
+function Copy({
+  isButton,
+  className,
+  textToClickBoard,
+  onAfterClickBoard,
+}: IProps) {
   function copyToClickBoard(text: string) {
     copyService.copyToClickBoard$.run(text).then(() => {
       onAfterClickBoard?.();
     });
   }
+
+  const onClick = () => copyToClickBoard(textToClickBoard);
 
   return (
     <>
@@ -39,19 +44,19 @@ function Copy({ isButton, className, textToClickBoard, onAfterClickBoard }: IPro
           <Icon24Copy />
         </IconButton>
       )}
-      {(copyToClickBoard$.done.get()) && (
+      {copyService.copyToClickBoard$.done.get() && (
         <InPortal id="root">
           <Snackbar
-            onClose={() => copyToClickBoard$.reset()}
+            onClose={() => copyService.copyToClickBoard$.reset()}
             before={
-              copyToClickBoard$.success.get() ? (
+              copyService.copyToClickBoard$.success.get() ? (
                 <Icon28DoneOutline className={classes.doneIcon} />
               ) : (
                 <Icon28CancelOutline className={classes.doneIcon} />
               )
             }
           >
-            {copyToClickBoard$.success.get()
+            {copyService.copyToClickBoard$.success.get()
               ? "Скопировано"
               : "Не удалось скопировать"}
           </Snackbar>
