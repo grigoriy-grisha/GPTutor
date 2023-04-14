@@ -25,11 +25,7 @@ const Chat = ({ id, goBack }: IProps) => {
 
   return (
     <Panel id={id}>
-      <Messenger
-        chatGpt={chatGpt}
-        goBack={goBack}
-        lesson={currentLesson}
-      />
+      <Messenger chatGpt={chatGpt} goBack={goBack} lesson={currentLesson} />
     </Panel>
   );
 };

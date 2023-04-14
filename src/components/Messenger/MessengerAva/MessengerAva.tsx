@@ -14,7 +14,7 @@ function MessengerAva({ message, photo }: IProps) {
   return (
     <>
       {message.role === "assistant" ? (
-        <Avatar size={36} fallbackIcon={<ChatGPTLogo />} />
+        <Avatar size={34} fallbackIcon={<ChatGPTLogo />} />
       ) : (
         <Avatar size={36} fallbackIcon={<></>} src={photo} />
       )}

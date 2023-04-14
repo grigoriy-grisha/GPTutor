@@ -1,4 +1,4 @@
-import { sig } from "dignals";
+import { batch, memo, sig } from "dignals";
 
 import { sendChatCompletions } from "../../api/completions";
 
@@ -19,6 +19,7 @@ Chat GPT приболел. Попробуйте позже
 \`-=========-\`() 
 `;
 
+//todo рефакторинг, разнести этот класс на несколько сущностей
 export class ChatGpt {
   public messages$ = sig<GptMessage[]>([]);
 
@@ -72,6 +73,18 @@ export class ChatGpt {
       ...this.messages$.get(),
     ]).map(this.toApiMessage);
   }
+
+  selectedMessages$ = memo(() =>
+    this.messages$.get().filter((message) => message.isSelected$.get())
+  );
+
+  clearSelectedMessages = () => {
+    batch(() => {
+      this.selectedMessages$
+        .get()
+        .forEach((message) => message.toggleSelected());
+    });
+  };
 
   addMessage(message: GptMessage) {
     this.messages$.set([...this.messages$.get(), message]);

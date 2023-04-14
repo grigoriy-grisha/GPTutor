@@ -3,47 +3,56 @@ import React, { memo, useState } from "react";
 import {
   Icon24Copy,
   Icon28CancelOutline,
+  Icon28CopyOutline,
   Icon28DoneOutline,
 } from "@vkontakte/icons";
-import { IconButton, Snackbar } from "@vkontakte/vkui";
+import { Button, IconButton, Snackbar } from "@vkontakte/vkui";
 
 import { InPortal } from "../InPortal";
+import { copyService } from "../../services/CopyService";
 
 import classes from "./Copy.module.css";
-import bridge from "@vkontakte/vk-bridge";
 
 interface IProps {
+  isButton?: boolean;
   className?: string;
   textToClickBoard: string;
   onAfterClickBoard?: () => void;
 }
 
-function Copy({ className, textToClickBoard, onAfterClickBoard }: IProps) {
+function Copy({
+  isButton,
+  className,
+  textToClickBoard,
+  onAfterClickBoard,
+}: IProps) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
-  function copyToClickBoard(text: string) {
-    bridge
-      .send("VKWebAppCopyText", {
-        text,
-      })
-      .then(() => {
-        onAfterClickBoard && onAfterClickBoard();
+  const onClick = (e: any) => {
+    e.stopPropagation();
+
+    copyService.onCopy(
+      textToClickBoard,
+      () => {
         setSuccess(true);
-      })
-      .catch(() => setError(true));
-  }
+        onAfterClickBoard && onAfterClickBoard();
+      },
+      () => setError(true)
+    );
+  };
 
   return (
     <>
-      <IconButton
-        className={className}
-        onClick={() => {
-          copyToClickBoard(textToClickBoard);
-        }}
-      >
-        <Icon24Copy />
-      </IconButton>
+      {isButton ? (
+        <Button size="m" before={<Icon28CopyOutline />} onClick={onClick}>
+          Скопировать
+        </Button>
+      ) : (
+        <IconButton className={className} onClick={onClick}>
+          <Icon24Copy />
+        </IconButton>
+      )}
       {(success || error) && (
         <InPortal id="root">
           <Snackbar

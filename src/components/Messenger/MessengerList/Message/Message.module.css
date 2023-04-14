@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.messagesContainer {
+    margin-top: 12px;
+}
+
+.message {
+    cursor: pointer;
+}
+
+
+.selected {
+    background: var(--vkui--color_background_secondary);
+}
+
+.disabled {
+    pointer-events: none;
+}

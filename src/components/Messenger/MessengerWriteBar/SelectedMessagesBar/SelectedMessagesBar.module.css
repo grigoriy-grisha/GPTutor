@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.info {
+    padding: 4px 6px 0 var(--vkui--size_base_padding_horizontal--regular);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cancel {
+    color: var(--vkui--color_icon_secondary);
+}
+
+.actions {
+    padding: 0 0 var(--vkui--size_base_padding_vertical--regular) var(--vkui--size_base_padding_horizontal--regular);
+}
