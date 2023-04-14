@@ -1,7 +1,5 @@
 import React from "react";
-
 import { useConfigProvider } from "@vkontakte/vkui";
-
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import {
   oneDark,

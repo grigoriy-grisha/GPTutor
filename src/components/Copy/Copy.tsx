@@ -8,6 +8,7 @@ import {
 } from "@vkontakte/icons";
 import { Button, IconButton, Snackbar } from "@vkontakte/vkui";
 
+import ReactivePromise from "../../services/ReactivePromise";
 import { InPortal } from "../InPortal";
 import { copyService } from "../../services/CopyService";
 
@@ -20,27 +21,12 @@ interface IProps {
   onAfterClickBoard?: () => void;
 }
 
-function Copy({
-  isButton,
-  className,
-  textToClickBoard,
-  onAfterClickBoard,
-}: IProps) {
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
-
-  const onClick = (e: any) => {
-    e.stopPropagation();
-
-    copyService.onCopy(
-      textToClickBoard,
-      () => {
-        setSuccess(true);
-        onAfterClickBoard && onAfterClickBoard();
-      },
-      () => setError(true)
-    );
-  };
+function Copy({ isButton, className, textToClickBoard, onAfterClickBoard }: IProps) {
+  function copyToClickBoard(text: string) {
+    copyService.copyToClickBoard$.run(text).then(() => {
+      onAfterClickBoard?.();
+    });
+  }
 
   return (
     <>
@@ -53,22 +39,21 @@ function Copy({
           <Icon24Copy />
         </IconButton>
       )}
-      {(success || error) && (
+      {(copyToClickBoard$.done.get()) && (
         <InPortal id="root">
           <Snackbar
-            onClose={() => {
-              setSuccess(false);
-              setError(false);
-            }}
+            onClose={() => copyToClickBoard$.reset()}
             before={
-              success ? (
+              copyToClickBoard$.success.get() ? (
                 <Icon28DoneOutline className={classes.doneIcon} />
               ) : (
                 <Icon28CancelOutline className={classes.doneIcon} />
               )
             }
           >
-            {success ? "Скопировано" : "Не удалось скопировать"}
+            {copyToClickBoard$.success.get()
+              ? "Скопировано"
+              : "Не удалось скопировать"}
           </Snackbar>
         </InPortal>
       )}
