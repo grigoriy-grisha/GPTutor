@@ -1,36 +1,52 @@
 import { batch, sig } from "dignals";
 
-export default class ReactivePromise<DATA> {
+export default class ReactivePromise<DATA, ARGS extends any[]> {
   public result = sig<any | undefined>();
+  public success = sig<boolean>();
+  public done = sig<boolean>(false);
   public error = sig<Error | undefined>();
   public loading = sig(false);
 
-  private fn?: () => Promise<DATA>;
+  private readonly fn: (...args: ARGS) => Promise<DATA>;
 
-  private constructor() {}
-
-  static create<DATA>(fn?: () => Promise<DATA>) {
-    const reactivePromise = new ReactivePromise<DATA>();
-    fn && reactivePromise.setRunFn(fn);
-    return reactivePromise;
-  }
-
-  setRunFn(fn: () => Promise<DATA>) {
+  private constructor(fn: (...args: ARGS) => Promise<DATA>) {
     this.fn = fn;
   }
 
-  async run() {
+  static create<DATA, ARGS extends any[]>(
+    fn: (...args: ARGS) => Promise<DATA>
+  ) {
+    return new ReactivePromise<DATA, ARGS>(fn);
+  }
+
+  run(...args: ARGS): Promise<DATA> {
     this.reset();
-    if (!this.fn) throw new Error("Не передан fn!");
+
+    let resolveRef: any;
+    let rejectRef: any;
+    const promise = new Promise<DATA>((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    });
 
     this.loading.set(true);
-    return this.fn()
+    this.fn(...args)
       .then((result) => {
-        this.result.set(result);
-        return result;
+        this.success.set(true);
+        resolveRef(result);
+        return this.result.set(result);
       })
-      .catch((err) => this.error.set(err))
-      .finally(() => this.loading.set(false));
+      .catch((err) => {
+        this.success.set(false);
+        rejectRef(err);
+        return this.error.set(err);
+      })
+      .finally(() => {
+        this.done.set(true);
+        this.loading.set(false);
+      });
+
+    return promise;
   }
 
   reset() {
@@ -38,6 +54,8 @@ export default class ReactivePromise<DATA> {
       this.result.set(undefined);
       this.error.set(undefined);
       this.loading.set(false);
+      this.success.set(false);
+      this.done.set(false);
     });
   }
 }

@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 
 import {
   Icon24Copy,
@@ -6,60 +6,52 @@ import {
   Icon28DoneOutline,
 } from "@vkontakte/icons";
 import { IconButton, Snackbar } from "@vkontakte/vkui";
-
-import { InPortal } from "../InPortal";
-
-import classes from "./Copy.module.css";
 import bridge from "@vkontakte/vk-bridge";
+
+import ReactivePromise from "../../services/ReactivePromise";
+import { InPortal } from "../InPortal";
+import classes from "./Copy.module.css";
+
+const copyToClickBoard$ = ReactivePromise.create((text: string) =>
+  bridge.send("VKWebAppCopyText", { text })
+);
 
 interface IProps {
   className?: string;
   textToClickBoard: string;
   onAfterClickBoard?: () => void;
 }
-
 function Copy({ className, textToClickBoard, onAfterClickBoard }: IProps) {
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
-
   function copyToClickBoard(text: string) {
-    bridge
-      .send("VKWebAppCopyText", {
-        text,
-      })
-      .then(() => {
-        onAfterClickBoard && onAfterClickBoard();
-        setSuccess(true);
-      })
-      .catch(() => setError(true));
+    copyToClickBoard$.run(text).then(() => {
+      onAfterClickBoard?.();
+    });
   }
 
   return (
     <>
       <IconButton
         className={className}
-        onClick={() => {
-          copyToClickBoard(textToClickBoard);
-        }}
+        onClick={() => copyToClickBoard(textToClickBoard)}
       >
         <Icon24Copy />
+        {copyToClickBoard$.error.get()}
       </IconButton>
-      {(success || error) && (
+      {copyToClickBoard$.done.get() && (
         <InPortal id="root">
           <Snackbar
-            onClose={() => {
-              setSuccess(false);
-              setError(false);
-            }}
+            onClose={() => copyToClickBoard$.reset()}
             before={
-              success ? (
+              copyToClickBoard$.success.get() ? (
                 <Icon28DoneOutline className={classes.doneIcon} />
               ) : (
                 <Icon28CancelOutline className={classes.doneIcon} />
               )
             }
           >
-            {success ? "Скопировано" : "Не удалось скопировать"}
+            {copyToClickBoard$.success.get()
+              ? "Скопировано"
+              : "Не удалось скопировать"}
           </Snackbar>
         </InPortal>
       )}
