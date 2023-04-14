@@ -28,25 +28,29 @@ function MessengerWriteBar({
     () => setAdditionalsOpen((prev) => !prev),
     []
   );
+  const hasSelectedMessages = chatGpt.hasSelectedMessages$.get();
 
   return (
     <div className={classes.container}>
       <WaitBanner />
       <div style={{ width: "100%" }}>
-        <SelectedMessagesBar chatGpt={chatGpt}>
+        <div style={{ display: hasSelectedMessages ? "block" : "none" }}>
+          <SelectedMessagesBar chatGpt={chatGpt} />
+        </div>
+        <div style={{ display: !hasSelectedMessages ? "block" : "none" }}>
           <AdditionalRequests
             additionalRequests={additionalRequests}
             isAdditionalOpen={isAdditionalOpen}
             handleSend={handleSend}
             isTyping={isTyping}
           />
-          <WriteBarMessage
-            additionalRequests={additionalRequests}
-            handleSend={handleSend}
-            isTyping={isTyping}
-            onClickAdditional={onClickAdditional}
-          />
-        </SelectedMessagesBar>
+        </div>
+        <WriteBarMessage
+          additionalRequests={additionalRequests}
+          handleSend={handleSend}
+          isTyping={isTyping}
+          onClickAdditional={onClickAdditional}
+        />
       </div>
     </div>
   );

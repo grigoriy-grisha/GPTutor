@@ -20,4 +20,12 @@ export class GptMessage {
   toggleSelected() {
     this.isSelected$.set(!this.isSelected$.get());
   }
+
+  select() {
+    this.isSelected$.set(true);
+  }
+
+  unselect() {
+    this.isSelected$.set(false);
+  }
 }

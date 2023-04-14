@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View } from "@vkontakte/vkui";
+import { useConfigProvider, View } from "@vkontakte/vkui";
 import bridge from "@vkontakte/vk-bridge";
 
 import "@vkontakte/vkui/dist/vkui.css";
@@ -11,15 +11,32 @@ import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
 import { Chat } from "./panels/Chat";
 
+function togglePrismTheme(theme?: string) {
+  let prismTheme;
+
+  if (!theme) return;
+  try {
+    prismTheme = require(`prism-theme-one-light-dark/prism-one${theme}.css`);
+  } catch (e) {
+    console.error(e);
+  }
+
+  return prismTheme;
+}
+
 const App = () => {
   const { activePanel, goBack, goToPage, history } = useAppNavigation("home");
 
   useEffect(() => {
-    bridge.send("VKWebAppGetUserInfo").then(user => vkUserModel.fill(user));
+    bridge.send("VKWebAppGetUserInfo").then((user) => vkUserModel.fill(user));
   }, []);
 
   const goToChapters = () => goToPage("chapters");
   const goToChat = () => goToPage("chat");
+
+  const { appearance } = useConfigProvider();
+
+  useEffect(() => togglePrismTheme(appearance), [appearance]);
 
   return (
     <View

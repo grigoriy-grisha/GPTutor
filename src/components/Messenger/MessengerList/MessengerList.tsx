@@ -1,18 +1,20 @@
 import { Button, Placeholder } from "@vkontakte/vkui";
 import React, { memo } from "react";
+import { ChatGpt } from "../../../entity/GPT/ChatGpt";
 
-import { GptMessage } from "../../../entity/GPT/GptMessage";
 import { Message } from "./Message";
 
 import classes from "./MessengerList.module.css";
 
 interface IProps {
+  chatGpt: ChatGpt;
   isTyping: boolean;
-  messages: GptMessage[];
   onStartChat: () => void;
 }
 
-function MessengerList({ isTyping, messages, onStartChat }: IProps) {
+function MessengerList({ isTyping, chatGpt, onStartChat }: IProps) {
+  const messages = chatGpt.messages$.get();
+
   if (messages.length === 0) {
     return (
       <div className={classes.placeholderContainer}>

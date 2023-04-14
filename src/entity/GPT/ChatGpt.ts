@@ -25,6 +25,12 @@ export class ChatGpt {
 
   sendCompletions$ = ReactivePromise.create(() => this.sendCompletion());
 
+  selectedMessages$ = memo(() =>
+    this.messages$.get().filter((message) => message.isSelected$.get())
+  );
+
+  hasSelectedMessages$ = memo(() => this.selectedMessages$.get().length !== 0);
+
   abortController = new AbortController();
 
   constructor(public systemMessage?: GptMessage) {}
@@ -73,10 +79,6 @@ export class ChatGpt {
       ...this.messages$.get(),
     ]).map(this.toApiMessage);
   }
-
-  selectedMessages$ = memo(() =>
-    this.messages$.get().filter((message) => message.isSelected$.get())
-  );
 
   clearSelectedMessages = () => {
     batch(() => {

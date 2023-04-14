@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 
 import {
   Icon24Copy,
@@ -8,7 +8,7 @@ import {
 } from "@vkontakte/icons";
 import { Button, IconButton, Snackbar } from "@vkontakte/vkui";
 import { InPortal } from "../InPortal";
-import { copyService } from "../../services/CopyService";
+import { CopyService } from "../../services/CopyService";
 
 import classes from "./Copy.module.css";
 
@@ -25,6 +25,8 @@ function Copy({
   textToClickBoard,
   onAfterClickBoard,
 }: IProps) {
+  const copyService = useMemo(() => new CopyService(), []);
+
   function copyToClickBoard(text: string) {
     copyService.copyToClickBoard$.run(text).then(() => {
       onAfterClickBoard?.();

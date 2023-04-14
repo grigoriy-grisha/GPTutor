@@ -28,7 +28,7 @@ export function copyToClickBoard(text: string) {
   navigator.clipboard.writeText(text);
 }
 
-class CopyService {
+export class CopyService {
   copyToClickBoard$ = ReactivePromise.create((text: string) =>
     this.onCopy(text)
   );
@@ -44,5 +44,3 @@ class CopyService {
     return bridge.send("VKWebAppCopyText", { text });
   }
 }
-
-export const copyService = new CopyService();

@@ -8,14 +8,11 @@ import { Copy } from "../../../Copy";
 import classes from "./SelectedMessagesBar.module.css";
 
 interface IProps {
-  children: React.ReactNode;
   chatGpt: ChatGpt;
 }
 
-export function SelectedMessagesBar({ chatGpt, children }: IProps) {
+export function SelectedMessagesBar({ chatGpt }: IProps) {
   const selectedMessages = chatGpt.selectedMessages$.get();
-
-  if (selectedMessages.length === 0) return <>{children}</>;
 
   const text = selectedMessages.reduce(
     (acc, message) => acc + "\n" + message.content$.get(),

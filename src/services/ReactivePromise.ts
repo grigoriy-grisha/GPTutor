@@ -22,31 +22,26 @@ export default class ReactivePromise<DATA, ARGS extends any[]> {
   run(...args: ARGS): Promise<DATA> {
     this.reset();
 
-    let resolveRef: any;
-    let rejectRef: any;
     const promise = new Promise<DATA>((resolve, reject) => {
-      resolveRef = resolve;
-      rejectRef = reject;
+      this.fn(...args)
+        .then((result) => {
+          this.success.set(true);
+          this.result.set(result);
+          resolve(result);
+        })
+        .catch((err) => {
+          this.success.set(false);
+          this.error.set(err);
+          reject(err);
+        });
     });
 
     this.loading.set(true);
-    this.fn(...args)
-      .then((result) => {
-        this.success.set(true);
-        resolveRef(result);
-        return this.result.set(result);
-      })
-      .catch((err) => {
-        this.success.set(false);
-        rejectRef(err);
-        return this.error.set(err);
-      })
-      .finally(() => {
-        this.done.set(true);
-        this.loading.set(false);
-      });
 
-    return promise;
+    return promise.finally(() => {
+      this.done.set(true);
+      this.loading.set(false);
+    });
   }
 
   reset() {
