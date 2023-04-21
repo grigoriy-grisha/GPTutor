@@ -26,8 +26,9 @@ ul,ol {
 }
 
 pre {
-    padding: 12px;
+    padding: 16px;
     background: var(--vkui--color_background_tertiary_alpha);
     overflow-y: auto;
     border-radius: var(--vkui--size_border_radius--regular);
+    position: relative;
 }

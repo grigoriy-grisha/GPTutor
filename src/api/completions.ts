@@ -18,6 +18,7 @@ export async function sendChatCompletions(
     method: "POST",
     headers: {
       Authorization: "Bearer " + API_KEYS[apiKeyIndex],
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ ...body, stream: true }),
     signal: controller.signal,
