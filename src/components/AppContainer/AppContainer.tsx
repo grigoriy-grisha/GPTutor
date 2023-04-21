@@ -8,6 +8,7 @@ interface IProps {
   headerChildren: React.ReactNode;
   style?: React.CSSProperties;
   maxHeight?: boolean;
+  isSecondary?: boolean;
 }
 
 function AppContainer({
@@ -16,6 +17,7 @@ function AppContainer({
   headerChildren,
   style,
   maxHeight,
+  isSecondary,
 }: IProps) {
   const [headerElem, setHeaderElem] = useState<HTMLDivElement>();
 
@@ -27,7 +29,9 @@ function AppContainer({
       {headerChildren && <div ref={setHeaderElem as any}>{headerChildren}</div>}
       <div
         ref={containerRef}
-        className={classes.container}
+        className={`${classes.container} ${
+          isSecondary ? classes.secondary : ""
+        }`}
         style={{
           minHeight: height,
           ...(maxHeight ? { maxHeight: height } : {}),

@@ -8,6 +8,7 @@ import {
 } from "@vkontakte/vkui";
 import { githubController } from "../../../entity/Github";
 import { GithubIcon } from "../../../icons";
+import { CardBlock } from "../../../components/CardBlock";
 
 import classes from "./Issues.module.css";
 
@@ -17,15 +18,15 @@ function Issues() {
 
   if (githubController.getIssues$.loading.get()) {
     return (
-      <div className={classes.spinnerContainer}>
+      <CardBlock isBottom className={classes.spinnerContainer}>
         <Spinner size="large" className={classes.spinner} />
-      </div>
+      </CardBlock>
     );
   }
 
   return (
-    <div>
-      <Header mode="secondary">Прими участие в разработке приложения</Header>
+    <CardBlock isBottom>
+      <Header mode="tertiary">Прими участие в разработке приложения</Header>
       <HorizontalScroll>
         <div style={{ display: "flex" }}>
           {githubController.issues.get().map(({ html_url, title }) => (
@@ -47,7 +48,7 @@ function Issues() {
           ))}
         </div>
       </HorizontalScroll>
-    </div>
+    </CardBlock>
   );
 }
 

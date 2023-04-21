@@ -1,0 +1,18 @@
+.container {
+    border-radius: 12px;
+    background-color: var(--vkui--color_background_content);
+    padding-top: 8px;
+}
+
+.containerTop {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+
+.containerBottom {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+
