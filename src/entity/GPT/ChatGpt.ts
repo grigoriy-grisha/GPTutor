@@ -62,7 +62,7 @@ export class ChatGpt {
     if (hasCompletionInCache) return;
 
     const isHasError = await sendChatCompletions(
-      { model: "gpt-3.5-turbo", messages: this.getMessages() },
+      { model: "gpt-3.5-turbo-0301", messages: this.getMessages() },
       this.onMessage(message),
       () => {
         this.addMessage(new GptMessage(errorContent, GPTRoles.assistant, true));
