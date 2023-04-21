@@ -14,6 +14,7 @@ import { Icon28ArrowRightSquareOutline } from "@vkontakte/icons";
 
 import { lessonsController } from "../../entity/lessons";
 import { AppContainer } from "../../components/AppContainer";
+import { CardBlock } from "../../components/CardBlock";
 
 import { ChapterCard } from "./ChapterCard";
 import { Issues } from "./Issues";
@@ -28,12 +29,15 @@ interface IProps {
 
 function Home({ id, goToChapters, goToChat }: IProps) {
   return (
-    <Panel id={id} className={classes.panel}>
-      <AppContainer headerChildren={<PanelHeader>GPTutor</PanelHeader>}>
+    <Panel id={id}>
+      <AppContainer
+        isSecondary
+        headerChildren={<PanelHeader>GPTutor</PanelHeader>}
+      >
         {({ height }) => (
           <div style={{ minHeight: height }} className={classes.group}>
-            <div>
-              <Header mode="secondary">Темы для изучения</Header>
+            <CardBlock isTop>
+              <Header mode="tertiary">Темы для изучения</Header>
               <div className={classes.cards}>
                 <HorizontalScroll>
                   <div style={{ display: "flex" }}>
@@ -51,9 +55,9 @@ function Home({ id, goToChapters, goToChat }: IProps) {
                   </div>
                 </HorizontalScroll>
               </div>
-            </div>
+            </CardBlock>
 
-            <div className={classes.placeholderContainer}>
+            <CardBlock className={classes.placeholderContainer}>
               <Placeholder
                 className={classes.placeholder}
                 header="Задай свой вопрос"
@@ -77,7 +81,7 @@ function Home({ id, goToChapters, goToChat }: IProps) {
                 </Link>{" "}
                 в формате чата
               </Placeholder>
-            </div>
+            </CardBlock>
             <Issues />
           </div>
         )}
