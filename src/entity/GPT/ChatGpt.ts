@@ -1,6 +1,10 @@
 import { batch, memo, sig } from "dignals";
 
-import { sendChatCompletions } from "../../api/completions";
+import {
+  getChatCompletions,
+  sendChatCompletions,
+  setCacheCompletions,
+} from "../../api/completions";
 
 import { GPTRoles } from "./types";
 import { GptMessage } from "./GptMessage";
@@ -49,23 +53,40 @@ export class ChatGpt {
 
     this.abortController = new AbortController();
 
-    return await sendChatCompletions(
+    const hasCompletionInCache = await getChatCompletions({
+      conversationName: String(this.getLastUserMessage()?.content$.get()),
+      onMessage: this.onMessage(message),
+      abortController: this.abortController,
+    });
+
+    if (hasCompletionInCache) return;
+
+    const isHasError = await sendChatCompletions(
       { model: "gpt-3.5-turbo", messages: this.getMessages() },
-      (value, isFirst) => {
-        if (isFirst) {
-          message.onSetMessageContent(value);
-          this.addMessage(message);
-          return;
-        }
-        message.onSetMessageContent(value);
-      },
+      this.onMessage(message),
       () => {
         this.addMessage(new GptMessage(errorContent, GPTRoles.assistant, true));
         this.sendCompletions$.reset();
       },
       this.abortController
     );
+
+    if (isHasError) return;
+
+    await setCacheCompletions({
+      message: String(this.getLastAssistantMessage()?.content$.get()),
+      name: String(this.getLastUserMessage()?.content$.get()),
+    });
   }
+
+  onMessage = (message: GptMessage) => (value: string, isFirst: boolean) => {
+    if (isFirst) {
+      message.onSetMessageContent(value);
+      this.addMessage(message);
+      return;
+    }
+    message.onSetMessageContent(value);
+  };
 
   getMessages() {
     if (!this.systemMessage) {
@@ -100,5 +121,17 @@ export class ChatGpt {
 
   filterInMemoryMessages(messages: GptMessage[]) {
     return messages.filter((message) => !message.inLocal);
+  }
+
+  getLastUserMessage() {
+    return [...this.messages$.get()]
+      .reverse()
+      .find((message) => message.role === GPTRoles.user);
+  }
+
+  getLastAssistantMessage() {
+    return [...this.messages$.get()]
+      .reverse()
+      .find((message) => message.role === GPTRoles.assistant);
   }
 }
