@@ -42,6 +42,7 @@ function MessengerList({ isTyping, chatGpt, onStartChat }: IProps) {
       {messages.map((message, index) => (
         <Message
           key={index}
+          chatGpt={chatGpt}
           message={message}
           isDisabled={messages.length - 1 === index && isTyping}
         />

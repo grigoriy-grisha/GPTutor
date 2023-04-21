@@ -23,3 +23,18 @@
 .disabled {
     pointer-events: none;
 }
+
+.topBlock {
+    display: flex;
+    justify-content: space-between;
+}
+
+.iconsBlock {
+    color: var(--vkui--color_icon_secondary);
+    display: flex;
+    gap: 10px;
+}
+
+.selectedIcon {
+    color: var(--vkui--color_background_accent_themed);
+}

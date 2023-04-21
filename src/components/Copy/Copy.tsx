@@ -38,7 +38,7 @@ function Copy({
   return (
     <>
       {isButton ? (
-        <Button size="m" before={<Icon28CopyOutline />} onClick={onClick}>
+        <Button size="m" before={<Icon24Copy />} onClick={onClick}>
           Скопировать
         </Button>
       ) : (

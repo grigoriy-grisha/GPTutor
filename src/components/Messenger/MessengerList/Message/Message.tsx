@@ -1,6 +1,9 @@
 import React, { memo } from "react";
 
-import { Div, Text } from "@vkontakte/vkui";
+import { Div, IconButton, Text } from "@vkontakte/vkui";
+import { Icon28CheckCircleOutline } from "@vkontakte/icons";
+
+import { ChatGpt } from "$entity/GPT/ChatGpt";
 
 import { MessengerAva } from "../../MessengerAva";
 import { vkUser } from "../../../../entity/user";
@@ -10,28 +13,50 @@ import { MessengerParagraph } from "../../MessengerParagraph";
 import classes from "./Message.module.css";
 
 interface IProps {
+  chatGpt: ChatGpt;
   isDisabled: boolean;
   message: GptMessage;
 }
 
-function Message({ message, isDisabled }: IProps) {
+function Message({ chatGpt, message, isDisabled }: IProps) {
   const selected = message.isSelected$.get() ? classes.selected : "";
   const disabled = isDisabled ? classes.disabled : "";
 
+  const hasSelectedMessages = chatGpt.hasSelectedMessages$.get();
+
   return (
     <div
-      className={`${classes.message} ${selected} ${disabled}`}
-      onClick={() => {
-        if (isDisabled) return;
-        message.toggleSelected();
-      }}
+      className={`${
+        hasSelectedMessages ? classes.message : ""
+      } ${selected} ${disabled}`}
+      onClick={() =>
+        !isDisabled && hasSelectedMessages && message.toggleSelected()
+      }
     >
       <Div className={classes.container}>
         <MessengerAva message={message} photo={vkUser?.photo_100} />
+
         <div style={{ display: "grid", width: "100%" }}>
-          <Text weight="2">
-            {message.role === "assistant" ? "Chat GPT" : vkUser?.first_name}
-          </Text>
+          <div className={classes.topBlock}>
+            <Text weight="2">
+              {message.role === "assistant" ? "Chat GPT" : vkUser?.first_name}
+            </Text>
+            <div
+              className={`${classes.iconsBlock} ${
+                selected ? classes.selectedIcon : ""
+              }`}
+            >
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  !isDisabled && message.toggleSelected();
+                }}
+              >
+                <Icon28CheckCircleOutline />
+              </IconButton>
+            </div>
+          </div>
+
           <MessengerParagraph message={message} />
         </div>
       </Div>
