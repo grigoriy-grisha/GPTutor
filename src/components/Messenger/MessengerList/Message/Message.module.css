@@ -30,9 +30,11 @@
 }
 
 .iconsBlock {
+    position: relative;
     color: var(--vkui--color_icon_secondary);
     display: flex;
     gap: 10px;
+    top: -8px;
 }
 
 .selectedIcon {

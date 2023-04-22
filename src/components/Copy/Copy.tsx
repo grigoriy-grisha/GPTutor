@@ -1,9 +1,9 @@
 import React, { memo, useMemo } from "react";
 
 import {
+  Icon20CopyOutline,
   Icon24Copy,
   Icon28CancelOutline,
-  Icon28CopyOutline,
   Icon28DoneOutline,
 } from "@vkontakte/icons";
 import { Button, IconButton, Snackbar } from "@vkontakte/vkui";
@@ -38,7 +38,7 @@ function Copy({
   return (
     <>
       {isButton ? (
-        <Button size="m" before={<Icon24Copy />} onClick={onClick}>
+        <Button size="m" before={<Icon20CopyOutline />} onClick={onClick}>
           Скопировать
         </Button>
       ) : (
