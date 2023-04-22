@@ -39,9 +39,9 @@ export class ChatGpt {
 
   constructor(public systemMessage?: GptMessage) {}
 
-  abortSend() {
+  abortSend = () => {
     this.abortController.abort();
-  }
+  };
 
   send = (content: string) => {
     this.addMessage(new GptMessage(content, GPTRoles.user));
@@ -72,6 +72,7 @@ export class ChatGpt {
     );
 
     if (isHasError) return;
+    if (this.abortController.signal.aborted) return;
 
     await setCacheCompletions({
       message: String(this.getLastAssistantMessage()?.content$.get()),

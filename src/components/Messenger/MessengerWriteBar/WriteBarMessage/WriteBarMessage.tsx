@@ -8,6 +8,7 @@ import {
 } from "@vkontakte/vkui";
 import { IconRenderer } from "../../../IconRenderer";
 import {
+  Icon20CancelCircleFillRed,
   Icon24KeyboardBotsOutline,
   Icon28KeyboardBotsOutline,
 } from "@vkontakte/icons";
@@ -15,12 +16,14 @@ import { LessonRequest } from "../../../../entity/lessons/LessonRequest";
 
 interface IProps {
   isTyping: boolean;
+  abortSend: () => void;
   handleSend: (value: string) => void;
   additionalRequests: LessonRequest[];
   onClickAdditional: () => void;
 }
 
 function WriteBarMessage({
+  abortSend,
   handleSend,
   additionalRequests,
   isTyping,
@@ -80,15 +83,21 @@ function WriteBarMessage({
         }
         after={
           <>
-            <WriteBarIcon
-              mode="send"
-              aria-label="Отправить сообщение"
-              disabled={value.length === 0 || isTyping}
-              onClick={() => {
-                handleSend(value);
-                setValue("");
-              }}
-            />
+            {!isTyping ? (
+              <WriteBarIcon
+                mode="send"
+                aria-label="Отправить сообщение"
+                disabled={value.length === 0 || isTyping}
+                onClick={() => {
+                  handleSend(value);
+                  setValue("");
+                }}
+              />
+            ) : (
+              <WriteBarIcon onClick={abortSend}>
+                <Icon20CancelCircleFillRed width={28} height={28} />
+              </WriteBarIcon>
+            )}
           </>
         }
         placeholder="Сообщение"

@@ -15,6 +15,7 @@ import { Icon28ArrowRightSquareOutline } from "@vkontakte/icons";
 import { lessonsController } from "../../entity/lessons";
 import { AppContainer } from "../../components/AppContainer";
 import { CardBlock } from "../../components/CardBlock";
+import { ChatGPTLogo } from "../../icons";
 
 import { ChapterCard } from "./ChapterCard";
 import { Issues } from "./Issues";
@@ -60,6 +61,7 @@ function Home({ id, goToChapters, goToChat }: IProps) {
             <CardBlock className={classes.placeholderContainer}>
               <Placeholder
                 className={classes.placeholder}
+                icon={<ChatGPTLogo size={60} />}
                 header="Задай свой вопрос"
                 action={
                   <Button
