@@ -8,8 +8,17 @@ import App from "./App";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import Bugsnag from "@bugsnag/js";
 import ErrorBoundaryApp from "./ErrorBoundaryApp";
+import { Panels, RoutingPages, Views } from "./entity/routing";
+import { Page, Router, RouterContext } from "@happysanta/router";
 
 bridge.send("VKWebAppInit");
+
+const routes = {
+  [RoutingPages.home]: new Page(Panels.home, Views.viewMain),
+  [RoutingPages.chapters]: new Page(Panels.chapters, Views.viewMain),
+  [RoutingPages.chat]: new Page(Panels.chat, Views.viewMain),
+  [RoutingPages.openSource]: new Page(Panels.openSource, Views.viewMain),
+};
 
 if (process.env.NODE_ENV === "production") {
   Bugsnag.start({
@@ -18,15 +27,21 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+const router = new Router(routes);
+
+router.start();
+
 ReactDOM.render(
   <ErrorBoundaryApp>
-    <ConfigProvider>
-      <AdaptivityProvider>
-        <AppRoot>
-          <App />
-        </AppRoot>
-      </AdaptivityProvider>
-    </ConfigProvider>
+    <RouterContext.Provider value={router}>
+      <ConfigProvider>
+        <AdaptivityProvider>
+          <AppRoot>
+            <App />
+          </AppRoot>
+        </AdaptivityProvider>
+      </ConfigProvider>
+    </RouterContext.Provider>
   </ErrorBoundaryApp>,
   document.getElementById("root")
 );
