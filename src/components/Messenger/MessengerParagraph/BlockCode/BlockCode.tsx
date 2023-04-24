@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect } from "react";
+import React, { memo, useEffect } from "react";
 
 import { InPortal } from "../../../InPortal";
 import { Copy } from "../../../Copy";
@@ -8,6 +8,7 @@ import classes from "./BlockCode.module.css";
 interface IProps {
   elem?: HTMLElement;
 }
+
 function BlockCode({ elem }: IProps) {
   let textToClickBoard = "";
 
@@ -21,14 +22,25 @@ function BlockCode({ elem }: IProps) {
     textToClickBoard += textNode.textContent;
   }
 
-  useLayoutEffect(() => {
-    const copyMock = elem?.querySelector("[data-copy-mock]");
-    if (copyMock) elem?.removeChild(copyMock);
-  }, []);
+  useEffect(() => {
+    const copyMocks = elem?.querySelectorAll("[data-copy-mock]");
+    const copyCodes = elem?.querySelectorAll("[data-copy-code]");
+
+    copyMocks?.forEach((copyMock) => {
+      (copyMock as HTMLElement).style.display = "none";
+    });
+    copyCodes?.forEach((copyMock) => {
+      (copyMock as HTMLElement).style.display = "block";
+    });
+  });
 
   return (
     <InPortal elem={elem}>
-      <span className={classes.additional} onClick={(e) => e.stopPropagation()}>
+      <span
+        data-copy-code=""
+        className={classes.additional}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className={classes.codeInfo}>
           <Copy
             copyText="Скопировать код"

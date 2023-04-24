@@ -11,19 +11,8 @@ import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
 import { Chat } from "./panels/Chat";
 import { OpenSource } from "./panels/OpenSource";
-
-function togglePrismTheme(theme?: string) {
-  let prismTheme;
-
-  if (!theme) return;
-  try {
-    prismTheme = require(`prism-theme-one-light-dark/prism-one${theme}.css`);
-  } catch (e) {
-    console.error(e);
-  }
-
-  return prismTheme;
-}
+import { OneDark } from "./OneDark";
+import { OneLight } from "./OneLight";
 
 const App = () => {
   const { activePanel, goBack, goToPage, history } = useAppNavigation("home");
@@ -38,29 +27,30 @@ const App = () => {
 
   const { appearance } = useConfigProvider();
 
-  useEffect(() => togglePrismTheme(appearance), [appearance]);
-
   return (
-    <View
-      id="view"
-      activePanel={activePanel.get()}
-      onSwipeBack={goBack}
-      history={history.get()}
-    >
-      <Home
-        id="home"
-        goToChapters={goToChapters}
-        goToChat={goToChat}
-        goToOpenSource={goToOpenSource}
-      />
-      <Chapters id="chapters" goToChat={goToChat} goBack={goBack} />
-      <Chat id="chat" goBack={goBack} />
-      <OpenSource
-        id="open-source"
-        goBack={goBack}
-        goToChapters={goToChapters}
-      />
-    </View>
+    <>
+      {appearance === "dark" ? <OneDark /> : <OneLight />}
+      <View
+        id="view"
+        activePanel={activePanel.get()}
+        onSwipeBack={goBack}
+        history={history.get()}
+      >
+        <Home
+          id="home"
+          goToChapters={goToChapters}
+          goToChat={goToChat}
+          goToOpenSource={goToOpenSource}
+        />
+        <Chapters id="chapters" goToChat={goToChat} goBack={goBack} />
+        <Chat id="chat" goBack={goBack} />
+        <OpenSource
+          id="open-source"
+          goBack={goBack}
+          goToChapters={goToChapters}
+        />
+      </View>
+    </>
   );
 };
 export default App;

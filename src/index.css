@@ -29,10 +29,16 @@ pre {
     padding: 10px 24px 10px 10px;
     max-width: 100%;
     overflow-x: auto;
-    margin-top: 0;
     margin-bottom: 10px;
 }
 
+code {
+    background: none !important;
+}
+
+code[class*=language-] {
+    text-shadow: none !important;
+}
 
 .vkuiPlaceholder__in {
     padding: 24px 32px !important;
