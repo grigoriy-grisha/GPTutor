@@ -10,6 +10,7 @@ import { useAppNavigation } from "./hooks";
 import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
 import { Chat } from "./panels/Chat";
+import { OpenSource } from "./panels/OpenSource";
 
 function togglePrismTheme(theme?: string) {
   let prismTheme;
@@ -33,6 +34,7 @@ const App = () => {
 
   const goToChapters = () => goToPage("chapters");
   const goToChat = () => goToPage("chat");
+  const goToOpenSource = () => goToPage("open-source");
 
   const { appearance } = useConfigProvider();
 
@@ -45,9 +47,19 @@ const App = () => {
       onSwipeBack={goBack}
       history={history.get()}
     >
-      <Home id="home" goToChapters={goToChapters} goToChat={goToChat} />
+      <Home
+        id="home"
+        goToChapters={goToChapters}
+        goToChat={goToChat}
+        goToOpenSource={goToOpenSource}
+      />
       <Chapters id="chapters" goToChat={goToChat} goBack={goBack} />
       <Chat id="chat" goBack={goBack} />
+      <OpenSource
+        id="open-source"
+        goBack={goBack}
+        goToChapters={goToChapters}
+      />
     </View>
   );
 };

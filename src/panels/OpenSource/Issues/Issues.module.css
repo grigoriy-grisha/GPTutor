@@ -13,5 +13,9 @@
     box-sizing: border-box;
     padding-left: 2px;
     padding-right: 2px;
-    height: 100%;
+
+}
+
+.bottomItem .vkuiBanner__in {
+    height: 100px ;
 }

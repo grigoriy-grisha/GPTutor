@@ -1,5 +1,5 @@
 .container {
-    border-radius: 12px;
+    border-radius: 16px;
     background-color: var(--vkui--color_background_content);
     padding-top: 8px;
 }

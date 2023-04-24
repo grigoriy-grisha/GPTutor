@@ -13,6 +13,8 @@ import { CopyService } from "../../services/CopyService";
 import classes from "./Copy.module.css";
 
 interface IProps {
+  mode?: "primary" | "secondary" | "tertiary" | "outline" | "link";
+  copyText?: string;
   isButton?: boolean;
   className?: string;
   textToClickBoard: string;
@@ -20,6 +22,8 @@ interface IProps {
 }
 
 function Copy({
+  mode,
+  copyText,
   isButton,
   className,
   textToClickBoard,
@@ -38,8 +42,13 @@ function Copy({
   return (
     <>
       {isButton ? (
-        <Button size="m" before={<Icon20CopyOutline />} onClick={onClick}>
-          Скопировать
+        <Button
+          mode={mode}
+          size="m"
+          before={<Icon20CopyOutline />}
+          onClick={onClick}
+        >
+          {copyText || "Скопировать"}
         </Button>
       ) : (
         <IconButton className={className} onClick={onClick}>

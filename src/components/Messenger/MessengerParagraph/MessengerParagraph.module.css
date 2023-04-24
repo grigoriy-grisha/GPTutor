@@ -1,6 +1,7 @@
 .paragraph {
-    margin-top: -38px;
-    padding-right: 48px
+    max-width: calc(100vh - 70px);
+    overflow: hidden;
+    margin-top: -32px;
 }
 
 .codeContainer {

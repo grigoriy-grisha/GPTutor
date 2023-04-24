@@ -3,6 +3,7 @@ import { sig } from "dignals";
 import { LessonItem } from "./LessonItem";
 import { ChapterItem } from "./ChapterItem";
 import { UUID_V4 } from "../common";
+import { ChapterTypes } from "$entity/lessons/chapterTypes";
 
 export class LessonsController {
   public currentChapter = sig<ChapterItem | null>(null);
@@ -19,8 +20,11 @@ export class LessonsController {
     this.currentLesson.set(foundLesson);
   }
 
-  setCurrentChapter(index: number) {
-    this.currentChapter.set(this.chapters[index]);
+  setCurrentChapter(chapterType: ChapterTypes) {
+    const chapter = this.chapters.find(
+      (chapter) => chapter.chapterType === chapterType
+    );
+    if (chapter) this.currentChapter.set(chapter);
   }
 
   clearChapter() {

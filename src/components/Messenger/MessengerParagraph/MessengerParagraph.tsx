@@ -27,9 +27,11 @@ function MessengerParagraph({ message }: IProps) {
       {useDebounceValue<JSX.Element[]>(
         [],
         () => {
-          const pres = containerRef.current?.querySelectorAll("pre") || [];
+          const pres =
+            containerRef.current?.querySelectorAll("[data-pre-container]") ||
+            [];
           return [...pres].map((pre, index) => (
-            <BlockCode elem={pre} key={index} />
+            <BlockCode elem={pre as HTMLElement} key={index} />
           ));
         },
         [html],

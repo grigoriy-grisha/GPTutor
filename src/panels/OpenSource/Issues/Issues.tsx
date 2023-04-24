@@ -7,7 +7,7 @@ import {
   Spinner,
 } from "@vkontakte/vkui";
 import { githubController } from "../../../entity/Github";
-import { GithubIcon } from "../../../icons";
+import { Issue } from "../../../icons";
 import { CardBlock } from "../../../components/CardBlock";
 
 import classes from "./Issues.module.css";
@@ -26,7 +26,7 @@ function Issues() {
 
   return (
     <CardBlock isBottom>
-      <Header mode="tertiary">Прими участие в разработке приложения</Header>
+      <Header mode="tertiary">Открытые Issues</Header>
       <HorizontalScroll>
         <div style={{ display: "flex" }}>
           {githubController.issues.get().map(({ html_url, title }) => (
@@ -40,7 +40,7 @@ function Issues() {
               <Banner
                 asideMode="expand"
                 className={classes.bottomItem}
-                before={<GithubIcon />}
+                before={<Issue />}
                 header="Open Source"
                 subheader={<span>{title}</span>}
               />

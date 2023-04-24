@@ -9,16 +9,16 @@ import {
   PanelHeader,
   Placeholder,
   Link,
+  IconButton,
 } from "@vkontakte/vkui";
 import { Icon28ArrowRightSquareOutline } from "@vkontakte/icons";
 
 import { lessonsController } from "../../entity/lessons";
 import { AppContainer } from "../../components/AppContainer";
 import { CardBlock } from "../../components/CardBlock";
-import { ChatGPTLogo } from "../../icons";
+import { ChatGPTLogo, GithubIcon } from "../../icons";
 
 import { ChapterCard } from "./ChapterCard";
-import { Issues } from "./Issues";
 
 import classes from "./Home.module.css";
 
@@ -26,14 +26,29 @@ interface IProps {
   id: string;
   goToChapters: () => void;
   goToChat: () => void;
+  goToOpenSource: () => void;
 }
 
-function Home({ id, goToChapters, goToChat }: IProps) {
+function Home({ id, goToChapters, goToChat, goToOpenSource }: IProps) {
   return (
     <Panel id={id}>
       <AppContainer
+        maxHeight
         isSecondary
-        headerChildren={<PanelHeader>GPTutor</PanelHeader>}
+        headerChildren={
+          <PanelHeader
+            before={
+              <IconButton
+                className={classes.githubIcon}
+                onClick={goToOpenSource}
+              >
+                <GithubIcon />
+              </IconButton>
+            }
+          >
+            GPTutor
+          </PanelHeader>
+        }
       >
         {({ height }) => (
           <div style={{ minHeight: height }} className={classes.group}>
@@ -46,7 +61,9 @@ function Home({ id, goToChapters, goToChat }: IProps) {
                       <HorizontalCell key={index} size="l">
                         <ChapterCard
                           onClick={() => {
-                            lessonsController.setCurrentChapter(index);
+                            lessonsController.setCurrentChapter(
+                              chapter.chapterType
+                            );
                             goToChapters();
                           }}
                           chapterType={chapter.chapterType}
@@ -84,7 +101,6 @@ function Home({ id, goToChapters, goToChat }: IProps) {
                 в формате чата
               </Placeholder>
             </CardBlock>
-            <Issues />
           </div>
         )}
       </AppContainer>
