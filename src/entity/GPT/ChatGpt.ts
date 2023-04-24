@@ -39,6 +39,10 @@ export class ChatGpt {
 
   constructor(public systemMessage?: GptMessage) {}
 
+  clearMessages = () => {
+    this.messages$.set([]);
+  };
+
   abortSend = () => {
     this.abortController.abort();
   };

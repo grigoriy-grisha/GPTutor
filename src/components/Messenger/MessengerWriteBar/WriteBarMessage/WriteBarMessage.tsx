@@ -10,6 +10,7 @@ import { IconRenderer } from "../../../IconRenderer";
 import {
   Icon24KeyboardBotsOutline,
   Icon28CancelCircleOutline,
+  Icon28DeleteOutline,
   Icon28KeyboardBotsOutline,
 } from "@vkontakte/icons";
 import { LessonRequest } from "../../../../entity/lessons/LessonRequest";
@@ -20,6 +21,7 @@ interface IProps {
   handleSend: (value: string) => void;
   additionalRequests: LessonRequest[];
   onClickAdditional: () => void;
+  clearMessages: () => void;
 }
 
 function WriteBarMessage({
@@ -28,6 +30,7 @@ function WriteBarMessage({
   additionalRequests,
   isTyping,
   onClickAdditional,
+  clearMessages,
 }: IProps) {
   const [value, setValue] = useState("");
 
@@ -83,6 +86,9 @@ function WriteBarMessage({
         }
         after={
           <>
+            <WriteBarIcon onClick={clearMessages}>
+              <Icon28DeleteOutline />
+            </WriteBarIcon>
             {!isTyping ? (
               <WriteBarIcon
                 mode="send"
@@ -97,8 +103,8 @@ function WriteBarMessage({
               <WriteBarIcon onClick={abortSend}>
                 <Icon28CancelCircleOutline
                   fill="var(--vkui--color_icon_accent)"
-                  width={36}
-                  height={36}
+                  width={28}
+                  height={28}
                 />
               </WriteBarIcon>
             )}
