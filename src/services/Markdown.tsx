@@ -48,7 +48,8 @@ export default class Markdown {
       const grammar = Prism.languages[language];
 
       try {
-        if (!grammar) require(`prismjs/components/prism-${language}.min.js`);
+        if (!grammar)
+          require(`prismjs/components/prism-${language || "text"}.min.js`);
         if (grammar) return Prism.highlight(code, grammar, language);
       } catch (err) {
         console.error(err);
