@@ -44,6 +44,7 @@ function MessengerWriteBar({
           />
         </div>
         <WriteBarMessage
+          clearMessages={chatGpt.clearMessages}
           abortSend={chatGpt.abortSend}
           additionalRequests={additionalRequests}
           handleSend={handleSend}
