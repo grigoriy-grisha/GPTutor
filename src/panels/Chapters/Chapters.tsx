@@ -8,7 +8,7 @@ import {
   Search,
   SimpleCell,
 } from "@vkontakte/vkui";
-import { Icon24ArrowRightOutline } from "@vkontakte/icons";
+import { Icon20ChevronRight } from "@vkontakte/icons";
 
 import { lessonsController } from "../../entity/lessons";
 
@@ -45,7 +45,8 @@ function Chapters({ id, goToChat, goBack }: IProps) {
                 {value.map((lesson) => (
                   <SimpleCell
                     key={lesson.id}
-                    after={<Icon24ArrowRightOutline />}
+                    after={<Icon20ChevronRight />}
+                    expandable
                     onClick={() => {
                       goToChat();
                       lessonsController.setCurrentLesson(lesson.id);

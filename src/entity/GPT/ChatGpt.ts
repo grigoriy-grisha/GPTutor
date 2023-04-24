@@ -12,7 +12,7 @@ import ReactivePromise from "../../services/ReactivePromise";
 
 const errorContent = `
 \`\`\`javascript
-Chat GPT приболел. Попробуйте позже
+Сеть ChatGPT пегружена. Попробуйте через минуту
    _______  GPT
   |.-----.|       Err 
   ||x . x||  GPT Error  

@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useState } from "react";
 
 import classes from "./MessengerWriteBar.module.css";
-import WaitBanner from "./WaitBaner/WaitBaner";
 import { AdditionalRequests } from "./AdditionalRequests";
 import { WriteBarMessage } from "./WriteBarMessage";
 import { SelectedMessagesBar } from "./SelectedMessagesBar";
@@ -32,7 +31,6 @@ function MessengerWriteBar({
 
   return (
     <div className={classes.container}>
-      <WaitBanner />
       <div style={{ width: "100%" }}>
         <div style={{ display: hasSelectedMessages ? "block" : "none" }}>
           <SelectedMessagesBar chatGpt={chatGpt} />

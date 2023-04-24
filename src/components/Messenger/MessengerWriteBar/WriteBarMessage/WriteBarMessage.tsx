@@ -8,8 +8,8 @@ import {
 } from "@vkontakte/vkui";
 import { IconRenderer } from "../../../IconRenderer";
 import {
-  Icon20CancelCircleFillRed,
   Icon24KeyboardBotsOutline,
+  Icon28CancelCircleOutline,
   Icon28KeyboardBotsOutline,
 } from "@vkontakte/icons";
 import { LessonRequest } from "../../../../entity/lessons/LessonRequest";
@@ -95,7 +95,11 @@ function WriteBarMessage({
               />
             ) : (
               <WriteBarIcon onClick={abortSend}>
-                <Icon20CancelCircleFillRed width={28} height={28} />
+                <Icon28CancelCircleOutline
+                  fill="var(--vkui--color_icon_accent)"
+                  width={36}
+                  height={36}
+                />
               </WriteBarIcon>
             )}
           </>

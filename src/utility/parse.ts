@@ -64,9 +64,7 @@ export function getLines(
         }
       }
 
-      if (lineEnd === -1) {
-        break;
-      }
+      if (lineEnd === -1) break;
 
       onLine(buffer.subarray(lineStart, lineEnd), fieldLength);
       lineStart = position;

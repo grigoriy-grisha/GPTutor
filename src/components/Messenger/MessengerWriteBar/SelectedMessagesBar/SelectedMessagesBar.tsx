@@ -15,7 +15,8 @@ export function SelectedMessagesBar({ chatGpt }: IProps) {
   const selectedMessages = chatGpt.selectedMessages$.get();
 
   const text = selectedMessages.reduce(
-    (acc, message) => acc + "\n" + message.content$.get(),
+    (acc, message, index) =>
+      acc + (index == 0 ? "" : "\n\n") + message.content$.get(),
     ""
   );
 
