@@ -12,6 +12,7 @@ import {
   Icon28CancelCircleOutline,
   Icon28DeleteOutline,
   Icon28KeyboardBotsOutline,
+  Icon28SettingsOutline,
 } from "@vkontakte/icons";
 import { LessonRequest } from "../../../../entity/lessons/LessonRequest";
 
@@ -74,6 +75,11 @@ function WriteBarMessage({
         onChange={(e) => setValue(e.target.value)}
         before={
           <>
+            {!additionalRequests?.length && (
+              <WriteBarIcon>
+                <Icon28SettingsOutline />
+              </WriteBarIcon>
+            )}
             {!!additionalRequests?.length && (
               <WriteBarIcon
                 aria-label="Открыть меню"

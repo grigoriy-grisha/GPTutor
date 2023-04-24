@@ -6,24 +6,27 @@ import "@vkontakte/vkui/dist/vkui.css";
 import "./index.css";
 
 import { vkUserModel } from "./entity/user";
-import { useAppNavigation } from "./hooks";
 import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
 import { Chat } from "./panels/Chat";
 import { OpenSource } from "./panels/OpenSource";
 import { OneDark } from "./OneDark";
 import { OneLight } from "./OneLight";
+import { Panels, RoutingPages, Views } from "./entity/routing";
+import { useLocation, useRouter } from "@happysanta/router";
 
 const App = () => {
-  const { activePanel, goBack, goToPage, history } = useAppNavigation("home");
+  const location = useLocation();
+  const router = useRouter();
 
   useEffect(() => {
     bridge.send("VKWebAppGetUserInfo").then((user) => vkUserModel.fill(user));
   }, []);
 
-  const goToChapters = () => goToPage("chapters");
-  const goToChat = () => goToPage("chat");
-  const goToOpenSource = () => goToPage("open-source");
+  const goBack = () => router.popPage();
+  const goToChapters = () => router.pushPage(RoutingPages.chapters);
+  const goToChat = () => router.pushPage(RoutingPages.chat);
+  const goToOpenSource = () => router.pushPage(RoutingPages.openSource);
 
   const { appearance } = useConfigProvider();
 
@@ -31,21 +34,20 @@ const App = () => {
     <>
       {appearance === "dark" ? <OneDark /> : <OneLight />}
       <View
-        id="view"
-        activePanel={activePanel.get()}
+        id={Views.viewMain}
+        activePanel={location.getViewActivePanel(Views.viewMain)!}
         onSwipeBack={goBack}
-        history={history.get()}
       >
         <Home
-          id="home"
+          id={Panels.home}
           goToChapters={goToChapters}
           goToChat={goToChat}
           goToOpenSource={goToOpenSource}
         />
-        <Chapters id="chapters" goToChat={goToChat} goBack={goBack} />
-        <Chat id="chat" goBack={goBack} />
+        <Chapters id={Panels.chapters} goToChat={goToChat} goBack={goBack} />
+        <Chat id={Panels.chat} goBack={goBack} />
         <OpenSource
-          id="open-source"
+          id={Panels.openSource}
           goBack={goBack}
           goToChapters={goToChapters}
         />
