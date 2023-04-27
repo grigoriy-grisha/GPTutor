@@ -23,6 +23,13 @@ const errorContent = `
 \`-=========-\`() 
 `;
 
+const initialSystemContent =
+  "Ты программист с опытом веб разработки в 10 лет, отвечаешь на вопросы джуниора, который хочет научиться программированию, добавляй правильную подсветку кода, указывай язык для блоков кода";
+const initialSystemMessage = new GptMessage(
+  initialSystemContent,
+  GPTRoles.system
+);
+
 //todo рефакторинг, разнести этот класс на несколько сущностей
 export class ChatGpt {
   public messages$ = sig<GptMessage[]>([]);
@@ -33,15 +40,23 @@ export class ChatGpt {
     this.messages$.get().filter((message) => message.isSelected$.get())
   );
 
+  isChangedSystemMessage$ = memo(
+    () => chatGpt.systemMessage.content$.get() === initialSystemContent
+  );
+
   hasSelectedMessages$ = memo(() => this.selectedMessages$.get().length !== 0);
 
   abortController = new AbortController();
 
-  constructor(public systemMessage?: GptMessage) {}
+  constructor(public systemMessage: GptMessage) {}
 
   clearMessages = () => {
     this.abortSend();
     this.messages$.set([]);
+  };
+
+  clearSystemMessage = () => {
+    this.systemMessage?.content$.set(initialSystemContent);
   };
 
   abortSend = () => {
@@ -141,3 +156,5 @@ export class ChatGpt {
       .find((message) => message.role === GPTRoles.assistant);
   }
 }
+
+export const chatGpt = new ChatGpt(initialSystemMessage);

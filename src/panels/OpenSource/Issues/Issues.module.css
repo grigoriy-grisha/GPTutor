@@ -16,6 +16,6 @@
 
 }
 
-.bottomItem .vkuiBanner__in {
-    height: 100px ;
+.bottomItem > .vkuiBanner__in {
+    height: 70px;
 }

@@ -18,6 +18,7 @@ const routes = {
   [RoutingPages.chapters]: new Page(Panels.chapters, Views.viewMain),
   [RoutingPages.chat]: new Page(Panels.chat, Views.viewMain),
   [RoutingPages.openSource]: new Page(Panels.openSource, Views.viewMain),
+  [RoutingPages.chatSettings]: new Page(Panels.chatSettings, Views.viewMain),
 };
 
 if (process.env.NODE_ENV === "production") {

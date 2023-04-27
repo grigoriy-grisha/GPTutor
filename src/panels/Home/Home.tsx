@@ -75,7 +75,7 @@ function Home({ id, goToChapters, goToChat, goToOpenSource }: IProps) {
               </div>
             </CardBlock>
 
-            <CardBlock className={classes.placeholderContainer}>
+            <CardBlock isBottom className={classes.placeholderContainer}>
               <Placeholder
                 className={classes.placeholder}
                 icon={<ChatGPTLogo size={60} />}
