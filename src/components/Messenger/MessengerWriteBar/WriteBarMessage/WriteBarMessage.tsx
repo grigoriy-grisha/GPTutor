@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 import {
   Platform,
   Separator,
@@ -23,6 +23,7 @@ interface IProps {
   additionalRequests: LessonRequest[];
   onClickAdditional: () => void;
   clearMessages: () => void;
+  onSettingsClick: () => void;
 }
 
 function WriteBarMessage({
@@ -32,6 +33,7 @@ function WriteBarMessage({
   isTyping,
   onClickAdditional,
   clearMessages,
+  onSettingsClick,
 }: IProps) {
   const [value, setValue] = useState("");
 
@@ -53,30 +55,24 @@ function WriteBarMessage({
     />
   );
 
-  useEffect(() => {
-    const send = (event: KeyboardEvent) => {
-      if (isTypingRef.current) return;
-      if (event.key !== "Enter") return;
-
-      event.preventDefault();
-      handleSend(valueRef.current);
-      setValue("");
-    };
-
-    document.addEventListener("keypress", send);
-    return () => document.removeEventListener("keypress", send);
-  }, []);
-
   return (
     <>
       <Separator wide />
       <WriteBar
+        onKeyDown={(event) => {
+          if (isTypingRef.current) return;
+          if (event.key !== "Enter") return;
+
+          event.preventDefault();
+          handleSend(valueRef.current);
+          setValue("");
+        }}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         before={
           <>
             {!additionalRequests?.length && (
-              <WriteBarIcon>
+              <WriteBarIcon onClick={onSettingsClick}>
                 <Icon28SettingsOutline />
               </WriteBarIcon>
             )}

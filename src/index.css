@@ -43,3 +43,7 @@ code[class*=language-] {
 .vkuiPlaceholder__in {
     padding: 24px 32px !important;
 }
+
+.vkuiPopoutWrapper {
+    z-index: 100;
+}

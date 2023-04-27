@@ -11,6 +11,7 @@ import {
 import { Icon20ChevronRight } from "@vkontakte/icons";
 
 import { lessonsController } from "../../entity/lessons";
+import { chatGpt } from "../../entity/GPT/ChatGpt";
 
 import classes from "./Chapters.module.css";
 
@@ -46,10 +47,11 @@ function Chapters({ id, goToChat, goBack }: IProps) {
                   <SimpleCell
                     key={lesson.id}
                     after={<Icon20ChevronRight />}
-                    expandable
                     onClick={() => {
-                      goToChat();
+                      chatGpt.clearMessages();
+                      chatGpt.clearSystemMessage();
                       lessonsController.setCurrentLesson(lesson.id);
+                      goToChat();
                     }}
                   >
                     <div>{lesson.name}</div>

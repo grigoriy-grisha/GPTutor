@@ -13,6 +13,7 @@ interface IProps {
   additionalRequests: LessonRequest[];
   handleSend: (message: string) => void;
   isTyping: boolean;
+  onSettingsClick: () => void;
 }
 
 function MessengerWriteBar({
@@ -20,6 +21,7 @@ function MessengerWriteBar({
   additionalRequests,
   handleSend,
   isTyping,
+  onSettingsClick,
 }: IProps) {
   const [isAdditionalOpen, setAdditionalsOpen] = useState(true);
 
@@ -44,6 +46,7 @@ function MessengerWriteBar({
           />
         </div>
         <WriteBarMessage
+          onSettingsClick={onSettingsClick}
           clearMessages={chatGpt.clearMessages}
           abortSend={chatGpt.abortSend}
           additionalRequests={additionalRequests}

@@ -58,6 +58,7 @@ function Copy({
       {copyService.copyToClickBoard$.done.get() && (
         <InPortal id="root">
           <Snackbar
+            duration={1500}
             onClose={() => copyService.copyToClickBoard$.reset()}
             before={
               copyService.copyToClickBoard$.success.get() ? (

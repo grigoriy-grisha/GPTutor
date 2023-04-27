@@ -12,18 +12,23 @@ interface IProps {
   goBack: () => void;
   lesson: LessonItem | null;
   chatGpt: ChatGpt;
+  onSettingsClick: () => void;
 }
 
-function Messenger({ goBack, lesson, chatGpt }: IProps) {
+function Messenger({ goBack, lesson, chatGpt, onSettingsClick }: IProps) {
   const isTyping = chatGpt.sendCompletions$.loading.get();
 
   const { scrollRef, scrollToBottom } = useMessengerScroll(isTyping);
 
   const onStartChat = () => {
-    chatGpt.send(lesson?.initialRequest?.text || "Привет, что ты можешь?");
+    const initialRequest = lesson?.initialRequest;
+    if (initialRequest) initialRequest.select();
+
+    chatGpt.send(initialRequest?.text || "Привет, что ты можешь?");
   };
 
   const handlerSend = (message: string) => {
+    if (!message) return;
     chatGpt.send(message);
     setTimeout(scrollToBottom, 50);
   };
@@ -46,6 +51,7 @@ function Messenger({ goBack, lesson, chatGpt }: IProps) {
             />
           </MessengerContainer>
           <MessengerWriteBar
+            onSettingsClick={onSettingsClick}
             chatGpt={chatGpt}
             additionalRequests={lesson?.additionalRequests || []}
             handleSend={handlerSend}

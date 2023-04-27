@@ -1,31 +1,28 @@
-import React, { useMemo } from "react";
+import React from "react";
 
 import { Panel } from "@vkontakte/vkui";
 
 import { Messenger } from "../../components/Messenger";
 import { lessonsController } from "../../entity/lessons";
-import { ChatGpt } from "../../entity/GPT/ChatGpt";
-import { GptMessage } from "../../entity/GPT/GptMessage";
-import { GPTRoles } from "../../entity/GPT/types";
+import { chatGpt } from "../../entity/GPT/ChatGpt";
 
 interface IProps {
   id: string;
   goBack: () => void;
+  goToChatSettings: () => void;
 }
 
-const systemMessage = new GptMessage(
-  "Ты программист с опытом веб разработки в 10 лет, отвечаешь на вопросы джуниора, который хочет научиться программированию, добавляй правильную подсветку кода, указывай язык для блоков кода",
-  GPTRoles.system
-);
-
-const Chat = ({ id, goBack }: IProps) => {
+const Chat = ({ id, goBack, goToChatSettings }: IProps) => {
   const currentLesson = lessonsController.currentLesson?.get();
-
-  const chatGpt = useMemo(() => new ChatGpt(systemMessage), []);
 
   return (
     <Panel id={id}>
-      <Messenger chatGpt={chatGpt} goBack={goBack} lesson={currentLesson} />
+      <Messenger
+        onSettingsClick={goToChatSettings}
+        chatGpt={chatGpt}
+        goBack={goBack}
+        lesson={currentLesson}
+      />
     </Panel>
   );
 };
