@@ -1,9 +1,10 @@
 import React, { memo } from "react";
+
 import { IconButton, Separator, Text } from "@vkontakte/vkui";
 import { Icon28Cancel } from "@vkontakte/icons";
 
-import { ChatGpt } from "../../../../entity/GPT/ChatGpt";
-import { Copy } from "../../../Copy";
+import { Copy } from "$/components/Copy";
+import { ChatGpt } from "$/entity/GPT";
 
 import classes from "./SelectedMessagesBar.module.css";
 

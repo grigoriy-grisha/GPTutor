@@ -2,13 +2,11 @@ import React, { memo, useMemo, useRef } from "react";
 
 import { Paragraph } from "@vkontakte/vkui";
 
-import Markdown from "../../../services/Markdown";
-import { BlockCode } from "./BlockCode";
-import { useDebounceValue } from "../../../hooks/useDebounceValue";
-
-import { GptMessage } from "$entity/GPT/GptMessage";
+import Markdown from "$/services/Markdown";
+import { GptMessage } from "$/entity/GPT";
 
 import classes from "./MessengerParagraph.module.css";
+import DebouncedCode from "./DebouncedCode";
 
 interface IProps {
   message: GptMessage;
@@ -24,19 +22,7 @@ function MessengerParagraph({ message }: IProps) {
       <div ref={containerRef} className={classes.codeContainer}>
         <div dangerouslySetInnerHTML={{ __html: html }} />
       </div>
-      {useDebounceValue<JSX.Element[]>(
-        [],
-        () => {
-          const pres =
-            containerRef.current?.querySelectorAll("[data-pre-container]") ||
-            [];
-          return [...pres].map((pre, index) => (
-            <BlockCode elem={pre as HTMLElement} key={index} />
-          ));
-        },
-        [html],
-        200
-      )}
+      {<DebouncedCode containerRef={containerRef} html={html} />}
     </Paragraph>
   );
 }

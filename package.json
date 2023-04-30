@@ -2,10 +2,12 @@
     "name": "chat",
     "version": "0.0.0",
     "scripts": {
-        "start": "cross-env GENERATE_SOURCEMAP=false PORT=10888 HTTPS=true DISABLE_NEW_JSX_TRANSFORM=true react-scripts start",
-        "build": "cross-env GENERATE_SOURCEMAP=false DISABLE_NEW_JSX_TRANSFORM=true react-scripts build",
+        "start": "cross-env GENERATE_SOURCEMAP=false PORT=10888 HTTPS=true DISABLE_NEW_JSX_TRANSFORM=true craco start",
+        "build": "cross-env GENERATE_SOURCEMAP=false DISABLE_NEW_JSX_TRANSFORM=true  craco build",
+        "test": "craco test",
         "predeploy": "npm run build",
         "deploy": "vk-miniapps-deploy"
+
     },
     "engines": {
         "node": ">=12.0.0"
@@ -15,6 +17,7 @@
     "dependencies": {
         "@bugsnag/js": "^7.20.0",
         "@bugsnag/plugin-react": "^7.19.0",
+        "@happysanta/router": "0.3.1",
         "@microsoft/fetch-event-source": "^2.0.1",
         "@types/node": "^12.0.0",
         "@types/react": "^17.0.0",
@@ -47,10 +50,10 @@
         "react-dom": "^17.0.2",
         "typescript": "^4.4.4",
         "uuid": "^9.0.0",
-        "vite": "^2.6.10",
-        "@happysanta/router": "0.3.1"
+        "vite": "^2.6.10"
     },
     "devDependencies": {
+        "@craco/craco": "^7.1.0",
         "@types/markdown-it": "^12.2.3",
         "@types/prismjs": "^1.26.0",
         "@types/uuid": "^9.0.1",

@@ -6,6 +6,16 @@ import { htmlLessons } from "./lessonsItem/html";
 import { gitLessons } from "./lessonsItem/git";
 import { reactLessons } from "./lessonsItem/react";
 
+export * from "./LessonsController";
+export * from "./ChapterItem";
+export * from "./chapterTypes";
+export * from "./LessonItem";
+export * from "./LessonRequest";
+export * from "./lessonsItem/javascript";
+export * from "./lessonsItem/html";
+export * from "./lessonsItem/git";
+export * from "./lessonsItem/react";
+
 export { ChapterTypes } from "./chapterTypes";
 
 export const lessonsController = new LessonsController([

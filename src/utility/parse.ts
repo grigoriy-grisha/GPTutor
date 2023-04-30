@@ -116,9 +116,5 @@ function concat(a: Uint8Array, b: Uint8Array) {
 }
 
 function newMessage(): EventSourceMessage {
-  return {
-    data: "",
-    event: "",
-    id: "",
-  };
+  return { data: "", event: "", id: "" };
 }

@@ -3,12 +3,12 @@ import React, { memo } from "react";
 import { Div, IconButton, Text } from "@vkontakte/vkui";
 import { Icon28CheckCircleOutline } from "@vkontakte/icons";
 
-import { ChatGpt } from "$entity/GPT/ChatGpt";
+import { ChatGpt, GptMessage } from "$/entity/GPT";
 
-import { MessengerAva } from "../../MessengerAva";
-import { vkUser } from "../../../../entity/user";
-import { GptMessage } from "../../../../entity/GPT/GptMessage";
-import { MessengerParagraph } from "../../MessengerParagraph";
+import { vkUser } from "$/entity/user";
+
+import { MessengerParagraph } from "$/components/Messenger/MessengerParagraph";
+import { MessengerAva } from "$/components/Messenger/MessengerAva";
 
 import classes from "./Message.module.css";
 
@@ -24,14 +24,22 @@ function Message({ chatGpt, message, isDisabled }: IProps) {
 
   const hasSelectedMessages = chatGpt.hasSelectedMessages$.get();
 
+  const onClickMessage = () => {
+    if (isDisabled || !hasSelectedMessages) return;
+    message.toggleSelected();
+  };
+
+  const onSelectFirstMessage = (e: any) => {
+    e.stopPropagation();
+    !isDisabled && message.toggleSelected();
+  };
+
   return (
     <div
       className={`${
         hasSelectedMessages ? classes.message : ""
       } ${selected} ${disabled}`}
-      onClick={() =>
-        !isDisabled && hasSelectedMessages && message.toggleSelected()
-      }
+      onClick={onClickMessage}
     >
       <Div className={classes.container}>
         <div className={classes.normalize}>
@@ -48,12 +56,7 @@ function Message({ chatGpt, message, isDisabled }: IProps) {
                 selected ? classes.selectedIcon : ""
               }`}
             >
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  !isDisabled && message.toggleSelected();
-                }}
-              >
+              <IconButton onClick={onSelectFirstMessage}>
                 <Icon28CheckCircleOutline />
               </IconButton>
             </div>

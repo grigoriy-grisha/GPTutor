@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from "react";
+
 import { Div } from "@vkontakte/vkui";
 
 function AppDiv({ children }: PropsWithChildren<any>) {

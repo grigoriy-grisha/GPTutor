@@ -1,28 +1,18 @@
-import React, { memo, useRef, useState } from "react";
-import {
-  Platform,
-  Separator,
-  usePlatform,
-  WriteBar,
-  WriteBarIcon,
-} from "@vkontakte/vkui";
-import { IconRenderer } from "../../../IconRenderer";
-import {
-  Icon24KeyboardBotsOutline,
-  Icon28CancelCircleOutline,
-  Icon28DeleteOutline,
-  Icon28KeyboardBotsOutline,
-  Icon28SettingsOutline,
-} from "@vkontakte/icons";
-import { LessonRequest } from "../../../../entity/lessons/LessonRequest";
+import React, { memo } from "react";
+import { Separator, WriteBar } from "@vkontakte/vkui";
+import { LessonRequest } from "$/entity/lessons";
+
+import WriteBarBefore from "./WriteBarBefore";
+import WriteBarAfter from "./WriteBarAfter";
+import { useWrite } from "./hooks/useWrite";
 
 interface IProps {
   isTyping: boolean;
   abortSend: () => void;
   handleSend: (value: string) => void;
   additionalRequests: LessonRequest[];
-  onClickAdditional: () => void;
   clearMessages: () => void;
+  onClickAdditional: () => void;
   onSettingsClick: () => void;
 }
 
@@ -35,82 +25,33 @@ function WriteBarMessage({
   clearMessages,
   onSettingsClick,
 }: IProps) {
-  const [value, setValue] = useState("");
-
-  const valueRef = useRef("");
-  const isTypingRef = useRef(isTyping);
-  valueRef.current = value;
-  isTypingRef.current = isTyping;
-
-  const platform = usePlatform();
-
-  const KeyboardBotsOutlineIcon = (
-    <IconRenderer
-      IconCompact={
-        platform === Platform.IOS
-          ? Icon28KeyboardBotsOutline
-          : Icon24KeyboardBotsOutline
-      }
-      IconRegular={Icon28KeyboardBotsOutline}
-    />
-  );
+  const { value, setValue, onEnterSend, sendMessage } = useWrite({
+    isTyping,
+    handleSend,
+  });
 
   return (
     <>
       <Separator wide />
       <WriteBar
-        onKeyDown={(event) => {
-          if (isTypingRef.current) return;
-          if (event.key !== "Enter") return;
-
-          event.preventDefault();
-          handleSend(valueRef.current);
-          setValue("");
-        }}
+        onKeyDown={onEnterSend}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         before={
-          <>
-            {!additionalRequests?.length && (
-              <WriteBarIcon onClick={onSettingsClick}>
-                <Icon28SettingsOutline />
-              </WriteBarIcon>
-            )}
-            {!!additionalRequests?.length && (
-              <WriteBarIcon
-                aria-label="Открыть меню"
-                onClick={onClickAdditional}
-              >
-                {KeyboardBotsOutlineIcon}
-              </WriteBarIcon>
-            )}
-          </>
+          <WriteBarBefore
+            additionalRequests={additionalRequests}
+            onClickAdditional={onClickAdditional}
+            onSettingsClick={onSettingsClick}
+          />
         }
         after={
-          <>
-            <WriteBarIcon onClick={clearMessages}>
-              <Icon28DeleteOutline />
-            </WriteBarIcon>
-            {!isTyping ? (
-              <WriteBarIcon
-                mode="send"
-                aria-label="Отправить сообщение"
-                disabled={value.length === 0 || isTyping}
-                onClick={() => {
-                  handleSend(value);
-                  setValue("");
-                }}
-              />
-            ) : (
-              <WriteBarIcon onClick={abortSend}>
-                <Icon28CancelCircleOutline
-                  fill="var(--vkui--color_icon_accent)"
-                  width={28}
-                  height={28}
-                />
-              </WriteBarIcon>
-            )}
-          </>
+          <WriteBarAfter
+            sendMessage={sendMessage}
+            clearMessages={clearMessages}
+            value={value}
+            isTyping={isTyping}
+            abortSend={abortSend}
+          />
         }
         placeholder="Сообщение"
       />

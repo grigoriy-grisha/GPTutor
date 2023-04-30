@@ -9,8 +9,8 @@ import {
 } from "@vkontakte/vkui";
 import { Icon12OnlineMobile } from "@vkontakte/icons";
 
-import { ChatGPTLogo } from "../../../icons";
-import { IsTypingLoader } from "../../IsTypingLoader";
+import { ChatGPTLogo } from "$/icons";
+import { IsTypingLoader } from "$/components/IsTypingLoader";
 
 import classes from "./Header.module.css";
 

@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from "react";
 
-import { InPortal } from "../../../InPortal";
-import { Copy } from "../../../Copy";
+import { InPortal } from "$/components/InPortal";
+import { Copy } from "$/components/Copy";
 
 import classes from "./BlockCode.module.css";
 

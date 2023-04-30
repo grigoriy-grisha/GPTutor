@@ -20,11 +20,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "./src",
-    "paths": {
-      "$*": ["*"]
-    }
   },
+  "extends": "./tsconfig.paths.json",
   "include": [
     "src",
     "node_modules/eslint-plugin-react/lib/types.d.ts"
