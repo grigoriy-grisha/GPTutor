@@ -2,9 +2,9 @@ import React from "react";
 
 import { Panel } from "@vkontakte/vkui";
 
-import { Messenger } from "../../components/Messenger";
-import { lessonsController } from "../../entity/lessons";
-import { chatGpt } from "../../entity/GPT/ChatGpt";
+import { Messenger } from "$/components/Messenger";
+import { lessonsController } from "$/entity/lessons";
+import { chatGpt } from "$/entity/GPT/ChatGpt";
 
 interface IProps {
   id: string;
@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const Chat = ({ id, goBack, goToChatSettings }: IProps) => {
-  const currentLesson = lessonsController.currentLesson?.get();
+  const currentLesson = lessonsController.currentLesson.get();
 
   return (
     <Panel id={id}>

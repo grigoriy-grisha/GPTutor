@@ -3,7 +3,7 @@ import { sig } from "dignals";
 import { LessonItem } from "./LessonItem";
 import { ChapterItem } from "./ChapterItem";
 import { UUID_V4 } from "../common";
-import { ChapterTypes } from "$entity/lessons/chapterTypes";
+import { ChapterTypes } from "$/entity/lessons/chapterTypes";
 
 export class LessonsController {
   public currentChapter = sig<ChapterItem | null>(null);

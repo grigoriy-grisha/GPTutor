@@ -6,7 +6,6 @@ import {
   WriteBar,
   WriteBarIcon,
 } from "@vkontakte/vkui";
-import { IconRenderer } from "../../../IconRenderer";
 import {
   Icon24KeyboardBotsOutline,
   Icon28CancelCircleOutline,
@@ -14,7 +13,10 @@ import {
   Icon28KeyboardBotsOutline,
   Icon28SettingsOutline,
 } from "@vkontakte/icons";
-import { LessonRequest } from "../../../../entity/lessons/LessonRequest";
+
+import { IconRenderer } from "$/components/IconRenderer";
+import { LessonRequest } from "$/entity/lessons/LessonRequest";
+import { useWrite } from "$/components/Messenger/MessengerWriteBar/WriteBarMessage/hooks/useWrite";
 
 interface IProps {
   isTyping: boolean;
@@ -26,6 +28,7 @@ interface IProps {
   onSettingsClick: () => void;
 }
 
+//todo Рефакториншг
 function WriteBarMessage({
   abortSend,
   handleSend,
@@ -35,13 +38,7 @@ function WriteBarMessage({
   clearMessages,
   onSettingsClick,
 }: IProps) {
-  const [value, setValue] = useState("");
-
-  const valueRef = useRef("");
-  const isTypingRef = useRef(isTyping);
-  valueRef.current = value;
-  isTypingRef.current = isTyping;
-
+  const { setValue, value, onEnterSend } = useWrite({ isTyping, handleSend });
   const platform = usePlatform();
 
   const KeyboardBotsOutlineIcon = (
@@ -59,14 +56,7 @@ function WriteBarMessage({
     <>
       <Separator wide />
       <WriteBar
-        onKeyDown={(event) => {
-          if (isTypingRef.current) return;
-          if (event.key !== "Enter") return;
-
-          event.preventDefault();
-          handleSend(valueRef.current);
-          setValue("");
-        }}
+        onKeyDown={onEnterSend}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         before={
@@ -97,6 +87,7 @@ function WriteBarMessage({
                 aria-label="Отправить сообщение"
                 disabled={value.length === 0 || isTyping}
                 onClick={() => {
+                  //todo вынести
                   handleSend(value);
                   setValue("");
                 }}

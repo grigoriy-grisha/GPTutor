@@ -34,7 +34,7 @@ export async function sendChatCompletions(
       onMessage(delta.content, isFirst);
       isFirst = false;
     },
-    onerror(err) {
+    onerror() {
       if (!isHasError) {
         onError();
         isHasError = true;

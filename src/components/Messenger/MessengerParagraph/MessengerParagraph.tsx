@@ -6,7 +6,7 @@ import Markdown from "../../../services/Markdown";
 import { BlockCode } from "./BlockCode";
 import { useDebounceValue } from "../../../hooks/useDebounceValue";
 
-import { GptMessage } from "$entity/GPT/GptMessage";
+import { GptMessage } from "$/entity/GPT/GptMessage";
 
 import classes from "./MessengerParagraph.module.css";
 

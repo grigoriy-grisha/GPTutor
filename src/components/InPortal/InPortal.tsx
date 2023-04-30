@@ -7,7 +7,6 @@ interface IProps {
   children: React.ReactNode;
 }
 
-// todo поправить querySelector
 function InPortal({ elem, id, children }: IProps) {
   const [hasMounted, setHasMounted] = React.useState(false);
 

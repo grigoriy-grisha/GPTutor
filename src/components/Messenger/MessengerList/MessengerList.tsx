@@ -1,6 +1,7 @@
 import { Button, Placeholder } from "@vkontakte/vkui";
 import React, { memo } from "react";
-import { ChatGpt } from "../../../entity/GPT/ChatGpt";
+
+import { ChatGpt } from "$/entity/GPT/ChatGpt";
 
 import { Message } from "./Message";
 

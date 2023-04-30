@@ -2,17 +2,16 @@ import React from "react";
 
 import { Card, Div, useAdaptivityWithJSMediaQueries } from "@vkontakte/vkui";
 
-import { ChapterTypes } from "../../../entity/lessons";
+import { Hovered } from "$/components/Hovered";
+import { ChapterTypes } from "$/entity/lessons";
 
 import {
-  VueLessons,
   GitLesson,
-  ReactLesson,
-  JSLesson,
   HtmlCssLesson,
-} from "../../../icons";
-
-import { Hovered } from "../../../components/Hovered";
+  JSLesson,
+  ReactLesson,
+  VueLessons,
+} from "$/icons";
 
 import classes from "./ChapterCard.module.css";
 

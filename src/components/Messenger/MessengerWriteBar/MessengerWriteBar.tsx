@@ -1,12 +1,12 @@
 import React, { memo, useCallback, useState } from "react";
 
+import { LessonRequest } from "$/entity/lessons/LessonRequest";
+import { ChatGpt } from "$/entity/GPT/ChatGpt";
+
 import classes from "./MessengerWriteBar.module.css";
 import { AdditionalRequests } from "./AdditionalRequests";
 import { WriteBarMessage } from "./WriteBarMessage";
 import { SelectedMessagesBar } from "./SelectedMessagesBar";
-
-import { LessonRequest } from "../../../entity/lessons/LessonRequest";
-import { ChatGpt } from "../../../entity/GPT/ChatGpt";
 
 interface IProps {
   chatGpt: ChatGpt;

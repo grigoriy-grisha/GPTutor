@@ -1,24 +1,13 @@
 import React from "react";
 
-import {
-  Button,
-  Header,
-  HorizontalCell,
-  HorizontalScroll,
-  Panel,
-  PanelHeader,
-  Placeholder,
-  Link,
-  IconButton,
-} from "@vkontakte/vkui";
-import { Icon28ArrowRightSquareOutline } from "@vkontakte/icons";
+import { Panel } from "@vkontakte/vkui";
 
-import { lessonsController } from "../../entity/lessons";
-import { AppContainer } from "../../components/AppContainer";
-import { CardBlock } from "../../components/CardBlock";
-import { ChatGPTLogo, GithubIcon } from "../../icons";
+import { lessonsController } from "$/entity/lessons";
+import { AppContainer } from "$/components/AppContainer";
 
-import { ChapterCard } from "./ChapterCard";
+import Cards from "./Cards";
+import FreeDialogBlock from "./FreeDialogBlock";
+import HomeHeader from "./HomeHeader";
 
 import classes from "./Home.module.css";
 
@@ -33,76 +22,23 @@ function Home({ id, goToChapters, goToChat, goToOpenSource }: IProps) {
   return (
     <Panel id={id}>
       <AppContainer
+        className={classes.group}
         maxHeight
         isSecondary
-        headerChildren={
-          <PanelHeader
-            before={
-              <IconButton
-                className={classes.githubIcon}
-                onClick={goToOpenSource}
-              >
-                <GithubIcon />
-              </IconButton>
-            }
-          >
-            GPTutor
-          </PanelHeader>
-        }
+        headerChildren={<HomeHeader goToOpenSource={goToOpenSource} />}
       >
-        {({ height }) => (
-          <div style={{ minHeight: height }} className={classes.group}>
-            <CardBlock isTop>
-              <Header mode="tertiary">Темы для изучения</Header>
-              <div className={classes.cards}>
-                <HorizontalScroll>
-                  <div style={{ display: "flex" }}>
-                    {lessonsController.chapters.map((chapter, index) => (
-                      <HorizontalCell key={index} size="l">
-                        <ChapterCard
-                          onClick={() => {
-                            lessonsController.setCurrentChapter(
-                              chapter.chapterType
-                            );
-                            goToChapters();
-                          }}
-                          chapterType={chapter.chapterType}
-                        />
-                      </HorizontalCell>
-                    ))}
-                  </div>
-                </HorizontalScroll>
-              </div>
-            </CardBlock>
-
-            <CardBlock isBottom className={classes.placeholderContainer}>
-              <Placeholder
-                className={classes.placeholder}
-                icon={<ChatGPTLogo size={60} />}
-                header="Задай свой вопрос"
-                action={
-                  <Button
-                    mode="outline"
-                    size="m"
-                    after={<Icon28ArrowRightSquareOutline />}
-                    onClick={() => {
-                      goToChat();
-                      lessonsController.clearLesson();
-                    }}
-                  >
-                    Начать диалог
-                  </Button>
-                }
-              >
-                Взаимодействуй с нейросетью{" "}
-                <Link href="https://openai.com/blog/chatgpt" target="_blank">
-                  Chat GPT
-                </Link>{" "}
-                в формате чата
-              </Placeholder>
-            </CardBlock>
-          </div>
-        )}
+        <Cards
+          onClickChapter={(chapter) => {
+            lessonsController.setCurrentChapter(chapter.chapterType);
+            goToChapters();
+          }}
+        />
+        <FreeDialogBlock
+          goToFreeDialog={() => {
+            goToChat();
+            lessonsController.clearLesson();
+          }}
+        />
       </AppContainer>
     </Panel>
   );

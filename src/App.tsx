@@ -25,9 +25,7 @@ const App = () => {
     bridge.send("VKWebAppGetUserInfo").then((user) => vkUserModel.fill(user));
   }, []);
 
-  useEffect(() => {
-    router.pushPage(RoutingPages.home);
-  }, []);
+  useEffect(() => router.pushPage(RoutingPages.home), []);
 
   const goBack = () => router.popPage();
   const goToChapters = () => router.pushPage(RoutingPages.chapters);
@@ -70,4 +68,5 @@ const App = () => {
     </SplitLayout>
   );
 };
+
 export default App;

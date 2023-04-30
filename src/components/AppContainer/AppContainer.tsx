@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import classes from "./AppContainer.module.css";
 
 interface IProps {
+  className?: string;
   containerRef?: React.LegacyRef<HTMLDivElement>;
-  children: ({ height }: { height: string }) => React.ReactNode;
+  children: React.ReactNode;
   headerChildren: React.ReactNode;
   style?: React.CSSProperties;
   maxHeight?: boolean;
@@ -12,6 +13,7 @@ interface IProps {
 }
 
 function AppContainer({
+  className,
   containerRef,
   children,
   headerChildren,
@@ -31,14 +33,15 @@ function AppContainer({
         ref={containerRef}
         className={`${classes.container} ${
           isSecondary ? classes.secondary : ""
-        }`}
+        } ${className}`}
         style={{
           minHeight: height,
+          height: "100%",
           ...(maxHeight ? { maxHeight: height } : {}),
           ...style,
         }}
       >
-        {children({ height })}
+        {children}
       </div>
     </>
   );

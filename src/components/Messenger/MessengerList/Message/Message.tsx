@@ -3,7 +3,7 @@ import React, { memo } from "react";
 import { Div, IconButton, Text } from "@vkontakte/vkui";
 import { Icon28CheckCircleOutline } from "@vkontakte/icons";
 
-import { ChatGpt } from "$entity/GPT/ChatGpt";
+import { ChatGpt } from "$/entity/GPT/ChatGpt";
 
 import { MessengerAva } from "../../MessengerAva";
 import { vkUser } from "../../../../entity/user";
