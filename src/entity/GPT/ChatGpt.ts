@@ -4,11 +4,11 @@ import {
   getChatCompletions,
   sendChatCompletions,
   setCacheCompletions,
-} from "../../api/completions";
+} from "$/api/completions";
+import ReactivePromise from "$/services/ReactivePromise";
 
 import { GPTRoles } from "./types";
 import { GptMessage } from "./GptMessage";
-import ReactivePromise from "../../services/ReactivePromise";
 
 const errorContent = `
 \`\`\`javascript

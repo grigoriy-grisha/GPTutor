@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 
-import { LessonItem } from "$/entity/lessons/LessonItem";
-import { ChatGpt } from "$/entity/GPT/ChatGpt";
+import { LessonItem } from "$/entity/lessons";
+import { ChatGpt } from "$/entity/GPT";
 
 import { Header } from "./Header";
 import { MessengerContainer } from "./MessengerContainer";

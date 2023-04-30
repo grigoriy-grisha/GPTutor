@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "@happysanta/router";
 
-import { chatGpt } from "$/entity/GPT/ChatGpt";
+import { chatGpt } from "$/entity/GPT";
 
 function useChatSettings() {
   const router = useRouter();

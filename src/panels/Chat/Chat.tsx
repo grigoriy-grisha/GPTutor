@@ -4,7 +4,7 @@ import { Panel } from "@vkontakte/vkui";
 
 import { Messenger } from "$/components/Messenger";
 import { lessonsController } from "$/entity/lessons";
-import { chatGpt } from "$/entity/GPT/ChatGpt";
+import { chatGpt } from "$/entity/GPT";
 
 interface IProps {
   id: string;

@@ -3,7 +3,7 @@ import React from "react";
 import { Panel, PanelHeader, PanelHeaderBack } from "@vkontakte/vkui";
 
 import { lessonsController } from "$/entity/lessons";
-import { chatGpt } from "$/entity/GPT/ChatGpt";
+import { chatGpt } from "$/entity/GPT";
 
 import Lessons from "./Lessons";
 

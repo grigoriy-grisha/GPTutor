@@ -13,7 +13,7 @@ interface IProps {
 }
 
 function CopySnackBar({ copyService }: IProps) {
-  if (copyService.copyToClickBoard$.done.get()) return null;
+  if (!copyService.copyToClickBoard$.done.get()) return null;
 
   return (
     <InPortal id="root">

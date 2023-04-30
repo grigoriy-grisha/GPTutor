@@ -1,9 +1,9 @@
 import { sig } from "dignals";
 
+import { ChapterTypes } from "./chapterTypes";
 import { LessonItem } from "./LessonItem";
 import { ChapterItem } from "./ChapterItem";
 import { UUID_V4 } from "../common";
-import { ChapterTypes } from "$/entity/lessons/chapterTypes";
 
 export class LessonsController {
   public currentChapter = sig<ChapterItem | null>(null);

@@ -1,7 +1,7 @@
 import { Signal, memo } from "dignals";
 
-import { getIssues, getRepository } from "../../api/github";
-import ReactivePromise from "../../services/ReactivePromise";
+import { getIssues, getRepository } from "$/api/github";
+import ReactivePromise from "$/services/ReactivePromise";
 
 class GithubController {
   public issues: Signal<any[]>;

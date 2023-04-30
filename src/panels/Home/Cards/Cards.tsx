@@ -1,9 +1,8 @@
 import React, { memo } from "react";
 import { Header, HorizontalCell, HorizontalScroll } from "@vkontakte/vkui";
 
-import { lessonsController } from "$/entity/lessons";
+import { lessonsController, ChapterItem } from "$/entity/lessons";
 import { CardBlock } from "$/components/CardBlock";
-import { ChapterItem } from "$/entity/lessons/ChapterItem";
 
 import ChapterCard from "./ChapterCard";
 

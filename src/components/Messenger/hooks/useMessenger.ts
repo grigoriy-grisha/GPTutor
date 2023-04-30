@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import { ChatGpt } from "$/entity/GPT/ChatGpt";
-import { LessonItem } from "$/entity/lessons/LessonItem";
+import { ChatGpt } from "$/entity/GPT";
+import { LessonItem } from "$/entity/lessons";
 
 import { useMessengerScroll } from "./useMessengerScroll";
 

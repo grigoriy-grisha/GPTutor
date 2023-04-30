@@ -2,8 +2,8 @@ import React, { memo } from "react";
 
 import { Avatar } from "@vkontakte/vkui";
 
-import { ChatGPTLogo } from "../../../icons";
-import { GptMessage } from "$/entity/GPT/GptMessage";
+import { ChatGPTLogo } from "$/icons";
+import { GptMessage } from "$/entity/GPT";
 
 interface IProps {
   message: GptMessage;

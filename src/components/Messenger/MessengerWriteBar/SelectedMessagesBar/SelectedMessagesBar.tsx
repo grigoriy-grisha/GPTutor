@@ -4,7 +4,7 @@ import { IconButton, Separator, Text } from "@vkontakte/vkui";
 import { Icon28Cancel } from "@vkontakte/icons";
 
 import { Copy } from "$/components/Copy";
-import { ChatGpt } from "$/entity/GPT/ChatGpt";
+import { ChatGpt } from "$/entity/GPT";
 
 import classes from "./SelectedMessagesBar.module.css";
 

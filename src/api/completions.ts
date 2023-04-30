@@ -1,6 +1,6 @@
-import { EventSourceMessage, fetchEventSource } from "../utility";
+import { EventSourceMessage, fetchEventSource } from "$/utility";
 
-const API_KEYS = process.env.REACT_APP_OPEN_AI_API_KEY!.split(",");
+const API_KEYS = process.env.REACT_APP_OPEN_AI_API_KEYS!.split(",");
 const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
 
 export async function sendChatCompletions(

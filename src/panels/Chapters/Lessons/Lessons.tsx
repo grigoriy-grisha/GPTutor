@@ -3,8 +3,7 @@ import React from "react";
 import { Header, Search, SimpleCell } from "@vkontakte/vkui";
 import { Icon20ChevronRight } from "@vkontakte/icons";
 
-import { ChapterItem } from "$/entity/lessons/ChapterItem";
-import { LessonItem } from "$/entity/lessons/LessonItem";
+import { ChapterItem, LessonItem } from "$/entity/lessons";
 
 import classes from "./Lessons.module.css";
 

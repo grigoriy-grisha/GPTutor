@@ -1,21 +1,22 @@
 import React, { useEffect } from "react";
 import { SplitLayout, useConfigProvider, View } from "@vkontakte/vkui";
 import bridge from "@vkontakte/vk-bridge";
+import { useLocation, useRouter } from "@happysanta/router";
 
 import "@vkontakte/vkui/dist/vkui.css";
 import "./index.css";
 
 import { vkUserModel } from "./entity/user";
+
+import { OneDark } from "./OneDark";
+import { OneLight } from "./OneLight";
+import { Panels, RoutingPages, Views } from "./entity/routing";
+
 import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
 import { Chat } from "./panels/Chat";
 import { OpenSource } from "./panels/OpenSource";
 import { ChatSettings } from "./panels/ChatSettings";
-
-import { OneDark } from "./OneDark";
-import { OneLight } from "./OneLight";
-import { Panels, RoutingPages, Views } from "./entity/routing";
-import { useLocation, useRouter } from "@happysanta/router";
 
 const App = () => {
   const location = useLocation();

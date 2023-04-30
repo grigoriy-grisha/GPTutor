@@ -22,9 +22,15 @@ export function useWrite({ isTyping, handleSend }: HookWriteParams) {
     setValue("");
   };
 
+  const sendMessage = () => {
+    handleSend(value);
+    setValue("");
+  };
+
   return {
     value,
     setValue,
     onEnterSend,
+    sendMessage,
   };
 }
