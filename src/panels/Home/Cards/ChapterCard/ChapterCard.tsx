@@ -10,6 +10,7 @@ import {
   HtmlCssLesson,
   JSLesson,
   ReactLesson,
+  TypescriptLesson,
   VueLessons,
 } from "$/icons";
 
@@ -17,6 +18,7 @@ import classes from "./ChapterCard.module.css";
 
 const CardIcon: Record<ChapterTypes, React.FC> = {
   [ChapterTypes.JS]: JSLesson,
+  [ChapterTypes.Typescript]: TypescriptLesson,
   [ChapterTypes.Vue]: VueLessons,
   [ChapterTypes.React]: ReactLesson,
   [ChapterTypes.Git]: GitLesson,

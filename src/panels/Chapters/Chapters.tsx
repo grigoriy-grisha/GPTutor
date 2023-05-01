@@ -2,7 +2,7 @@ import React from "react";
 
 import { Panel, PanelHeader, PanelHeaderBack } from "@vkontakte/vkui";
 
-import { lessonsController } from "$/entity/lessons";
+import { ChapterTypes, lessonsController } from "$/entity/lessons";
 import { chatGpt } from "$/entity/GPT";
 
 import Lessons from "./Lessons";
@@ -15,14 +15,24 @@ interface IProps {
   goBack: () => void;
 }
 
+const chapterTitles: Record<ChapterTypes, string> = {
+  [ChapterTypes.React]: "Темы React",
+  [ChapterTypes.Typescript]: "Темы Typescript",
+  [ChapterTypes.HTMLCSS]: "Темы HTML и CSS",
+  [ChapterTypes.Git]: "Темы Git",
+  [ChapterTypes.JS]: "Темы JavaScript",
+  [ChapterTypes.Vue]: "Темы Vue",
+};
+
 function Chapters({ id, goToChat, goBack }: IProps) {
   const currentChapter = lessonsController.currentChapter.get();
+  if (!currentChapter) return null;
 
   return (
     <Panel id={id}>
       <div className={classes.panel}>
         <PanelHeader shadow before={<PanelHeaderBack onClick={goBack} />}>
-          Диалоги
+          {chapterTitles[currentChapter?.chapterType]}
         </PanelHeader>
         {currentChapter && (
           <Lessons

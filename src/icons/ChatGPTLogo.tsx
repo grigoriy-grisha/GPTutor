@@ -6,7 +6,6 @@ export function ChatGPTLogo({ size = 36 }: { size?: number }) {
       style={{ borderRadius: "50%" }}
       width={size}
       height={size}
-      xmlns="http://www.w3.org/2000/svg"
       shapeRendering="geometricPrecision"
       textRendering="geometricPrecision"
       imageRendering="optimizeQuality"

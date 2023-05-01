@@ -13,6 +13,7 @@ export class LessonItem {
     public additionalRequests: LessonRequest[]
   ) {
     this.id = uuid();
+    initialRequest.name = "Стартовый вопрос";
     this.additionalRequests = [initialRequest, ...additionalRequests];
   }
 }

@@ -3,7 +3,6 @@ import React from "react";
 export function CssIcon() {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
       fill="var(--vkui--color_background_accent_themed)"
       version="1.1"
       width="30"

@@ -6,7 +6,7 @@ export function GitLesson() {
   const color = appearance === "dark" ? "#000" : "#fff";
 
   return (
-    <svg viewBox="0 0 624 442" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 624 442" fill="none">
       <g clipPath="url(#clip0_506_51)">
         <path d="M624 0H0V442H624V0Z" fill="transparent" />
         <path

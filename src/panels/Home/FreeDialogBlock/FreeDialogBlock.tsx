@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button, Link, Placeholder } from "@vkontakte/vkui";
-import { Icon28ArrowRightSquareOutline } from "@vkontakte/icons";
+import { Icon24ArrowRightSquareOutline } from "@vkontakte/icons";
 
 import { ChatGPTLogo } from "$/icons";
 import { CardBlock } from "$/components/CardBlock";
@@ -23,7 +23,7 @@ function FreeDialogBlock({ goToFreeDialog }: IProps) {
           <Button
             mode="outline"
             size="m"
-            after={<Icon28ArrowRightSquareOutline />}
+            after={<Icon24ArrowRightSquareOutline />}
             onClick={goToFreeDialog}
           >
             Начать диалог

@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { Button, Placeholder, Spinner } from "@vkontakte/vkui";
 import {
-  Icon28ArrowRightSquareOutline,
+  Icon24ArrowRightSquareOutline,
   Icon28BracketsSlashSquareOutline,
 } from "@vkontakte/icons";
 
-import { CardBlock } from "../../../components/CardBlock";
-import { githubController } from "../../../entity/Github";
+import { CardBlock } from "$/components/CardBlock";
+import { githubController } from "$/entity/Github";
 
 import classes from "./Repository.module.css";
 
@@ -27,7 +27,7 @@ function Repository() {
           action={
             <Button
               mode="outline"
-              after={<Icon28ArrowRightSquareOutline />}
+              after={<Icon24ArrowRightSquareOutline />}
               size="m"
               href={result?.html_url}
             >
