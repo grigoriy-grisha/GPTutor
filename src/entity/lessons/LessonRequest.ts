@@ -3,7 +3,7 @@ export class LessonRequest {
   name: string;
   isSelected: boolean;
 
-  constructor(text: string, name: string = "Стартовый вопрос") {
+  constructor(text: string, name?: string) {
     this.text = text;
     this.name = name || text;
     this.isSelected = false;

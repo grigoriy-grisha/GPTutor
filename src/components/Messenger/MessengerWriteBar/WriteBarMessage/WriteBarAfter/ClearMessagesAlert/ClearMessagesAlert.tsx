@@ -1,5 +1,4 @@
-import React, { memo } from "react";
-
+import React from "react";
 import { Alert } from "@vkontakte/vkui";
 
 import { InPortal } from "$/components/InPortal";
@@ -9,13 +8,13 @@ interface IProps {
   closeAlert: () => void;
 }
 
-function ApplyAlert({ applySettings, closeAlert }: IProps) {
+function ClearMessagesAlert({ applySettings, closeAlert }: IProps) {
   return (
     <InPortal id="root">
       <Alert
         actions={[
           {
-            title: "Применить настройки",
+            title: "Удалить сообщения",
             mode: "destructive",
             action: applySettings,
           },
@@ -24,10 +23,10 @@ function ApplyAlert({ applySettings, closeAlert }: IProps) {
         actionsLayout="vertical"
         onClose={closeAlert}
         header="Подтвердите действие"
-        text="После изменения системных настроек история сообщений будет отчищена!"
+        text="Вы уверены? Историю сообщений нельзя будет вернуть!"
       />
     </InPortal>
   );
 }
 
-export default memo(ApplyAlert);
+export default ClearMessagesAlert;

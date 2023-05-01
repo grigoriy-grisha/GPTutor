@@ -5,24 +5,23 @@ import { LessonRequest } from "$/entity/lessons";
 import WriteBarBefore from "./WriteBarBefore";
 import WriteBarAfter from "./WriteBarAfter";
 import { useWrite } from "./hooks/useWrite";
+import { ChatGpt } from "$/entity/GPT";
 
 interface IProps {
+  chatGpt: ChatGpt;
   isTyping: boolean;
-  abortSend: () => void;
   handleSend: (value: string) => void;
   additionalRequests: LessonRequest[];
-  clearMessages: () => void;
   onClickAdditional: () => void;
   onSettingsClick: () => void;
 }
 
 function WriteBarMessage({
-  abortSend,
+  chatGpt,
   handleSend,
   additionalRequests,
   isTyping,
   onClickAdditional,
-  clearMessages,
   onSettingsClick,
 }: IProps) {
   const { value, setValue, onEnterSend, sendMessage } = useWrite({
@@ -46,11 +45,10 @@ function WriteBarMessage({
         }
         after={
           <WriteBarAfter
+            chatGpt={chatGpt}
             sendMessage={sendMessage}
-            clearMessages={clearMessages}
             value={value}
             isTyping={isTyping}
-            abortSend={abortSend}
           />
         }
         placeholder="Сообщение"

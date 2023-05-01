@@ -7,7 +7,7 @@ export function ReactLesson() {
   const color = appearance === "dark" ? "#000" : "#fff";
 
   return (
-    <svg viewBox="0 0 624 442" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 624 442" fill="none">
       <rect
         x="39.5"
         y="34.5"

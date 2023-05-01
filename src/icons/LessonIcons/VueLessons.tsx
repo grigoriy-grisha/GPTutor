@@ -7,7 +7,7 @@ export function VueLessons() {
   const color = appearance === "dark" ? "#000" : "#fff";
 
   return (
-    <svg viewBox="0 0 624 442" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 624 442" fill="none">
       <g clipPath="url(#clip0_508_125)">
         <path
           d="M497 29H38C32.4772 29 28 33.4772 28 39V403C28 408.523 32.4772 413 38 413H497C502.523 413 507 408.523 507 403V39C507 33.4772 502.523 29 497 29Z"

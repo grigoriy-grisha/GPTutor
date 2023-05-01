@@ -6,9 +6,10 @@ import {
   HorizontalScroll,
   Spinner,
 } from "@vkontakte/vkui";
-import { githubController } from "../../../entity/Github";
-import { Issue } from "../../../icons";
-import { CardBlock } from "../../../components/CardBlock";
+
+import { githubController } from "$/entity/Github";
+import { Issue } from "$/icons";
+import { CardBlock } from "$/components/CardBlock";
 
 import classes from "./Issues.module.css";
 

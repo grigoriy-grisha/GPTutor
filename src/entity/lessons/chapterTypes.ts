@@ -4,4 +4,5 @@ export enum ChapterTypes {
   Git = "Git",
   Vue = "Vue",
   HTMLCSS = "HTMLCSS",
+  Typescript = "Typescript",
 }

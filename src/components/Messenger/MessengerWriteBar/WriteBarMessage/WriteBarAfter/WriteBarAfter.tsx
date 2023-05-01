@@ -1,44 +1,54 @@
+import React, { useState } from "react";
+
 import { WriteBarIcon } from "@vkontakte/vkui";
 import {
   Icon28CancelCircleOutline,
   Icon28DeleteOutline,
+  Icon28Send,
 } from "@vkontakte/icons";
-import React from "react";
+
+import { ChatGpt } from "$/entity/GPT";
+
+import ClearMessagesAlert from "./ClearMessagesAlert";
 
 interface IProps {
+  chatGpt: ChatGpt;
+
   isTyping: boolean;
-  abortSend: () => void;
-  clearMessages: () => void;
   sendMessage: () => void;
   value: string;
 }
 
-function WriteBarAfter({
-  clearMessages,
-  isTyping,
-  value,
-  sendMessage,
-  abortSend,
-}: IProps) {
+function WriteBarAfter({ chatGpt, isTyping, value, sendMessage }: IProps) {
+  const [showAlert, setShowAlert] = useState(false);
   return (
     <>
-      <WriteBarIcon onClick={clearMessages}>
+      {showAlert && (
+        <ClearMessagesAlert
+          closeAlert={() => setShowAlert(false)}
+          applySettings={() => {
+            chatGpt.clearMessages();
+            setShowAlert(false);
+          }}
+        />
+      )}
+      <WriteBarIcon
+        onClick={() => setShowAlert(true)}
+        disabled={chatGpt.messages$.get().length === 0}
+      >
         <Icon28DeleteOutline />
       </WriteBarIcon>
       {!isTyping ? (
         <WriteBarIcon
-          mode="send"
           aria-label="Отправить сообщение"
           disabled={value.length === 0 || isTyping}
           onClick={sendMessage}
-        />
+        >
+          <Icon28Send fill="var(--vkui--color_icon_accent)" />
+        </WriteBarIcon>
       ) : (
-        <WriteBarIcon onClick={abortSend}>
-          <Icon28CancelCircleOutline
-            fill="var(--vkui--color_icon_accent)"
-            width={28}
-            height={28}
-          />
+        <WriteBarIcon onClick={chatGpt.abortSend}>
+          <Icon28CancelCircleOutline fill="var(--vkui--color_icon_accent)" />
         </WriteBarIcon>
       )}
     </>
