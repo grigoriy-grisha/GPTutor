@@ -23,10 +23,10 @@ function MessengerWriteBar({
   isTyping,
   onSettingsClick,
 }: IProps) {
-  const [isAdditionalOpen, setAdditionalsOpen] = useState(true);
+  const [isAdditionalOpen, setAdditionsOpen] = useState(true);
 
   const onClickAdditional = useCallback(
-    () => setAdditionalsOpen((prev) => !prev),
+    () => setAdditionsOpen((prev) => !prev),
     []
   );
   const hasSelectedMessages = chatGpt.hasSelectedMessages$.get();
@@ -50,7 +50,6 @@ function MessengerWriteBar({
           onSettingsClick={onSettingsClick}
           additionalRequests={additionalRequests}
           handleSend={handleSend}
-          isTyping={isTyping}
           onClickAdditional={onClickAdditional}
         />
       </div>

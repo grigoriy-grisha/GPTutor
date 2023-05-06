@@ -14,12 +14,13 @@ import ClearMessagesAlert from "./ClearMessagesAlert";
 interface IProps {
   chatGpt: ChatGpt;
 
-  isTyping: boolean;
   sendMessage: () => void;
   value: string;
 }
 
-function WriteBarAfter({ chatGpt, isTyping, value, sendMessage }: IProps) {
+function WriteBarAfter({ chatGpt, value, sendMessage }: IProps) {
+  const isTyping = chatGpt.sendCompletions$.loading.get();
+
   const [showAlert, setShowAlert] = useState(false);
   return (
     <>

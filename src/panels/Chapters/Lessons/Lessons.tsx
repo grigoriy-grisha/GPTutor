@@ -1,11 +1,12 @@
 import React from "react";
 
-import { Header, Search, SimpleCell } from "@vkontakte/vkui";
+import { Search, SimpleCell } from "@vkontakte/vkui";
 import { Icon20ChevronRight } from "@vkontakte/icons";
 
 import { ChapterItem, LessonItem } from "$/entity/lessons";
 
 import classes from "./Lessons.module.css";
+import TertiaryTitle from "$/components/TertiaryTitle";
 
 interface IProps {
   currentChapter: ChapterItem;
@@ -23,7 +24,7 @@ function Lessons({ currentChapter, onClickLesson }: IProps) {
       />
       {Object.entries(lessons).map(([key, value]) => (
         <React.Fragment key={key}>
-          <Header mode="secondary">{key}</Header>
+          <TertiaryTitle>{key}</TertiaryTitle>
           {value.map((lesson) => (
             <SimpleCell
               key={lesson.id}

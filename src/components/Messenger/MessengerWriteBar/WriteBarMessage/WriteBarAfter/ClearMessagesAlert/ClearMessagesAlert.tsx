@@ -18,7 +18,7 @@ function ClearMessagesAlert({ applySettings, closeAlert }: IProps) {
             mode: "destructive",
             action: applySettings,
           },
-          { title: "Вернуться", mode: "cancel", action: closeAlert },
+          { title: "Отмена", mode: "cancel", action: closeAlert },
         ]}
         actionsLayout="vertical"
         onClose={closeAlert}

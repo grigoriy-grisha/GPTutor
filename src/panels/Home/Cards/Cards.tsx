@@ -1,8 +1,9 @@
 import React, { memo } from "react";
-import { Header, HorizontalCell, HorizontalScroll } from "@vkontakte/vkui";
+import { HorizontalCell, HorizontalScroll } from "@vkontakte/vkui";
 
-import { lessonsController, ChapterItem } from "$/entity/lessons";
+import { ChapterItem, lessonsController } from "$/entity/lessons";
 import { CardBlock } from "$/components/CardBlock";
+import TertiaryTitle from "$/components/TertiaryTitle";
 
 import ChapterCard from "./ChapterCard";
 
@@ -13,7 +14,7 @@ interface IProps {
 function Cards({ onClickChapter }: IProps) {
   return (
     <CardBlock isTop>
-      <Header mode="tertiary">Темы для изучения</Header>
+      <TertiaryTitle>Темы для изучения</TertiaryTitle>
       <div style={{ paddingBottom: 8 }}>
         <HorizontalScroll>
           <div style={{ display: "flex" }}>

@@ -1,6 +1,5 @@
 import { EventSourceMessage, fetchEventSource } from "$/utility";
 
-const API_KEYS = process.env.REACT_APP_OPEN_AI_API_KEYS!.split(",");
 const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
 
 export async function sendChatCompletions(
@@ -12,12 +11,12 @@ export async function sendChatCompletions(
   let isFirst = true;
   let isHasError = false;
 
-  const apiKeyIndex = await getApiKeyIndex();
+  const apiKey = await getApiKey();
 
   await fetchEventSource("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
-      Authorization: "Bearer " + API_KEYS[apiKeyIndex],
+      Authorization: "Bearer " + apiKey,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ ...body, stream: true }),
@@ -28,7 +27,7 @@ export async function sendChatCompletions(
       const eventData = JSON.parse(event.data);
       const delta = eventData.choices[0].delta;
 
-      if (!Object.keys(delta).length) return controller.abort();
+      if (!Object.keys(delta).length) return;
 
       if (!delta.content) return;
       onMessage(delta.content, isFirst);
@@ -93,6 +92,6 @@ export async function getChatCompletions({
   return true;
 }
 
-function getApiKeyIndex() {
-  return fetch(`${BACKEND_HOST}api-keys-index`).then((res) => res.json());
+function getApiKey() {
+  return fetch(`${BACKEND_HOST}api-key`).then((res) => res.text());
 }

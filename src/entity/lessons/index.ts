@@ -24,6 +24,5 @@ export const lessonsController = new LessonsController([
   new ChapterItem(ChapterTypes.JS, lessonsJs),
   new ChapterItem(ChapterTypes.Typescript, typescriptLessons),
   new ChapterItem(ChapterTypes.React, reactLessons),
-  new ChapterItem(ChapterTypes.Vue, []),
   new ChapterItem(ChapterTypes.Git, gitLessons),
 ]);
