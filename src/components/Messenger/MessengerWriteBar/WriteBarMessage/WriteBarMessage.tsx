@@ -9,7 +9,6 @@ import { ChatGpt } from "$/entity/GPT";
 
 interface IProps {
   chatGpt: ChatGpt;
-  isTyping: boolean;
   handleSend: (value: string) => void;
   additionalRequests: LessonRequest[];
   onClickAdditional: () => void;
@@ -20,12 +19,11 @@ function WriteBarMessage({
   chatGpt,
   handleSend,
   additionalRequests,
-  isTyping,
   onClickAdditional,
   onSettingsClick,
 }: IProps) {
   const { value, setValue, onEnterSend, sendMessage } = useWrite({
-    isTyping,
+    isTyping: chatGpt.sendCompletions$.loading.get(),
     handleSend,
   });
 
@@ -48,7 +46,6 @@ function WriteBarMessage({
             chatGpt={chatGpt}
             sendMessage={sendMessage}
             value={value}
-            isTyping={isTyping}
           />
         }
         placeholder="Сообщение"

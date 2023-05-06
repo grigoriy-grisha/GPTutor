@@ -1,14 +1,10 @@
 import React from "react";
 
-import {
-  Banner,
-  Header,
-  HorizontalCell,
-  HorizontalScroll,
-} from "@vkontakte/vkui";
+import { Banner, HorizontalCell, HorizontalScroll } from "@vkontakte/vkui";
 
 import { ChapterTypes } from "$/entity/lessons";
 import { CardBlock } from "$/components/CardBlock";
+import TertiaryTitle from "$/components/TertiaryTitle";
 
 import { stackData } from "./stackData";
 import classes from "./Stack.module.css";
@@ -20,7 +16,7 @@ interface IProps {
 function Stack({ onClickStack }: IProps) {
   return (
     <CardBlock isTop>
-      <Header mode="tertiary">Стек технологий</Header>
+      <TertiaryTitle>Стек технологий</TertiaryTitle>
       <HorizontalScroll>
         <div style={{ display: "flex" }}>
           {stackData.map(({ icon, header, chapter, href }, index) => (

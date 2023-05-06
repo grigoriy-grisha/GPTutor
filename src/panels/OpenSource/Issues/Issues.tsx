@@ -1,7 +1,6 @@
 import React, { memo, useEffect } from "react";
 import {
   Banner,
-  Header,
   HorizontalCell,
   HorizontalScroll,
   Spinner,
@@ -10,6 +9,7 @@ import {
 import { githubController } from "$/entity/Github";
 import { Issue } from "$/icons";
 import { CardBlock } from "$/components/CardBlock";
+import TertiaryTitle from "$/components/TertiaryTitle";
 
 import classes from "./Issues.module.css";
 
@@ -27,7 +27,7 @@ function Issues() {
 
   return (
     <CardBlock isBottom>
-      <Header mode="tertiary">Открытые Issues</Header>
+      <TertiaryTitle>Открытые Issues</TertiaryTitle>
       <HorizontalScroll>
         <div style={{ display: "flex" }}>
           {githubController.issues.get().map(({ html_url, title }) => (

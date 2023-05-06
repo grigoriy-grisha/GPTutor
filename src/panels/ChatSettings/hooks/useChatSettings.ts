@@ -12,7 +12,7 @@ function useChatSettings() {
   const [showAlert, setShowAlert] = useState(false);
   const initialMessage = useRef(systemMessage);
 
-  const isDirty = initialMessage.current !== systemMessage;
+  const isDirty = initialMessage.current !== systemMessageValue;
 
   const isChangedSystemMessage =
     chatGpt.initialSystemContent === systemMessageValue;

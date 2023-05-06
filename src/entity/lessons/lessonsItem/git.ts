@@ -88,19 +88,6 @@ export const gitLessons = [
     ]
   ),
   new LessonItem(
-    "Синхронизация",
-    TEAM_WORK,
-    new LessonRequest(
-      "Расскажи о совместной работе в git и почему необходима синхронизация между несколькими разработчиками?"
-    ),
-    [
-      new LessonRequest("Расскажи о команде ```git remote```", "git remote"),
-      new LessonRequest("Расскажи о команде ```git fetch```", "git fetch"),
-      new LessonRequest("Расскажи о команде ```git push```", "git push"),
-      new LessonRequest("Расскажи о команде ```git pull```", "git pull"),
-    ]
-  ),
-  new LessonItem(
     "Использование веток",
     TEAM_WORK,
     new LessonRequest("Что такое ветки в git? Чем они могут быть полезны?"),

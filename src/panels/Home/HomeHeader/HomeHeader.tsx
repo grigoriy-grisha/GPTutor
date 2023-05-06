@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IconButton, PanelHeader } from "@vkontakte/vkui";
+import { IconButton, PanelHeader, Title } from "@vkontakte/vkui";
 
 import { GithubIcon } from "$/icons";
 
@@ -19,7 +19,7 @@ function HomeHeader({ goToOpenSource }: IProps) {
         </IconButton>
       }
     >
-      GPTutor
+      <Title level="1">GPTutor</Title>
     </PanelHeader>
   );
 }
