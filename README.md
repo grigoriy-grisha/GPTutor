@@ -2,7 +2,7 @@
 
 ### Нейросеть Chat GPT во ВКонтакте!
 
-[<img src="./public/i.svg" alt="GPTutor Banner">](https://vk.com/app51602327_548334196)
+[<img src="./public/gptTutorBanner.png" alt="GPTutor Banner">](https://vk.com/app51602327_548334196)
 
 ## Желательные требования к проекту
 - Node.js выше, чем 16 версия.
@@ -27,7 +27,7 @@
 - VK/UI, библиотека готовых компонентов от VK.
 - [dignals](https://github.com/dmitriypereverza/dignals), крошечная бибилиотека сигналов, используется для управления состоянием приложения
 ## Правила коммитов
-    
+
 ```
 #Номер Issue <Тип коммита (Feat|Fix|Refactor)>: Описание коммита
 
@@ -49,6 +49,5 @@ close #38
 #16 <Refactor>: Перевод проекта на typescript
 close #16
 ``` 
-
 
 
