@@ -2,8 +2,8 @@ import React, { memo } from "react";
 
 import { Div, IconButton, Text } from "@vkontakte/vkui";
 import {
+  Icon24CheckCircleOutline,
   Icon24WarningTriangleOutline,
-  Icon28CheckCircleOutline,
 } from "@vkontakte/icons";
 import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
 
@@ -74,7 +74,7 @@ function Message({ chatGpt, message, isDisabled }: IProps) {
                 className={selected ? classes.selectedIcon : ""}
                 onClick={onSelectFirstMessage}
               >
-                <Icon28CheckCircleOutline />
+                <Icon24CheckCircleOutline />
               </IconButton>
             </div>
           </div>
