@@ -1,7 +1,11 @@
 import React, { memo } from "react";
 
 import { Div, IconButton, Text } from "@vkontakte/vkui";
-import { Icon28CheckCircleOutline } from "@vkontakte/icons";
+import {
+  Icon24WarningTriangleOutline,
+  Icon28CheckCircleOutline,
+} from "@vkontakte/icons";
+import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
 
 import { ChatGpt, GptMessage } from "$/entity/GPT";
 
@@ -19,6 +23,7 @@ interface IProps {
 }
 
 function Message({ chatGpt, message, isDisabled }: IProps) {
+  const runOutOfContextMessages = chatGpt.getRunOutOfContextMessages$.get();
   const selected = message.isSelected$.get() ? classes.selected : "";
   const disabled = isDisabled ? classes.disabled : "";
 
@@ -51,12 +56,24 @@ function Message({ chatGpt, message, isDisabled }: IProps) {
             <Text weight="2" className={classes.normalize}>
               {message.role === "assistant" ? "Chat GPT" : vkUser?.first_name}
             </Text>
-            <div
-              className={`${classes.iconsBlock} ${
-                selected ? classes.selectedIcon : ""
-              }`}
-            >
-              <IconButton onClick={onSelectFirstMessage}>
+            <div className={classes.iconsBlock}>
+              {runOutOfContextMessages.find(({ id }) => message.id === id) && (
+                <TextTooltip
+                  appearance="accent"
+                  style={{ maxWidth: 250 }}
+                  text="Из-за длинного размера сообщений ниже,
+                   это сообщение не может быть учтено в локальном контексте.
+                   Chat GPT может поддерживать только 3500 слов в текущем диалоге."
+                >
+                  <IconButton>
+                    <Icon24WarningTriangleOutline />
+                  </IconButton>
+                </TextTooltip>
+              )}
+              <IconButton
+                className={selected ? classes.selectedIcon : ""}
+                onClick={onSelectFirstMessage}
+              >
                 <Icon28CheckCircleOutline />
               </IconButton>
             </div>

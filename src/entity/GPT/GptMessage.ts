@@ -1,9 +1,15 @@
 import { sig, Signal } from "dignals";
 import { GPTRoles } from "./types";
 
+let id = 0;
+
 export class GptMessage {
   content$: Signal<string>;
   isSelected$ = sig<boolean>(false);
+
+  isRunOutOfContext = sig<boolean>(false);
+
+  id: number = id;
 
   constructor(
     message: string,
@@ -11,6 +17,7 @@ export class GptMessage {
     public inLocal?: boolean
   ) {
     this.content$ = sig(message);
+    id++;
   }
 
   onSetMessageContent = (value: string) => {
@@ -27,5 +34,9 @@ export class GptMessage {
 
   unselect() {
     this.isSelected$.set(false);
+  }
+
+  toggleRunOutOff() {
+    this.isRunOutOfContext.set(true);
   }
 }

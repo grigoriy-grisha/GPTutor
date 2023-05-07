@@ -23,6 +23,8 @@ const errorContent = `
 \`-=========-\`() 
 `;
 
+const MAX_CONTEXT_WORDS = 2000;
+
 //todo рефакторинг, разнести этот класс на несколько сущностей
 export class ChatGpt {
   initialSystemContent =
@@ -35,6 +37,14 @@ export class ChatGpt {
 
   selectedMessages$ = memo(() =>
     this.messages$.get().filter((message) => message.isSelected$.get())
+  );
+
+  getRunOutOfContextMessages$ = memo(() =>
+    this.messages$.get().filter((message) => message.isRunOutOfContext.get())
+  );
+
+  getIsNotRunOutOfContextMessages$ = memo(() =>
+    this.messages$.get().filter((message) => !message.isRunOutOfContext.get())
   );
 
   hasSelectedMessages$ = memo(() => this.selectedMessages$.get().length !== 0);
@@ -72,7 +82,10 @@ export class ChatGpt {
       abortController: this.abortController,
     });
 
-    if (hasCompletionInCache) return;
+    if (hasCompletionInCache) {
+      this.checkOnRunOutOfMessages();
+      return;
+    }
 
     const isHasError = await sendChatCompletions(
       { model: "gpt-3.5-turbo-0301", messages: this.getMessages() },
@@ -84,6 +97,8 @@ export class ChatGpt {
       this.abortController
     );
 
+    this.checkOnRunOutOfMessages();
+
     if (isHasError) return;
     if (this.abortController.signal.aborted) return;
 
@@ -91,6 +106,16 @@ export class ChatGpt {
       message: String(this.getLastAssistantMessage()?.content$.get()),
       name: String(this.getLastUserMessage()?.content$.get()),
     });
+  }
+
+  checkOnRunOutOfMessages() {
+    [...this.messages$.get()].reverse().reduce((acc, message) => {
+      if (acc > MAX_CONTEXT_WORDS) {
+        message.toggleRunOutOff();
+        return acc;
+      }
+      return acc + message.content$.get().split(" ").length;
+    }, 0);
   }
 
   onMessage = (message: GptMessage) => (value: string, isFirst: boolean) => {
@@ -104,14 +129,14 @@ export class ChatGpt {
 
   getMessages() {
     if (!this.systemMessage) {
-      return this.filterInMemoryMessages(this.messages$.get()).map(
-        this.toApiMessage
-      );
+      return this.filterInMemoryMessages(
+        this.getIsNotRunOutOfContextMessages$.get()
+      ).map(this.toApiMessage);
     }
 
     return this.filterInMemoryMessages([
       this.systemMessage,
-      ...this.messages$.get(),
+      ...this.getIsNotRunOutOfContextMessages$.get(),
     ]).map(this.toApiMessage);
   }
 
@@ -124,7 +149,8 @@ export class ChatGpt {
   };
 
   addMessage(message: GptMessage) {
-    this.messages$.set([...this.messages$.get(), message]);
+    const messages = [...this.messages$.get(), message];
+    this.messages$.set(messages);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
