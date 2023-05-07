@@ -33,8 +33,11 @@
     position: relative;
     color: var(--vkui--color_icon_secondary);
     display: flex;
-    gap: 10px;
     top: -8px;
+}
+
+.iconsBlock :global(.vkuiIconButton) :global(.vkuiIcon--24), .iconsBlock :global(.vkuiIconButton) :global(.vkuiIcon--28) {
+    padding: 6px;
 }
 
 .selectedIcon {
