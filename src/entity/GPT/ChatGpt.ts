@@ -24,6 +24,7 @@ const errorContent = `
 `;
 
 const MAX_CONTEXT_WORDS = 2000;
+const REPEAT_WORDS = ["eщe", "повтори", "повторий", "повтор", "repeat"];
 
 //todo рефакторинг, разнести этот класс на несколько сущностей
 export class ChatGpt {
@@ -76,6 +77,11 @@ export class ChatGpt {
 
     this.abortController = new AbortController();
 
+    if (this.lastMessageIsRepeat()) {
+      await this.sendChatCompletions(message);
+      return;
+    }
+
     const hasCompletionInCache = await getChatCompletions({
       conversationName: String(this.getLastUserMessage()?.content$.get()),
       onMessage: this.onMessage(message),
@@ -87,7 +93,19 @@ export class ChatGpt {
       return;
     }
 
-    const isHasError = await sendChatCompletions(
+    const isHasError = await this.sendChatCompletions(message);
+
+    if (isHasError) return;
+    if (this.abortController.signal.aborted) return;
+
+    await setCacheCompletions({
+      message: String(this.getLastAssistantMessage()?.content$.get()),
+      name: String(this.getLastUserMessage()?.content$.get()),
+    });
+  }
+
+  async sendChatCompletions(message: GptMessage) {
+    const result = await sendChatCompletions(
       { model: "gpt-3.5-turbo-0301", messages: this.getMessages() },
       this.onMessage(message),
       () => {
@@ -99,13 +117,7 @@ export class ChatGpt {
 
     this.checkOnRunOutOfMessages();
 
-    if (isHasError) return;
-    if (this.abortController.signal.aborted) return;
-
-    await setCacheCompletions({
-      message: String(this.getLastAssistantMessage()?.content$.get()),
-      name: String(this.getLastUserMessage()?.content$.get()),
-    });
+    return result;
   }
 
   checkOnRunOutOfMessages() {
@@ -173,6 +185,13 @@ export class ChatGpt {
     return [...this.messages$.get()]
       .reverse()
       .find((message) => message.role === GPTRoles.assistant);
+  }
+
+  lastMessageIsRepeat() {
+    const messageContent = this.getLastUserMessage()?.content$.get();
+    if (!messageContent || messageContent.length > 10) return false;
+    console.log(messageContent);
+    return REPEAT_WORDS.find((word) => messageContent.search(word));
   }
 }
 
