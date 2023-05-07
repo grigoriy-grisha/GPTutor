@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 
-import { Div, IconButton, Text } from "@vkontakte/vkui";
+import { Div, IconButton, Text, usePlatform } from "@vkontakte/vkui";
 import {
   Icon24CheckCircleOutline,
   Icon24WarningTriangleOutline,
@@ -23,6 +23,8 @@ interface IProps {
 }
 
 function Message({ chatGpt, message, isDisabled }: IProps) {
+  const platform = usePlatform();
+
   const runOutOfContextMessages = chatGpt.getRunOutOfContextMessages$.get();
   const selected = message.isSelected$.get() ? classes.selected : "";
   const disabled = isDisabled ? classes.disabled : "";
@@ -59,7 +61,7 @@ function Message({ chatGpt, message, isDisabled }: IProps) {
             <div className={classes.iconsBlock}>
               {runOutOfContextMessages.find(({ id }) => message.id === id) && (
                 <TextTooltip
-                  appearance="accent"
+                  appearance={platform === "light" ? "accent" : "white"}
                   style={{ maxWidth: 250 }}
                   text="Из-за длинного размера сообщений ниже,
                    это сообщение не может быть учтено в локальном контексте.
