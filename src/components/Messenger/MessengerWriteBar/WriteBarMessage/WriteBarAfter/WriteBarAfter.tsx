@@ -16,26 +16,19 @@ import Time from "$/components/Time";
 import classes from "./WriteBarAfter.module.css";
 
 interface IProps {
-  time: number;
-  isTimeExpire: boolean;
   chatGpt: ChatGpt;
-
   sendMessage: () => void;
   value: string;
 }
 
-function WriteBarAfter({
-  time,
-  isTimeExpire,
-  chatGpt,
-  value,
-  sendMessage,
-}: IProps) {
+function WriteBarAfter({ chatGpt, value, sendMessage }: IProps) {
   const appearance = useAppearance();
 
   const isTyping = chatGpt.sendCompletions$.loading.get();
 
   const [showAlert, setShowAlert] = useState(false);
+  const timerIsStopped = chatGpt.timer.isStopped$.get();
+  const time = chatGpt.timer.time$.get();
 
   const sendBars = (
     <>
@@ -72,7 +65,7 @@ function WriteBarAfter({
       >
         <Icon28DeleteOutline />
       </WriteBarIcon>
-      {isTimeExpire ? (
+      {timerIsStopped ? (
         sendBars
       ) : (
         <TextTooltip

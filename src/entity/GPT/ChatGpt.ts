@@ -9,6 +9,7 @@ import ReactivePromise from "$/services/ReactivePromise";
 
 import { GPTRoles } from "./types";
 import { GptMessage } from "./GptMessage";
+import { Timer } from "$/entity/GPT/Timer";
 
 const errorContent = `
 \`\`\`javascript
@@ -31,6 +32,8 @@ export class ChatGpt {
   initialSystemContent =
     "Ты программист с опытом веб разработки в 10 лет, отвечаешь на вопросы джуниора, который хочет научиться программированию, добавляй правильную подсветку кода, указывай язык для блоков кода";
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
+
+  timer = new Timer(15, 0, "decrement");
 
   messages$ = sig<GptMessage[]>([]);
 
@@ -67,9 +70,10 @@ export class ChatGpt {
     this.abortController.abort();
   };
 
-  send = (content: string) => {
+  send = async (content: string) => {
     this.addMessage(new GptMessage(content, GPTRoles.user));
-    this.sendCompletions$.run();
+    await this.sendCompletions$.run();
+    this.timer.run();
   };
 
   private async sendCompletion() {
