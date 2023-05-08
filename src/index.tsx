@@ -41,7 +41,7 @@ router.start();
 ReactDOM.render(
   <ErrorBoundaryApp>
     <RouterContext.Provider value={router}>
-      <ConfigProvider platform={Platform.ANDROID}>
+      <ConfigProvider>
         <AdaptivityProvider>
           <AppRoot>
             <App />

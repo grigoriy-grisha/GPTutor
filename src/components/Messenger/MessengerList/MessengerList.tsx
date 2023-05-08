@@ -9,7 +9,7 @@ import classes from "./MessengerList.module.css";
 
 function StartPlaceholder({ chatGpt, onStartChat }: Omit<IProps, "isTyping">) {
   const isStopped = chatGpt.timer.isStopped$.get();
-  console.log(isStopped);
+
   return (
     <div className={classes.placeholderContainer}>
       <Placeholder

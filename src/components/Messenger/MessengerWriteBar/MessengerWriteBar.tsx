@@ -30,6 +30,7 @@ function MessengerWriteBar({
     []
   );
   const hasSelectedMessages = chatGpt.hasSelectedMessages$.get();
+  const isStopped = chatGpt.timer.isStopped$.get();
 
   return (
     <div className={classes.container}>
@@ -39,6 +40,7 @@ function MessengerWriteBar({
         </div>
         <div style={{ display: !hasSelectedMessages ? "block" : "none" }}>
           <AdditionalRequests
+            isStopped={isStopped}
             additionalRequests={additionalRequests}
             isAdditionalOpen={isAdditionalOpen}
             handleSend={handleSend}
