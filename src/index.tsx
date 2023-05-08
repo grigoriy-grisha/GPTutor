@@ -25,6 +25,7 @@ const routes = {
   [RoutingPages.openSource]: new Page(Panels.openSource, Views.viewMain),
   [RoutingPages.chatSettings]: new Page(Panels.chatSettings, Views.viewMain),
   [RoutingPages.history]: new Page(Panels.history, Views.viewMain),
+  [RoutingPages.modes]: new Page(Panels.modes, Views.viewMain),
 };
 
 if (process.env.NODE_ENV === "production") {
@@ -41,7 +42,7 @@ router.start();
 ReactDOM.render(
   <ErrorBoundaryApp>
     <RouterContext.Provider value={router}>
-      <ConfigProvider>
+      <ConfigProvider appearance="dark" platform={Platform.ANDROID}>
         <AdaptivityProvider>
           <AppRoot>
             <App />

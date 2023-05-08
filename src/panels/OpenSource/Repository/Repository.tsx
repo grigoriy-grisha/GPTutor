@@ -30,6 +30,7 @@ function Repository() {
               after={<Icon24ArrowRightSquareOutline />}
               size="m"
               href={result?.html_url}
+              target="_blank"
             >
               Перейти в репозиторий
             </Button>

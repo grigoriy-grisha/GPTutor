@@ -50,7 +50,6 @@ function HistoryBanner({ dialog, goToChat }: IProps) {
   const Icon = chapterType ? BannerIcon[chapterType] : ChatGptIcon;
   const { sizeX } = useAdaptivityWithJSMediaQueries();
 
-  console.log(sizeX);
   return (
     <Banner
       className={`${classes.banner} ${

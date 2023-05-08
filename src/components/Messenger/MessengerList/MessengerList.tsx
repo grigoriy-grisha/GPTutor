@@ -7,41 +7,37 @@ import { Message } from "./Message";
 
 import classes from "./MessengerList.module.css";
 
-function StartPlaceholder({ chatGpt, onStartChat }: Omit<IProps, "isTyping">) {
-  const isStopped = chatGpt.timer.isStopped$.get();
-
-  return (
-    <div className={classes.placeholderContainer}>
-      <Placeholder
-        header="Начните диалог"
-        action={
-          <Button
-            disabled={!isStopped}
-            aria-label="Начать диалог"
-            mode="outline"
-            size="m"
-            onClick={onStartChat}
-          >
-            Начать
-          </Button>
-        }
-      >
-        Запустите бота стартовой фразой
-      </Placeholder>
-    </div>
-  );
-}
-
 interface IProps {
   chatGpt: ChatGpt;
   isTyping: boolean;
   onStartChat: () => void;
 }
+
 function MessengerList({ isTyping, chatGpt, onStartChat }: IProps) {
   const messages = chatGpt.messages$.get();
+  const isStopped = chatGpt.timer.isStopped$.get();
 
   if (messages.length === 0) {
-    return <StartPlaceholder chatGpt={chatGpt} onStartChat={onStartChat} />;
+    return (
+      <div className={classes.placeholderContainer}>
+        <Placeholder
+          header="Начните диалог"
+          action={
+            <Button
+              disabled={!isStopped}
+              aria-label="Начать диалог"
+              mode="outline"
+              size="m"
+              onClick={onStartChat}
+            >
+              Начать
+            </Button>
+          }
+        >
+          Запустите бота стартовой фразой
+        </Placeholder>
+      </div>
+    );
   }
 
   return (

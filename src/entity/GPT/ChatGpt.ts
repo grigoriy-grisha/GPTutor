@@ -37,7 +37,7 @@ export class ChatGpt {
     "Ты программист с опытом веб разработки в 10 лет, отвечаешь на вопросы джуниора, который хочет научиться программированию, добавляй правильную подсветку кода, указывай язык для блоков кода";
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
-  timer = new Timer(15, 0, "decrement");
+  timer = new Timer(10, 0, "decrement");
 
   history = new GptHistoryDialogs();
 
