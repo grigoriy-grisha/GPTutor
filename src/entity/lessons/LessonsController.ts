@@ -20,6 +20,13 @@ export class LessonsController {
     this.currentLesson.set(foundLesson);
   }
 
+  setCurrentLessonByName(name: string) {
+    const foundLesson = this.currentChapter.get()?.findLessonByName(name);
+    if (!foundLesson) return;
+
+    this.currentLesson.set(foundLesson);
+  }
+
   setCurrentChapter(chapterType: ChapterTypes) {
     const chapter = this.chapters.find(
       (chapter) => chapter.chapterType === chapterType

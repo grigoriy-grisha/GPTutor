@@ -41,6 +41,7 @@ function Chapters({ id, goToChat, goBack }: IProps) {
               chatGpt.clearMessages();
               chatGpt.clearSystemMessage();
               lessonsController.setCurrentLesson(lesson.id);
+              chatGpt.currentDialog = null;
               goToChat();
             }}
           />

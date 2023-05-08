@@ -1,0 +1,52 @@
+.banner {
+    margin: 8px 0;
+}
+
+.compactBanner :global(.vkuiBanner__in) {
+    display: flex;
+    flex-direction: column;
+}
+
+.compactBanner :global(.vkuiBanner__before) {
+    margin-right: 0;
+    margin-bottom: 12px;
+}
+
+
+.bannerIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    background: var(--vkui--color_background_accent_themed);
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 8px;
+    height: 78px;
+}
+
+.compactBannerIcon {
+    width: 100%;
+    height: 170px;
+}
+
+.iconContainer {
+    height: 75px;
+    width: 125px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.compactIconContainer {
+    height: 150px;
+    width: 200px;
+}
+
+
+.lineClamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

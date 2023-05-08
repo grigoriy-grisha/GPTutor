@@ -10,17 +10,19 @@ interface IProps {
   id: string;
   goBack: () => void;
   goToChatSettings: () => void;
+  goToHistory: () => void;
 }
 
-const Chat = ({ id, goBack, goToChatSettings }: IProps) => {
+const Chat = ({ id, goBack, goToHistory, goToChatSettings }: IProps) => {
   const currentLesson = lessonsController.currentLesson.get();
 
   return (
     <Panel id={id}>
       <Messenger
-        onSettingsClick={goToChatSettings}
         chatGpt={chatGpt}
+        onSettingsClick={goToChatSettings}
         goBack={goBack}
+        goToHistory={goToHistory}
         lesson={currentLesson}
       />
     </Panel>

@@ -16,9 +16,16 @@ interface IProps {
   lesson: LessonItem | null;
   chatGpt: ChatGpt;
   onSettingsClick: () => void;
+  goToHistory: () => void;
 }
 
-function Messenger({ goBack, lesson, chatGpt, onSettingsClick }: IProps) {
+function Messenger({
+  goBack,
+  lesson,
+  chatGpt,
+  onSettingsClick,
+  goToHistory,
+}: IProps) {
   const { isTyping, scrollRef, onStartChat, handlerSend } = useMessenger({
     chatGpt,
     lesson,
@@ -27,7 +34,9 @@ function Messenger({ goBack, lesson, chatGpt, onSettingsClick }: IProps) {
   return (
     <AppContainer
       maxHeight
-      headerChildren={<Header goBack={goBack} isTyping={isTyping} />}
+      headerChildren={
+        <Header goBack={goBack} goToHistory={goToHistory} isTyping={isTyping} />
+      }
       style={{ flexDirection: "column-reverse" }}
     >
       <MessengerContainer withoutDiv ref={scrollRef}>

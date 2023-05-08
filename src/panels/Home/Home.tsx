@@ -10,6 +10,7 @@ import FreeDialogBlock from "./FreeDialogBlock";
 import HomeHeader from "./HomeHeader";
 
 import classes from "./Home.module.css";
+import { chatGpt } from "$/entity/GPT";
 
 interface IProps {
   id: string;
@@ -37,6 +38,7 @@ function Home({ id, goToChapters, goToChat, goToOpenSource }: IProps) {
           goToFreeDialog={() => {
             goToChat();
             lessonsController.clearLesson();
+            chatGpt.currentDialog = null;
           }}
         />
       </AppContainer>

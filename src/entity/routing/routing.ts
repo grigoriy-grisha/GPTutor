@@ -4,6 +4,7 @@ export enum RoutingPages {
   chat = "/chat",
   openSource = "/open-source",
   chatSettings = "/chat-settings",
+  history = "/history",
 }
 
 export enum Views {
@@ -16,4 +17,5 @@ export enum Panels {
   chat = "chat",
   openSource = "open-source",
   chatSettings = "chat-settings",
+  history = "history",
 }

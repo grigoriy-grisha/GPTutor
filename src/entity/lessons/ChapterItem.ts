@@ -31,6 +31,10 @@ export class ChapterItem {
     return this.rawLessons.find((lesson) => lesson.id === id);
   }
 
+  findLessonByName(name: string) {
+    return this.rawLessons.find((lesson) => lesson.name === name);
+  }
+
   searchLessons(search: string) {
     if (search.length < 3) {
       this.lessons.set(this.prepareLessons(this.rawLessons));
