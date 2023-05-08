@@ -22,12 +22,10 @@ function WriteBarMessage({
   onClickAdditional,
   onSettingsClick,
 }: IProps) {
-  const { value, time, isTimeExpire, setValue, onEnterSend, sendMessage } =
-    useWrite({
-      isDone: chatGpt.sendCompletions$.done.get(),
-      isTyping: chatGpt.sendCompletions$.loading.get(),
-      handleSend,
-    });
+  const { value, setValue, onEnterSend, sendMessage } = useWrite({
+    chatGpt,
+    handleSend,
+  });
 
   return (
     <>
@@ -45,8 +43,6 @@ function WriteBarMessage({
         }
         after={
           <WriteBarAfter
-            time={time}
-            isTimeExpire={isTimeExpire}
             chatGpt={chatGpt}
             sendMessage={sendMessage}
             value={value}

@@ -1,27 +1,14 @@
-import { useEffect, useRef, useState } from "react";
-import { useTimer } from "$/hooks/useTimer";
+import { useRef, useState } from "react";
+import { ChatGpt } from "$/entity/GPT";
 
 type HookWriteParams = {
-  isDone: boolean;
-  isTyping: boolean;
+  chatGpt: ChatGpt;
   handleSend: (value: string) => void;
 };
 
-export function useWrite({ isDone, isTyping, handleSend }: HookWriteParams) {
-  const { value: time, start } = useTimer({
-    interval: 1000,
-    initialValue: () => 16,
-    tickHandler: (number) => number - 1,
-    finisher: (number) => number === 0,
-  });
-
-  const isTimeExpire = time === 0 || time === 16;
-
-  useEffect(() => {
-    if (isDone) start(15);
-  }, [isDone]);
-
+export function useWrite({ chatGpt, handleSend }: HookWriteParams) {
   const [value, setValue] = useState("");
+  const isTyping = chatGpt.sendCompletions$.loading.get();
 
   const valueRef = useRef("");
   const isTypingRef = useRef(isTyping);
@@ -29,7 +16,7 @@ export function useWrite({ isDone, isTyping, handleSend }: HookWriteParams) {
   isTypingRef.current = isTyping;
 
   const onEnterSend = (event: any) => {
-    if (!isTimeExpire) return;
+    if (!chatGpt.timer.isStopped$.get()) return;
     if (isTypingRef.current) return;
     if (event.key !== "Enter") return;
     if (event.shiftKey) return;
@@ -45,8 +32,6 @@ export function useWrite({ isDone, isTyping, handleSend }: HookWriteParams) {
   };
 
   return {
-    time,
-    isTimeExpire,
     value,
     setValue,
     onEnterSend,
