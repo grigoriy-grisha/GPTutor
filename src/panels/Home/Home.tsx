@@ -11,6 +11,7 @@ import {
 import {
   Icon28BookSpreadOutline,
   Icon28HistoryBackwardOutline,
+  Icon28UsersOutline,
 } from "@vkontakte/icons";
 
 import { AppContainer } from "$/components/AppContainer";
@@ -72,6 +73,14 @@ function Home({
         >
           <Separator wide style={{ width: "100%" }} />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <TabbarItem
+              href="https://vk.com/gptutor"
+              target="_blank"
+              text="Перейти в сообщество"
+            >
+              <Icon28UsersOutline />
+            </TabbarItem>
+
             <TabbarItem
               className={classes.tabItem}
               text="Режимы для изучения"
