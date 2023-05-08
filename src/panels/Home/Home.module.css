@@ -8,5 +8,25 @@
     gap: 12px;
 }
 
+.tabBarContainer {
+    display: flex;
+    flex-direction: column;
+}
 
+.tabBar {
+    background: transparent;
+}
 
+.tabBar :global(.vkuiTabbar__in) {
+    display: flex;
+    flex-direction: column;
+}
+
+.tabItem {
+    cursor: pointer;
+    padding-bottom: 4px;
+}
+
+.tabItem:hover {
+    opacity: 6;
+}

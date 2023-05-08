@@ -33,7 +33,7 @@ export class GptHistoryDialogs {
   }
   dialogs = sig<GPTDialogHistory[]>([]);
 
-  init() {
+  async init() {
     this.storage.get(this.HISTORY_KEY).then((result) => {
       if (result) this.dialogs.set(result);
     });

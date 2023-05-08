@@ -27,7 +27,6 @@ function History({ id, goBack, goToChat }: IProps) {
     <Panel id={id}>
       <AppContainer
         className={classes.mainContainer}
-        maxHeight
         headerChildren={
           <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
             <Title level="1">История</Title>

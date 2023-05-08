@@ -19,10 +19,18 @@ export * from "./lessonsItem/react";
 
 export { ChapterTypes } from "./chapterTypes";
 
-export const lessonsController = new LessonsController([
+export const languages = [
   new ChapterItem(ChapterTypes.HTMLCSS, htmlLessons),
   new ChapterItem(ChapterTypes.JS, lessonsJs),
   new ChapterItem(ChapterTypes.Typescript, typescriptLessons),
+];
+
+export const technologies = [
   new ChapterItem(ChapterTypes.React, reactLessons),
   new ChapterItem(ChapterTypes.Git, gitLessons),
+];
+
+export const lessonsController = new LessonsController([
+  ...languages,
+  ...technologies,
 ]);

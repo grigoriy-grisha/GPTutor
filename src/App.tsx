@@ -18,6 +18,7 @@ import { Chat } from "./panels/Chat";
 import { OpenSource } from "./panels/OpenSource";
 import { ChatSettings } from "./panels/ChatSettings";
 import { History } from "./panels/History";
+import Modes from "./panels/Modes/Modes";
 
 const App = () => {
   const location = useLocation();
@@ -35,6 +36,7 @@ const App = () => {
   const goToOpenSource = () => router.pushPage(RoutingPages.openSource);
   const goToChatSettings = () => router.pushPage(RoutingPages.chatSettings);
   const goToHistory = () => router.pushPage(RoutingPages.history);
+  const goToModes = () => router.pushPage(RoutingPages.modes);
 
   const { appearance } = useConfigProvider();
 
@@ -51,6 +53,8 @@ const App = () => {
       >
         <Home
           id={Panels.home}
+          goToModes={goToModes}
+          goToHistory={goToHistory}
           goToChapters={goToChapters}
           goToChat={goToChat}
           goToOpenSource={goToOpenSource}
@@ -69,6 +73,7 @@ const App = () => {
         />
         <ChatSettings id={Panels.chatSettings} goBack={goBack} />
         <History id={Panels.history} goBack={goBack} goToChat={goToChat} />
+        <Modes id={Panels.modes} goBack={goBack} goToChapters={goToChapters} />
       </View>
     </SplitLayout>
   );
