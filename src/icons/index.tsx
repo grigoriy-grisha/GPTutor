@@ -11,3 +11,4 @@ export * from "./DignalsIcon";
 export * from "./CssIcon";
 export * from "./ReactIcon";
 export * from "./TypeScriptIcon";
+export * from "./ChatGptIcon";

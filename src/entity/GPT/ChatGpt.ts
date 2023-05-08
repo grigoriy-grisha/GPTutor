@@ -7,9 +7,12 @@ import {
 } from "$/api/completions";
 import ReactivePromise from "$/services/ReactivePromise";
 
-import { GPTRoles } from "./types";
+import { GPTDialogHistoryData, GPTDialogHistoryType, GPTRoles } from "./types";
 import { GptMessage } from "./GptMessage";
 import { Timer } from "$/entity/GPT/Timer";
+import { GptHistoryDialogs } from "$/entity/GPT/GptHistoryDialogs";
+import { lessonsController } from "$/entity/lessons";
+import { UUID_V4 } from "$/entity/common";
 
 const errorContent = `
 \`\`\`javascript
@@ -25,15 +28,18 @@ const errorContent = `
 `;
 
 const MAX_CONTEXT_WORDS = 2000;
-const REPEAT_WORDS = ["eщe", "повтори", "повторий", "повтор", "repeat"];
+const REPEAT_WORDS = ["eщe", "повтори", "повтор", "repeat"];
 
 //todo рефакторинг, разнести этот класс на несколько сущностей
 export class ChatGpt {
+  currentDialog: UUID_V4 | null = null;
   initialSystemContent =
     "Ты программист с опытом веб разработки в 10 лет, отвечаешь на вопросы джуниора, который хочет научиться программированию, добавляй правильную подсветку кода, указывай язык для блоков кода";
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
   timer = new Timer(15, 0, "decrement");
+
+  history = new GptHistoryDialogs();
 
   messages$ = sig<GptMessage[]>([]);
 
@@ -55,8 +61,6 @@ export class ChatGpt {
 
   abortController = new AbortController();
 
-  constructor() {}
-
   clearMessages = () => {
     this.abortSend();
     this.messages$.set([]);
@@ -72,8 +76,10 @@ export class ChatGpt {
 
   send = async (content: string) => {
     this.addMessage(new GptMessage(content, GPTRoles.user));
+    this.addMessageToHistory();
     await this.sendCompletions$.run();
     this.timer.run();
+    this.addMessageToHistory();
   };
 
   private async sendCompletion() {
@@ -185,6 +191,10 @@ export class ChatGpt {
       .find((message) => message.role === GPTRoles.user);
   }
 
+  getLastMessage() {
+    return this.messages$.get().at(-1);
+  }
+
   getLastAssistantMessage() {
     return [...this.messages$.get()]
       .reverse()
@@ -194,8 +204,65 @@ export class ChatGpt {
   lastMessageIsRepeat() {
     const messageContent = this.getLastUserMessage()?.content$.get();
     if (!messageContent || messageContent.length > 10) return false;
-    console.log(messageContent);
     return REPEAT_WORDS.find((word) => messageContent.search(word));
+  }
+
+  addMessageToHistory() {
+    const lastMessage = this.getLastMessage();
+    if (!lastMessage) return;
+
+    const data = this.getChatData();
+    const type = data ? GPTDialogHistoryType.Free : GPTDialogHistoryType.Lesson;
+
+    if (!this.currentDialog) {
+      const dialog = this.history.addToHistoryDialog({
+        systemMessage: this.systemMessage,
+        lastMessage,
+        type,
+        data,
+      });
+
+      return (this.currentDialog = dialog.id);
+    }
+
+    const lastHistoryDialog = this.history.getDialogById(this.currentDialog);
+    if (!lastHistoryDialog) return;
+
+    this.history.addMessageToHistoryDialog(lastHistoryDialog.id, lastMessage);
+  }
+
+  getChatData(): GPTDialogHistoryData {
+    const currentChapter = lessonsController.currentChapter.get();
+    const currentLesson = lessonsController.currentLesson.get();
+
+    if (!currentChapter?.chapterType || !currentLesson?.name) return null;
+
+    return {
+      chapterType: currentChapter.chapterType,
+      lessonName: currentLesson.name,
+    };
+  }
+
+  restoreDialogFromHistory(id: UUID_V4) {
+    const foundDialog = this.history.getDialogById(id);
+    if (!foundDialog) return;
+
+    this.currentDialog = foundDialog.id;
+
+    this.messages$.set(
+      foundDialog.messages.map(
+        (message) =>
+          new GptMessage(message.content, message.role, message.inLocal)
+      )
+    );
+
+    const data = foundDialog.data;
+    if (data) {
+      lessonsController.setCurrentChapter(data.chapterType);
+      lessonsController.setCurrentLessonByName(data.lessonName);
+    }
+
+    this.sendCompletions$.reset();
   }
 }
 

@@ -7,6 +7,8 @@ import { ChatGPTLogo } from "$/icons";
 import { CardBlock } from "$/components/CardBlock";
 
 import classes from "./FreeDialogBlock.module.css";
+import { lessonsController } from "$/entity/lessons";
+import { chatGpt } from "$/entity/GPT";
 
 interface IProps {
   goToFreeDialog: () => void;
@@ -24,7 +26,17 @@ function FreeDialogBlock({ goToFreeDialog }: IProps) {
             mode="outline"
             size="m"
             after={<Icon24ArrowRightSquareOutline />}
-            onClick={goToFreeDialog}
+            onClick={() => {
+              const currentChapter = lessonsController.currentChapter.get();
+              const currentLesson = lessonsController.currentLesson.get();
+              if (currentChapter || currentLesson) {
+                lessonsController.clearLesson();
+                lessonsController.clearChapter();
+                chatGpt.clearMessages();
+              }
+
+              goToFreeDialog();
+            }}
           >
             Начать диалог
           </Button>

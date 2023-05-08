@@ -1,7 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import bridge from "@vkontakte/vk-bridge";
-import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
+import {
+  AdaptivityProvider,
+  AppRoot,
+  ConfigProvider,
+  Platform,
+} from "@vkontakte/vkui";
 import "dignals-react";
 
 import App from "./App";
@@ -19,6 +24,7 @@ const routes = {
   [RoutingPages.chat]: new Page(Panels.chat, Views.viewMain),
   [RoutingPages.openSource]: new Page(Panels.openSource, Views.viewMain),
   [RoutingPages.chatSettings]: new Page(Panels.chatSettings, Views.viewMain),
+  [RoutingPages.history]: new Page(Panels.history, Views.viewMain),
 };
 
 if (process.env.NODE_ENV === "production") {
@@ -35,7 +41,7 @@ router.start();
 ReactDOM.render(
   <ErrorBoundaryApp>
     <RouterContext.Provider value={router}>
-      <ConfigProvider>
+      <ConfigProvider platform={Platform.ANDROID}>
         <AdaptivityProvider>
           <AppRoot>
             <App />

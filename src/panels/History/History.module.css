@@ -1,0 +1,8 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.placeholder {
+    margin-top: 10vh;
+}

@@ -2,12 +2,19 @@ import React from "react";
 
 import {
   Avatar,
+  IconButton,
   PanelHeader,
   PanelHeaderBack,
+  Platform,
   SimpleCell,
   Text,
+  usePlatform,
 } from "@vkontakte/vkui";
-import { Icon12OnlineMobile } from "@vkontakte/icons";
+import {
+  Icon12OnlineMobile,
+  Icon24HistoryBackwardOutline,
+  Icon28HistoryBackwardOutline,
+} from "@vkontakte/icons";
 
 import { ChatGPTLogo } from "$/icons";
 import { IsTypingLoader } from "$/components/IsTypingLoader";
@@ -16,12 +23,20 @@ import classes from "./Header.module.css";
 
 interface IProps {
   goBack: () => void;
+  goToHistory: () => void;
   isTyping: boolean;
 }
 
-function Header({ goBack, isTyping }: IProps) {
+function Header({ goBack, goToHistory, isTyping }: IProps) {
+  const platform = usePlatform();
+
   return (
-    <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
+    <PanelHeader
+      className={`${classes.header} ${
+        platform === Platform.VKCOM ? classes.desktopHeader : ""
+      } ${platform !== Platform.VKCOM ? classes.compactHeader : ""} `}
+      before={<PanelHeaderBack onClick={goBack} />}
+    >
       <SimpleCell
         disabled
         before={
@@ -52,6 +67,13 @@ function Header({ goBack, isTyping }: IProps) {
       >
         <Text weight="1">Chat GPT</Text>
       </SimpleCell>
+      <IconButton className={classes.historyIcon} onClick={goToHistory}>
+        {platform === Platform.VKCOM ? (
+          <Icon28HistoryBackwardOutline fill="var(--vkui--color_background_accent_themed)" />
+        ) : (
+          <Icon24HistoryBackwardOutline fill="var(--vkui--color_background_accent_themed)" />
+        )}
+      </IconButton>
     </PanelHeader>
   );
 }
