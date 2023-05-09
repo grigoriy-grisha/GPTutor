@@ -214,10 +214,12 @@ export class ChatGpt {
     const data = this.getChatData();
     const type = data ? GPTDialogHistoryType.Free : GPTDialogHistoryType.Lesson;
 
-    if (!this.currentDialog) {
+    const foundDialog = this.history.getDialogById(this.currentDialog);
+
+    if (!foundDialog) {
       const dialog = this.history.addToHistoryDialog({
         systemMessage: this.systemMessage,
-        lastMessage,
+        messages: this.messages$.get(),
         type,
         data,
       });
@@ -225,10 +227,7 @@ export class ChatGpt {
       return (this.currentDialog = dialog.id);
     }
 
-    const lastHistoryDialog = this.history.getDialogById(this.currentDialog);
-    if (!lastHistoryDialog) return;
-
-    this.history.addMessageToHistoryDialog(lastHistoryDialog.id, lastMessage);
+    this.history.addMessageToHistoryDialog(foundDialog.id, lastMessage);
   }
 
   getChatData(): GPTDialogHistoryData {

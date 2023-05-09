@@ -24,9 +24,9 @@
 
 .tabItem {
     cursor: pointer;
-    padding-bottom: 4px;
 }
 
 .tabItem:hover {
-    opacity: 6;
+    opacity: 0.6;
+    transition: opacity 300ms;
 }
