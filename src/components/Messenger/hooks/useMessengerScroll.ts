@@ -5,7 +5,7 @@ function getScrollBottom(elem: HTMLDivElement) {
 }
 
 const maxAutoScrollValue = 150;
-const autoScrollTimeValue = 250;
+const autoScrollTimeValue = 150;
 
 export function useMessengerScroll(isTyping: boolean) {
   const scrollRef = useRef<HTMLDivElement>();
@@ -16,6 +16,8 @@ export function useMessengerScroll(isTyping: boolean) {
     if (!scrollRef.current) return;
     scrollRef.current.scrollTop = scrollRef.current?.scrollHeight;
   }, []);
+
+  useEffect(scrollToBottom, []);
 
   useEffect(() => {
     const onScrollDetect = () => {

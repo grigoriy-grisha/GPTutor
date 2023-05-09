@@ -74,6 +74,7 @@ function Home({
           <Separator wide style={{ width: "100%" }} />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <TabbarItem
+              className={classes.tabItem}
               href="https://vk.com/gptutor"
               target="_blank"
               text="Перейти в сообщество"
