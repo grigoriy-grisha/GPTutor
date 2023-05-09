@@ -1,6 +1,6 @@
 .mainContainer {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
 }
 
 .placeholder {
