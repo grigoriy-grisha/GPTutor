@@ -18,7 +18,7 @@
 }
 
 .bottomItem :global(.vkuiBanner__in)   {
-    height: 66px;
+    height: 75px;
     display: flex;
     align-items: flex-start;
 }
