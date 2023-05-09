@@ -1,6 +1,6 @@
 import { EventSourceMessage, fetchEventSource } from "$/utility";
 
-const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST || "/";
+const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST || "/api/";
 
 export async function sendChatCompletions(
   body: any,
