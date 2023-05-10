@@ -14,7 +14,7 @@
 }
 
 .tabBar {
-    background: transparent;
+    background: var(--vkui--color_background_content);
 }
 
 .tabBar :global(.vkuiTabbar__in) {
