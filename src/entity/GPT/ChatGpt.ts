@@ -119,7 +119,9 @@ export class ChatGpt {
       { model: "gpt-3.5-turbo-0301", messages: this.getMessages() },
       this.onMessage(message),
       () => {
-        this.addMessage(new GptMessage(errorContent, GPTRoles.assistant, true));
+        this.addMessage(
+          new GptMessage(errorContent, GPTRoles.assistant, true, true)
+        );
         this.sendCompletions$.reset();
       },
       this.abortController
@@ -171,11 +173,9 @@ export class ChatGpt {
   };
 
   addMessage(message: GptMessage) {
-    const messages = [...this.messages$.get(), message];
-    this.messages$.set(messages);
+    this.messages$.set([...this.messages$.get(), message]);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   toApiMessage = (message: GptMessage) => ({
     content: message.content$.get(),
     role: message.role,
@@ -224,7 +224,8 @@ export class ChatGpt {
         data,
       });
 
-      return (this.currentDialog = dialog.id);
+      this.currentDialog = dialog.id;
+      return;
     }
 
     this.history.addMessageToHistoryDialog(foundDialog.id, lastMessage);

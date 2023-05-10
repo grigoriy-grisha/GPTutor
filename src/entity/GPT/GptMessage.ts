@@ -14,7 +14,8 @@ export class GptMessage {
   constructor(
     message: string,
     public role: GPTRoles,
-    public inLocal?: boolean
+    public inLocal?: boolean,
+    public isError?: boolean
   ) {
     this.content$ = sig(message);
     id++;
