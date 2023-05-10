@@ -1,5 +1,5 @@
 import React from "react";
-import { Panel, PanelHeader, PanelHeaderBack } from "@vkontakte/vkui";
+import { Panel, PanelHeader, PanelHeaderBack, Title } from "@vkontakte/vkui";
 
 import { AppContainer } from "$/components/AppContainer";
 import { lessonsController } from "$/entity/lessons";
@@ -23,7 +23,7 @@ function OpenSource({ id, goBack, goToChapters }: IProps) {
         isSecondary
         headerChildren={
           <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            Присоединяйся
+            <Title level="1">Присоединяйся</Title>
           </PanelHeader>
         }
       >
