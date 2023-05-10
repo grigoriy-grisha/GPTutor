@@ -66,11 +66,11 @@ export class GptHistoryDialogs {
     const foundHistoryDialog = history.find((item) => item.id === id);
     if (!foundHistoryDialog) return;
 
+    const lastMessage = this.mapGptMessageToDomain(gptMessage);
+
     foundHistoryDialog.date = new Date();
-    foundHistoryDialog.messages = [
-      ...foundHistoryDialog.messages,
-      this.mapGptMessageToDomain(gptMessage),
-    ];
+    foundHistoryDialog.messages = [...foundHistoryDialog.messages, lastMessage];
+    foundHistoryDialog.lastMessage = lastMessage;
 
     this.storage.set(this.HISTORY_KEY, this.dialogs.get());
   }

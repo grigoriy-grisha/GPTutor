@@ -77,7 +77,7 @@ function Home({
               className={classes.tabItem}
               href="https://vk.com/gptutor"
               target="_blank"
-              text="Перейти в сообщество"
+              text="Сообщество"
             >
               <Icon28UsersOutline />
             </TabbarItem>
