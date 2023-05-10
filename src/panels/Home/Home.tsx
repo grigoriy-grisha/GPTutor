@@ -47,7 +47,6 @@ function Home({
     <Panel id={id}>
       <AppContainer
         className={classes.group}
-        maxHeight
         isSecondary
         headerChildren={<HomeHeader goToOpenSource={goToOpenSource} />}
       >

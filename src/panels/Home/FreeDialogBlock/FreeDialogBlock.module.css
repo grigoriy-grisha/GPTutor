@@ -1,13 +1,13 @@
 .placeholderContainer {
     display: flex;
-    align-items: center;
     justify-content: center;
     flex: 1 1 auto;
 }
 
 
 
-.placeholder {
-    margin-top: -170px;
-    margin-bottom: -30px;
+.placeholder  {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    align-items: normal;
 }
