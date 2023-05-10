@@ -36,7 +36,7 @@ function Repository() {
             </Button>
           }
         >
-          {result?.description}
+          Присоединяйся к разработке приложения
         </Placeholder>
       )}
     </CardBlock>
