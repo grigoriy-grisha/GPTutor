@@ -1,4 +1,5 @@
 import { EventSourceMessage, fetchEventSource } from "$/utility";
+import { aesCipher } from "$/services/AESCipher";
 
 const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST || "/api/";
 
@@ -11,7 +12,7 @@ export async function sendChatCompletions(
   let isFirst = true;
   let isHasError = false;
 
-  const apiKey = await getApiKey();
+  const apiKey = await aesCipher.decodeMessage(await getApiKey());
 
   await fetchEventSource("https://api.openai.com/v1/chat/completions", {
     method: "POST",

@@ -3,7 +3,7 @@ import { useConfigProvider } from "@vkontakte/vkui";
 
 export function TypescriptLesson() {
   const { appearance } = useConfigProvider();
-  const color = appearance === "dark" ? "#000" : "#fff";
+  const color = appearance === "dark" ? "black" : "white";
 
   return (
     <svg viewBox="0 0 624 442" fill="none" xmlns="http://www.w3.org/2000/svg">
