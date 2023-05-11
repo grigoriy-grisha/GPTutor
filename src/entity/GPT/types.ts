@@ -11,6 +11,7 @@ export type GPTMessage = {
   content: string;
   role: GPTRoles;
   inLocal: boolean;
+  isFailModeration: boolean;
 };
 
 export type DialogLessonData = {
@@ -34,4 +35,32 @@ export type GPTDialogHistory = {
 
   systemMessage: GPTMessage;
   messages: GPTMessage[];
+};
+
+export type GPTModeration = {
+  id: "modr-7F6OMS2qFlEbyDJmjnY9ZLlyq5sxH";
+  model: "text-moderation-004";
+  results: [
+    {
+      flagged: boolean;
+      categories: {
+        sexual: boolean;
+        hate: boolean;
+        violence: boolean;
+        "self-harm": boolean;
+        "sexual/minors": boolean;
+        "hate/threatening": boolean;
+        "violence/graphic": boolean;
+      };
+      category_scores: {
+        sexual: number;
+        hate: number;
+        violence: number;
+        "self-harm": number;
+        "sexual/minors": number;
+        "hate/threatening": number;
+        "violence/graphic": number;
+      };
+    }
+  ];
 };

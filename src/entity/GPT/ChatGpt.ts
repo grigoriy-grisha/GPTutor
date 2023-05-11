@@ -1,6 +1,7 @@
 import { batch, memo, sig } from "dignals";
 
 import {
+  getApiKey,
   getChatCompletions,
   sendChatCompletions,
   setCacheCompletions,
@@ -13,6 +14,8 @@ import { Timer } from "$/entity/GPT/Timer";
 import { GptHistoryDialogs } from "$/entity/GPT/GptHistoryDialogs";
 import { lessonsController } from "$/entity/lessons";
 import { UUID_V4 } from "$/entity/common";
+import { aesCipher } from "$/services/AESCipher";
+import { moderationText } from "$/api/modereation";
 
 const errorContent = `
 \`\`\`javascript
@@ -32,6 +35,7 @@ const REPEAT_WORDS = ["eщe", "повтори", "повтор", "repeat"];
 
 //todo рефакторинг, разнести этот класс на несколько сущностей
 export class ChatGpt {
+  apiKey: string = "";
   currentDialog: UUID_V4 | null = null;
   initialSystemContent =
     "Ты программист с опытом веб разработки в 10 лет, отвечаешь на вопросы джуниора, который хочет научиться программированию, добавляй правильную подсветку кода, указывай язык для блоков кода";
@@ -75,8 +79,18 @@ export class ChatGpt {
   };
 
   send = async (content: string) => {
+    this.apiKey = await aesCipher.decodeMessage(await getApiKey());
+
     this.addMessage(new GptMessage(content, GPTRoles.user));
+
+    const isFailModerationUserMessage = await this.moderateMessage(
+      this.getLastUserMessage()
+    );
+
     this.addMessageToHistory();
+
+    if (isFailModerationUserMessage) return;
+
     await this.sendCompletions$.run();
     this.timer.run();
     this.addMessageToHistory();
@@ -105,6 +119,9 @@ export class ChatGpt {
 
     const isHasError = await this.sendChatCompletions(message);
 
+    const isFailModeration = await this.moderateMessage(message);
+    if (isFailModeration) return;
+
     if (isHasError) return;
     if (this.abortController.signal.aborted) return;
 
@@ -116,6 +133,7 @@ export class ChatGpt {
 
   async sendChatCompletions(message: GptMessage) {
     const result = await sendChatCompletions(
+      this.apiKey,
       { model: "gpt-3.5-turbo-0301", messages: this.getMessages() },
       this.onMessage(message),
       () => {
@@ -130,6 +148,27 @@ export class ChatGpt {
     this.checkOnRunOutOfMessages();
 
     return result;
+  }
+
+  async moderateMessage(message?: GptMessage) {
+    if (!message) return;
+
+    const moderation = await moderationText(
+      message.content$.get(),
+      this.apiKey
+    );
+
+    const isFailedModeration = moderation.results[0].flagged;
+
+    message.failedModeration$.set(isFailedModeration);
+
+    if (isFailedModeration) {
+      message.content$.set(
+        "Cообщение содержит грубое или оскорбляющее содержание"
+      );
+    }
+
+    return moderation.results[0].flagged;
   }
 
   checkOnRunOutOfMessages() {
@@ -250,10 +289,16 @@ export class ChatGpt {
     this.currentDialog = foundDialog.id;
 
     this.messages$.set(
-      foundDialog.messages.map(
-        (message) =>
-          new GptMessage(message.content, message.role, message.inLocal)
-      )
+      foundDialog.messages.map((message) => {
+        const message$ = new GptMessage(
+          message.content,
+          message.role,
+          message.inLocal
+        );
+        message$.failedModeration$.set(message.isFailModeration);
+
+        return message$;
+      })
     );
 
     const data = foundDialog.data;

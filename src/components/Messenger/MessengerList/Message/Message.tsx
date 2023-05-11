@@ -56,7 +56,9 @@ function Message({ chatGpt, message, isDisabled }: IProps) {
         <div style={{ display: "grid", width: "100%" }}>
           <div className={classes.topBlock}>
             <Text weight="2" className={classes.normalize}>
-              {message.role === "assistant" ? "Chat GPT" : vkUser?.first_name}
+              {message.role === "assistant"
+                ? "Chat GPT"
+                : vkUser?.first_name || "Вы"}
             </Text>
             <div className={classes.iconsBlock}>
               {runOutOfContextMessages.find(({ id }) => message.id === id) && (
