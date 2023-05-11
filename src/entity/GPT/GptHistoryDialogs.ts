@@ -116,6 +116,7 @@ export class GptHistoryDialogs {
     return {
       content: message.content$.get(),
       inLocal: !!message.inLocal,
+      isFailModeration: message.failedModeration$.get(),
       role: message.role,
     };
   };

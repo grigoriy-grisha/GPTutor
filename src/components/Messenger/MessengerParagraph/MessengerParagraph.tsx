@@ -7,6 +7,7 @@ import { GptMessage } from "$/entity/GPT";
 
 import classes from "./MessengerParagraph.module.css";
 import DebouncedCode from "./DebouncedCode";
+import ErrorBlock from "./ErrorBlock";
 
 interface IProps {
   message: GptMessage;
@@ -16,6 +17,14 @@ function MessengerParagraph({ message }: IProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const markdown = useMemo(() => new Markdown(), []);
   const html = markdown.render(message.content$.get());
+
+  if (message.failedModeration$.get()) {
+    return (
+      <div className={classes.paragraph}>
+        <ErrorBlock />
+      </div>
+    );
+  }
 
   return (
     <Paragraph weight="3" className={classes.paragraph}>
