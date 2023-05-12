@@ -7,7 +7,6 @@ import BugsnagPluginReact from "@bugsnag/plugin-react";
 import Bugsnag from "@bugsnag/js";
 import "dignals-react";
 
-
 import App from "./App";
 
 import ErrorBoundaryApp from "./ErrorBoundaryApp";
