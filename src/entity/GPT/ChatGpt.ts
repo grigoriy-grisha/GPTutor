@@ -119,9 +119,6 @@ export class ChatGpt {
 
     const isHasError = await this.sendChatCompletions(message);
 
-    const isFailModeration = await this.moderateMessage(message);
-    if (isFailModeration) return;
-
     if (isHasError) return;
     if (this.abortController.signal.aborted) return;
 
@@ -163,9 +160,7 @@ export class ChatGpt {
     message.failedModeration$.set(isFailedModeration);
 
     if (isFailedModeration) {
-      message.content$.set(
-        "Cообщение содержит грубое или оскорбляющее содержание"
-      );
+      message.content$.set("Данное сообщение пришлось скрыть");
     }
 
     return moderation.results[0].flagged;

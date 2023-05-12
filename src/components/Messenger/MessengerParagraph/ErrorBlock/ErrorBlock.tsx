@@ -9,7 +9,7 @@ function ErrorBlock() {
       className={classes.errorBlock}
       before={<Icon16ErrorCircleFill width={28} height={28} />}
       header="Данное сообщение пришлось скрыть"
-      subheader="Cообщение содержит грубое или оскорбляющее содержание"
+      subheader="Cообщение содержит грубое или оскорбляющее содержание. Chat GPT не будет отвечать на это."
     />
   );
 }
