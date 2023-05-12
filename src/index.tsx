@@ -1,22 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import bridge from "@vkontakte/vk-bridge";
-import {
-  AdaptivityProvider,
-  AppRoot,
-  ConfigProvider,
-  Platform,
-} from "@vkontakte/vkui";
-import "dignals-react";
-
-import App from "./App";
+import { Page, Router, RouterContext } from "@happysanta/router";
+import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import Bugsnag from "@bugsnag/js";
+import "dignals-react";
+
+import { OnboardingService } from "$/services/OnboardingService";
+
+import App from "./App";
+
 import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
-import { Page, Router, RouterContext } from "@happysanta/router";
 
 bridge.send("VKWebAppInit");
+
+const onboardingService = new OnboardingService();
+onboardingService.runOnBoarding();
 
 const routes = {
   [RoutingPages.home]: new Page(Panels.home, Views.viewMain),

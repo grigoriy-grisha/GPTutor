@@ -52,12 +52,11 @@ function Message({ chatGpt, message, isDisabled }: IProps) {
         <div className={classes.normalize}>
           <MessengerAva message={message} photo={vkUser?.photo_100} />
         </div>
-
         <div style={{ display: "grid", width: "100%" }}>
           <div className={classes.topBlock}>
             <Text weight="2" className={classes.normalize}>
               {message.role === "assistant"
-                ? "Chat GPT"
+                ? "GPTutor"
                 : vkUser?.first_name || "Вы"}
             </Text>
             <div className={classes.iconsBlock}>
