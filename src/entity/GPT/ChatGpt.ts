@@ -163,9 +163,7 @@ export class ChatGpt {
     message.failedModeration$.set(isFailedModeration);
 
     if (isFailedModeration) {
-      message.content$.set(
-        "Cообщение содержит грубое или оскорбляющее содержание"
-      );
+      message.content$.set("Данное сообщение пришлось скрыть");
     }
 
     return moderation.results[0].flagged;
