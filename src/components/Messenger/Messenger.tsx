@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 
 import { LessonItem } from "$/entity/lessons";
 import { ChatGpt } from "$/entity/GPT";
@@ -10,6 +10,7 @@ import { MessengerWriteBar } from "./MessengerWriteBar";
 import { AppContainer } from "../AppContainer";
 
 import { useMessenger } from "./hooks/useMessenger";
+import ScrollDown from "./ScrollDown";
 
 interface IProps {
   goBack: () => void;
@@ -26,7 +27,14 @@ function Messenger({
   onSettingsClick,
   goToHistory,
 }: IProps) {
-  const { isTyping, scrollRef, onStartChat, handlerSend } = useMessenger({
+  const {
+    isTyping,
+    scrollRef,
+    showScrollDown,
+    onStartChat,
+    handlerSend,
+    scrollToBottom,
+  } = useMessenger({
     chatGpt,
     lesson,
   });
@@ -45,6 +53,7 @@ function Messenger({
           isTyping={isTyping}
           onStartChat={onStartChat}
         />
+        <ScrollDown isShow={showScrollDown} onClick={scrollToBottom} />
       </MessengerContainer>
       <MessengerWriteBar
         onSettingsClick={onSettingsClick}

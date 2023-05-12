@@ -1,0 +1,19 @@
+
+.wrapper {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 500ms;
+    right: 20px;
+    cursor: pointer;
+    bottom: 20px;
+    margin-left: auto;
+    position: sticky;
+    border: 1px solid var(--vkui--color_separator_primary);
+    border-radius: 50%;
+    background: var(--vkui--color_background_content);
+}
+
+.wrapperActive {
+    pointer-events: auto;
+    opacity: 1;
+}
