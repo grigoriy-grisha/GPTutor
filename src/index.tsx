@@ -55,6 +55,4 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-if (process.env.NODE_ENV === "development") {
-  import("./eruda"); //runtime download
-}
+import("./eruda"); //runtime download
