@@ -15,10 +15,7 @@ import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
 
 bridge.send("VKWebAppInit").then(() => {
-  import("./eruda").then(() => {
-    const onboardingService = new OnboardingService();
-    onboardingService.runOnBoarding();
-  });
+  import("./eruda");
 });
 
 const routes = {
