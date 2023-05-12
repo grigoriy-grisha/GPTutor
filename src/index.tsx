@@ -14,10 +14,12 @@ import App from "./App";
 import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
 
-bridge.send("VKWebAppInit");
-
-const onboardingService = new OnboardingService();
-onboardingService.runOnBoarding();
+bridge.send("VKWebAppInit").then(() => {
+  import("./eruda").then(() => {
+    const onboardingService = new OnboardingService();
+    onboardingService.runOnBoarding();
+  });
+});
 
 const routes = {
   [RoutingPages.home]: new Page(Panels.home, Views.viewMain),
@@ -54,5 +56,3 @@ ReactDOM.render(
   </ErrorBoundaryApp>,
   document.getElementById("root")
 );
-
-import("./eruda"); //runtime download

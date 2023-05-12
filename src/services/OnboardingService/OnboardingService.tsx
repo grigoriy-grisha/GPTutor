@@ -7,9 +7,9 @@ import {
 } from "$/services/OnboardingService/slides";
 
 export class OnboardingService {
-  runOnBoarding() {
+  async runOnBoarding() {
     console.log("run");
-    bridge
+    await bridge
       .send(
         "VKWebAppShowSlidesSheet" as AnyRequestMethodName,
         {
