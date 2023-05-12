@@ -119,9 +119,6 @@ export class ChatGpt {
 
     const isHasError = await this.sendChatCompletions(message);
 
-    const isFailModeration = await this.moderateMessage(message);
-    if (isFailModeration) return;
-
     if (isHasError) return;
     if (this.abortController.signal.aborted) return;
 
