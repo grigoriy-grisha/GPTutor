@@ -7,15 +7,24 @@ import BugsnagPluginReact from "@bugsnag/plugin-react";
 import Bugsnag from "@bugsnag/js";
 import "dignals-react";
 
-import { OnboardingService } from "$/services/OnboardingService";
-
 import App from "./App";
 
 import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
 
+const isFirstVisitFlagName = "isFirstVisit";
+
 bridge.send("VKWebAppInit").then(() => {
   import("./eruda");
+
+  //
+  // storageService.get(isFirstVisitFlagName).then((value) => {
+  //   if (!value) return;
+  //
+  //   const onboardingService = new OnboardingService();
+  //   onboardingService.runOnBoarding();
+  //   storageService.set(isFirstVisitFlagName, true);
+  // });
 });
 
 const routes = {
