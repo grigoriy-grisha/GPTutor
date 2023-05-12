@@ -8,6 +8,7 @@ import {
 
 export class OnboardingService {
   runOnBoarding() {
+    console.log("run");
     bridge
       .send(
         "VKWebAppShowSlidesSheet" as AnyRequestMethodName,
@@ -39,7 +40,11 @@ export class OnboardingService {
           ],
         } as any
       )
-      .then(console.log)
-      .catch(console.error);
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }
