@@ -3,7 +3,7 @@ import { useConfigProvider } from "@vkontakte/vkui";
 
 export function ChatGptIcon() {
   const { appearance } = useConfigProvider();
-  const color = appearance === "dark" ? "#000" : "#fff";
+  const color = appearance === "dark" ? "black" : "white";
 
   return (
     <svg height="70%" viewBox="0 0 158 161">

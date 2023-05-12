@@ -1,22 +1,31 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import bridge from "@vkontakte/vk-bridge";
-import {
-  AdaptivityProvider,
-  AppRoot,
-  ConfigProvider,
-  Platform,
-} from "@vkontakte/vkui";
+import { Page, Router, RouterContext } from "@happysanta/router";
+import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
+import BugsnagPluginReact from "@bugsnag/plugin-react";
+import Bugsnag from "@bugsnag/js";
 import "dignals-react";
 
 import App from "./App";
-import BugsnagPluginReact from "@bugsnag/plugin-react";
-import Bugsnag from "@bugsnag/js";
+
 import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
-import { Page, Router, RouterContext } from "@happysanta/router";
 
-bridge.send("VKWebAppInit");
+const isFirstVisitFlagName = "isFirstVisit";
+
+bridge.send("VKWebAppInit").then(() => {
+  import("./eruda");
+
+  //
+  // storageService.get(isFirstVisitFlagName).then((value) => {
+  //   if (!value) return;
+  //
+  //   const onboardingService = new OnboardingService();
+  //   onboardingService.runOnBoarding();
+  //   storageService.set(isFirstVisitFlagName, true);
+  // });
+});
 
 const routes = {
   [RoutingPages.home]: new Page(Panels.home, Views.viewMain),
@@ -53,7 +62,3 @@ ReactDOM.render(
   </ErrorBoundaryApp>,
   document.getElementById("root")
 );
-
-if (process.env.NODE_ENV === "development") {
-  import("./eruda"); //runtime download
-}

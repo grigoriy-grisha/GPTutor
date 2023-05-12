@@ -14,7 +14,7 @@ import { StorageService } from "$/services/StorageService";
 
 type ParamsAddHistoryDialog = {
   systemMessage: GptMessage;
-  lastMessage: GptMessage;
+  messages: GptMessage[];
   type: GPTDialogHistoryType;
   data: GPTDialogHistoryData;
 };
@@ -33,6 +33,8 @@ export class GptHistoryDialogs {
   }
   dialogs = sig<GPTDialogHistory[]>([]);
 
+  searchedDialogs = this.dialogs;
+
   async init() {
     this.storage.get(this.HISTORY_KEY).then((result) => {
       if (result) this.dialogs.set(result);
@@ -40,13 +42,13 @@ export class GptHistoryDialogs {
   }
   addToHistoryDialog({
     systemMessage,
-    lastMessage,
+    messages,
     data,
     type,
   }: ParamsAddHistoryDialog) {
     const dialog = this.createHistoryDialog({
       systemMessage,
-      lastMessage,
+      messages,
       data,
       type,
       date: new Date(),
@@ -64,11 +66,11 @@ export class GptHistoryDialogs {
     const foundHistoryDialog = history.find((item) => item.id === id);
     if (!foundHistoryDialog) return;
 
+    const lastMessage = this.mapGptMessageToDomain(gptMessage);
+
     foundHistoryDialog.date = new Date();
-    foundHistoryDialog.messages = [
-      ...foundHistoryDialog.messages,
-      this.mapGptMessageToDomain(gptMessage),
-    ];
+    foundHistoryDialog.messages = [...foundHistoryDialog.messages, lastMessage];
+    foundHistoryDialog.lastMessage = lastMessage;
 
     this.storage.set(this.HISTORY_KEY, this.dialogs.get());
   }
@@ -85,18 +87,19 @@ export class GptHistoryDialogs {
     return this.dialogs.get().at(-1);
   }
 
-  getDialogById(id: UUID_V4) {
+  getDialogById(id: UUID_V4 | null) {
+    if (id === null) return undefined;
     return this.dialogs.get().find((dialog) => dialog.id === id);
   }
 
   private createHistoryDialog({
     systemMessage,
-    lastMessage,
+    messages,
     type,
     data,
     date,
   }: ParamsCreateHistoryDialog): GPTDialogHistory {
-    const lastDomainMessage = this.mapGptMessageToDomain(lastMessage);
+    const lastDomainMessage = this.mapGptMessageToDomain(messages.at(-1)!);
 
     return {
       data,
@@ -105,15 +108,16 @@ export class GptHistoryDialogs {
       date,
       lastMessage: lastDomainMessage,
       systemMessage: this.mapGptMessageToDomain(systemMessage),
-      messages: [lastDomainMessage],
+      messages: messages.map(this.mapGptMessageToDomain),
     };
   }
 
-  private mapGptMessageToDomain(message: GptMessage): GPTMessage {
+  private mapGptMessageToDomain = (message: GptMessage): GPTMessage => {
     return {
       content: message.content$.get(),
       inLocal: !!message.inLocal,
+      isFailModeration: message.failedModeration$.get(),
       role: message.role,
     };
-  }
+  };
 }

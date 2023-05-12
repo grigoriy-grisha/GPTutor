@@ -23,6 +23,7 @@ import FreeDialogBlock from "./FreeDialogBlock";
 import HomeHeader from "./HomeHeader";
 
 import classes from "./Home.module.css";
+import { OnboardingService } from "$/services/OnboardingService";
 
 interface IProps {
   id: string;
@@ -47,10 +48,17 @@ function Home({
     <Panel id={id}>
       <AppContainer
         className={classes.group}
-        maxHeight
         isSecondary
         headerChildren={<HomeHeader goToOpenSource={goToOpenSource} />}
       >
+        <button
+          onClick={() => {
+            const onboardingService = new OnboardingService();
+            onboardingService.runOnBoarding();
+          }}
+        >
+          онбординг
+        </button>
         <Cards
           chapters={lessonsController.chapters}
           isTop
@@ -74,9 +82,10 @@ function Home({
           <Separator wide style={{ width: "100%" }} />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <TabbarItem
+              className={classes.tabItem}
               href="https://vk.com/gptutor"
               target="_blank"
-              text="Перейти в сообщество"
+              text="Сообщество"
             >
               <Icon28UsersOutline />
             </TabbarItem>

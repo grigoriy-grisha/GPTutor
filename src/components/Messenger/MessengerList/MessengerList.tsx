@@ -13,31 +13,39 @@ interface IProps {
   onStartChat: () => void;
 }
 
-function MessengerList({ isTyping, chatGpt, onStartChat }: IProps) {
-  const messages = chatGpt.messages$.get();
+function MessengerPlaceholder({
+  chatGpt,
+  onStartChat,
+}: Omit<IProps, "isTyping">) {
   const isStopped = chatGpt.timer.isStopped$.get();
 
+  return (
+    <div className={classes.placeholderContainer}>
+      <Placeholder
+        header="Начните диалог"
+        action={
+          <Button
+            disabled={!isStopped}
+            aria-label="Начать диалог"
+            mode="outline"
+            size="m"
+            onClick={onStartChat}
+          >
+            Начать
+          </Button>
+        }
+      >
+        Запустите бота стартовой фразой
+      </Placeholder>
+    </div>
+  );
+}
+
+function MessengerList({ isTyping, chatGpt, onStartChat }: IProps) {
+  const messages = chatGpt.messages$.get();
+
   if (messages.length === 0) {
-    return (
-      <div className={classes.placeholderContainer}>
-        <Placeholder
-          header="Начните диалог"
-          action={
-            <Button
-              disabled={!isStopped}
-              aria-label="Начать диалог"
-              mode="outline"
-              size="m"
-              onClick={onStartChat}
-            >
-              Начать
-            </Button>
-          }
-        >
-          Запустите бота стартовой фразой
-        </Placeholder>
-      </div>
-    );
+    return <MessengerPlaceholder chatGpt={chatGpt} onStartChat={onStartChat} />;
   }
 
   return (

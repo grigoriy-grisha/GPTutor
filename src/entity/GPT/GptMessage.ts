@@ -7,6 +7,8 @@ export class GptMessage {
   content$: Signal<string>;
   isSelected$ = sig<boolean>(false);
 
+  failedModeration$ = sig<boolean>(false);
+
   isRunOutOfContext = sig<boolean>(false);
 
   id: number = id;
@@ -14,7 +16,8 @@ export class GptMessage {
   constructor(
     message: string,
     public role: GPTRoles,
-    public inLocal?: boolean
+    public inLocal?: boolean,
+    public isError?: boolean
   ) {
     this.content$ = sig(message);
     id++;

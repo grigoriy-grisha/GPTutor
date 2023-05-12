@@ -65,7 +65,7 @@ function Header({ goBack, goToHistory, isTyping }: IProps) {
           </div>
         }
       >
-        <Text weight="1">Chat GPT</Text>
+        <Text weight="1">GPTutor</Text>
       </SimpleCell>
       <IconButton className={classes.historyIcon} onClick={goToHistory}>
         {platform === Platform.VKCOM ? (

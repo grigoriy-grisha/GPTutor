@@ -34,8 +34,8 @@ function History({ id, goBack, goToChat }: IProps) {
         }
       >
         {dialogs.length !== 0 ? (
-          chatGpt.history.dialogs
-            .get()
+          [...chatGpt.history.dialogs.get()]
+            .reverse()
             .map((dialog) => (
               <HistoryBanner
                 key={dialog.id}
