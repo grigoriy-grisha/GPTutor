@@ -16,6 +16,7 @@ import { AppContainer } from "$/components/AppContainer";
 import { CardBlock } from "$/components/CardBlock";
 import Cards from "$/components/Cards/Cards";
 import { languages, lessonsController, technologies } from "$/entity/lessons";
+import PanelTitle from "$/components/PanelTitle";
 
 import classes from "./Modes.module.css";
 
@@ -33,7 +34,10 @@ function Modes({ id, goBack, goToChapters }: IProps) {
         className={classes.container}
         headerChildren={
           <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            Режимы для обучения
+            <PanelTitle
+              mobileTitle="Режимы"
+              title="Режимы для обучения"
+            ></PanelTitle>
           </PanelHeader>
         }
       >

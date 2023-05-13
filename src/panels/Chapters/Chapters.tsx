@@ -4,6 +4,7 @@ import { Panel, PanelHeader, PanelHeaderBack } from "@vkontakte/vkui";
 
 import { ChapterTypes, lessonsController } from "$/entity/lessons";
 import { chatGpt } from "$/entity/GPT";
+import PanelTitle from "$/components/PanelTitle";
 
 import Lessons from "./Lessons";
 
@@ -32,7 +33,10 @@ function Chapters({ id, goToChat, goBack }: IProps) {
     <Panel id={id}>
       <div className={classes.panel}>
         <PanelHeader shadow before={<PanelHeaderBack onClick={goBack} />}>
-          {chapterTitles[currentChapter?.chapterType]}
+          <PanelTitle
+            mobileTitle="Темы"
+            title={chapterTitles[currentChapter?.chapterType]}
+          ></PanelTitle>
         </PanelHeader>
         {currentChapter && (
           <Lessons
