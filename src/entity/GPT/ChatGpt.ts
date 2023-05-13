@@ -39,7 +39,7 @@ export class ChatGpt {
 
   apiKey: string = "";
   currentDialog: UUID_V4 | null = null;
-  initialSystemContent =
+  readonly initialSystemContent =
     "Ты программист с опытом веб разработки в 10 лет, отвечаешь на вопросы джуниора, который хочет научиться программированию, добавляй правильную подсветку кода, указывай язык для блоков кода";
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
@@ -70,6 +70,7 @@ export class ChatGpt {
   clearMessages = () => {
     this.abortSend();
     this.messages$.set([]);
+    this.currentDialog = null;
   };
 
   clearSystemMessage = () => {
@@ -297,7 +298,7 @@ export class ChatGpt {
     if (!foundDialog) return;
 
     this.currentDialog = foundDialog.id;
-
+    this.systemMessage.content$.set(foundDialog.systemMessage.content);
     this.messages$.set(
       foundDialog.messages.map((message) => {
         const message$ = new GptMessage(

@@ -24,7 +24,7 @@ function ApplyAlert({ applySettings, closeAlert }: IProps) {
         actionsLayout="vertical"
         onClose={closeAlert}
         header="Подтвердите действие"
-        text="После изменения системных настроек история сообщений будет отчищена!"
+        text="После изменения системных настроек история сообщений будет очищена!"
       />
     </InPortal>
   );
