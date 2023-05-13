@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React, { memo } from "react";
 
 import { LessonItem } from "$/entity/lessons";
 import { ChatGpt } from "$/entity/GPT";
@@ -20,13 +20,7 @@ interface IProps {
   goToHistory: () => void;
 }
 
-function Messenger({
-  goBack,
-  lesson,
-  chatGpt,
-  onSettingsClick,
-  goToHistory,
-}: IProps) {
+function Messenger({ goBack, lesson, chatGpt, onSettingsClick }: IProps) {
   const {
     isTyping,
     scrollRef,
@@ -42,9 +36,7 @@ function Messenger({
   return (
     <AppContainer
       maxHeight
-      headerChildren={
-        <Header goBack={goBack} goToHistory={goToHistory} isTyping={isTyping} />
-      }
+      headerChildren={<Header goBack={goBack} isTyping={isTyping} />}
       style={{ flexDirection: "column-reverse" }}
     >
       <MessengerContainer withoutDiv ref={scrollRef}>
