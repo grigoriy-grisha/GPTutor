@@ -1,19 +1,8 @@
 import React from "react";
 
-import {
-  Button,
-  Panel,
-  PanelHeader,
-  PanelHeaderBack,
-  Placeholder,
-} from "@vkontakte/vkui";
-import {
-  Icon24ArrowRightSquareOutline,
-  Icon56GhostOutline,
-} from "@vkontakte/icons";
+import { Panel, PanelHeader, PanelHeaderBack } from "@vkontakte/vkui";
 
 import { AppContainer } from "$/components/AppContainer";
-import { CardBlock } from "$/components/CardBlock";
 import Cards from "$/components/Cards/Cards";
 import { languages, lessonsController, technologies } from "$/entity/lessons";
 import PanelTitle from "$/components/PanelTitle";
@@ -59,25 +48,6 @@ function Modes({ id, goBack, goToChapters }: IProps) {
             goToChapters();
           }}
         />
-        <CardBlock className={classes.bottomBlock} isBottom>
-          <Placeholder
-            icon={
-              <Icon56GhostOutline fill="var(--vkui--color_background_accent_themed)" />
-            }
-            header="Здесь будут режимы подготовки к собеседованию"
-            action={
-              <Button
-                href="https://vk.com/gptutor"
-                target="_blank"
-                after={<Icon24ArrowRightSquareOutline />}
-              >
-                Перейти в сообщество
-              </Button>
-            }
-          >
-            Следите за обновленями в сообществе!
-          </Placeholder>
-        </CardBlock>
       </AppContainer>
     </Panel>
   );
