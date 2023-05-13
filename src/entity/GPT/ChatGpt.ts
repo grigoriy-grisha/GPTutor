@@ -35,6 +35,8 @@ const REPEAT_WORDS = ["eщe", "повтори", "повтор", "repeat"];
 
 //todo рефакторинг, разнести этот класс на несколько сущностей
 export class ChatGpt {
+  isBlockActions$ = sig(false);
+
   apiKey: string = "";
   currentDialog: UUID_V4 | null = null;
   initialSystemContent =
@@ -78,22 +80,35 @@ export class ChatGpt {
     this.abortController.abort();
   };
 
+  blockActions = () => {
+    this.isBlockActions$.set(true);
+  };
+
+  allowActions = () => {
+    this.isBlockActions$.set(false);
+  };
+
   send = async (content: string) => {
-    this.apiKey = await aesCipher.decodeMessage(await getApiKey());
+    try {
+      this.blockActions();
+      this.apiKey = await aesCipher.decodeMessage(await getApiKey());
 
-    this.addMessage(new GptMessage(content, GPTRoles.user));
+      this.addMessage(new GptMessage(content, GPTRoles.user));
 
-    const isFailModerationUserMessage = await this.moderateMessage(
-      this.getLastUserMessage()
-    );
+      const isFailModerationUserMessage = await this.moderateMessage(
+        this.getLastUserMessage()
+      );
 
-    this.addMessageToHistory();
+      this.addMessageToHistory();
 
-    if (isFailModerationUserMessage) return;
+      if (isFailModerationUserMessage) return;
 
-    await this.sendCompletions$.run();
-    this.timer.run();
-    this.addMessageToHistory();
+      await this.sendCompletions$.run();
+      this.timer.run();
+      this.addMessageToHistory();
+    } finally {
+      this.allowActions();
+    }
   };
 
   private async sendCompletion() {

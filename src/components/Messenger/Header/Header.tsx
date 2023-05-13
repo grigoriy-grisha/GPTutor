@@ -2,7 +2,6 @@ import React from "react";
 
 import {
   Avatar,
-  IconButton,
   PanelHeader,
   PanelHeaderBack,
   Platform,
@@ -10,11 +9,7 @@ import {
   Text,
   usePlatform,
 } from "@vkontakte/vkui";
-import {
-  Icon12OnlineMobile,
-  Icon24HistoryBackwardOutline,
-  Icon28HistoryBackwardOutline,
-} from "@vkontakte/icons";
+import { Icon12OnlineMobile } from "@vkontakte/icons";
 
 import { ChatGPTLogo } from "$/icons";
 import { IsTypingLoader } from "$/components/IsTypingLoader";
@@ -23,11 +18,10 @@ import classes from "./Header.module.css";
 
 interface IProps {
   goBack: () => void;
-  goToHistory: () => void;
   isTyping: boolean;
 }
 
-function Header({ goBack, goToHistory, isTyping }: IProps) {
+function Header({ goBack, isTyping }: IProps) {
   const platform = usePlatform();
 
   return (
@@ -67,13 +61,6 @@ function Header({ goBack, goToHistory, isTyping }: IProps) {
       >
         <Text weight="1">GPTutor</Text>
       </SimpleCell>
-      <IconButton className={classes.historyIcon} onClick={goToHistory}>
-        {platform === Platform.VKCOM ? (
-          <Icon28HistoryBackwardOutline fill="var(--vkui--color_background_accent_themed)" />
-        ) : (
-          <Icon24HistoryBackwardOutline fill="var(--vkui--color_background_accent_themed)" />
-        )}
-      </IconButton>
     </PanelHeader>
   );
 }

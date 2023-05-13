@@ -11,6 +11,7 @@
     border: 1px solid var(--vkui--color_separator_primary);
     border-radius: 50%;
     background: var(--vkui--color_background_content);
+    color: var(--vkui--color_accent_secondary);
 }
 
 .wrapperActive {

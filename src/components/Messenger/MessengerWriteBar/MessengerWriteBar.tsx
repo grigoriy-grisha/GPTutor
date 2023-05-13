@@ -44,7 +44,7 @@ function MessengerWriteBar({
             additionalRequests={additionalRequests}
             isAdditionalOpen={isAdditionalOpen}
             handleSend={handleSend}
-            isTyping={isTyping}
+            isTyping={isTyping || chatGpt.isBlockActions$.get()}
           />
         </div>
         <WriteBarMessage
