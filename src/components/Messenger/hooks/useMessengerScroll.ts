@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 function getScrollBottom(elem: HTMLDivElement) {
   return elem.scrollHeight - elem.scrollTop - elem.clientHeight;
@@ -8,6 +8,7 @@ const maxAutoScrollValue = 150;
 const autoScrollTimeValue = 150;
 
 export function useMessengerScroll(isTyping: boolean) {
+  const [showScrollDown, setShowScrollDown] = useState(false);
   const scrollRef = useRef<HTMLDivElement>();
   const intervalId = useRef<NodeJS.Timeout>();
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -50,5 +51,27 @@ export function useMessengerScroll(isTyping: boolean) {
     return () => clearTimeout(intervalId.current);
   }, [isTyping]);
 
-  return { scrollRef, scrollToBottom };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!scrollRef.current) return;
+
+      if (getScrollBottom(scrollRef.current) > maxAutoScrollValue) {
+        setShowScrollDown(true);
+        return;
+      }
+      setShowScrollDown(false);
+    };
+
+    if (scrollRef.current) {
+      scrollRef.current.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (scrollRef.current) {
+        scrollRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [scrollRef.current]);
+
+  return { scrollRef, scrollToBottom, showScrollDown };
 }

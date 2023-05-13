@@ -13,7 +13,8 @@ type HookMessengerParams = {
 export function useMessenger({ chatGpt, lesson }: HookMessengerParams) {
   const isTyping = chatGpt.sendCompletions$.loading.get();
 
-  const { scrollRef, scrollToBottom } = useMessengerScroll(isTyping);
+  const { scrollRef, scrollToBottom, showScrollDown } =
+    useMessengerScroll(isTyping);
 
   const onStartChat = () => {
     const initialRequest = lesson?.initialRequest;
@@ -33,7 +34,9 @@ export function useMessenger({ chatGpt, lesson }: HookMessengerParams) {
   return {
     isTyping,
     scrollRef,
+    showScrollDown,
     onStartChat,
     handlerSend,
+    scrollToBottom,
   };
 }
