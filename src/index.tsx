@@ -11,20 +11,23 @@ import App from "./App";
 
 import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
+import { StorageService } from "./services/StorageService";
+import { OnboardingService } from "./services/OnboardingService";
 
 const isFirstVisitFlagName = "isFirstVisit";
+
+const storageService = new StorageService();
 
 bridge.send("VKWebAppInit").then(() => {
   import("./eruda");
 
-  //
-  // storageService.get(isFirstVisitFlagName).then((value) => {
-  //   if (!value) return;
-  //
-  //   const onboardingService = new OnboardingService();
-  //   onboardingService.runOnBoarding();
-  //   storageService.set(isFirstVisitFlagName, true);
-  // });
+  storageService.get(isFirstVisitFlagName).then((value) => {
+    if (!value) return;
+
+    const onboardingService = new OnboardingService();
+    onboardingService.runOnBoarding();
+    storageService.set(isFirstVisitFlagName, true);
+  });
 });
 
 const routes = {

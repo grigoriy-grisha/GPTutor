@@ -40,7 +40,6 @@ function Modes({ id, goBack, goToChapters }: IProps) {
           }}
         />
         <Cards
-          isTop
           title="Технологии"
           chapters={technologies}
           onClickChapter={(chapter) => {

@@ -42,11 +42,7 @@ function FreeDialogBlock({ goToFreeDialog }: IProps) {
           </Button>
         }
       >
-        Взаимодействуй с нейросетью{" "}
-        <Link href="https://openai.com/blog/chatgpt" target="_blank">
-          Chat GPT
-        </Link>{" "}
-        в формате чата
+        Взаимодействуй с Чат ботом в формате чата
       </Placeholder>
     </CardBlock>
   );
