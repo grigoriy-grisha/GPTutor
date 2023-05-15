@@ -22,7 +22,7 @@ bridge.send("VKWebAppInit").then(() => {
   import("./eruda");
 
   storageService.get(isFirstVisitFlagName).then((value) => {
-    if (!value) return;
+    if (value) return;
 
     const onboardingService = new OnboardingService();
     onboardingService.runOnBoarding();
