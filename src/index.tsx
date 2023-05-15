@@ -19,7 +19,9 @@ const isFirstVisitFlagName = "isFirstVisit";
 const storageService = new StorageService();
 
 bridge.send("VKWebAppInit").then(() => {
-  import("./eruda");
+  if (process.env.NODE_ENV === "development") {
+    import("./eruda");
+  }
 
   storageService.get(isFirstVisitFlagName).then((value) => {
     if (value) return;
