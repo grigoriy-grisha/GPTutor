@@ -92,7 +92,7 @@ function Home({
 
             <TabbarItem
               className={classes.tabItem}
-              text="Режимы для изучения"
+              text="Режимы "
               onClick={goToModes}
             >
               <Icon28BookSpreadOutline />
