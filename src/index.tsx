@@ -13,13 +13,16 @@ import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
 import { StorageService } from "./services/StorageService";
 import { OnboardingService } from "./services/OnboardingService";
+import * as process from "process";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
 const storageService = new StorageService();
 
 bridge.send("VKWebAppInit").then(() => {
-  import("./eruda");
+  if (process.env.NODE_ENV === "development") {
+    import("./eruda");
+  }
 
   storageService.get(isFirstVisitFlagName).then((value) => {
     if (value) return;
