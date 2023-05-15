@@ -1,10 +1,5 @@
 import bridge from "@vkontakte/vk-bridge";
-import {
-  firstSlide,
-  fourthSlide,
-  secondSlide,
-  thirdSlide,
-} from "./slides";
+import { firstSlide, fourthSlide, secondSlide, thirdSlide } from "./slides";
 
 export class OnboardingService {
   async runOnBoarding() {
