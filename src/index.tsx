@@ -13,7 +13,6 @@ import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
 import { StorageService } from "./services/StorageService";
 import { OnboardingService } from "./services/OnboardingService";
-import * as process from "process";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
