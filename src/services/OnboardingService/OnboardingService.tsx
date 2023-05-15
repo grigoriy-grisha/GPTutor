@@ -8,7 +8,7 @@ export class OnboardingService {
         slides: [
           {
             media: { blob: firstSlide, type: "image" },
-            title: "Добро пожаловата!",
+            title: "Добро пожаловать!",
             subtitle:
               "Общайтесь с ботом на любые темы, музыка, программирование, искусство.",
           },
