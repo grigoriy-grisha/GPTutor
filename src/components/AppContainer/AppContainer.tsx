@@ -30,7 +30,7 @@ function AppContainer({
   const offsetHeightHeader = headerElem?.offsetHeight || 0;
   const offsetHeightTabbar = tabbarElem?.offsetHeight || 0;
 
-  const height = `calc(100vh - ${offsetHeightHeader}px)`;
+  const height = `calc(100vh - ${offsetHeightHeader + offsetHeightTabbar}px)`;
 
   return (
     <>
@@ -41,7 +41,7 @@ function AppContainer({
           isSecondary ? classes.secondary : ""
         } ${className}`}
         style={{
-          paddingBottom: `${offsetHeightTabbar}px`,
+          marginBottom: `${offsetHeightTabbar}px`,
           minHeight: height,
           height: "100%",
           ...(maxHeight ? { maxHeight: height } : {}),
