@@ -4,6 +4,8 @@ import { ChatGpt } from "$/entity/GPT";
 import { LessonItem } from "$/entity/lessons";
 
 import { useMessengerScroll } from "./useMessengerScroll";
+import { useRouter } from "@happysanta/router";
+import { Panels, RoutingPages } from "$/entity/routing";
 
 type HookMessengerParams = {
   lesson: LessonItem | null;
@@ -12,6 +14,7 @@ type HookMessengerParams = {
 
 export function useMessenger({ chatGpt, lesson }: HookMessengerParams) {
   const isTyping = chatGpt.sendCompletions$.loading.get();
+  const router = useRouter();
 
   const { scrollRef, scrollToBottom, showScrollDown } =
     useMessengerScroll(isTyping);
@@ -28,8 +31,6 @@ export function useMessenger({ chatGpt, lesson }: HookMessengerParams) {
     chatGpt.send(message);
     setTimeout(scrollToBottom, 50);
   };
-
-  useEffect(() => () => chatGpt.abortSend(), [chatGpt]);
 
   return {
     isTyping,
