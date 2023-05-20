@@ -426,14 +426,6 @@ export const typescriptLessons = [
     []
   ),
   new LessonItem(
-    " NonNullable в TypeScript",
-    UTILITY_TYPES,
-    new LessonRequest(
-      "Что такое NonNullable в TypeScript и для чего его используют?"
-    ),
-    []
-  ),
-  new LessonItem(
     " ConstructorParameters в TypeScript",
     UTILITY_TYPES,
     new LessonRequest(

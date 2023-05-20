@@ -32,8 +32,10 @@ function FreeDialogBlock({ goToFreeDialog }: IProps) {
               if (currentChapter || currentLesson) {
                 lessonsController.clearLesson();
                 lessonsController.clearChapter();
-                chatGpt.clearMessages();
               }
+
+              chatGpt.clearMessages();
+              chatGpt.abortSend();
 
               goToFreeDialog();
             }}
