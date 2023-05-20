@@ -74,15 +74,6 @@ function Home({
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <TabbarItem
               className={classes.tabItem}
-              href="https://vk.com/gptutor"
-              target="_blank"
-              text="Сообщество"
-            >
-              <Icon28UsersOutline />
-            </TabbarItem>
-
-            <TabbarItem
-              className={classes.tabItem}
               text="Режимы "
               onClick={goToModes}
             >
