@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button, Link, Placeholder } from "@vkontakte/vkui";
+import { Button, Placeholder } from "@vkontakte/vkui";
 import { Icon24ArrowRightSquareOutline } from "@vkontakte/icons";
 
 import { ChatGPTLogo } from "$/icons";

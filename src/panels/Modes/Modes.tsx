@@ -6,16 +6,17 @@ import { AppContainer } from "$/components/AppContainer";
 import Cards from "$/components/Cards/Cards";
 import { languages, lessonsController, technologies } from "$/entity/lessons";
 import PanelTitle from "$/components/PanelTitle";
+import { useNavigationContext } from "$/NavigationContext";
 
 import classes from "./Modes.module.css";
 
 interface IProps {
   id: string;
-  goBack: () => void;
-  goToChapters: () => void;
 }
 
-function Modes({ id, goBack, goToChapters }: IProps) {
+function Modes({ id }: IProps) {
+  const { goBack, goToChapters } = useNavigationContext();
+
   return (
     <Panel id={id}>
       <AppContainer

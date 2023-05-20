@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
 import classes from "./AppContainer.module.css";
+import TabbarApp from "$/TabbarApp";
 
 interface IProps {
+  withoutTabbar?: boolean;
   className?: string;
   containerRef?: React.LegacyRef<HTMLDivElement>;
   children: React.ReactNode;
@@ -14,6 +16,7 @@ interface IProps {
 
 function AppContainer({
   className,
+  withoutTabbar,
   containerRef,
   children,
   headerChildren,
@@ -22,9 +25,12 @@ function AppContainer({
   isSecondary,
 }: IProps) {
   const [headerElem, setHeaderElem] = useState<HTMLDivElement>();
+  const [tabbarElem, setTabbarElem] = useState<HTMLDivElement>();
 
-  const offsetHeight = headerElem?.offsetHeight || 0;
-  const height = `calc(100vh - ${offsetHeight}px)`;
+  const offsetHeightHeader = headerElem?.offsetHeight || 0;
+  const offsetHeightTabbar = tabbarElem?.offsetHeight || 0;
+
+  const height = `calc(100vh - ${offsetHeightHeader}px)`;
 
   return (
     <>
@@ -35,6 +41,7 @@ function AppContainer({
           isSecondary ? classes.secondary : ""
         } ${className}`}
         style={{
+          paddingBottom: `${offsetHeightTabbar}px`,
           minHeight: height,
           height: "100%",
           ...(maxHeight ? { maxHeight: height } : {}),
@@ -43,6 +50,7 @@ function AppContainer({
       >
         {children}
       </div>
+      {!withoutTabbar && <TabbarApp setRef={setTabbarElem} />}
     </>
   );
 }

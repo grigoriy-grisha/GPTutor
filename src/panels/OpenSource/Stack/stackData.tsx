@@ -14,7 +14,7 @@ export const stackData = [
   {
     icon: <TypeScriptIcon />,
     header: "Typescript",
-    href: "https://www.typescriptlang.org/",
+    chapter: ChapterTypes.Typescript,
   },
   {
     icon: <DignalsIcon />,

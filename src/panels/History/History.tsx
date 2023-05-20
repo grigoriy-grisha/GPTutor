@@ -14,14 +14,15 @@ import { AppContainer } from "$/components/AppContainer";
 
 import classes from "./History.module.css";
 import { Icon16ChevronLeft, Icon56GhostOutline } from "@vkontakte/icons";
+import { useNavigationContext } from "$/NavigationContext";
 
 interface IProps {
-  goBack: () => void;
-  goToChat: () => void;
   id: string;
 }
 
-function History({ id, goBack, goToChat }: IProps) {
+function History({ id }: IProps) {
+  const { goBack, goToChat } = useNavigationContext();
+
   const dialogs = chatGpt.history.dialogs.get();
   return (
     <Panel id={id}>

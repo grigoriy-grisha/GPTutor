@@ -8,13 +8,15 @@ import Submit from "./Submit";
 import SystemMessageForm from "./SystemMessageForm";
 
 import useChatSettings from "./hooks/useChatSettings";
+import { useNavigationContext } from "$/NavigationContext";
 
 interface IProps {
   id: string;
-  goBack: () => void;
 }
 
-function ChatSettings({ id, goBack }: IProps) {
+function ChatSettings({ id }: IProps) {
+  const { goBack } = useNavigationContext();
+
   const {
     isDirty,
     showAlert,
@@ -30,6 +32,7 @@ function ChatSettings({ id, goBack }: IProps) {
   return (
     <Panel id={id}>
       <AppContainer
+        withoutTabbar
         maxHeight
         isSecondary
         headerChildren={

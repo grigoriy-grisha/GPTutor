@@ -13,6 +13,7 @@ import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
 import { StorageService } from "./services/StorageService";
 import { OnboardingService } from "./services/OnboardingService";
+import { NavigationContextProvider } from "$/NavigationContext";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
@@ -56,13 +57,15 @@ router.start();
 ReactDOM.render(
   <ErrorBoundaryApp>
     <RouterContext.Provider value={router}>
-      <ConfigProvider>
-        <AdaptivityProvider>
-          <AppRoot>
-            <App />
-          </AppRoot>
-        </AdaptivityProvider>
-      </ConfigProvider>
+      <NavigationContextProvider>
+        <ConfigProvider>
+          <AdaptivityProvider>
+            <AppRoot>
+              <App />
+            </AppRoot>
+          </AdaptivityProvider>
+        </ConfigProvider>
+      </NavigationContextProvider>
     </RouterContext.Provider>
   </ErrorBoundaryApp>,
   document.getElementById("root")

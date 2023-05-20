@@ -1,23 +1,12 @@
 import React from "react";
 
-import {
-  Panel,
-  Platform,
-  Separator,
-  Tabbar,
-  TabbarItem,
-  usePlatform,
-} from "@vkontakte/vkui";
-import {
-  Icon28BookSpreadOutline,
-  Icon28HistoryBackwardOutline,
-  Icon28UsersOutline,
-} from "@vkontakte/icons";
+import { Panel } from "@vkontakte/vkui";
 
 import { AppContainer } from "$/components/AppContainer";
 import Cards from "$/components/Cards";
 import { lessonsController } from "$/entity/lessons";
 import { chatGpt } from "$/entity/GPT";
+import { useNavigationContext } from "$/NavigationContext";
 
 import FreeDialogBlock from "./FreeDialogBlock";
 import HomeHeader from "./HomeHeader";
@@ -26,22 +15,10 @@ import classes from "./Home.module.css";
 
 interface IProps {
   id: string;
-  goToChapters: () => void;
-  goToChat: () => void;
-  goToOpenSource: () => void;
-  goToHistory: () => void;
-  goToModes: () => void;
 }
 
-function Home({
-  id,
-  goToModes,
-  goToChapters,
-  goToChat,
-  goToOpenSource,
-  goToHistory,
-}: IProps) {
-  const platform = usePlatform();
+function Home({ id }: IProps) {
+  const { goToOpenSource, goToChapters, goToChat } = useNavigationContext();
 
   return (
     <Panel id={id}>
@@ -66,28 +43,6 @@ function Home({
             chatGpt.currentDialog = null;
           }}
         />
-        <Tabbar
-          className={classes.tabBar}
-          mode={platform === Platform.VKCOM ? "horizontal" : "vertical"}
-        >
-          <Separator wide style={{ width: "100%" }} />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <TabbarItem
-              className={classes.tabItem}
-              text="Режимы "
-              onClick={goToModes}
-            >
-              <Icon28BookSpreadOutline />
-            </TabbarItem>
-            <TabbarItem
-              className={classes.tabItem}
-              text="История диалогов"
-              onClick={goToHistory}
-            >
-              <Icon28HistoryBackwardOutline />
-            </TabbarItem>
-          </div>
-        </Tabbar>
       </AppContainer>
     </Panel>
   );
