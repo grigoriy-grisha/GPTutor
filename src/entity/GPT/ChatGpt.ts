@@ -91,6 +91,8 @@ export class ChatGpt {
 
   send = async (content: string) => {
     try {
+      this.sendCompletions$.loading.set(true);
+
       this.blockActions();
       this.apiKey = await aesCipher.decodeMessage(await getApiKey());
 

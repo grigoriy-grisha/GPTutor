@@ -5,15 +5,15 @@ import { Panel } from "@vkontakte/vkui";
 import { Messenger } from "$/components/Messenger";
 import { lessonsController } from "$/entity/lessons";
 import { chatGpt } from "$/entity/GPT";
+import { useNavigationContext } from "$/NavigationContext";
 
 interface IProps {
   id: string;
-  goBack: () => void;
-  goToChatSettings: () => void;
-  goToHistory: () => void;
 }
 
-const Chat = ({ id, goBack, goToHistory, goToChatSettings }: IProps) => {
+const Chat = ({ id }: IProps) => {
+  const { goBack, goToHistory, goToChatSettings } = useNavigationContext();
+
   const currentLesson = lessonsController.currentLesson.get();
 
   return (

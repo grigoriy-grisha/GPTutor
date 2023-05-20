@@ -7,13 +7,11 @@ import { chatGpt } from "$/entity/GPT";
 import PanelTitle from "$/components/PanelTitle";
 
 import Lessons from "./Lessons";
-
-import classes from "./Chapters.module.css";
+import { useNavigationContext } from "$/NavigationContext";
+import { AppContainer } from "$/components/AppContainer";
 
 interface IProps {
   id: string;
-  goToChat: () => void;
-  goBack: () => void;
 }
 
 const chapterTitles: Record<ChapterTypes, string> = {
@@ -25,19 +23,24 @@ const chapterTitles: Record<ChapterTypes, string> = {
   [ChapterTypes.Vue]: "Темы Vue",
 };
 
-function Chapters({ id, goToChat, goBack }: IProps) {
+function Chapters({ id }: IProps) {
+  const { goBack, goToChat } = useNavigationContext();
+
   const currentChapter = lessonsController.currentChapter.get();
   if (!currentChapter) return null;
 
   return (
     <Panel id={id}>
-      <div className={classes.panel}>
-        <PanelHeader shadow before={<PanelHeaderBack onClick={goBack} />}>
-          <PanelTitle
-            mobileTitle="Темы"
-            title={chapterTitles[currentChapter?.chapterType]}
-          ></PanelTitle>
-        </PanelHeader>
+      <AppContainer
+        headerChildren={
+          <PanelHeader shadow before={<PanelHeaderBack onClick={goBack} />}>
+            <PanelTitle
+              mobileTitle="Темы"
+              title={chapterTitles[currentChapter?.chapterType]}
+            ></PanelTitle>
+          </PanelHeader>
+        }
+      >
         {currentChapter && (
           <Lessons
             currentChapter={currentChapter}
@@ -50,7 +53,7 @@ function Chapters({ id, goToChat, goBack }: IProps) {
             }}
           />
         )}
-      </div>
+      </AppContainer>
     </Panel>
   );
 }

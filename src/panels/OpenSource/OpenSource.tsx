@@ -9,14 +9,15 @@ import Issues from "./Issues";
 import Stack from "./Stack";
 
 import classes from "./OpenSource.module.css";
+import { useNavigationContext } from "$/NavigationContext";
 
 interface IProps {
   id: string;
-  goBack: () => void;
-  goToChapters: () => void;
 }
 
-function OpenSource({ id, goBack, goToChapters }: IProps) {
+function OpenSource({ id }: IProps) {
+  const { goBack, goToChapters } = useNavigationContext();
+
   return (
     <Panel id={id}>
       <AppContainer

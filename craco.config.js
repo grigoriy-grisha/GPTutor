@@ -11,6 +11,8 @@ module.exports = {
       "$/panels": path.resolve(__dirname, "src/panels"),
       "$/services": path.resolve(__dirname, "src/services"),
       "$/utility": path.resolve(__dirname, "src/utility"),
+      "$/NavigationContext": path.resolve(__dirname, "src/NavigationContext"),
+      "$/TabbarApp": path.resolve(__dirname, "src/TabbarApp"),
     },
   },
 };

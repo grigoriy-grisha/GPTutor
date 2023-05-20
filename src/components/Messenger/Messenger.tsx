@@ -35,6 +35,7 @@ function Messenger({ goBack, lesson, chatGpt, onSettingsClick }: IProps) {
 
   return (
     <AppContainer
+      withoutTabbar
       maxHeight
       headerChildren={<Header goBack={goBack} isTyping={isTyping} />}
       style={{ flexDirection: "column-reverse" }}
