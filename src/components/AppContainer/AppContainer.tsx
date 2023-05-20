@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { classNames } from "@vkontakte/vkui";
+
+import TabbarApp from "$/TabbarApp";
 
 import classes from "./AppContainer.module.css";
-import TabbarApp from "$/TabbarApp";
 
 interface IProps {
   withoutTabbar?: boolean;
@@ -37,9 +39,9 @@ function AppContainer({
       {headerChildren && <div ref={setHeaderElem as any}>{headerChildren}</div>}
       <div
         ref={containerRef}
-        className={`${classes.container} ${
-          isSecondary ? classes.secondary : ""
-        } ${className}`}
+        className={classNames(classes.container, className, {
+          [classes.secondary]: isSecondary,
+        })}
         style={{
           marginBottom: `${offsetHeightTabbar}px`,
           minHeight: height,

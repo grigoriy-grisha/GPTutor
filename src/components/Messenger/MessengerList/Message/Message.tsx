@@ -1,6 +1,12 @@
 import React, { memo } from "react";
 
-import { Div, IconButton, Text, useAppearance } from "@vkontakte/vkui";
+import {
+  classNames,
+  Div,
+  IconButton,
+  Text,
+  useAppearance,
+} from "@vkontakte/vkui";
 import {
   Icon24CheckCircleOutline,
   Icon24WarningTriangleOutline,
@@ -43,9 +49,11 @@ function Message({ chatGpt, message, isDisabled }: IProps) {
 
   return (
     <div
-      className={`${
-        hasSelectedMessages ? classes.message : ""
-      } ${selected} ${disabled}`}
+      className={classNames(
+        { [classes.message]: hasSelectedMessages },
+        selected,
+        disabled
+      )}
       onClick={onClickMessage}
     >
       <Div className={classes.container}>

@@ -1,7 +1,8 @@
 import React from "react";
 import { Banner } from "@vkontakte/vkui";
-import classes from "./ErrorBlock.module.css";
 import { Icon16ErrorCircleFill } from "@vkontakte/icons";
+
+import classes from "./ErrorBlock.module.css";
 
 function ErrorBlock() {
   return (

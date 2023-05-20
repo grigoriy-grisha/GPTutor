@@ -1,4 +1,5 @@
 import React from "react";
+import { classNames } from "@vkontakte/vkui";
 
 import classes from "./CardBlock.module.css";
 
@@ -12,9 +13,10 @@ interface IProps {
 function CardBlock({ children, isTop, isBottom, className }: IProps) {
   return (
     <div
-      className={`${classes.container} ${className} ${
-        isTop ? classes.containerTop : ""
-      } ${isBottom ? classes.containerBottom : ""}`}
+      className={classNames(classes.container, className, {
+        [classes.containerTop]: isTop,
+        [classes.containerBottom]: isBottom,
+      })}
     >
       {children}
     </div>

@@ -11,6 +11,7 @@ import {
   Banner,
   Button,
   ButtonGroup,
+  classNames,
   Headline,
   Title,
   useAdaptivityWithJSMediaQueries,
@@ -52,19 +53,19 @@ function HistoryBanner({ dialog, goToChat }: IProps) {
 
   return (
     <Banner
-      className={`${classes.banner} ${
-        sizeX === "compact" ? classes.compactBanner : ""
-      }`}
+      className={classNames(classes.banner, {
+        [classes.compactBanner]: sizeX === "compact",
+      })}
       before={
         <div
-          className={`${classes.bannerIcon} ${
-            sizeX === "compact" ? classes.compactBannerIcon : ""
-          }`}
+          className={classNames(classes.bannerIcon, {
+            [classes.compactBannerIcon]: sizeX === "compact",
+          })}
         >
           <div
-            className={`${classes.iconContainer} ${
-              sizeX === "compact" ? classes.compactIconContainer : ""
-            }`}
+            className={classNames(classes.iconContainer, {
+              [classes.compactIconContainer]: sizeX === "compact",
+            })}
           >
             <Icon />
           </div>
