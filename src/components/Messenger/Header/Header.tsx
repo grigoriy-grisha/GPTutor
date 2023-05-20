@@ -2,6 +2,7 @@ import React from "react";
 
 import {
   Avatar,
+  classNames,
   PanelHeader,
   PanelHeaderBack,
   Platform,
@@ -26,9 +27,10 @@ function Header({ goBack, isTyping }: IProps) {
 
   return (
     <PanelHeader
-      className={`${classes.header} ${
-        platform === Platform.VKCOM ? classes.desktopHeader : ""
-      } ${platform !== Platform.VKCOM ? classes.compactHeader : ""} `}
+      className={classNames(classes.header, {
+        [classes.desktopHeader]: platform === Platform.VKCOM,
+        [classes.compactHeader]: platform !== Platform.VKCOM,
+      })}
       before={<PanelHeaderBack onClick={goBack} />}
     >
       <SimpleCell
