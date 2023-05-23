@@ -51,20 +51,22 @@ function HistoryBanner({ dialog, goToChat }: IProps) {
   const Icon = chapterType ? BannerIcon[chapterType] : ChatGptIcon;
   const { sizeX } = useAdaptivityWithJSMediaQueries();
 
+  const isCompact = sizeX === "compact";
+
   return (
     <Banner
       className={classNames(classes.banner, {
-        [classes.compactBanner]: sizeX === "compact",
+        [classes.compactBanner]: isCompact,
       })}
       before={
         <div
           className={classNames(classes.bannerIcon, {
-            [classes.compactBannerIcon]: sizeX === "compact",
+            [classes.compactBannerIcon]: isCompact,
           })}
         >
           <div
             className={classNames(classes.iconContainer, {
-              [classes.compactIconContainer]: sizeX === "compact",
+              [classes.compactIconContainer]: isCompact,
             })}
           >
             <Icon />

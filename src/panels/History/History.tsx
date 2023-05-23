@@ -24,6 +24,9 @@ function History({ id }: IProps) {
   const { goBack, goToChat } = useNavigationContext();
 
   const dialogs = chatGpt.history.dialogs.get();
+
+  const history = [...chatGpt.history.dialogs.get()].reverse();
+
   return (
     <Panel id={id}>
       <AppContainer
@@ -34,17 +37,7 @@ function History({ id }: IProps) {
           </PanelHeader>
         }
       >
-        {dialogs.length !== 0 ? (
-          [...chatGpt.history.dialogs.get()]
-            .reverse()
-            .map((dialog) => (
-              <HistoryBanner
-                key={dialog.id}
-                dialog={dialog}
-                goToChat={goToChat}
-              />
-            ))
-        ) : (
+        {dialogs.length === 0 ? (
           <Placeholder
             className={classes.placeholder}
             icon={<Icon56GhostOutline />}
@@ -61,6 +54,14 @@ function History({ id }: IProps) {
           >
             Тут будут отображаться ваши диалоги из всех разделов
           </Placeholder>
+        ) : (
+          history.map((dialog) => (
+            <HistoryBanner
+              key={dialog.id}
+              dialog={dialog}
+              goToChat={goToChat}
+            />
+          ))
         )}
       </AppContainer>
     </Panel>
