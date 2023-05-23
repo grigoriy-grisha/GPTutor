@@ -15,7 +15,7 @@ import { GptHistoryDialogs } from "$/entity/GPT/GptHistoryDialogs";
 import { lessonsController } from "$/entity/lessons";
 import { UUID_V4 } from "$/entity/common";
 import { aesCipher } from "$/services/AESCipher";
-import { moderationText } from "$/api/modereation";
+import { moderationText } from "$/api/moderation";
 
 const errorContent = `
 \`\`\`javascript
@@ -92,11 +92,10 @@ export class ChatGpt {
   send = async (content: string) => {
     try {
       this.sendCompletions$.loading.set(true);
+      this.addMessage(new GptMessage(content, GPTRoles.user));
 
       this.blockActions();
       this.apiKey = await aesCipher.decodeMessage(await getApiKey());
-
-      this.addMessage(new GptMessage(content, GPTRoles.user));
 
       const isFailModerationUserMessage = await this.moderateMessage(
         this.getLastUserMessage()
@@ -114,6 +113,13 @@ export class ChatGpt {
     }
   };
 
+  wrapWithSystemMessage(message?: GptMessage) {
+    const systemContent = this.systemMessage.content$.get();
+    const messageContent = message?.content$.get();
+
+    return `${systemContent}${String(messageContent)}`;
+  }
+
   private async sendCompletion() {
     const message = new GptMessage("", GPTRoles.assistant);
 
@@ -125,7 +131,7 @@ export class ChatGpt {
     }
 
     const hasCompletionInCache = await getChatCompletions({
-      conversationName: String(this.getLastUserMessage()?.content$.get()),
+      conversationName: this.wrapWithSystemMessage(this.getLastUserMessage()),
       onMessage: this.onMessage(message),
       abortController: this.abortController,
     });
@@ -142,7 +148,7 @@ export class ChatGpt {
 
     await setCacheCompletions({
       message: String(this.getLastAssistantMessage()?.content$.get()),
-      name: String(this.getLastUserMessage()?.content$.get()),
+      name: this.wrapWithSystemMessage(this.getLastUserMessage()),
     });
   }
 
