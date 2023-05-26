@@ -1,11 +1,6 @@
 import { batch, memo, sig } from "dignals";
 
-import {
-  getApiKey,
-  getChatCompletions,
-  sendChatCompletions,
-  setCacheCompletions,
-} from "$/api/completions";
+import { sendChatCompletions } from "$/api/completions";
 import ReactivePromise from "$/services/ReactivePromise";
 
 import { GPTDialogHistoryData, GPTDialogHistoryType, GPTRoles } from "./types";
@@ -14,7 +9,6 @@ import { Timer } from "$/entity/GPT/Timer";
 import { GptHistoryDialogs } from "$/entity/GPT/GptHistoryDialogs";
 import { lessonsController } from "$/entity/lessons";
 import { UUID_V4 } from "$/entity/common";
-import { aesCipher } from "$/services/AESCipher";
 import { moderationText } from "$/api/moderation";
 
 const errorContent = `
@@ -94,17 +88,6 @@ export class ChatGpt {
       this.sendCompletions$.loading.set(true);
       this.addMessage(new GptMessage(content, GPTRoles.user));
 
-      this.blockActions();
-      this.apiKey = await aesCipher.decodeMessage(await getApiKey());
-
-      const isFailModerationUserMessage = await this.moderateMessage(
-        this.getLastUserMessage()
-      );
-
-      this.addMessageToHistory();
-
-      if (isFailModerationUserMessage) return;
-
       await this.sendCompletions$.run();
       this.timer.run();
       this.addMessageToHistory();
@@ -112,13 +95,6 @@ export class ChatGpt {
       this.allowActions();
     }
   };
-
-  wrapWithSystemMessage(message?: GptMessage) {
-    const systemContent = this.systemMessage.content$.get();
-    const messageContent = message?.content$.get();
-
-    return `${systemContent}${String(messageContent)}`;
-  }
 
   private async sendCompletion() {
     const message = new GptMessage("", GPTRoles.assistant);
@@ -130,26 +106,7 @@ export class ChatGpt {
       return;
     }
 
-    const hasCompletionInCache = await getChatCompletions({
-      conversationName: this.wrapWithSystemMessage(this.getLastUserMessage()),
-      onMessage: this.onMessage(message),
-      abortController: this.abortController,
-    });
-
-    if (hasCompletionInCache) {
-      this.checkOnRunOutOfMessages();
-      return;
-    }
-
-    const isHasError = await this.sendChatCompletions(message);
-
-    if (isHasError) return;
-    if (this.abortController.signal.aborted) return;
-
-    await setCacheCompletions({
-      message: String(this.getLastAssistantMessage()?.content$.get()),
-      name: this.wrapWithSystemMessage(this.getLastUserMessage()),
-    });
+    await this.sendChatCompletions(message);
   }
 
   async sendChatCompletions(message: GptMessage) {
@@ -251,12 +208,6 @@ export class ChatGpt {
 
   getLastMessage() {
     return this.messages$.get().at(-1);
-  }
-
-  getLastAssistantMessage() {
-    return [...this.messages$.get()]
-      .reverse()
-      .find((message) => message.role === GPTRoles.assistant);
   }
 
   lastMessageIsRepeat() {

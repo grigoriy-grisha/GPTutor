@@ -12,16 +12,18 @@ export async function sendChatCompletions(
   let isFirst = true;
   let isHasError = false;
 
-  await fetchEventSource("https://api.openai.com/v1/chat/completions", {
+  await fetchEventSource(`${BACKEND_HOST}conversation`, {
     method: "POST",
     headers: {
-      Authorization: "Bearer " + apiKey,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ ...body, stream: true }),
+    body: JSON.stringify(body),
     signal: controller.signal,
     onmessage(event: EventSourceMessage) {
       if (event.data === "[DONE]") return;
+      if (event.data.startsWith("[Error]")) {
+        throw new Error("[Error]");
+      }
 
       const eventData = JSON.parse(event.data);
       const delta = eventData.choices[0].delta;
@@ -41,56 +43,4 @@ export async function sendChatCompletions(
   });
 
   return isHasError;
-}
-
-export function setCacheCompletions(convention: {
-  name: string;
-  message: string;
-}) {
-  return fetch(`${BACKEND_HOST}cache`, {
-    method: "POST",
-    headers: {
-      "content-Type": "application/json",
-    },
-    body: JSON.stringify(convention),
-  }).then((res) => res.json());
-}
-
-type CheckChatCompletionsParams = {
-  conversationName: string;
-  onMessage: (content: string, isFirst: boolean) => void;
-  abortController: AbortController;
-};
-
-export async function getChatCompletions({
-  conversationName,
-  onMessage,
-  abortController,
-}: CheckChatCompletionsParams) {
-  let isFirst = true;
-
-  try {
-    await fetchEventSource(
-      `${BACKEND_HOST}cache?conversationName=${conversationName}`,
-      {
-        signal: abortController.signal,
-        method: "GET",
-        onmessage: (event) => {
-          onMessage(decodeURIComponent(event.data) + " ", isFirst);
-          isFirst = false;
-        },
-        onerror: (err) => {
-          console.log(err);
-        },
-      }
-    );
-  } catch {
-    return false;
-  }
-
-  return true;
-}
-
-export function getApiKey() {
-  return fetch(`${BACKEND_HOST}api-key`).then((res) => res.text());
 }
