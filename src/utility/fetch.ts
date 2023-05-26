@@ -1,6 +1,6 @@
 import { EventSourceMessage, getBytes, getLines, getMessages } from "./parse";
 
-export const EventStreamContentType = "text/event-stream";
+export const EventStreamContentType = "text/event-stream;charset=UTF-8";
 
 const LastEventId = "last-event-id";
 
@@ -10,6 +10,10 @@ export interface FetchEventSourceInit extends RequestInit {
   onmessage?: (ev: EventSourceMessage) => void;
   onclose?: () => void;
   onerror?: (err: any) => number | null | undefined | void;
+}
+
+function isContentTypeJson(response: Response) {
+  return !!response.headers.get("Content-type")?.startsWith("application/json");
 }
 
 export function fetchEventSource(
@@ -31,6 +35,10 @@ export function fetchEventSource(
 
     try {
       const response = await fetch(input, { ...rest, headers });
+
+      if (isContentTypeJson(response)) {
+        await response.json().then(resolve);
+      }
 
       await onopen(response);
 
