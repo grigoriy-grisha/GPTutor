@@ -16,6 +16,7 @@ export async function sendChatCompletions(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + location.href,
     },
     body: JSON.stringify(body),
     signal: controller.signal,
