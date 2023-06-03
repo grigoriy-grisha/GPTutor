@@ -30,6 +30,10 @@ function WriteBarAfter({ chatGpt, value, sendMessage }: IProps) {
   const timerIsStopped = chatGpt.timer.isStopped$.get();
   const time = chatGpt.timer.time$.get();
 
+  const removeDialogDisable =
+    chatGpt.messages$.get().length < 2 &&
+    chatGpt.history.getHistory$.loading.get();
+
   const sendBars = (
     <>
       {!isTyping ? (
@@ -54,14 +58,20 @@ function WriteBarAfter({ chatGpt, value, sendMessage }: IProps) {
         <ClearMessagesAlert
           closeAlert={() => setShowAlert(false)}
           applySettings={() => {
-            chatGpt.clearMessages();
-            setShowAlert(false);
+            if (!chatGpt.currentHistory) return;
+
+            chatGpt.history
+              .removeHistoryDialog(chatGpt.currentHistory.id)
+              .then(() => {
+                chatGpt.clearMessages();
+                setShowAlert(false);
+              });
           }}
         />
       )}
       <WriteBarIcon
         onClick={() => setShowAlert(true)}
-        disabled={chatGpt.messages$.get().length === 0}
+        disabled={removeDialogDisable}
       >
         <Icon28DeleteOutline />
       </WriteBarIcon>
@@ -71,7 +81,7 @@ function WriteBarAfter({ chatGpt, value, sendMessage }: IProps) {
         <TextTooltip
           appearance={appearance === "light" ? "accent" : "white"}
           style={{ maxWidth: 150 }}
-          text="Подождите пока истечет время для отправки следующего сообщения"
+          text="Подождите, пока истечет время для отправки следующего сообщения"
         >
           <div>
             <Time seconds={time} />

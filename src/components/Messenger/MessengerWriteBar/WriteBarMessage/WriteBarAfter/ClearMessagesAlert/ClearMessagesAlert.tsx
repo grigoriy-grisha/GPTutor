@@ -14,7 +14,7 @@ function ClearMessagesAlert({ applySettings, closeAlert }: IProps) {
       <Alert
         actions={[
           {
-            title: "Удалить сообщения",
+            title: "Удалить диалог",
             mode: "destructive",
             action: applySettings,
           },
@@ -23,7 +23,7 @@ function ClearMessagesAlert({ applySettings, closeAlert }: IProps) {
         actionsLayout="vertical"
         onClose={closeAlert}
         header="Подтвердите действие"
-        text="Вы уверены? Историю сообщений нельзя будет вернуть!"
+        text="Вы уверены? Диалог нельзя будет вернуть!"
       />
     </InPortal>
   );

@@ -15,6 +15,7 @@ import { applicationUser } from "$/entity/user/ApplicationUser";
 import { HistoryCreate } from "$/entity/history/types";
 import { createMessage, getMessagesById } from "$/api/messages";
 import { History } from "$/entity/history";
+import { snackbarNotify } from "$/entity/notify";
 
 const errorContent = `
 \`\`\`javascript
@@ -280,6 +281,13 @@ export class ChatGpt {
 
     const messages = await this.getMessages$.run(id);
 
+    if (!messages) {
+      return snackbarNotify.notify({
+        type: "error",
+        message: "Ошибка при переходе в диплог",
+      });
+    }
+
     if (dialog.lessonName && dialog.type) {
       lessonsController.setCurrentChapter(dialog.type as ChapterTypes);
       lessonsController.setCurrentLessonByName(dialog.lessonName);
@@ -301,32 +309,6 @@ export class ChatGpt {
     );
 
     goToChat();
-
-    // const foundDialog = this.history.getDialogById(id);
-    // if (!foundDialog) return;
-    //
-    // this.currentDialog = foundDialog.id;
-    // this.systemMessage.content$.set(foundDialog.systemMessage.content);
-    // this.messages.ts$.set(
-    //   foundDialog.messages.ts.map((message) => {
-    //     const message$ = new GptMessage(
-    //       message.content,
-    //       message.role,
-    //       message.inLocal
-    //     );
-    //     message$.failedModeration$.set(message.isFailModeration);
-    //
-    //     return message$;
-    //   })
-    // );
-    //
-    // const data = foundDialog.data;
-    // if (data) {
-    //   lessonsController.setCurrentChapter(data.chapterType);
-    //   lessonsController.setCurrentLessonByName(data.lessonName);
-    // }
-    //
-    // this.sendCompletions$.reset();
   }
 }
 

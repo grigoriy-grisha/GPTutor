@@ -44,6 +44,7 @@ const routes = {
   [RoutingPages.chatSettings]: new Page(Panels.chatSettings, Views.viewMain),
   [RoutingPages.history]: new Page(Panels.history, Views.viewMain),
   [RoutingPages.modes]: new Page(Panels.modes, Views.viewMain),
+  [RoutingPages.forbidden]: new Page(Panels.forbidden, Views.viewMain),
 };
 
 if (process.env.NODE_ENV === "production") {

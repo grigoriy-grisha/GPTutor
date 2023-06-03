@@ -1,20 +1,19 @@
 import React, { useEffect } from "react";
 
 import {
-  Button,
   Panel,
   PanelHeader,
   PanelHeaderBack,
-  Placeholder,
+  Spinner,
   Title,
 } from "@vkontakte/vkui";
 import { chatGpt } from "$/entity/GPT";
-import HistoryBanner from "$/panels/History/HistoryBanner";
 import { AppContainer } from "$/components/AppContainer";
 
-import classes from "./History.module.css";
-import { Icon16ChevronLeft, Icon56GhostOutline } from "@vkontakte/icons";
 import { useNavigationContext } from "$/NavigationContext";
+import { HistoryList } from "$/panels/History/HistoryList";
+
+import classes from "./History.module.css";
 
 interface IProps {
   id: string;
@@ -27,9 +26,7 @@ function History({ id }: IProps) {
     chatGpt.history.loadHistory();
   }, []);
 
-  const dialogs = chatGpt.history.dialogs.get();
-
-  const history = [...chatGpt.history.dialogs.get()].reverse();
+  const loading = chatGpt.history.getHistory$.loading.get();
 
   return (
     <Panel id={id}>
@@ -41,31 +38,12 @@ function History({ id }: IProps) {
           </PanelHeader>
         }
       >
-        {dialogs.length === 0 ? (
-          <Placeholder
-            className={classes.placeholder}
-            icon={<Icon56GhostOutline />}
-            header="История диалогов пуста"
-            action={
-              <Button
-                mode="outline"
-                before={<Icon16ChevronLeft />}
-                onClick={goBack}
-              >
-                Вернуться назад
-              </Button>
-            }
-          >
-            Тут будут отображаться ваши диалоги из всех разделов
-          </Placeholder>
+        {loading ? (
+          <div className={classes.loading}>
+            <Spinner size="large" />
+          </div>
         ) : (
-          history.map((dialog) => (
-            <HistoryBanner
-              key={dialog.id}
-              dialog={dialog}
-              goToChat={goToChat}
-            />
-          ))
+          <HistoryList goBack={goBack} goToChat={goToChat} />
         )}
       </AppContainer>
     </Panel>

@@ -6,6 +6,7 @@ export enum RoutingPages {
   chatSettings = "/chat-settings",
   history = "/history",
   modes = "/modes",
+  forbidden = "/forbidden",
 }
 
 export enum Views {
@@ -20,4 +21,5 @@ export enum Panels {
   chatSettings = "chat-settings",
   history = "history",
   modes = "modes",
+  forbidden = "forbidden",
 }

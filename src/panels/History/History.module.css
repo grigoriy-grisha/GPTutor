@@ -3,6 +3,9 @@
     flex-direction: column;
 }
 
-.placeholder {
-    margin-top: 10vh;
+.loading {
+    padding: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
