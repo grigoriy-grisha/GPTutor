@@ -4,9 +4,9 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-import { useRouter } from "@happysanta/router";
+import { useLocation, useRouter } from "@happysanta/router";
 
-import { RoutingPages } from "$/entity/routing";
+import { RoutingPages, Views } from "$/entity/routing";
 
 export type NavigationContextType = {
   goBack: () => void;
@@ -16,6 +16,7 @@ export type NavigationContextType = {
   goToChatSettings: () => void;
   goToHistory: () => void;
   goToModes: () => void;
+  goToForbidden: () => void;
 };
 
 const NavigationContext = createContext<NavigationContextType>(
@@ -24,17 +25,27 @@ const NavigationContext = createContext<NavigationContextType>(
 export function NavigationContextProvider({
   children,
 }: PropsWithChildren<any>) {
+  const location = useLocation();
   const router = useRouter();
 
   useEffect(() => router.pushPage(RoutingPages.home), []);
 
+  const activePanel = location.getViewActivePanel(Views.viewMain)!;
+
+  function push(panel: RoutingPages) {
+    if (panel.includes(activePanel)) return;
+    router.pushPage(panel);
+  }
+
   const goBack = () => router.popPage();
-  const goToChapters = () => router.pushPage(RoutingPages.chapters);
-  const goToChat = () => router.pushPage(RoutingPages.chat);
-  const goToOpenSource = () => router.pushPage(RoutingPages.openSource);
-  const goToChatSettings = () => router.pushPage(RoutingPages.chatSettings);
-  const goToHistory = () => router.pushPage(RoutingPages.history);
-  const goToModes = () => router.pushPage(RoutingPages.modes);
+  const goToChapters = () => push(RoutingPages.chapters);
+  const goToChat = () => push(RoutingPages.chat);
+  const goToOpenSource = () => push(RoutingPages.openSource);
+  const goToChatSettings = () => push(RoutingPages.chatSettings);
+  const goToHistory = () => push(RoutingPages.history);
+  const goToModes = () => push(RoutingPages.modes);
+
+  const goToForbidden = () => push(RoutingPages.forbidden);
 
   return (
     <NavigationContext.Provider
@@ -46,6 +57,7 @@ export function NavigationContextProvider({
         goToChatSettings,
         goToModes,
         goToOpenSource,
+        goToForbidden,
       }}
     >
       {children}

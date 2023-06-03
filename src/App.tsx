@@ -18,23 +18,35 @@ import { Chat } from "./panels/Chat";
 import { OpenSource } from "./panels/OpenSource";
 import { ChatSettings } from "./panels/ChatSettings";
 import { History } from "./panels/History";
-import Modes from "./panels/Modes/Modes";
+import { ForbiddenPage } from "$/panels/ForbiddenPage";
+import { Modes } from "./panels/Modes";
+
 import { useNavigationContext } from "$/NavigationContext";
 import { applicationUser } from "$/entity/user/ApplicationUser";
+import { SnackbarNotifier } from "$/components/SnackbarNotifier";
 
 const App = () => {
   const location = useLocation();
-  const { goBack } = useNavigationContext();
+  const { goBack, goToForbidden } = useNavigationContext();
   const { appearance } = useConfigProvider();
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development") applicationUser.loadUser(0);
 
-    bridge.send("VKWebAppGetUserInfo").then((user) => {
-      vkUserModel.fill(user);
-      applicationUser.loadUser(user.id);
-    });
+    bridge
+      .send("VKWebAppGetUserInfo")
+      .then((user) => {
+        vkUserModel.fill(user);
+        applicationUser.loadUser(user.id);
+      })
+      .catch(goToForbidden);
   }, []);
+
+  const fetchUserIsDone = applicationUser.createUser$.done.get();
+
+  useEffect(() => {
+    if (fetchUserIsDone && !applicationUser.user) goToForbidden();
+  }, [fetchUserIsDone]);
 
   const history = location.hasOverlay()
     ? []
@@ -49,6 +61,7 @@ const App = () => {
         onSwipeBack={goBack}
         history={history}
       >
+        <ForbiddenPage id={Panels.forbidden} />
         <Home id={Panels.home} />
         <Chapters id={Panels.chapters} />
         <Chat id={Panels.chat} />
@@ -57,6 +70,7 @@ const App = () => {
         <History id={Panels.history} />
         <Modes id={Panels.modes} />
       </View>
+      <SnackbarNotifier />
     </>
   );
 };
