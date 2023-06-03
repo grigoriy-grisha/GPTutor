@@ -48,7 +48,7 @@ function Chapters({ id }: IProps) {
               chatGpt.clearMessages();
               chatGpt.clearSystemMessage();
               lessonsController.setCurrentLesson(lesson.id);
-              chatGpt.currentDialog = null;
+              chatGpt.currentHistory = null;
               goToChat();
             }}
           />
