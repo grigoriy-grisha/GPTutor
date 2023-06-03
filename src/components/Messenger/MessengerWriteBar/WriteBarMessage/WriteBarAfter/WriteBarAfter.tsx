@@ -31,8 +31,9 @@ function WriteBarAfter({ chatGpt, value, sendMessage }: IProps) {
   const time = chatGpt.timer.time$.get();
 
   const removeDialogDisable =
-    chatGpt.messages$.get().length < 2 &&
-    chatGpt.history.getHistory$.loading.get();
+    chatGpt.messages$.get().length < 2 ||
+    chatGpt.history.getHistory$.loading.get() ||
+    isTyping;
 
   const sendBars = (
     <>
