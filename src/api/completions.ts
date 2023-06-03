@@ -23,6 +23,7 @@ export async function sendChatCompletions(
     onmessage(event: EventSourceMessage) {
       if (event.data === "[DONE]") return;
       if (event.data.startsWith("[Error]")) {
+        console.log(event.data);
         throw new Error(event.data);
       }
 

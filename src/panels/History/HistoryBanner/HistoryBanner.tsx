@@ -22,7 +22,7 @@ import { ChapterTypes } from "$/entity/lessons";
 
 import classes from "./HistoryBanner.module.css";
 
-const BannerIcon: Record<ChapterTypes, React.FC> = {
+const BannerIcon: Record<string, React.FC> = {
   [ChapterTypes.JS]: JSLesson,
   [ChapterTypes.Typescript]: TypescriptLesson,
   [ChapterTypes.Vue]: VueLessons,
@@ -31,7 +31,7 @@ const BannerIcon: Record<ChapterTypes, React.FC> = {
   [ChapterTypes.HTMLCSS]: HtmlCssLesson,
 };
 
-const chapterNames: Record<ChapterTypes, string> = {
+const chapterNames: Record<string, string> = {
   [ChapterTypes.JS]: "Javascript",
   [ChapterTypes.Typescript]: "Typescript",
   [ChapterTypes.Vue]: "Vue",
@@ -42,13 +42,14 @@ const chapterNames: Record<ChapterTypes, string> = {
 
 interface IProps {
   dialog: GPTDialogHistory;
+
   goToChat: () => void;
 }
 
 function HistoryBanner({ dialog, goToChat }: IProps) {
-  const chapterType = dialog.data?.chapterType;
-  const lessonName = dialog.data?.lessonName;
-  const Icon = chapterType ? BannerIcon[chapterType] : ChatGptIcon;
+  const chapterType = dialog.type;
+  const lessonName = dialog.lessonName;
+  const Icon = chapterType === "Free" ? ChatGptIcon : BannerIcon[chapterType];
   const { sizeX } = useAdaptivityWithJSMediaQueries();
 
   const isCompact = sizeX === "compact";
@@ -85,15 +86,15 @@ function HistoryBanner({ dialog, goToChat }: IProps) {
           <Headline style={{ display: "inline" }} level="2" weight="1">
             Последнее сообщение:
           </Headline>{" "}
-          {dialog.lastMessage.content}
+          {dialog.lastMessage}
         </span>
       }
       actions={
         <ButtonGroup mode="vertical">
           <Button
+            disabled={chatGpt.getMessages$.loading.get()}
             onClick={() => {
-              chatGpt.restoreDialogFromHistory(dialog.id);
-              goToChat();
+              chatGpt.restoreDialogFromHistory(dialog.id, goToChat);
             }}
           >
             Перейди в диалог
