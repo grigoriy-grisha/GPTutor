@@ -7,9 +7,14 @@ import { GPTDialogHistoryData, GPTDialogHistoryType, GPTRoles } from "./types";
 import { GptMessage } from "./GptMessage";
 import { Timer } from "$/entity/GPT/Timer";
 import { GptHistoryDialogs } from "$/entity/GPT/GptHistoryDialogs";
-import { lessonsController } from "$/entity/lessons";
+import { ChapterTypes, lessonsController } from "$/entity/lessons";
 import { UUID_V4 } from "$/entity/common";
 import { moderationText } from "$/api/moderation";
+import { createHistory } from "$/api/history";
+import { applicationUser } from "$/entity/user/ApplicationUser";
+import { HistoryCreate } from "$/entity/history/types";
+import { createMessage, getMessagesById } from "$/api/messages";
+import { History } from "$/entity/history";
 
 const errorContent = `
 \`\`\`javascript
@@ -32,7 +37,7 @@ export class ChatGpt {
   isBlockActions$ = sig(false);
 
   apiKey: string = "";
-  currentDialog: UUID_V4 | null = null;
+  currentHistory: History | null = null;
   readonly initialSystemContent =
     "Ты программист с опытом веб разработки в 10 лет, отвечаешь на вопросы джуниора, который хочет научиться программированию, добавляй правильную подсветку кода, указывай язык для блоков кода";
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
@@ -44,6 +49,14 @@ export class ChatGpt {
   messages$ = sig<GptMessage[]>([]);
 
   sendCompletions$ = ReactivePromise.create(() => this.sendCompletion());
+
+  createHistory$ = ReactivePromise.create((params: HistoryCreate) =>
+    createHistory(params)
+  );
+
+  getMessages$ = ReactivePromise.create((historyId: string) =>
+    getMessagesById(historyId)
+  );
 
   selectedMessages$ = memo(() =>
     this.messages$.get().filter((message) => message.isSelected$.get())
@@ -64,7 +77,7 @@ export class ChatGpt {
   clearMessages = () => {
     this.abortSend();
     this.messages$.set([]);
-    this.currentDialog = null;
+    this.currentHistory = null;
   };
 
   clearSystemMessage = () => {
@@ -86,13 +99,16 @@ export class ChatGpt {
   send = async (content: string) => {
     try {
       this.sendCompletions$.loading.set(true);
-      this.addMessage(new GptMessage(content, GPTRoles.user));
+      const message = new GptMessage(content, GPTRoles.user);
+      this.addMessage(message);
+      await this.createHistory();
+      await this.postMessage(message);
 
       await this.sendCompletions$.run();
-      this.timer.run();
-      this.addMessageToHistory();
     } finally {
+      this.timer.run();
       this.allowActions();
+      await this.postMessage(this.getLastMessage());
     }
   };
 
@@ -191,6 +207,17 @@ export class ChatGpt {
     this.messages$.set([...this.messages$.get(), message]);
   }
 
+  async postMessage(message?: GptMessage) {
+    if (!this.currentHistory || !message) return;
+    await createMessage({
+      historyId: this.currentHistory.id,
+      isError: !!message.isError,
+      role: message.role,
+      content: message.content$.get(),
+      isFailedModeration: !message.failedModeration$.get(),
+    });
+  }
+
   toApiMessage = (message: GptMessage) => ({
     content: message.content$.get(),
     role: message.role,
@@ -216,28 +243,23 @@ export class ChatGpt {
     return REPEAT_WORDS.find((word) => messageContent.search(word));
   }
 
-  addMessageToHistory() {
+  async createHistory() {
     const lastMessage = this.getLastMessage();
     if (!lastMessage) return;
 
     const data = this.getChatData();
-    const type = data ? GPTDialogHistoryType.Free : GPTDialogHistoryType.Lesson;
+    const type = !data ? GPTDialogHistoryType.Free : data.chapterType;
 
-    const foundDialog = this.history.getDialogById(this.currentDialog);
+    const lengthMessages = this.messages$.get().length;
+    if (lengthMessages > 1) return;
 
-    if (!foundDialog) {
-      const dialog = this.history.addToHistoryDialog({
-        systemMessage: this.systemMessage,
-        messages: this.messages$.get(),
-        type,
-        data,
-      });
-
-      this.currentDialog = dialog.id;
-      return;
-    }
-
-    this.history.addMessageToHistoryDialog(foundDialog.id, lastMessage);
+    this.currentHistory = await this.createHistory$.run({
+      systemMessage: this.systemMessage.content$.get(),
+      lastMessage: lastMessage.content$.get(),
+      userVkId: applicationUser.user!.id,
+      lessonName: data?.lessonName || "",
+      type,
+    });
   }
 
   getChatData(): GPTDialogHistoryData {
@@ -252,32 +274,59 @@ export class ChatGpt {
     };
   }
 
-  restoreDialogFromHistory(id: UUID_V4) {
-    const foundDialog = this.history.getDialogById(id);
-    if (!foundDialog) return;
+  async restoreDialogFromHistory(id: UUID_V4, goToChat: () => void) {
+    const dialog = this.history.getDialogById(id);
+    if (!dialog) return;
 
-    this.currentDialog = foundDialog.id;
-    this.systemMessage.content$.set(foundDialog.systemMessage.content);
+    const messages = await this.getMessages$.run(id);
+
+    if (dialog.lessonName && dialog.type) {
+      lessonsController.setCurrentChapter(dialog.type as ChapterTypes);
+      lessonsController.setCurrentLessonByName(dialog.lessonName);
+    }
+
     this.messages$.set(
-      foundDialog.messages.map((message) => {
-        const message$ = new GptMessage(
+      messages.map((message) => {
+        const gptMessage = new GptMessage(
           message.content,
-          message.role,
-          message.inLocal
+          message.role as GPTRoles,
+          false,
+          message.isError
         );
-        message$.failedModeration$.set(message.isFailModeration);
 
-        return message$;
+        gptMessage.failedModeration$.set(message.isFailedModeration);
+
+        return gptMessage;
       })
     );
 
-    const data = foundDialog.data;
-    if (data) {
-      lessonsController.setCurrentChapter(data.chapterType);
-      lessonsController.setCurrentLessonByName(data.lessonName);
-    }
+    goToChat();
 
-    this.sendCompletions$.reset();
+    // const foundDialog = this.history.getDialogById(id);
+    // if (!foundDialog) return;
+    //
+    // this.currentDialog = foundDialog.id;
+    // this.systemMessage.content$.set(foundDialog.systemMessage.content);
+    // this.messages.ts$.set(
+    //   foundDialog.messages.ts.map((message) => {
+    //     const message$ = new GptMessage(
+    //       message.content,
+    //       message.role,
+    //       message.inLocal
+    //     );
+    //     message$.failedModeration$.set(message.isFailModeration);
+    //
+    //     return message$;
+    //   })
+    // );
+    //
+    // const data = foundDialog.data;
+    // if (data) {
+    //   lessonsController.setCurrentChapter(data.chapterType);
+    //   lessonsController.setCurrentLessonByName(data.lessonName);
+    // }
+    //
+    // this.sendCompletions$.reset();
   }
 }
 

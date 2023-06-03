@@ -19,19 +19,22 @@ const isFirstVisitFlagName = "isFirstVisit";
 
 const storageService = new StorageService();
 
-bridge.send("VKWebAppInit").then(() => {
-  if (process.env.NODE_ENV === "development") {
-    import("./eruda");
-  }
+bridge
+  .send("VKWebAppInit")
+  .then(() => {
+    if (process.env.NODE_ENV === "development") {
+      import("./eruda");
+    }
 
-  storageService.get(isFirstVisitFlagName).then((value) => {
-    if (value) return;
+    storageService.get(isFirstVisitFlagName).then((value) => {
+      if (value) return;
 
-    const onboardingService = new OnboardingService();
-    onboardingService.runOnBoarding();
-    storageService.set(isFirstVisitFlagName, true);
-  });
-});
+      const onboardingService = new OnboardingService();
+      onboardingService.runOnBoarding();
+      storageService.set(isFirstVisitFlagName, true);
+    });
+  })
+  .catch(console.log);
 
 const routes = {
   [RoutingPages.home]: new Page(Panels.home, Views.viewMain),

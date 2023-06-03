@@ -37,8 +37,6 @@ function renderCode(origRule?: RenderRule): RenderRule {
 
 export default class Markdown {
   markdownIt = new MarkdownIt({
-    html: true,
-    xhtmlOut: false,
     breaks: true,
     langPrefix: "language-",
     linkify: true,

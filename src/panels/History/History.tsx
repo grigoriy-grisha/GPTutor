@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Button,
@@ -22,6 +22,10 @@ interface IProps {
 
 function History({ id }: IProps) {
   const { goBack, goToChat } = useNavigationContext();
+
+  useEffect(() => {
+    chatGpt.history.loadHistory();
+  }, []);
 
   const dialogs = chatGpt.history.dialogs.get();
 

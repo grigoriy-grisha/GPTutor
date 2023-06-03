@@ -21,20 +21,18 @@ export type DialogLessonData = {
 
 export enum GPTDialogHistoryType {
   Free = "Free",
-  Lesson = "Lesson",
 }
 
 export type GPTDialogHistoryData = null | DialogLessonData;
 
 export type GPTDialogHistory = {
-  data: GPTDialogHistoryData;
-  type: GPTDialogHistoryType;
-  id: UUID_V4;
-  date: Date;
-  lastMessage: GPTMessage;
+  type: GPTDialogHistoryType | ChapterTypes | string;
 
-  systemMessage: GPTMessage;
-  messages: GPTMessage[];
+  lessonName: string;
+  id: UUID_V4;
+  lastMessage: string;
+
+  systemMessage: string;
 };
 
 export type GPTModeration = {

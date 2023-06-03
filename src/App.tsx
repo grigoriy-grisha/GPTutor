@@ -20,6 +20,7 @@ import { ChatSettings } from "./panels/ChatSettings";
 import { History } from "./panels/History";
 import Modes from "./panels/Modes/Modes";
 import { useNavigationContext } from "$/NavigationContext";
+import { applicationUser } from "$/entity/user/ApplicationUser";
 
 const App = () => {
   const location = useLocation();
@@ -27,7 +28,12 @@ const App = () => {
   const { appearance } = useConfigProvider();
 
   useEffect(() => {
-    bridge.send("VKWebAppGetUserInfo").then((user) => vkUserModel.fill(user));
+    if (process.env.NODE_ENV === "development") applicationUser.loadUser(0);
+
+    bridge.send("VKWebAppGetUserInfo").then((user) => {
+      vkUserModel.fill(user);
+      applicationUser.loadUser(user.id);
+    });
   }, []);
 
   const history = location.hasOverlay()
