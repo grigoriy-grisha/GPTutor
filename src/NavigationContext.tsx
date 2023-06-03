@@ -33,7 +33,7 @@ export function NavigationContextProvider({
   const activePanel = location.getViewActivePanel(Views.viewMain)!;
 
   function push(panel: RoutingPages) {
-    if (panel.includes(activePanel)) return;
+    if (panel.slice(1) === activePanel) return;
     router.pushPage(panel);
   }
 
