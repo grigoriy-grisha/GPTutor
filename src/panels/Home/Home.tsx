@@ -40,7 +40,7 @@ function Home({ id }: IProps) {
           goToFreeDialog={() => {
             goToChat();
             lessonsController.clearLesson();
-            chatGpt.currentDialog = null;
+            chatGpt.currentHistory = null;
           }}
         />
       </AppContainer>
