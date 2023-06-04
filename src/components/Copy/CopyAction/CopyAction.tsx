@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Icon20CopyOutline, Icon24Copy } from "@vkontakte/icons";
+import { Icon20CopyOutline, Icon24CopyOutline } from "@vkontakte/icons";
 import { Button, IconButton } from "@vkontakte/vkui";
 
 interface IProps {
@@ -27,7 +27,7 @@ function CopyAction({ mode, isButton, copyText, className, onClick }: IProps) {
 
   return (
     <IconButton className={className} onClick={onClick}>
-      <Icon24Copy />
+      <Icon24CopyOutline />
     </IconButton>
   );
 }
