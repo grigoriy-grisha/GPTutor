@@ -50,7 +50,9 @@ const App = () => {
   const fetchUserIsDone = applicationUser.createUser$.done.get();
 
   useEffect(() => {
-    if (fetchUserIsDone && !applicationUser.user) goToForbidden();
+    if (fetchUserIsDone && !applicationUser.createUser$.result.get()) {
+      goToForbidden();
+    }
   }, [fetchUserIsDone]);
 
   const history = location.hasOverlay()
