@@ -32,7 +32,7 @@ import { ChatSettings } from "$/modals/ChatSettings";
 
 const App = () => {
   const location = useLocation();
-  const { goBack, goToForbidden } = useNavigationContext();
+  const { goBack, goToForbidden, isForbidden } = useNavigationContext();
   const { appearance } = useConfigProvider();
 
   useEffect(() => {
@@ -57,9 +57,7 @@ const App = () => {
     ? []
     : location.getViewHistory(Views.viewMain);
 
-  const activePanel = location.getViewActivePanel(Views.viewMain)!;
-
-  if (activePanel === Panels.forbidden) {
+  if (isForbidden) {
     return <ForbiddenPage id={Panels.forbidden} />;
   }
 
@@ -75,7 +73,7 @@ const App = () => {
       >
         <View
           id={Views.viewMain}
-          activePanel={activePanel}
+          activePanel={location.getViewActivePanel(Views.viewMain)!}
           onSwipeBack={goBack}
           history={history}
         >
