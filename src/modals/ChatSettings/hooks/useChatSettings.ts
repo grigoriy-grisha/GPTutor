@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "@happysanta/router";
 
 import { chatGpt } from "$/entity/GPT";
+import { snackbarNotify } from "$/entity/notify";
 
 function useChatSettings() {
   const router = useRouter();
@@ -30,6 +31,12 @@ function useChatSettings() {
     if (chatGpt.messages$.get().length === 0) {
       systemMessageContent.set(systemMessageValue);
       router.popPage();
+
+      snackbarNotify.notify({
+        type: "success",
+        message: "Системные настройки успешно изменены",
+      });
+
       return;
     }
 
@@ -44,6 +51,11 @@ function useChatSettings() {
     chatGpt.clearMessages();
     systemMessageContent.set(systemMessageValue);
     router.popPage();
+
+    snackbarNotify.notify({
+      type: "success",
+      message: "Системные настройки успешно изменены",
+    });
   };
 
   return {

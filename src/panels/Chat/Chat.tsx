@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const Chat = ({ id }: IProps) => {
-  const { goBack, goToHistory, goToChatSettings } = useNavigationContext();
+  const { goBack, goToHistory, openChatSettingsModal } = useNavigationContext();
 
   const currentLesson = lessonsController.currentLesson.get();
 
@@ -20,7 +20,7 @@ const Chat = ({ id }: IProps) => {
     <Panel id={id}>
       <Messenger
         chatGpt={chatGpt}
-        onSettingsClick={goToChatSettings}
+        onSettingsClick={openChatSettingsModal}
         goBack={goBack}
         goToHistory={goToHistory}
         lesson={currentLesson}

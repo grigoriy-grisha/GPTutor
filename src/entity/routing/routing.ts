@@ -3,7 +3,6 @@ export enum RoutingPages {
   chapters = "/chapters",
   chat = "/chat",
   openSource = "/open-source",
-  chatSettings = "/chat-settings",
   history = "/history",
   modes = "/modes",
   forbidden = "/forbidden",
@@ -18,8 +17,11 @@ export enum Panels {
   chapters = "chapters",
   chat = "chat",
   openSource = "open-source",
-  chatSettings = "chat-settings",
   history = "history",
   modes = "modes",
   forbidden = "forbidden",
+}
+
+export enum Modals {
+  chatSettings = "chat-settings",
 }

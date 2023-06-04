@@ -41,7 +41,6 @@ const routes = {
   [RoutingPages.chapters]: new Page(Panels.chapters, Views.viewMain),
   [RoutingPages.chat]: new Page(Panels.chat, Views.viewMain),
   [RoutingPages.openSource]: new Page(Panels.openSource, Views.viewMain),
-  [RoutingPages.chatSettings]: new Page(Panels.chatSettings, Views.viewMain),
   [RoutingPages.history]: new Page(Panels.history, Views.viewMain),
   [RoutingPages.modes]: new Page(Panels.modes, Views.viewMain),
   [RoutingPages.forbidden]: new Page(Panels.forbidden, Views.viewMain),

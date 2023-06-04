@@ -9,6 +9,7 @@ module.exports = {
       "$/hooks": path.resolve(__dirname, "src/hooks"),
       "$/icons": path.resolve(__dirname, "src/icons"),
       "$/panels": path.resolve(__dirname, "src/panels"),
+      "$/modals": path.resolve(__dirname, "src/modals"),
       "$/services": path.resolve(__dirname, "src/services"),
       "$/utility": path.resolve(__dirname, "src/utility"),
       "$/NavigationContext": path.resolve(__dirname, "src/NavigationContext"),

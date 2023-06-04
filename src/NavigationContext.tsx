@@ -6,17 +6,18 @@ import React, {
 } from "react";
 import { useLocation, useRouter } from "@happysanta/router";
 
-import { RoutingPages, Views } from "$/entity/routing";
+import { Modals, RoutingPages, Views } from "$/entity/routing";
 
 export type NavigationContextType = {
   goBack: () => void;
   goToChapters: () => void;
   goToChat: () => void;
   goToOpenSource: () => void;
-  goToChatSettings: () => void;
+
   goToHistory: () => void;
   goToModes: () => void;
   goToForbidden: () => void;
+  openChatSettingsModal: () => void;
 };
 
 const NavigationContext = createContext<NavigationContextType>(
@@ -41,11 +42,12 @@ export function NavigationContextProvider({
   const goToChapters = () => push(RoutingPages.chapters);
   const goToChat = () => push(RoutingPages.chat);
   const goToOpenSource = () => push(RoutingPages.openSource);
-  const goToChatSettings = () => push(RoutingPages.chatSettings);
   const goToHistory = () => push(RoutingPages.history);
   const goToModes = () => push(RoutingPages.modes);
 
   const goToForbidden = () => push(RoutingPages.forbidden);
+
+  const openChatSettingsModal = () => router.pushModal(Modals.chatSettings);
 
   return (
     <NavigationContext.Provider
@@ -54,10 +56,10 @@ export function NavigationContextProvider({
         goToHistory,
         goToChapters,
         goToChat,
-        goToChatSettings,
         goToModes,
         goToOpenSource,
         goToForbidden,
+        openChatSettingsModal,
       }}
     >
       {children}

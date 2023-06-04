@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { useConfigProvider, View } from "@vkontakte/vkui";
+import {
+  ModalRoot,
+  SplitLayout,
+  useConfigProvider,
+  View,
+} from "@vkontakte/vkui";
 import bridge from "@vkontakte/vk-bridge";
 import { useLocation } from "@happysanta/router";
 
@@ -10,13 +15,12 @@ import { vkUserModel } from "./entity/user";
 
 import { OneDark } from "./OneDark";
 import { OneLight } from "./OneLight";
-import { Panels, Views } from "./entity/routing";
+import { Modals, Panels, Views } from "./entity/routing";
 
 import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
 import { Chat } from "./panels/Chat";
 import { OpenSource } from "./panels/OpenSource";
-import { ChatSettings } from "./panels/ChatSettings";
 import { History } from "./panels/History";
 import { ForbiddenPage } from "$/panels/ForbiddenPage";
 import { Modes } from "./panels/Modes";
@@ -24,6 +28,7 @@ import { Modes } from "./panels/Modes";
 import { useNavigationContext } from "$/NavigationContext";
 import { applicationUser } from "$/entity/user/ApplicationUser";
 import { SnackbarNotifier } from "$/components/SnackbarNotifier";
+import { ChatSettings } from "$/modals/ChatSettings";
 
 const App = () => {
   const location = useLocation();
@@ -55,21 +60,28 @@ const App = () => {
   return (
     <>
       {appearance === "dark" ? <OneDark /> : <OneLight />}
-      <View
-        id={Views.viewMain}
-        activePanel={location.getViewActivePanel(Views.viewMain)!}
-        onSwipeBack={goBack}
-        history={history}
+      <SplitLayout
+        modal={
+          <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
+            <ChatSettings id={Modals.chatSettings} />
+          </ModalRoot>
+        }
       >
-        <ForbiddenPage id={Panels.forbidden} />
-        <Home id={Panels.home} />
-        <Chapters id={Panels.chapters} />
-        <Chat id={Panels.chat} />
-        <OpenSource id={Panels.openSource} />
-        <ChatSettings id={Panels.chatSettings} />
-        <History id={Panels.history} />
-        <Modes id={Panels.modes} />
-      </View>
+        <View
+          id={Views.viewMain}
+          activePanel={location.getViewActivePanel(Views.viewMain)!}
+          onSwipeBack={goBack}
+          history={history}
+        >
+          <ForbiddenPage id={Panels.forbidden} />
+          <Home id={Panels.home} />
+          <Chapters id={Panels.chapters} />
+          <Chat id={Panels.chat} />
+          <OpenSource id={Panels.openSource} />
+          <History id={Panels.history} />
+          <Modes id={Panels.modes} />
+        </View>
+      </SplitLayout>
       <SnackbarNotifier />
     </>
   );
