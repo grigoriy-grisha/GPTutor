@@ -2,17 +2,17 @@ import { sig } from "dignals";
 
 import { UUID_V4 } from "$/entity/common";
 
-import { GPTDialogHistory } from "./types";
 import ReactivePromise from "$/services/ReactivePromise";
 import { deleteHistory, getHistoryById } from "$/api/history";
 import { applicationUser } from "$/entity/user/ApplicationUser";
 import { snackbarNotify } from "$/entity/notify";
+import { History } from "$/entity/history";
 
 export class GptHistoryDialogs {
   deleteHistory$ = ReactivePromise.create((id: string) => deleteHistory(id));
   getHistory$ = ReactivePromise.create((userVkId) => getHistoryById(userVkId));
 
-  dialogs = sig<GPTDialogHistory[]>([]);
+  dialogs = sig<History[]>([]);
 
   async loadHistory() {
     if (!applicationUser.user) return;
