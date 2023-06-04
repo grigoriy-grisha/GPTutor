@@ -1,9 +1,15 @@
 import React from "react";
 
-export function ChatGPTLogo({ size = 36 }: { size?: number }) {
+export function ChatGPTLogo({
+  borderRadius = "50%",
+  size = 36,
+}: {
+  size?: number;
+  borderRadius?: string;
+}) {
   return (
     <svg
-      style={{ borderRadius: "50%" }}
+      style={{ borderRadius }}
       width={size}
       height={size}
       shapeRendering="geometricPrecision"
