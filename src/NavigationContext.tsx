@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import { useLocation, useRouter } from "@happysanta/router";
 
-import { Modals, RoutingPages, Views } from "$/entity/routing";
+import { Modals, Panels, RoutingPages, Views } from "$/entity/routing";
 
 export type NavigationContextType = {
   goBack: () => void;
@@ -38,7 +38,15 @@ export function NavigationContextProvider({
     router.pushPage(panel);
   }
 
-  const goBack = () => router.popPage();
+  const goBack = () => {
+    if (activePanel === Panels.forbidden) return;
+
+    router.popPage();
+  };
+
+  useEffect(() => {
+    if (activePanel === Panels.forbidden) router.pushPage(Panels.forbidden);
+  }, [activePanel]);
   const goToChapters = () => push(RoutingPages.chapters);
   const goToChat = () => push(RoutingPages.chat);
   const goToOpenSource = () => push(RoutingPages.openSource);
