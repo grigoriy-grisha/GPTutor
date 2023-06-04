@@ -49,7 +49,6 @@ function Copy({
         isButton={isButton}
         mode={mode}
       />
-      {/*<CopySnackBar copyService={copyService} />*/}
     </>
   );
 }

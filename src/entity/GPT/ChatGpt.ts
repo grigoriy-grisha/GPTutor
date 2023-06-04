@@ -30,8 +30,7 @@ const errorContent = `
 \`-=========-\`() 
 `;
 
-const MAX_CONTEXT_WORDS = 2000;
-const REPEAT_WORDS = ["eщe", "повтори", "повтор", "repeat"];
+const MAX_CONTEXT_WORDS = 1000;
 
 //todo рефакторинг, разнести этот класс на несколько сущностей
 export class ChatGpt {
@@ -117,11 +116,6 @@ export class ChatGpt {
     const message = new GptMessage("", GPTRoles.assistant);
 
     this.abortController = new AbortController();
-
-    if (this.lastMessageIsRepeat()) {
-      await this.sendChatCompletions(message);
-      return;
-    }
 
     await this.sendChatCompletions(message);
   }
@@ -238,12 +232,6 @@ export class ChatGpt {
     return this.messages$.get().at(-1);
   }
 
-  lastMessageIsRepeat() {
-    const messageContent = this.getLastUserMessage()?.content$.get();
-    if (!messageContent || messageContent.length > 10) return false;
-    return REPEAT_WORDS.find((word) => messageContent.search(word));
-  }
-
   async createHistory() {
     const lastMessage = this.getLastMessage();
     if (!lastMessage) return;
@@ -313,6 +301,7 @@ export class ChatGpt {
       })
     );
 
+    this.checkOnRunOutOfMessages();
     goToChat();
   }
 }

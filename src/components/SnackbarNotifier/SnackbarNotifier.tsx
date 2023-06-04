@@ -1,27 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useReactiveState } from "dignals-react";
 import { Snackbar } from "@vkontakte/vkui";
 import { Icon28CancelOutline, Icon28DoneOutline } from "@vkontakte/icons";
 
 import { SnackbarNotify, snackbarNotify } from "$/entity/notify";
-import { InPortal } from "$/components/InPortal";
+import { useThrottle } from "$/hooks/useThrottle";
 
 import classes from "./SnackbarNotifier.module.css";
 
 function SnackbarNotifier() {
   const snackBars$ = useReactiveState<SnackbarNotify[]>([]);
 
-  useEffect(() => {
-    const listenSnackbar = (alert: SnackbarNotify) => {
+  const addSnackbar = useCallback(
+    useThrottle((alert: SnackbarNotify) => {
       snackBars$.set([...snackBars$.get(), alert]);
-    };
+    }, 500),
+    []
+  );
 
-    snackbarNotify.on(listenSnackbar);
-    return () => snackbarNotify.off(listenSnackbar);
+  useEffect(() => {
+    snackbarNotify.on(addSnackbar);
+    return () => snackbarNotify.off(addSnackbar);
   }, []);
 
   return (
-    <InPortal id="root">
+    <>
       {snackBars$.get().map((snackBar, index) => (
         <Snackbar
           key={index}
@@ -42,7 +45,7 @@ function SnackbarNotifier() {
           {snackBar.message}
         </Snackbar>
       ))}
-    </InPortal>
+    </>
   );
 }
 
