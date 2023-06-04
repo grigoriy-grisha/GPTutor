@@ -47,7 +47,3 @@ code[class*=language-] {
 .vkuiPopoutWrapper {
     z-index: 100;
 }
-
-.vkuiSnackbar {
-    top: 0;
-}
