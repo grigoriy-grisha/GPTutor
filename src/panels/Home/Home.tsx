@@ -15,7 +15,6 @@ import HomeHeader from "./HomeHeader";
 
 import classes from "./Home.module.css";
 
-
 interface IProps {
   id: string;
 }
@@ -23,7 +22,7 @@ interface IProps {
 function Home({ id }: IProps) {
   const { goToOpenSource, goToChapters, goToChat } = useNavigationContext();
 
-  const userIsLoading = applicationUser.createUser$.loading.get();
+  const userIsLoading = applicationUser.loading$.get();
 
   return (
     <Panel id={id}>
