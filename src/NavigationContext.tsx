@@ -3,6 +3,7 @@ import React, {
   PropsWithChildren,
   useContext,
   useEffect,
+  useState,
 } from "react";
 import { useLocation, useRouter } from "@happysanta/router";
 
@@ -18,6 +19,7 @@ export type NavigationContextType = {
   goToModes: () => void;
   goToForbidden: () => void;
   openChatSettingsModal: () => void;
+  isForbidden: boolean;
 };
 
 const NavigationContext = createContext<NavigationContextType>(
@@ -26,6 +28,8 @@ const NavigationContext = createContext<NavigationContextType>(
 export function NavigationContextProvider({
   children,
 }: PropsWithChildren<any>) {
+  const [isForbidden, setForbidden] = useState(false);
+
   const location = useLocation();
   const router = useRouter();
 
@@ -45,8 +49,9 @@ export function NavigationContextProvider({
   };
 
   useEffect(() => {
-    if (activePanel === Panels.forbidden) router.pushPage(Panels.forbidden);
+    if (activePanel === Panels.forbidden) setForbidden(true);
   }, [activePanel]);
+
   const goToChapters = () => push(RoutingPages.chapters);
   const goToChat = () => push(RoutingPages.chat);
   const goToOpenSource = () => push(RoutingPages.openSource);
@@ -68,6 +73,7 @@ export function NavigationContextProvider({
         goToOpenSource,
         goToForbidden,
         openChatSettingsModal,
+        isForbidden,
       }}
     >
       {children}
