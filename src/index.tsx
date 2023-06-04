@@ -2,13 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import bridge from "@vkontakte/vk-bridge";
 import { Page, Router, RouterContext } from "@happysanta/router";
-import {
-  AdaptivityProvider,
-  Appearance,
-  AppRoot,
-  ConfigProvider,
-  Platform,
-} from "@vkontakte/vkui";
+import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import Bugsnag from "@bugsnag/js";
 import "dignals-react";
@@ -67,10 +61,7 @@ ReactDOM.render(
   <ErrorBoundaryApp>
     <RouterContext.Provider value={router}>
       <NavigationContextProvider>
-        <ConfigProvider
-          platform={Platform.ANDROID}
-          appearance={Appearance.DARK}
-        >
+        <ConfigProvider>
           <AdaptivityProvider>
             <AppRoot>
               <App />
