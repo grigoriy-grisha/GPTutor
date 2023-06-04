@@ -43,6 +43,10 @@ export function NavigationContextProvider({
 
     router.popPage();
   };
+
+  useEffect(() => {
+    if (activePanel === Panels.forbidden) router.pushPage(Panels.forbidden);
+  }, [activePanel]);
   const goToChapters = () => push(RoutingPages.chapters);
   const goToChat = () => push(RoutingPages.chat);
   const goToOpenSource = () => push(RoutingPages.openSource);

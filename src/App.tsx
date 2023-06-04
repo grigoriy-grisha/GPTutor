@@ -62,6 +62,7 @@ const App = () => {
   if (activePanel === Panels.forbidden) {
     return <ForbiddenPage id={Panels.forbidden} />;
   }
+
   return (
     <>
       {appearance === "dark" ? <OneDark /> : <OneLight />}
