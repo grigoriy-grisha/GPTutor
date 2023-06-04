@@ -279,6 +279,8 @@ export class ChatGpt {
     const dialog = this.history.getDialogById(id);
     if (!dialog) return;
 
+    this.currentHistory = dialog;
+
     const messages = await this.getMessages$.run(id);
 
     if (!messages) {
@@ -291,6 +293,9 @@ export class ChatGpt {
     if (dialog.lessonName && dialog.type) {
       lessonsController.setCurrentChapter(dialog.type as ChapterTypes);
       lessonsController.setCurrentLessonByName(dialog.lessonName);
+    } else {
+      lessonsController.clearChapter();
+      lessonsController.clearLesson();
     }
 
     this.messages$.set(
