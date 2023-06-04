@@ -57,6 +57,11 @@ const App = () => {
     ? []
     : location.getViewHistory(Views.viewMain);
 
+  const activePanel = location.getViewActivePanel(Views.viewMain)!;
+
+  if (activePanel === Panels.forbidden) {
+    return <ForbiddenPage id={Panels.forbidden} />;
+  }
   return (
     <>
       {appearance === "dark" ? <OneDark /> : <OneLight />}
@@ -69,11 +74,10 @@ const App = () => {
       >
         <View
           id={Views.viewMain}
-          activePanel={location.getViewActivePanel(Views.viewMain)!}
+          activePanel={activePanel}
           onSwipeBack={goBack}
           history={history}
         >
-          <ForbiddenPage id={Panels.forbidden} />
           <Home id={Panels.home} />
           <Chapters id={Panels.chapters} />
           <Chat id={Panels.chat} />
