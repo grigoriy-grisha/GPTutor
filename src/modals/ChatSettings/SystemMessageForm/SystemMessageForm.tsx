@@ -3,7 +3,6 @@ import React, { memo } from "react";
 import { Button, Div, FormItem, Group, Textarea, Title } from "@vkontakte/vkui";
 
 import { AppDiv } from "$/components/AppDiv";
-import { CardBlock } from "$/components/CardBlock";
 
 interface IProps {
   isChangedSystemMessage: boolean;
@@ -19,36 +18,34 @@ function SystemMessageForm({
   updateSystemMessage,
 }: IProps) {
   return (
-    <CardBlock isTop>
-      <Group
-        mode="plain"
-        header={
-          <AppDiv>
-            <Title level="3">Системное сообщение</Title>
-          </AppDiv>
-        }
-        description="Системное сообщение преднаначено для ChatGPT.
+    <Group
+      mode="plain"
+      header={
+        <AppDiv>
+          <Title level="3">Системное сообщение</Title>
+        </AppDiv>
+      }
+      description="Системное сообщение преднаначено для ChatGPT.
                 Оно определяет начальный контекст всего диалога.
                 (Писать стихи, музыку, код, рецепты и т.д.)"
-      >
-        <FormItem>
-          <Textarea
-            value={systemMessageValue}
-            onChange={({ target }) => updateSystemMessage(target.value)}
-          />
-        </FormItem>
-        <Div style={{ paddingTop: 0 }}>
-          <Button
-            disabled={isChangedSystemMessage}
-            mode="outline"
-            appearance="negative"
-            onClick={resetSystemMessage}
-          >
-            Сбросить системное сообщение
-          </Button>
-        </Div>
-      </Group>
-    </CardBlock>
+    >
+      <FormItem>
+        <Textarea
+          value={systemMessageValue}
+          onChange={({ target }) => updateSystemMessage(target.value)}
+        />
+      </FormItem>
+      <Div style={{ paddingTop: 0 }}>
+        <Button
+          disabled={isChangedSystemMessage}
+          mode="outline"
+          appearance="negative"
+          onClick={resetSystemMessage}
+        >
+          Сбросить системное сообщение
+        </Button>
+      </Div>
+    </Group>
   );
 }
 
