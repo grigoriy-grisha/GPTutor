@@ -5,6 +5,7 @@ import {
   ModalPageHeader,
   PanelHeaderClose,
   PanelHeaderSubmit,
+  Separator,
   Spacing,
   useAdaptivityConditionalRender,
 } from "@vkontakte/vkui";
@@ -50,6 +51,7 @@ function ChatSettings({ id }: IProps) {
       >
         Настройка чата
       </ModalPageHeader>
+      <Separator wide />
       <SystemMessageForm
         isChangedSystemMessage={isChangedSystemMessage}
         resetSystemMessage={resetSystemMessage}
