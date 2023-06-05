@@ -19,14 +19,10 @@ export class GptHistoryDialogs {
     const history = await this.getHistory$.run(applicationUser.user?.id);
 
     this.dialogs.set(
-      history.sort((a, b) => {
-        if (!a.lastUpdated) return -1;
-        if (!b.lastUpdated) return -1;
-
-        return (
+      history.sort(
+        (a, b) =>
           new Date(a.lastUpdated).valueOf() - new Date(b.lastUpdated).valueOf()
-        );
-      })
+      )
     );
   }
 
