@@ -210,6 +210,7 @@ export class ChatGpt {
       role: message.role,
       content: message.content$.get(),
       isFailedModeration: !message.failedModeration$.get(),
+      lastUpdated: new Date(),
     });
   }
 
@@ -247,6 +248,7 @@ export class ChatGpt {
       lastMessage: lastMessage.content$.get(),
       userVkId: applicationUser.user!.id,
       lessonName: data?.lessonName || "",
+      lastUpdated: new Date(),
       type,
     });
   }
