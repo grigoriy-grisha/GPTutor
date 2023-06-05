@@ -90,12 +90,14 @@ function HistoryBanner({ dialog, goToChat }: IProps) {
             </Headline>{" "}
             {dialog.lastMessage}
           </span>
-          <span className={classes.lineClamp}>
-            <Headline style={{ display: "inline" }} level="2" weight="1">
-              Последнее обновление:
-            </Headline>{" "}
-            {new Date(dialog.lastUpdated).toLocaleString()}
-          </span>
+          {dialog.lastUpdated && (
+            <span className={classes.lineClamp}>
+              <Headline style={{ display: "inline" }} level="2" weight="1">
+                Последнее обновление:
+              </Headline>{" "}
+              {new Date(dialog.lastUpdated).toLocaleString()}
+            </span>
+          )}
         </>
       }
       actions={
