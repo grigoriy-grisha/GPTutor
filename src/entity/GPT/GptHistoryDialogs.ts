@@ -17,7 +17,17 @@ export class GptHistoryDialogs {
   async loadHistory() {
     if (!applicationUser.user) return;
     const history = await this.getHistory$.run(applicationUser.user?.id);
-    this.dialogs.set(history);
+
+    this.dialogs.set(
+      history.sort((a, b) => {
+        if (!a.lastUpdated) return -1;
+        if (!b.lastUpdated) return -1;
+
+        return (
+          new Date(a.lastUpdated).valueOf() - new Date(b.lastUpdated).valueOf()
+        );
+      })
+    );
   }
 
   async removeHistoryDialog(id: UUID_V4) {

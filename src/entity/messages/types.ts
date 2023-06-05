@@ -4,6 +4,7 @@ export type CreateMessageParams = {
   role: string;
   isError: boolean;
   isFailedModeration: boolean;
+  lastUpdated: Date;
 };
 
 export type RemoteMessage = {

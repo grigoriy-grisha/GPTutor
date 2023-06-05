@@ -16,9 +16,11 @@ import {
   Title,
   useAdaptivityWithJSMediaQueries,
 } from "@vkontakte/vkui";
+
 import React from "react";
-import { chatGpt, GPTDialogHistory } from "$/entity/GPT";
+import { chatGpt } from "$/entity/GPT";
 import { ChapterTypes } from "$/entity/lessons";
+import { History } from "$/entity/history";
 
 import classes from "./HistoryBanner.module.css";
 
@@ -41,8 +43,7 @@ const chapterNames: Record<string, string> = {
 };
 
 interface IProps {
-  dialog: GPTDialogHistory;
-
+  dialog: History;
   goToChat: () => void;
 }
 
@@ -82,12 +83,20 @@ function HistoryBanner({ dialog, goToChat }: IProps) {
         </Title>
       }
       subheader={
-        <span className={classes.lineClamp}>
-          <Headline style={{ display: "inline" }} level="2" weight="1">
-            Последнее сообщение:
-          </Headline>{" "}
-          {dialog.lastMessage}
-        </span>
+        <>
+          <span className={classes.lineClamp}>
+            <Headline style={{ display: "inline" }} level="2" weight="1">
+              Последнее сообщение:
+            </Headline>{" "}
+            {dialog.lastMessage}
+          </span>
+          <span className={classes.lineClamp}>
+            <Headline style={{ display: "inline" }} level="2" weight="1">
+              Последнее обновление:
+            </Headline>{" "}
+            {new Date(dialog.lastUpdated).toLocaleString()}
+          </span>
+        </>
       }
       actions={
         <ButtonGroup mode="vertical">
