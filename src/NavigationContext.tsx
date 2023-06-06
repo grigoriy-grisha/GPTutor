@@ -19,12 +19,14 @@ export type NavigationContextType = {
   goToModes: () => void;
   goToForbidden: () => void;
   openChatSettingsModal: () => void;
+  openApplicationInfo: () => void;
   isForbidden: boolean;
 };
 
 const NavigationContext = createContext<NavigationContextType>(
   {} as NavigationContextType
 );
+
 export function NavigationContextProvider({
   children,
 }: PropsWithChildren<any>) {
@@ -61,6 +63,7 @@ export function NavigationContextProvider({
   const goToForbidden = () => push(RoutingPages.forbidden);
 
   const openChatSettingsModal = () => router.pushModal(Modals.chatSettings);
+  const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
 
   return (
     <NavigationContext.Provider
@@ -73,6 +76,7 @@ export function NavigationContextProvider({
         goToOpenSource,
         goToForbidden,
         openChatSettingsModal,
+        openApplicationInfo,
         isForbidden,
       }}
     >

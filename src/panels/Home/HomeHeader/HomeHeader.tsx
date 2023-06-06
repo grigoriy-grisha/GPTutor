@@ -1,25 +1,38 @@
 import React from "react";
 
-import { IconButton, PanelHeader, Title } from "@vkontakte/vkui";
+import {
+  classNames,
+  IconButton,
+  PanelHeader,
+  Platform,
+  Title,
+  usePlatform,
+} from "@vkontakte/vkui";
 
-import { GithubIcon } from "$/icons";
+import { Icon28ServicesOutline } from "@vkontakte/icons";
+
+import { useNavigationContext } from "$/NavigationContext";
 
 import classes from "./HomeHeader.module.css";
 
-interface IProps {
-  goToOpenSource: () => void;
-}
+function HomeHeader() {
+  const platform = usePlatform();
+  const { openApplicationInfo } = useNavigationContext();
 
-function HomeHeader({ goToOpenSource }: IProps) {
   return (
     <PanelHeader
+      className={classNames(classes.panelHeader, {
+        [classes.panelHeaderVkApps]: platform === Platform.VKCOM,
+      })}
       before={
-        <IconButton className={classes.githubIcon} onClick={goToOpenSource}>
-          <GithubIcon />
+        <IconButton onClick={openApplicationInfo}>
+          <Icon28ServicesOutline className={classes.iconService} />
         </IconButton>
       }
     >
-      <Title level="1">GPTutor</Title>
+      <div className={classes.wrapper}>
+        <Title level="1">GPTutor</Title>
+      </div>
     </PanelHeader>
   );
 }
