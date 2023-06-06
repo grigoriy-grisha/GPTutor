@@ -16,7 +16,7 @@ interface IProps {
 function HistoryList({ goBack, goToChat }: IProps) {
   const dialogs = chatGpt.history.dialogs.get();
 
-  const history = [...chatGpt.history.dialogs.get()].reverse();
+  const history = [...dialogs].reverse();
 
   if (dialogs.length === 0) {
     return (

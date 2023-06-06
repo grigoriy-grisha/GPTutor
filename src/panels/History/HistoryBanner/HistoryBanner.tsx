@@ -53,6 +53,8 @@ function HistoryBanner({ dialog, goToChat }: IProps) {
   const Icon = chapterType === "Free" ? ChatGptIcon : BannerIcon[chapterType];
   const { sizeX } = useAdaptivityWithJSMediaQueries();
 
+  const currentChatGpt = chatGpt.getCurrentChatGpt();
+
   const isCompact = sizeX === "compact";
 
   return (
@@ -103,7 +105,7 @@ function HistoryBanner({ dialog, goToChat }: IProps) {
       actions={
         <ButtonGroup mode="vertical">
           <Button
-            disabled={chatGpt.getMessages$.loading.get()}
+            disabled={currentChatGpt.getMessages$.loading.get()}
             onClick={() => {
               chatGpt.restoreDialogFromHistory(dialog.id, goToChat);
             }}

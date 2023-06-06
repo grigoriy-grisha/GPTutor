@@ -7,11 +7,11 @@ import {
   Spinner,
   Title,
 } from "@vkontakte/vkui";
-import { chatGpt } from "$/entity/GPT";
 import { AppContainer } from "$/components/AppContainer";
 
 import { useNavigationContext } from "$/NavigationContext";
 import { HistoryList } from "$/panels/History/HistoryList";
+import { chatGpt } from "$/entity/GPT";
 
 import classes from "./History.module.css";
 

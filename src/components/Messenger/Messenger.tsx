@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 
-import { LessonItem } from "$/entity/lessons";
-import { ChatGpt } from "$/entity/GPT";
+import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
 import { Header } from "./Header";
 import { MessengerContainer } from "./MessengerContainer";
@@ -14,24 +13,27 @@ import ScrollDown from "./ScrollDown";
 
 interface IProps {
   goBack: () => void;
-  lesson: LessonItem | null;
-  chatGpt: ChatGpt;
+  chatGpt: ChatGptTemplate;
   onSettingsClick: () => void;
   goToHistory: () => void;
+
+  onStartChat: () => void;
+
+  writeBarBefore: React.ReactNode;
+
+  additionalRequest: (handleSend: (value: string) => void) => React.ReactNode;
 }
 
-function Messenger({ goBack, lesson, chatGpt, onSettingsClick }: IProps) {
-  const {
-    isTyping,
-    scrollRef,
-    showScrollDown,
-    onStartChat,
-    handlerSend,
-    scrollToBottom,
-  } = useMessenger({
-    chatGpt,
-    lesson,
-  });
+function Messenger({
+  goBack,
+  chatGpt,
+  onSettingsClick,
+  onStartChat,
+  writeBarBefore,
+  additionalRequest,
+}: IProps) {
+  const { isTyping, scrollRef, showScrollDown, handlerSend, scrollToBottom } =
+    useMessenger({ chatGpt });
 
   return (
     <AppContainer
@@ -49,9 +51,10 @@ function Messenger({ goBack, lesson, chatGpt, onSettingsClick }: IProps) {
         <ScrollDown isShow={showScrollDown} onClick={scrollToBottom} />
       </MessengerContainer>
       <MessengerWriteBar
+        additionalRequest={additionalRequest}
+        writeBarBefore={writeBarBefore}
         onSettingsClick={onSettingsClick}
         chatGpt={chatGpt}
-        additionalRequests={lesson?.additionalRequests || []}
         handleSend={handlerSend}
         isTyping={isTyping}
       />

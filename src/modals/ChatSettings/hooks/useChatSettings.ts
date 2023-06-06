@@ -1,10 +1,9 @@
 import { useRef, useState } from "react";
 import { useRouter } from "@happysanta/router";
-
-import { chatGpt } from "$/entity/GPT";
 import { snackbarNotify } from "$/entity/notify";
+import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
-function useChatSettings() {
+function useChatSettings(chatGpt: ChatGptTemplate) {
   const router = useRouter();
   const systemMessageContent = chatGpt.systemMessage.content$;
   const systemMessage = systemMessageContent.get();

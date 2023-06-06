@@ -1,14 +1,14 @@
 import { Button, Placeholder } from "@vkontakte/vkui";
 import React, { memo } from "react";
 
-import { ChatGpt } from "$/entity/GPT";
+import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
 import { Message } from "./Message";
 
 import classes from "./MessengerList.module.css";
 
 interface IProps {
-  chatGpt: ChatGpt;
+  chatGpt: ChatGptTemplate;
   isTyping: boolean;
   onStartChat: () => void;
 }

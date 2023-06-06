@@ -7,6 +7,9 @@ import React from "react";
 
 import { Copy } from "../components/Copy";
 
+// @ts-ignore
+import mila from "markdown-it-link-attributes";
+
 const getLanguage = (lang: string) => {
   return !lang || lang === "html" ? "markup" : lang;
 };
@@ -55,12 +58,14 @@ export default class Markdown {
 
       return "";
     },
-  }).use((plugin) => {
-    plugin.renderer.rules.code_block = renderCode(
-      plugin.renderer.rules.code_block
-    );
-    plugin.renderer.rules.fence = renderCode(plugin.renderer.rules.fence);
-  });
+  })
+    .use((plugin) => {
+      plugin.renderer.rules.code_block = renderCode(
+        plugin.renderer.rules.code_block
+      );
+      plugin.renderer.rules.fence = renderCode(plugin.renderer.rules.fence);
+    })
+    .use(mila, { attrs: { target: "_blank" } });
 
   render(markdown: string) {
     return this.markdownIt.render(markdown);

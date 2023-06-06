@@ -4,12 +4,12 @@ import { IconButton, Separator, Text } from "@vkontakte/vkui";
 import { Icon28Cancel } from "@vkontakte/icons";
 
 import { Copy } from "$/components/Copy";
-import { ChatGpt } from "$/entity/GPT";
 
 import classes from "./SelectedMessagesBar.module.css";
+import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
 interface IProps {
-  chatGpt: ChatGpt;
+  chatGpt: ChatGptTemplate;
 }
 
 export function SelectedMessagesBar({ chatGpt }: IProps) {

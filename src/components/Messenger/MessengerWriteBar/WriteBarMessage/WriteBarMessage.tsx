@@ -1,27 +1,17 @@
 import React, { memo } from "react";
 import { Separator, WriteBar } from "@vkontakte/vkui";
-import { LessonRequest } from "$/entity/lessons";
+import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
-import WriteBarBefore from "./WriteBarBefore";
 import WriteBarAfter from "./WriteBarAfter";
 import { useWrite } from "./hooks/useWrite";
-import { ChatGpt } from "$/entity/GPT";
 
 interface IProps {
-  chatGpt: ChatGpt;
+  chatGpt: ChatGptTemplate;
   handleSend: (value: string) => void;
-  additionalRequests: LessonRequest[];
-  onClickAdditional: () => void;
-  onSettingsClick: () => void;
+  writeBarBefore: React.ReactNode;
 }
 
-function WriteBarMessage({
-  chatGpt,
-  handleSend,
-  additionalRequests,
-  onClickAdditional,
-  onSettingsClick,
-}: IProps) {
+function WriteBarMessage({ chatGpt, handleSend, writeBarBefore }: IProps) {
   const { value, setValue, onEnterSend, sendMessage } = useWrite({
     chatGpt,
     handleSend,
@@ -34,16 +24,10 @@ function WriteBarMessage({
         onKeyDown={onEnterSend}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        before={
-          <WriteBarBefore
-            additionalRequests={additionalRequests}
-            onClickAdditional={onClickAdditional}
-            onSettingsClick={onSettingsClick}
-          />
-        }
+        before={writeBarBefore}
         after={
           <WriteBarAfter
-            chatGpt={chatGpt}
+            chatGptModel={chatGpt}
             sendMessage={sendMessage}
             value={value}
           />
