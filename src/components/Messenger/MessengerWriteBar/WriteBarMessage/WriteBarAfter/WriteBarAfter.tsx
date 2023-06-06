@@ -8,32 +8,30 @@ import {
 } from "@vkontakte/icons";
 import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
 
-import { ChatGpt } from "$/entity/GPT";
-
 import ClearMessagesAlert from "./ClearMessagesAlert";
 import Time from "$/components/Time";
+import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
+import { chatGpt } from "$/entity/GPT";
 
 import classes from "./WriteBarAfter.module.css";
 
 interface IProps {
-  chatGpt: ChatGpt;
+  chatGptModel: ChatGptTemplate;
   sendMessage: () => void;
   value: string;
 }
 
-function WriteBarAfter({ chatGpt, value, sendMessage }: IProps) {
+function WriteBarAfter({ chatGptModel, value, sendMessage }: IProps) {
   const appearance = useAppearance();
 
-  const isTyping = chatGpt.sendCompletions$.loading.get();
+  const isTyping = chatGptModel.sendCompletions$.loading.get();
 
   const [showAlert, setShowAlert] = useState(false);
-  const timerIsStopped = chatGpt.timer.isStopped$.get();
-  const time = chatGpt.timer.time$.get();
+  const timerIsStopped = chatGptModel.timer.isStopped$.get();
+  const time = chatGptModel.timer.time$.get();
 
   const removeDialogDisable =
-    chatGpt.messages$.get().length < 2 ||
-    chatGpt.history.getHistory$.loading.get() ||
-    isTyping;
+    chatGptModel.messages$.get().length < 2 || isTyping;
 
   const sendBars = (
     <>
@@ -46,7 +44,7 @@ function WriteBarAfter({ chatGpt, value, sendMessage }: IProps) {
           <Icon28Send fill="var(--vkui--color_icon_accent)" />
         </WriteBarIcon>
       ) : (
-        <WriteBarIcon onClick={chatGpt.abortSend}>
+        <WriteBarIcon onClick={chatGptModel.abortSend}>
           <Icon28CancelCircleOutline fill="var(--vkui--color_icon_accent)" />
         </WriteBarIcon>
       )}
@@ -59,12 +57,12 @@ function WriteBarAfter({ chatGpt, value, sendMessage }: IProps) {
         <ClearMessagesAlert
           closeAlert={() => setShowAlert(false)}
           applySettings={() => {
-            if (!chatGpt.currentHistory) return;
+            if (!chatGptModel.currentHistory) return;
 
             chatGpt.history
-              .removeHistoryDialog(chatGpt.currentHistory.id)
+              .removeHistoryDialog(chatGptModel.currentHistory.id)
               .then(() => {
-                chatGpt.clearMessages();
+                chatGptModel.clearMessages();
                 setShowAlert(false);
               });
           }}

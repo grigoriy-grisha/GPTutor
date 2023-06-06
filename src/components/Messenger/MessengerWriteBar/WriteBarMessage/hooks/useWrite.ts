@@ -1,12 +1,14 @@
 import { useRef, useState } from "react";
-import { ChatGpt } from "$/entity/GPT";
+import { Platform, usePlatform } from "@vkontakte/vkui";
+import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
 type HookWriteParams = {
-  chatGpt: ChatGpt;
+  chatGpt: ChatGptTemplate;
   handleSend: (value: string) => void;
 };
 
 export function useWrite({ chatGpt, handleSend }: HookWriteParams) {
+  const platform = usePlatform();
   const [value, setValue] = useState("");
   const isTyping = chatGpt.sendCompletions$.loading.get();
 
@@ -16,6 +18,8 @@ export function useWrite({ chatGpt, handleSend }: HookWriteParams) {
   isTypingRef.current = isTyping;
 
   const onEnterSend = (event: any) => {
+    if (platform !== Platform.VKCOM) return;
+
     if (!chatGpt.timer.isStopped$.get()) return;
     if (isTypingRef.current) return;
     if (event.key !== "Enter") return;
