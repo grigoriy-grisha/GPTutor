@@ -24,4 +24,5 @@ export enum Panels {
 
 export enum Modals {
   chatSettings = "chat-settings",
+  applicationInfo = "application-info",
 }

@@ -29,6 +29,7 @@ import { useNavigationContext } from "$/NavigationContext";
 import { applicationUser } from "$/entity/user/ApplicationUser";
 import { SnackbarNotifier } from "$/components/SnackbarNotifier";
 import { ChatSettings } from "$/modals/ChatSettings";
+import { ApplicationInfo } from "$/modals/ApplicationInfo";
 
 const App = () => {
   const location = useLocation();
@@ -70,6 +71,7 @@ const App = () => {
         modal={
           <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
             <ChatSettings id={Modals.chatSettings} />
+            <ApplicationInfo id={Modals.applicationInfo} />
           </ModalRoot>
         }
       >
