@@ -1,7 +1,8 @@
 export enum RoutingPages {
   home = "/",
   chapters = "/chapters",
-  chat = "/chat",
+  chatFree = "/chat-free",
+  chatLesson = "/chat-lesson",
   openSource = "/open-source",
   history = "/history",
   modes = "/modes",
@@ -15,7 +16,8 @@ export enum Views {
 export enum Panels {
   home = "home",
   chapters = "chapters",
-  chat = "chat",
+  chatFree = "chat-free",
+  chatLesson = "chat-lesson",
   openSource = "open-source",
   history = "history",
   modes = "modes",

@@ -24,7 +24,7 @@ const chapterTitles: Record<ChapterTypes, string> = {
 };
 
 function Chapters({ id }: IProps) {
-  const { goBack, goToChat } = useNavigationContext();
+  const { goBack, goToChatLesson } = useNavigationContext();
 
   const currentChapter = lessonsController.currentChapter.get();
   if (!currentChapter) return null;
@@ -45,7 +45,7 @@ function Chapters({ id }: IProps) {
           <Lessons
             currentChapter={currentChapter}
             onClickLesson={(lesson) =>
-              chatGpt.moveToLessonChat(lesson, goToChat)
+              chatGpt.moveToLessonChat(lesson, goToChatLesson)
             }
           />
         )}

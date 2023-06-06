@@ -39,7 +39,8 @@ bridge
 const routes = {
   [RoutingPages.home]: new Page(Panels.home, Views.viewMain),
   [RoutingPages.chapters]: new Page(Panels.chapters, Views.viewMain),
-  [RoutingPages.chat]: new Page(Panels.chat, Views.viewMain),
+  [RoutingPages.chatFree]: new Page(Panels.chatFree, Views.viewMain),
+  [RoutingPages.chatLesson]: new Page(Panels.chatLesson, Views.viewMain),
   [RoutingPages.openSource]: new Page(Panels.openSource, Views.viewMain),
   [RoutingPages.history]: new Page(Panels.history, Views.viewMain),
   [RoutingPages.modes]: new Page(Panels.modes, Views.viewMain),

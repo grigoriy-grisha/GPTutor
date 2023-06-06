@@ -10,7 +10,6 @@ interface IProps {
   chatGpt: ChatGptTemplate;
   handleSend: (message: string) => void;
   isTyping: boolean;
-  onSettingsClick: () => void;
   writeBarBefore: React.ReactNode;
 
   additionalRequest: (handleSend: (value: string) => void) => React.ReactNode;

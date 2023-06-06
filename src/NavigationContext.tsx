@@ -12,7 +12,8 @@ import { Modals, Panels, RoutingPages, Views } from "$/entity/routing";
 export type NavigationContextType = {
   goBack: () => void;
   goToChapters: () => void;
-  goToChat: () => void;
+  goToChatFree: () => void;
+  goToChatLesson: () => void;
   goToOpenSource: () => void;
 
   goToHistory: () => void;
@@ -55,7 +56,8 @@ export function NavigationContextProvider({
   }, [activePanel]);
 
   const goToChapters = () => push(RoutingPages.chapters);
-  const goToChat = () => push(RoutingPages.chat);
+  const goToChatFree = () => push(RoutingPages.chatFree);
+  const goToChatLesson = () => push(RoutingPages.chatLesson);
   const goToOpenSource = () => push(RoutingPages.openSource);
   const goToHistory = () => push(RoutingPages.history);
   const goToModes = () => push(RoutingPages.modes);
@@ -71,7 +73,8 @@ export function NavigationContextProvider({
         goBack,
         goToHistory,
         goToChapters,
-        goToChat,
+        goToChatFree,
+        goToChatLesson,
         goToModes,
         goToOpenSource,
         goToForbidden,

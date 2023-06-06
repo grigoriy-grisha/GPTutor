@@ -14,8 +14,6 @@ import ScrollDown from "./ScrollDown";
 interface IProps {
   goBack: () => void;
   chatGpt: ChatGptTemplate;
-  onSettingsClick: () => void;
-  goToHistory: () => void;
 
   onStartChat: () => void;
 
@@ -27,7 +25,6 @@ interface IProps {
 function Messenger({
   goBack,
   chatGpt,
-  onSettingsClick,
   onStartChat,
   writeBarBefore,
   additionalRequest,
@@ -53,7 +50,6 @@ function Messenger({
       <MessengerWriteBar
         additionalRequest={additionalRequest}
         writeBarBefore={writeBarBefore}
-        onSettingsClick={onSettingsClick}
         chatGpt={chatGpt}
         handleSend={handlerSend}
         isTyping={isTyping}

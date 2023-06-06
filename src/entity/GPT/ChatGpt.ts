@@ -33,7 +33,7 @@ export class ChatGpt {
     goToChat();
   };
 
-  moveToLessonChat(lesson: LessonItem, goToChat: () => void) {
+  moveToLessonChat(lesson: LessonItem, goToChatLesson: () => void) {
     this.chatGptLesson.clearMessages();
     this.chatGptLesson.clearSystemMessage();
     this.chatGptLesson.currentHistory = null;
@@ -41,20 +41,25 @@ export class ChatGpt {
     this.currentChatGpt$.set(this.chatGptLesson);
 
     lessonsController.setCurrentLesson(lesson.id);
-    goToChat();
+
+    goToChatLesson();
   }
 
-  restoreDialogFromHistory(id: string, goToChat: () => void) {
+  restoreDialogFromHistory(
+    id: string,
+    goToChatFree: () => void,
+    goToChatLesson: () => void
+  ) {
     const dialog = this.history.getDialogById(id);
     if (!dialog) return;
 
     if (dialog.type === "Free") {
       this.currentChatGpt$.set(this.chatGptFree);
+      this.chatGptFree.restoreDialogFromHistory(dialog, goToChatFree);
     } else {
       this.currentChatGpt$.set(this.chatGptLesson);
+      this.chatGptLesson.restoreDialogFromHistory(dialog, goToChatLesson);
     }
-
-    this.getCurrentChatGpt().restoreDialogFromHistory(dialog, goToChat);
   }
 
   getCurrentChatGpt = () => this.currentChatGpt$.get();

@@ -1,20 +1,19 @@
 import React, { useCallback, useState } from "react";
-
 import { Panel } from "@vkontakte/vkui";
 
 import { Messenger } from "$/components/Messenger";
-import { lessonsController } from "$/entity/lessons";
 import { chatGpt } from "$/entity/GPT";
 import { useNavigationContext } from "$/NavigationContext";
+import { lessonsController } from "$/entity/lessons";
 
-import WriteBarBefore from "$/components/Messenger/MessengerWriteBar/WriteBarMessage/WriteBarBefore/WriteBarBefore";
-import { AdditionalRequests } from "$/components/Messenger/MessengerWriteBar/AdditionalRequests";
+import { ChatLessonWriteBarBefore } from "./ChatLessonWriteBarBefore";
+import { ChatLessonAdditionalRequests } from "./ChatLessonAdditionalRequests";
 
 interface IProps {
   id: string;
 }
 
-const Chat = ({ id }: IProps) => {
+function ChatLesson({ id }: IProps) {
   const [isAdditionalOpen, setAdditionsOpen] = useState(true);
 
   const onClickAdditional = useCallback(
@@ -22,7 +21,7 @@ const Chat = ({ id }: IProps) => {
     []
   );
 
-  const { goBack, goToHistory, openChatSettingsModal } = useNavigationContext();
+  const { goBack } = useNavigationContext();
 
   const currentLesson = lessonsController.currentLesson.get();
 
@@ -30,31 +29,25 @@ const Chat = ({ id }: IProps) => {
     const initialRequest = currentLesson?.initialRequest;
     if (initialRequest) initialRequest.select();
 
-    chatGpt
-      .getCurrentChatGpt()
-      .send(initialRequest?.text || "Привет, что ты можешь?");
+    chatGpt.chatGptLesson.send(initialRequest?.text || "");
   };
 
   const additionalRequests = currentLesson?.additionalRequests || [];
-
   const isStopped = chatGpt.getCurrentChatGpt().timer.isStopped$.get();
-
   const isTyping = chatGpt.getCurrentChatGpt().sendCompletions$.loading.get();
-
   const isBlockActions = chatGpt.getCurrentChatGpt().isBlockActions$.get();
 
   return (
     <Panel id={id}>
       <Messenger
         writeBarBefore={
-          <WriteBarBefore
+          <ChatLessonWriteBarBefore
             additionalRequests={additionalRequests}
             onClickAdditional={onClickAdditional}
-            onSettingsClick={openChatSettingsModal}
           />
         }
         additionalRequest={(handleSend) => (
-          <AdditionalRequests
+          <ChatLessonAdditionalRequests
             isStopped={isStopped}
             additionalRequests={additionalRequests}
             isAdditionalOpen={isAdditionalOpen}
@@ -63,13 +56,11 @@ const Chat = ({ id }: IProps) => {
           />
         )}
         onStartChat={onStartChat}
-        chatGpt={chatGpt.getCurrentChatGpt()}
-        onSettingsClick={openChatSettingsModal}
+        chatGpt={chatGpt.chatGptLesson}
         goBack={goBack}
-        goToHistory={goToHistory}
       />
     </Panel>
   );
-};
+}
 
-export default Chat;
+export default ChatLesson;
