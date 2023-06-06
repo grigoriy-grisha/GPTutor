@@ -14,6 +14,7 @@ interface IProps {
   onClickAdditional: () => void;
   onSettingsClick: () => void;
 }
+
 function WriteBarBefore({
   additionalRequests,
   onClickAdditional,
