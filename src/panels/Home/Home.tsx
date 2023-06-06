@@ -50,11 +50,7 @@ function Home({ id }: IProps) {
             }}
           />
           <FreeDialogBlock
-            goToFreeDialog={() => {
-              goToChat();
-              lessonsController.clearLesson();
-              chatGpt.currentHistory = null;
-            }}
+            goToFreeDialog={() => chatGpt.moveToFreeChat(goToChat)}
           />
         </AppContainer>
       )}

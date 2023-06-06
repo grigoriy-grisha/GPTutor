@@ -1,36 +1,28 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo } from "react";
 
-import { LessonRequest } from "$/entity/lessons";
-import { ChatGpt } from "$/entity/GPT";
+import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
 import classes from "./MessengerWriteBar.module.css";
-import { AdditionalRequests } from "./AdditionalRequests";
 import { WriteBarMessage } from "./WriteBarMessage";
 import { SelectedMessagesBar } from "./SelectedMessagesBar";
 
 interface IProps {
-  chatGpt: ChatGpt;
-  additionalRequests: LessonRequest[];
+  chatGpt: ChatGptTemplate;
   handleSend: (message: string) => void;
   isTyping: boolean;
   onSettingsClick: () => void;
+  writeBarBefore: React.ReactNode;
+
+  additionalRequest: (handleSend: (value: string) => void) => React.ReactNode;
 }
 
 function MessengerWriteBar({
   chatGpt,
-  additionalRequests,
   handleSend,
-  isTyping,
-  onSettingsClick,
+  writeBarBefore,
+  additionalRequest,
 }: IProps) {
-  const [isAdditionalOpen, setAdditionsOpen] = useState(true);
-
-  const onClickAdditional = useCallback(
-    () => setAdditionsOpen((prev) => !prev),
-    []
-  );
   const hasSelectedMessages = chatGpt.hasSelectedMessages$.get();
-  const isStopped = chatGpt.timer.isStopped$.get();
 
   return (
     <div className={classes.container}>
@@ -39,20 +31,12 @@ function MessengerWriteBar({
           <SelectedMessagesBar chatGpt={chatGpt} />
         </div>
         <div style={{ display: !hasSelectedMessages ? "block" : "none" }}>
-          <AdditionalRequests
-            isStopped={isStopped}
-            additionalRequests={additionalRequests}
-            isAdditionalOpen={isAdditionalOpen}
-            handleSend={handleSend}
-            isTyping={isTyping || chatGpt.isBlockActions$.get()}
-          />
+          {additionalRequest(handleSend)}
         </div>
         <WriteBarMessage
+          writeBarBefore={writeBarBefore}
           chatGpt={chatGpt}
-          onSettingsClick={onSettingsClick}
-          additionalRequests={additionalRequests}
           handleSend={handleSend}
-          onClickAdditional={onClickAdditional}
         />
       </div>
     </div>

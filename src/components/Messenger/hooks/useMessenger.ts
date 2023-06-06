@@ -1,25 +1,15 @@
-import { ChatGpt } from "$/entity/GPT";
-import { LessonItem } from "$/entity/lessons";
-
 import { useMessengerScroll } from "./useMessengerScroll";
+import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
 type HookMessengerParams = {
-  lesson: LessonItem | null;
-  chatGpt: ChatGpt;
+  chatGpt: ChatGptTemplate;
 };
 
-export function useMessenger({ chatGpt, lesson }: HookMessengerParams) {
+export function useMessenger({ chatGpt }: HookMessengerParams) {
   const isTyping = chatGpt.sendCompletions$.loading.get();
 
   const { scrollRef, scrollToBottom, showScrollDown } =
     useMessengerScroll(isTyping);
-
-  const onStartChat = () => {
-    const initialRequest = lesson?.initialRequest;
-    if (initialRequest) initialRequest.select();
-
-    chatGpt.send(initialRequest?.text || "Привет, что ты можешь?");
-  };
 
   const handlerSend = (message: string) => {
     if (!message) return;
@@ -31,7 +21,6 @@ export function useMessenger({ chatGpt, lesson }: HookMessengerParams) {
     isTyping,
     scrollRef,
     showScrollDown,
-    onStartChat,
     handlerSend,
     scrollToBottom,
   };

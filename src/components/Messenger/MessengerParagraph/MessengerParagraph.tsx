@@ -13,10 +13,25 @@ interface IProps {
   message: GptMessage;
 }
 
+const errorContent = `
+\`\`\`javascript
+Сеть ChatGPT пегружена. Попробуйте через минуту
+   _______  GPT
+  |.-----.|       Err 
+  ||x . x||  GPT Error  
+  ||_.-._||         GPT
+  \`--)-(--\`  GPT Er
+ __[=== o]___       Error
+|:::::::::::|\\   ror GPT
+\`-=========-\`() 
+`;
+
 function MessengerParagraph({ message }: IProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const markdown = useMemo(() => new Markdown(), []);
-  const html = markdown.render(message.content$.get());
+  const html = markdown.render(
+    message.isError ? errorContent : message.content$.get()
+  );
 
   if (message.failedModeration$.get()) {
     return (

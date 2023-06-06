@@ -44,13 +44,9 @@ function Chapters({ id }: IProps) {
         {currentChapter && (
           <Lessons
             currentChapter={currentChapter}
-            onClickLesson={(lesson) => {
-              chatGpt.clearMessages();
-              chatGpt.clearSystemMessage();
-              lessonsController.setCurrentLesson(lesson.id);
-              chatGpt.currentHistory = null;
-              goToChat();
-            }}
+            onClickLesson={(lesson) =>
+              chatGpt.moveToLessonChat(lesson, goToChat)
+            }
           />
         )}
       </AppContainer>

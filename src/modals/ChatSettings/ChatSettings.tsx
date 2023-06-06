@@ -10,6 +10,8 @@ import {
   useAdaptivityConditionalRender,
 } from "@vkontakte/vkui";
 
+import { chatGpt } from "$/entity/GPT";
+
 import ApplyAlert from "./ApplyAlert";
 import SystemMessageForm from "./SystemMessageForm";
 
@@ -34,7 +36,7 @@ function ChatSettings({ id }: IProps) {
     updateSystemMessage,
     onSubmit,
     closeAlert,
-  } = useChatSettings();
+  } = useChatSettings(chatGpt.getCurrentChatGpt());
 
   return (
     <ModalPage settlingHeight={100} id={id}>
