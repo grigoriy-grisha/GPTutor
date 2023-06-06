@@ -49,7 +49,7 @@ function ApplicationInfo({ id }: IProps) {
 
       <Separator wide />
 
-      <Group>
+      <Group style={{ marginTop: 8 }}>
         <AppDiv>
           <Text weight="3">
             <Text style={{ display: "inline" }} weight="1" as="span">
@@ -60,7 +60,7 @@ function ApplicationInfo({ id }: IProps) {
           </Text>
         </AppDiv>
       </Group>
-      <Group>
+      <Group style={{ padding: 0 }}>
         <SimpleCell
           before={<Icon28LogoVk />}
           href="https://vk.com/gptutor"
@@ -89,7 +89,7 @@ function ApplicationInfo({ id }: IProps) {
           <Text weight="2">Поделиться</Text>
         </SimpleCell>
       </Group>
-      <Group>
+      <Group style={{ padding: 0 }}>
         <SimpleCell
           onClick={goToOpenSource}
           before={<GithubIcon style={{ paddingRight: 16 }} />}

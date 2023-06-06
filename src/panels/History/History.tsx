@@ -20,7 +20,7 @@ interface IProps {
 }
 
 function History({ id }: IProps) {
-  const { goBack, goToChat } = useNavigationContext();
+  const { goBack } = useNavigationContext();
 
   useEffect(() => {
     chatGpt.history.loadHistory();
@@ -43,7 +43,7 @@ function History({ id }: IProps) {
             <Spinner size="large" />
           </div>
         ) : (
-          <HistoryList goBack={goBack} goToChat={goToChat} />
+          <HistoryList goBack={goBack} />
         )}
       </AppContainer>
     </Panel>

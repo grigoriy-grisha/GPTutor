@@ -10,10 +10,9 @@ import classes from "./HistoryList.module.css";
 
 interface IProps {
   goBack: () => void;
-  goToChat: () => void;
 }
 
-function HistoryList({ goBack, goToChat }: IProps) {
+function HistoryList({ goBack }: IProps) {
   const dialogs = chatGpt.history.dialogs.get();
 
   const history = [...dialogs].reverse();
@@ -42,7 +41,7 @@ function HistoryList({ goBack, goToChat }: IProps) {
   return (
     <>
       {history.map((dialog) => (
-        <HistoryBanner key={dialog.id} dialog={dialog} goToChat={goToChat} />
+        <HistoryBanner key={dialog.id} dialog={dialog} />
       ))}
     </>
   );

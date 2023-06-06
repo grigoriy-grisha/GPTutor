@@ -3,7 +3,7 @@ import { Button, Div, Separator } from "@vkontakte/vkui";
 
 import { LessonRequest } from "$/entity/lessons";
 
-import classes from "./AdditionalRequests.module.css";
+import classes from "./ChatLessonAdditionalRequests.module.css";
 
 interface IProps {
   additionalRequests: LessonRequest[];
@@ -13,7 +13,7 @@ interface IProps {
   isStopped: boolean;
 }
 
-function AdditionalRequests({
+function ChatLessonAdditionalRequests({
   additionalRequests,
   isAdditionalOpen,
   isTyping,
@@ -46,4 +46,4 @@ function AdditionalRequests({
   );
 }
 
-export default memo(AdditionalRequests);
+export default memo(ChatLessonAdditionalRequests);

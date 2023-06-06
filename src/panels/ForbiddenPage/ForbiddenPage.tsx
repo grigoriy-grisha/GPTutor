@@ -8,7 +8,13 @@ interface IProps {
 }
 function ForbiddenPage({ id }: IProps) {
   return (
-    <Panel id={id}>
+    <Panel
+      id={id}
+      style={{
+        minHeight: "100vh",
+        background: "var(--vkui--color_background)",
+      }}
+    >
       <div style={{ paddingTop: 150 }}>
         <Placeholder
           icon={<Icon36GhostSimpleOutline width={64} height={64} />}

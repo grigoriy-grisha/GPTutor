@@ -19,7 +19,6 @@ import { Modals, Panels, Views } from "./entity/routing";
 
 import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
-import { Chat } from "./panels/Chat";
 import { OpenSource } from "./panels/OpenSource";
 import { History } from "./panels/History";
 import { ForbiddenPage } from "$/panels/ForbiddenPage";
@@ -30,6 +29,8 @@ import { applicationUser } from "$/entity/user/ApplicationUser";
 import { SnackbarNotifier } from "$/components/SnackbarNotifier";
 import { ChatSettings } from "$/modals/ChatSettings";
 import { ApplicationInfo } from "$/modals/ApplicationInfo";
+import { ChatFree } from "$/panels/ChatFree";
+import { ChatLesson } from "$/panels/ChatLesson";
 
 const App = () => {
   const location = useLocation();
@@ -83,7 +84,8 @@ const App = () => {
         >
           <Home id={Panels.home} />
           <Chapters id={Panels.chapters} />
-          <Chat id={Panels.chat} />
+          <ChatFree id={Panels.chatFree} />
+          <ChatLesson id={Panels.chatLesson} />
           <OpenSource id={Panels.openSource} />
           <History id={Panels.history} />
           <Modes id={Panels.modes} />

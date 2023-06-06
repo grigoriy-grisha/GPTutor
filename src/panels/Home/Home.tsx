@@ -20,12 +20,19 @@ interface IProps {
 }
 
 function Home({ id }: IProps) {
-  const { goToOpenSource, goToChapters, goToChat } = useNavigationContext();
+  const { goToChapters, goToChatFree } = useNavigationContext();
 
   const userIsLoading = applicationUser.loading$.get();
 
   return (
-    <Panel id={id}>
+    <Panel
+      id={id}
+      style={
+        userIsLoading
+          ? { minHeight: "100vh", background: "var(--vkui--color_background)" }
+          : {}
+      }
+    >
       {userIsLoading ? (
         <Placeholder
           style={{ paddingTop: 170 }}
@@ -38,7 +45,7 @@ function Home({ id }: IProps) {
         <AppContainer
           className={classes.group}
           isSecondary
-          headerChildren={<HomeHeader goToOpenSource={goToOpenSource} />}
+          headerChildren={<HomeHeader />}
         >
           <Cards
             chapters={lessonsController.chapters}
@@ -50,7 +57,7 @@ function Home({ id }: IProps) {
             }}
           />
           <FreeDialogBlock
-            goToFreeDialog={() => chatGpt.moveToFreeChat(goToChat)}
+            goToFreeDialog={() => chatGpt.moveToFreeChat(goToChatFree)}
           />
         </AppContainer>
       )}

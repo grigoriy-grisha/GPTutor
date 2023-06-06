@@ -23,6 +23,7 @@ import { ChapterTypes } from "$/entity/lessons";
 import { History } from "$/entity/history";
 
 import classes from "./HistoryBanner.module.css";
+import { useNavigationContext } from "$/NavigationContext";
 
 const BannerIcon: Record<string, React.FC> = {
   [ChapterTypes.JS]: JSLesson,
@@ -44,10 +45,11 @@ const chapterNames: Record<string, string> = {
 
 interface IProps {
   dialog: History;
-  goToChat: () => void;
 }
 
-function HistoryBanner({ dialog, goToChat }: IProps) {
+function HistoryBanner({ dialog }: IProps) {
+  const { goToChatFree, goToChatLesson } = useNavigationContext();
+
   const chapterType = dialog.type;
   const lessonName = dialog.lessonName;
   const Icon = chapterType === "Free" ? ChatGptIcon : BannerIcon[chapterType];
@@ -107,7 +109,11 @@ function HistoryBanner({ dialog, goToChat }: IProps) {
           <Button
             disabled={currentChatGpt.getMessages$.loading.get()}
             onClick={() => {
-              chatGpt.restoreDialogFromHistory(dialog.id, goToChat);
+              chatGpt.restoreDialogFromHistory(
+                dialog.id,
+                goToChatFree,
+                goToChatLesson
+              );
             }}
           >
             Перейди в диалог
