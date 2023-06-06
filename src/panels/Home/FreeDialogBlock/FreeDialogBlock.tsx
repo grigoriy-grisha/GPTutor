@@ -30,7 +30,7 @@ function FreeDialogBlock({ goToFreeDialog }: IProps) {
           </Button>
         }
       >
-        Взаимодействуй с Чат ботом в формате чата
+        Взаимодействуй с Чат ботом в формате диалога
       </Placeholder>
     </CardBlock>
   );
