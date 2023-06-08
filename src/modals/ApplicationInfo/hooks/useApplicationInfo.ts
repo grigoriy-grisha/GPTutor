@@ -1,35 +1,13 @@
 import bridge from "@vkontakte/vk-bridge";
-import { snackbarNotify } from "$/entity/notify";
+import { communicationService } from "$/services/CommunicationService";
 
 export function useApplicationInfo() {
   const subscribe = () => {
-    bridge
-      .send("VKWebAppJoinGroup", { group_id: 220371433 })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        snackbarNotify.notify({
-          type: "error",
-          message: "Произошла ошибка, не удалось подписаться на группу",
-        });
-        console.log(error);
-      });
+    communicationService.addToSubscribe();
   };
 
   const favourites = () => {
-    bridge
-      .send("VKWebAppAddToFavorites")
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        snackbarNotify.notify({
-          type: "error",
-          message: "Произошла ошибка, не удалось добавить в избранное",
-        });
-        console.log(error);
-      });
+    communicationService.addToFavorite();
   };
 
   const share = () => {
@@ -41,5 +19,6 @@ export function useApplicationInfo() {
         console.log(data);
       });
   };
+
   return { subscribe, favourites, share };
 }
