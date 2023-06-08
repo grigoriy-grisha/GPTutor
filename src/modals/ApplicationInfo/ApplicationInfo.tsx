@@ -9,6 +9,7 @@ import {
   SimpleCell,
   Text,
   useAdaptivityConditionalRender,
+  Title,
 } from "@vkontakte/vkui";
 import {
   Icon24Share,
@@ -44,7 +45,7 @@ function ApplicationInfo({ id }: IProps) {
           )
         }
       >
-        Приложение
+        <Title level="1">Приложение</Title>
       </ModalPageHeader>
 
       <Separator wide />
@@ -52,9 +53,9 @@ function ApplicationInfo({ id }: IProps) {
       <Group style={{ marginTop: 8 }}>
         <AppDiv>
           <Text weight="3">
-            <Text style={{ display: "inline" }} weight="1" as="span">
+            <Title style={{ display: "inline" }} level="3" as="span">
               GPTutor{" — "}
-            </Text>
+            </Title>
             это образовательное приложение, которое предлагает уникальный подход
             к обучению вместе с чат-помощником Chat GPT.
           </Text>

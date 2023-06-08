@@ -12,7 +12,7 @@ class ApplicationUser {
   createUser$ = ReactivePromise.create(createUser);
 
   constructor() {
-    this.loading$.set(true);
+    this.loading$.set(false);
   }
 
   loadUser = async (vkId: number) => {
