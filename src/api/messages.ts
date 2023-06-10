@@ -10,11 +10,7 @@ export function createMessage(params: CreateMessageParams) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-  })
-    .then((res) => res.json())
-    .catch((e) => {
-      console.log(e);
-    });
+  }).then((res) => res.json());
 }
 
 export function getMessagesById(historyId: string): Promise<RemoteMessage[]> {
@@ -24,9 +20,5 @@ export function getMessagesById(historyId: string): Promise<RemoteMessage[]> {
       Authorization: "Bearer " + location.href,
       "Content-Type": "application/json",
     },
-  })
-    .then((res) => res.json())
-    .catch((e) => {
-      console.log(e);
-    });
+  }).then((res) => res.json());
 }

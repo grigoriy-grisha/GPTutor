@@ -11,15 +11,11 @@ export function createHistory(params: HistoryCreate): Promise<History> {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-  })
-    .then((res) => res.json())
-    .catch((e) => {
-      console.log(e);
-    });
+  }).then((res) => res.json());
 }
 
-export function getHistoryById(id: string): Promise<History[]> {
-  return fetch(`${BACKEND_HOST}history/` + id, {
+export function getHistoryById(): Promise<History[]> {
+  return fetch(`${BACKEND_HOST}history`, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + location.href,
@@ -29,7 +25,7 @@ export function getHistoryById(id: string): Promise<History[]> {
 }
 
 export function deleteHistory(id: string) {
-  return fetch(`${BACKEND_HOST}history/` + id, {
+  return fetch(`${BACKEND_HOST}history` + id, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + location.href,

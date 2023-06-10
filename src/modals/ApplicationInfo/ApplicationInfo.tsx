@@ -33,6 +33,7 @@ function ApplicationInfo({ id }: IProps) {
   const { goBack, goToOpenSource } = useNavigationContext();
   const { sizeX } = useAdaptivityConditionalRender();
   const { subscribe, favourites, share } = useApplicationInfo();
+
   return (
     <ModalPage settlingHeight={100} id={id}>
       <ModalPageHeader
@@ -90,7 +91,7 @@ function ApplicationInfo({ id }: IProps) {
           <Text weight="2">Поделиться</Text>
         </SimpleCell>
       </Group>
-      <Group style={{ padding: 0 }}>
+      <Group style={{ paddingTop: 0 }}>
         <SimpleCell
           onClick={goToOpenSource}
           before={<GithubIcon style={{ paddingRight: 16 }} />}

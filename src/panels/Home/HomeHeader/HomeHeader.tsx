@@ -25,7 +25,10 @@ function HomeHeader() {
         [classes.panelHeaderVkApps]: platform === Platform.VKCOM,
       })}
       before={
-        <IconButton onClick={openApplicationInfo}>
+        <IconButton
+          onClick={openApplicationInfo}
+          className={classes.buttonService}
+        >
           <Icon28ServicesOutline className={classes.iconService} />
         </IconButton>
       }

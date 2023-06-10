@@ -21,11 +21,9 @@ import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
 import { OpenSource } from "./panels/OpenSource";
 import { History } from "./panels/History";
-import { ForbiddenPage } from "$/panels/ForbiddenPage";
 import { Modes } from "./panels/Modes";
 
 import { useNavigationContext } from "$/NavigationContext";
-import { applicationUser } from "$/entity/user/ApplicationUser";
 import { SnackbarNotifier } from "$/components/SnackbarNotifier";
 import { ChatSettings } from "$/modals/ChatSettings";
 import { ApplicationInfo } from "$/modals/ApplicationInfo";
@@ -34,28 +32,19 @@ import { ChatLesson } from "$/panels/ChatLesson";
 
 const App = () => {
   const location = useLocation();
-  const { goBack, goToForbidden, isForbidden } = useNavigationContext();
+  const { goBack, goToForbidden } = useNavigationContext();
   const { appearance } = useConfigProvider();
 
   useEffect(() => {
-    if (process.env.NODE_ENV === "development") applicationUser.loadUser(0);
-
     bridge
       .send("VKWebAppGetUserInfo")
-      .then((user) => {
-        vkUserModel.fill(user);
-        applicationUser.loadUser(user.id);
-      })
+      .then((user) => vkUserModel.fill(user))
       .catch(goToForbidden);
   }, []);
 
   const history = location.hasOverlay()
     ? []
     : location.getViewHistory(Views.viewMain);
-
-  if (isForbidden) {
-    return <ForbiddenPage id={Panels.forbidden} />;
-  }
 
   return (
     <>
