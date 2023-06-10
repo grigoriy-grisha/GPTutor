@@ -24,6 +24,7 @@ import { History } from "$/entity/history";
 
 import classes from "./HistoryBanner.module.css";
 import { useNavigationContext } from "$/NavigationContext";
+import { ErrorBlock } from "$/components/ErrorBlock";
 
 const BannerIcon: Record<string, React.FC> = {
   [ChapterTypes.JS]: JSLesson,
@@ -52,12 +53,20 @@ function HistoryBanner({ dialog }: IProps) {
 
   const chapterType = dialog.type;
   const lessonName = dialog.lessonName;
-  const Icon = chapterType === "Free" ? ChatGptIcon : BannerIcon[chapterType];
+  const Icon =
+    !chapterType || chapterType === "Free"
+      ? ChatGptIcon
+      : BannerIcon[chapterType];
+
   const { sizeX } = useAdaptivityWithJSMediaQueries();
 
   const currentChatGpt = chatGpt.getCurrentChatGpt();
 
   const isCompact = sizeX === "compact";
+
+  if (chatGpt.history.getHistory$.error.get()) {
+    return <ErrorBlock />;
+  }
 
   return (
     <Banner
@@ -119,6 +128,7 @@ function HistoryBanner({ dialog }: IProps) {
             Перейди в диалог
           </Button>
           <Button
+            disabled={chatGpt.history.deleteHistory$.loading.get()}
             appearance="negative"
             mode="outline"
             onClick={() => chatGpt.history.removeHistoryDialog(dialog.id)}

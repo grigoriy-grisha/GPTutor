@@ -1,7 +1,4 @@
-import { User } from "$/entity/user/types";
-
 export type HistoryCreate = {
-  userVkId: string;
   lastMessage: string;
   lessonName: string;
   type: string;
@@ -11,7 +8,6 @@ export type HistoryCreate = {
 
 export type History = {
   id: string;
-  vkUser: User;
   lastMessage: string;
   type: string;
   lessonName: string;

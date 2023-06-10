@@ -8,8 +8,6 @@ import { GptMessage } from "./GptMessage";
 import { Timer } from "$/entity/GPT/Timer";
 import { ChapterTypes, lessonsController } from "$/entity/lessons";
 import { createHistory } from "$/api/history";
-import { applicationUser } from "$/entity/user/ApplicationUser";
-import { HistoryCreate } from "$/entity/history/types";
 import { createMessage, getMessagesById } from "$/api/messages";
 import { History } from "$/entity/history";
 import { snackbarNotify } from "$/entity/notify";
@@ -29,13 +27,9 @@ export abstract class ChatGptTemplate {
 
   sendCompletions$ = ReactivePromise.create(() => this.sendCompletion());
 
-  createHistory$ = ReactivePromise.create((params: HistoryCreate) =>
-    createHistory(params)
-  );
+  createHistory$ = ReactivePromise.create(createHistory);
 
-  getMessages$ = ReactivePromise.create((historyId: string) =>
-    getMessagesById(historyId)
-  );
+  getMessages$ = ReactivePromise.create(getMessagesById);
 
   selectedMessages$ = memo(() =>
     this.messages$.get().filter((message) => message.isSelected$.get())
@@ -211,7 +205,6 @@ export abstract class ChatGptTemplate {
     this.currentHistory = await this.createHistory$.run({
       systemMessage: this.systemMessage.content$.get(),
       lastMessage: lastMessage.content$.get(),
-      userVkId: applicationUser.user!.id,
       lessonName: data?.lessonName || "",
       lastUpdated: new Date(),
       type,
@@ -235,7 +228,7 @@ export abstract class ChatGptTemplate {
 
     const messages = await this.getMessages$.run(dialog.id);
 
-    if (!messages) {
+    if (this.getMessages$.error.get()) {
       return snackbarNotify.notify({
         type: "error",
         message: "Ошибка при переходе в диплог",
