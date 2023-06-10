@@ -9,7 +9,7 @@ class CommunicationService {
       const isMember = await this.getIsMember();
       if (isMember) {
         snackbarNotify.notify({
-          type: "error",
+          type: "success",
           message: "Вы уже подписаны.",
         });
         return;
@@ -27,8 +27,8 @@ class CommunicationService {
     const isFavorite = this.getSearchParams().get("vk_is_favorite");
     if (isFavorite === "1") {
       snackbarNotify.notify({
-        type: "error",
-        message: "Невозможно добавить в избранное.",
+        type: "success",
+        message: "Приложение уже в избранном",
       });
       return;
     }
