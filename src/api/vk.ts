@@ -7,7 +7,8 @@ export async function groupsIsMember({
   userId,
 }: GroupsIsMemberRequest) {
   const response = await fetch(
-    `${BACKEND_HOST}groups.isMember?groupId=${groupId}&userId=${userId}`
+    `${BACKEND_HOST}groups-is-member?groupId=${groupId}&userId=${userId}`
   );
+
   return await response.json();
 }
