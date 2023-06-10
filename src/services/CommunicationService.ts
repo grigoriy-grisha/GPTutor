@@ -20,6 +20,7 @@ class CommunicationService {
         type: "error",
         message: "Невозможно подписаться.",
       });
+      console.log(error);
     }
   }
   async addToFavorite() {
@@ -39,8 +40,7 @@ class CommunicationService {
     const userId = urlParams.get("vk_user_id")!;
     const groupId = "220371433"; // ID группы
     if (!this.isMember) {
-      const data = await groupsIsMember({ groupId, userId });
-      this.isMember = data.response;
+      this.isMember = await groupsIsMember({ groupId, userId });
     }
     return this.isMember;
   }
