@@ -3,6 +3,7 @@ export type CreateMessageParams = {
   content: string;
   role: string;
   error: boolean;
+  inLocal: boolean;
   isFailedModeration: boolean;
   lastUpdated: Date;
 };

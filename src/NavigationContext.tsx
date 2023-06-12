@@ -14,13 +14,14 @@ export type NavigationContextType = {
   goToChapters: () => void;
   goToChatFree: () => void;
   goToChatLesson: () => void;
+  goToChatInterview: () => void;
   goToOpenSource: () => void;
-
   goToHistory: () => void;
   goToModes: () => void;
   goToForbidden: () => void;
   openChatSettingsModal: () => void;
   openApplicationInfo: () => void;
+  openInterviewQuestions: () => void;
   isForbidden: boolean;
 };
 
@@ -58,6 +59,7 @@ export function NavigationContextProvider({
   const goToChapters = () => push(RoutingPages.chapters);
   const goToChatFree = () => push(RoutingPages.chatFree);
   const goToChatLesson = () => push(RoutingPages.chatLesson);
+  const goToChatInterview = () => push(RoutingPages.chatInterview);
   const goToOpenSource = () => push(RoutingPages.openSource);
   const goToHistory = () => push(RoutingPages.history);
   const goToModes = () => push(RoutingPages.modes);
@@ -66,6 +68,9 @@ export function NavigationContextProvider({
 
   const openChatSettingsModal = () => router.pushModal(Modals.chatSettings);
   const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
+
+  const openInterviewQuestions = () =>
+    router.pushModal(Modals.interviewQuestions);
 
   return (
     <NavigationContext.Provider
@@ -80,6 +85,8 @@ export function NavigationContextProvider({
         goToForbidden,
         openChatSettingsModal,
         openApplicationInfo,
+        goToChatInterview,
+        openInterviewQuestions,
         isForbidden,
       }}
     >

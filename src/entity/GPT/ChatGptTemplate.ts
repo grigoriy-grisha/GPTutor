@@ -6,11 +6,12 @@ import ReactivePromise from "$/services/ReactivePromise";
 import { GPTDialogHistoryData, GPTDialogHistoryType, GPTRoles } from "./types";
 import { GptMessage } from "./GptMessage";
 import { Timer } from "$/entity/GPT/Timer";
-import { ChapterTypes, lessonsController } from "$/entity/lessons";
+import { ModeType, lessonsController } from "$/entity/lessons";
 import { createHistory } from "$/api/history";
 import { createMessage, getMessagesById } from "$/api/messages";
 import { History } from "$/entity/history";
 import { snackbarNotify } from "$/entity/notify";
+import { interviews } from "$/entity/interview";
 
 const MAX_CONTEXT_WORDS = 1000;
 export abstract class ChatGptTemplate {
@@ -30,6 +31,10 @@ export abstract class ChatGptTemplate {
   createHistory$ = ReactivePromise.create(createHistory);
 
   getMessages$ = ReactivePromise.create(getMessagesById);
+
+  inLocalMessages$ = memo(() =>
+    this.messages$.get().filter((message) => message.inLocal)
+  );
 
   selectedMessages$ = memo(() =>
     this.messages$.get().filter((message) => message.isSelected$.get())
@@ -102,7 +107,7 @@ export abstract class ChatGptTemplate {
           new GptMessage(
             "Сеть ChatGPT пегружена. Попробуйте через минуту",
             GPTRoles.assistant,
-            true,
+            false,
             true
           )
         );
@@ -170,6 +175,7 @@ export abstract class ChatGptTemplate {
       content: message.content$.get(),
       isFailedModeration: !message.failedModeration$.get(),
       lastUpdated: new Date(),
+      inLocal: !!message.inLocal,
     });
   }
 
@@ -197,6 +203,7 @@ export abstract class ChatGptTemplate {
     if (!lastMessage) return;
 
     const data = this.getChatData();
+
     const type = !data ? GPTDialogHistoryType.Free : data.chapterType;
 
     const lengthMessages = this.messages$.get().length;
@@ -212,13 +219,17 @@ export abstract class ChatGptTemplate {
   }
 
   getChatData(): GPTDialogHistoryData {
+    const type = interviews.getCurrentInterview()?.type;
+
+    if (type) return { chapterType: type, lessonName: null };
+
     const currentChapter = lessonsController.currentChapter.get();
     const currentLesson = lessonsController.currentLesson.get();
 
-    if (!currentChapter?.chapterType || !currentLesson?.name) return null;
+    if (!currentChapter?.type || !currentLesson?.name) return null;
 
     return {
-      chapterType: currentChapter.chapterType,
+      chapterType: currentChapter.type,
       lessonName: currentLesson.name,
     };
   }
@@ -236,8 +247,10 @@ export abstract class ChatGptTemplate {
     }
 
     if (dialog.lessonName && dialog.type) {
-      lessonsController.setCurrentChapter(dialog.type as ChapterTypes);
+      lessonsController.setCurrentChapter(dialog.type as ModeType);
       lessonsController.setCurrentLessonByName(dialog.lessonName);
+    } else if (dialog.type) {
+      interviews.setCurrentInterview(dialog.type as ModeType);
     } else {
       lessonsController.clearChapter();
       lessonsController.clearLesson();

@@ -3,10 +3,11 @@ import React from "react";
 import { Card, Div, useAdaptivityWithJSMediaQueries } from "@vkontakte/vkui";
 
 import { Hovered } from "$/components/Hovered";
-import { ChapterTypes } from "$/entity/lessons";
+import { ModeType } from "$/entity/lessons";
 
 import {
   GitLesson,
+  HtmlCssInterview,
   HtmlCssLesson,
   JSLesson,
   ReactLesson,
@@ -16,17 +17,18 @@ import {
 
 import classes from "./ChapterCard.module.css";
 
-const CardIcon: Record<ChapterTypes, React.FC> = {
-  [ChapterTypes.JS]: JSLesson,
-  [ChapterTypes.Typescript]: TypescriptLesson,
-  [ChapterTypes.Vue]: VueLessons,
-  [ChapterTypes.React]: ReactLesson,
-  [ChapterTypes.Git]: GitLesson,
-  [ChapterTypes.HTMLCSS]: HtmlCssLesson,
+const CardIcon: Record<string, React.FC> = {
+  [ModeType.JS]: JSLesson,
+  [ModeType.Typescript]: TypescriptLesson,
+  [ModeType.Vue]: VueLessons,
+  [ModeType.React]: ReactLesson,
+  [ModeType.Git]: GitLesson,
+  [ModeType.HTMLCSS]: HtmlCssLesson,
+  [ModeType.HTMLCSS_INTERWIEW]: HtmlCssInterview,
 };
 
 interface IProps {
-  chapterType: ChapterTypes;
+  chapterType: string;
   onClick: () => void;
 }
 

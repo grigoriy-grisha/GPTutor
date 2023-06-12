@@ -2,7 +2,7 @@ import React from "react";
 
 import { Banner, HorizontalCell, HorizontalScroll } from "@vkontakte/vkui";
 
-import { ChapterTypes } from "$/entity/lessons";
+import { ModeType } from "$/entity/lessons";
 import { CardBlock } from "$/components/CardBlock";
 import TertiaryTitle from "$/components/TertiaryTitle";
 
@@ -10,7 +10,7 @@ import { stackData } from "./stackData";
 import classes from "./Stack.module.css";
 
 interface IProps {
-  onClickStack: (chapter?: ChapterTypes) => void;
+  onClickStack: (chapter?: ModeType) => void;
 }
 
 function Stack({ onClickStack }: IProps) {

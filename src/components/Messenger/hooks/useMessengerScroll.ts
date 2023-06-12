@@ -21,6 +21,13 @@ export function useMessengerScroll(isTyping: boolean) {
   useEffect(scrollToBottom, []);
 
   useEffect(() => {
+    addEventListener("scroll-bottom-messenger", scrollToBottom);
+    return () => {
+      removeEventListener("scroll-bottom-messenger", scrollToBottom);
+    };
+  }, []);
+
+  useEffect(() => {
     const onScrollDetect = () => {
       if (scrollTimeout.current) return;
 

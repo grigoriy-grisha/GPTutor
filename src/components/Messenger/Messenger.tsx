@@ -19,7 +19,10 @@ interface IProps {
 
   writeBarBefore: React.ReactNode;
 
-  additionalRequest: (handleSend: (value: string) => void) => React.ReactNode;
+  additionalRequest: (
+    handleSend: (value: string) => void,
+    scrollToBottom: () => void
+  ) => React.ReactNode;
 }
 
 function Messenger({
@@ -49,6 +52,7 @@ function Messenger({
       </MessengerContainer>
       <MessengerWriteBar
         additionalRequest={additionalRequest}
+        scrollToBottom={scrollToBottom}
         writeBarBefore={writeBarBefore}
         chatGpt={chatGpt}
         handleSend={handlerSend}

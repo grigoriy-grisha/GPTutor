@@ -1,6 +1,6 @@
 import { sig } from "dignals";
 
-import { ChapterTypes } from "./chapterTypes";
+import { ModeType } from "./modeType";
 import { LessonItem } from "./LessonItem";
 import { ChapterItem } from "./ChapterItem";
 import { UUID_V4 } from "../common";
@@ -27,9 +27,9 @@ export class LessonsController {
     this.currentLesson.set(foundLesson);
   }
 
-  setCurrentChapter(chapterType: ChapterTypes) {
+  setCurrentChapter(chapterType: ModeType) {
     const chapter = this.chapters.find(
-      (chapter) => chapter.chapterType === chapterType
+      (chapter) => chapter.type === chapterType
     );
     if (chapter) this.currentChapter.set(chapter);
   }

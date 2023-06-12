@@ -11,8 +11,11 @@ interface IProps {
   handleSend: (message: string) => void;
   isTyping: boolean;
   writeBarBefore: React.ReactNode;
-
-  additionalRequest: (handleSend: (value: string) => void) => React.ReactNode;
+  scrollToBottom: () => void;
+  additionalRequest: (
+    handleSend: (value: string) => void,
+    scrollToBottom: () => void
+  ) => React.ReactNode;
 }
 
 function MessengerWriteBar({
@@ -20,6 +23,7 @@ function MessengerWriteBar({
   handleSend,
   writeBarBefore,
   additionalRequest,
+  scrollToBottom,
 }: IProps) {
   const hasSelectedMessages = chatGpt.hasSelectedMessages$.get();
 
@@ -30,7 +34,7 @@ function MessengerWriteBar({
           <SelectedMessagesBar chatGpt={chatGpt} />
         </div>
         <div style={{ display: !hasSelectedMessages ? "block" : "none" }}>
-          {additionalRequest(handleSend)}
+          {additionalRequest(handleSend, scrollToBottom)}
         </div>
         <WriteBarMessage
           writeBarBefore={writeBarBefore}

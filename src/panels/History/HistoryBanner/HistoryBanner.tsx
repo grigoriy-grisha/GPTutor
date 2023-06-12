@@ -1,6 +1,7 @@
 import {
   ChatGptIcon,
   GitLesson,
+  HtmlCssInterview,
   HtmlCssLesson,
   JSLesson,
   ReactLesson,
@@ -19,7 +20,7 @@ import {
 
 import React from "react";
 import { chatGpt } from "$/entity/GPT";
-import { ChapterTypes } from "$/entity/lessons";
+import { ModeType } from "$/entity/lessons";
 import { History } from "$/entity/history";
 
 import classes from "./HistoryBanner.module.css";
@@ -27,21 +28,23 @@ import { useNavigationContext } from "$/NavigationContext";
 import { ErrorBlock } from "$/components/ErrorBlock";
 
 const BannerIcon: Record<string, React.FC> = {
-  [ChapterTypes.JS]: JSLesson,
-  [ChapterTypes.Typescript]: TypescriptLesson,
-  [ChapterTypes.Vue]: VueLessons,
-  [ChapterTypes.React]: ReactLesson,
-  [ChapterTypes.Git]: GitLesson,
-  [ChapterTypes.HTMLCSS]: HtmlCssLesson,
+  [ModeType.JS]: JSLesson,
+  [ModeType.Typescript]: TypescriptLesson,
+  [ModeType.Vue]: VueLessons,
+  [ModeType.React]: ReactLesson,
+  [ModeType.Git]: GitLesson,
+  [ModeType.HTMLCSS]: HtmlCssLesson,
+  [ModeType.HTMLCSS_INTERWIEW]: HtmlCssInterview,
 };
 
 const chapterNames: Record<string, string> = {
-  [ChapterTypes.JS]: "Javascript",
-  [ChapterTypes.Typescript]: "Typescript",
-  [ChapterTypes.Vue]: "Vue",
-  [ChapterTypes.React]: "React",
-  [ChapterTypes.Git]: "Git",
-  [ChapterTypes.HTMLCSS]: "HTML/CSS",
+  [ModeType.JS]: "Javascript",
+  [ModeType.Typescript]: "Typescript",
+  [ModeType.Vue]: "Vue",
+  [ModeType.React]: "React",
+  [ModeType.Git]: "Git",
+  [ModeType.HTMLCSS]: "HTML/CSS",
+  [ModeType.HTMLCSS_INTERWIEW]: "Собеседование HTML/CSS",
 };
 
 interface IProps {
@@ -49,7 +52,8 @@ interface IProps {
 }
 
 function HistoryBanner({ dialog }: IProps) {
-  const { goToChatFree, goToChatLesson } = useNavigationContext();
+  const { goToChatFree, goToChatLesson, goToChatInterview } =
+    useNavigationContext();
 
   const chapterType = dialog.type;
   const lessonName = dialog.lessonName;
@@ -66,6 +70,16 @@ function HistoryBanner({ dialog }: IProps) {
 
   if (chatGpt.history.getHistory$.error.get()) {
     return <ErrorBlock />;
+  }
+
+  function getBannerName() {
+    if (chapterType && lessonName) {
+      return `${chapterNames[chapterType]} : ${lessonName}`;
+    }
+
+    if (chapterType === "Free") return "Свободный диалог";
+
+    return chapterNames[chapterType];
   }
 
   return (
@@ -88,13 +102,7 @@ function HistoryBanner({ dialog }: IProps) {
           </div>
         </div>
       }
-      header={
-        <Title level="3">
-          {chapterType && lessonName
-            ? `${chapterNames[chapterType]} : ${lessonName}`
-            : "Свободный диалог"}
-        </Title>
-      }
+      header={<Title level="3">{getBannerName()}</Title>}
       subheader={
         <>
           <span className={classes.lineClamp}>
@@ -121,7 +129,8 @@ function HistoryBanner({ dialog }: IProps) {
               chatGpt.restoreDialogFromHistory(
                 dialog.id,
                 goToChatFree,
-                goToChatLesson
+                goToChatLesson,
+                goToChatInterview
               );
             }}
           >

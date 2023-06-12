@@ -29,6 +29,8 @@ import { ChatSettings } from "$/modals/ChatSettings";
 import { ApplicationInfo } from "$/modals/ApplicationInfo";
 import { ChatFree } from "$/panels/ChatFree";
 import { ChatLesson } from "$/panels/ChatLesson";
+import ChatInterview from "./panels/ChatInterview/ChatInterview";
+import { InterviewQuestions } from "$/modals/InterviewQuestions";
 
 const App = () => {
   const location = useLocation();
@@ -54,6 +56,7 @@ const App = () => {
           <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
             <ChatSettings id={Modals.chatSettings} />
             <ApplicationInfo id={Modals.applicationInfo} />
+            <InterviewQuestions id={Modals.interviewQuestions} />
           </ModalRoot>
         }
       >
@@ -67,6 +70,7 @@ const App = () => {
           <Chapters id={Panels.chapters} />
           <ChatFree id={Panels.chatFree} />
           <ChatLesson id={Panels.chatLesson} />
+          <ChatInterview id={Panels.chatInterview} />
           <OpenSource id={Panels.openSource} />
           <History id={Panels.history} />
           <Modes id={Panels.modes} />

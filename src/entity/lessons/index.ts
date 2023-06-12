@@ -1,6 +1,6 @@
 import { LessonsController } from "./LessonsController";
 import { ChapterItem } from "./ChapterItem";
-import { ChapterTypes } from "./chapterTypes";
+import { ModeType } from "./modeType";
 import { lessonsJs } from "./lessonsItem/javascript";
 import { htmlLessons } from "./lessonsItem/html";
 import { gitLessons } from "./lessonsItem/git";
@@ -9,7 +9,7 @@ import { typescriptLessons } from "./lessonsItem/typescript";
 
 export * from "./LessonsController";
 export * from "./ChapterItem";
-export * from "./chapterTypes";
+export * from "./modeType";
 export * from "./LessonItem";
 export * from "./LessonRequest";
 export * from "./lessonsItem/javascript";
@@ -17,17 +17,17 @@ export * from "./lessonsItem/html";
 export * from "./lessonsItem/git";
 export * from "./lessonsItem/react";
 
-export { ChapterTypes } from "./chapterTypes";
+export { ModeType } from "./modeType";
 
 export const languages = [
-  new ChapterItem(ChapterTypes.HTMLCSS, htmlLessons),
-  new ChapterItem(ChapterTypes.JS, lessonsJs),
-  new ChapterItem(ChapterTypes.Typescript, typescriptLessons),
+  new ChapterItem(ModeType.HTMLCSS, htmlLessons),
+  new ChapterItem(ModeType.JS, lessonsJs),
+  new ChapterItem(ModeType.Typescript, typescriptLessons),
 ];
 
 export const technologies = [
-  new ChapterItem(ChapterTypes.React, reactLessons),
-  new ChapterItem(ChapterTypes.Git, gitLessons),
+  new ChapterItem(ModeType.React, reactLessons),
+  new ChapterItem(ModeType.Git, gitLessons),
 ];
 
 export const lessonsController = new LessonsController([
