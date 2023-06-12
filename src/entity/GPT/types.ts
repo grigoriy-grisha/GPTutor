@@ -1,5 +1,4 @@
-import { UUID_V4 } from "$/entity/common";
-import { ChapterTypes } from "$/entity/lessons";
+import { ModeType } from "$/entity/lessons";
 
 export enum GPTRoles {
   user = "user",
@@ -7,16 +6,9 @@ export enum GPTRoles {
   system = "system",
 }
 
-export type GPTMessage = {
-  content: string;
-  role: GPTRoles;
-  inLocal: boolean;
-  isFailModeration: boolean;
-};
-
 export type DialogLessonData = {
-  chapterType: ChapterTypes;
-  lessonName: string;
+  chapterType: ModeType;
+  lessonName: string | null;
 };
 
 export enum GPTDialogHistoryType {
@@ -25,18 +17,8 @@ export enum GPTDialogHistoryType {
 
 export type GPTDialogHistoryData = null | DialogLessonData;
 
-export type GPTDialogHistory = {
-  type: GPTDialogHistoryType | ChapterTypes | string;
-
-  lessonName: string;
-  id: UUID_V4;
-  lastMessage: string;
-
-  systemMessage: string;
-};
-
 export type GPTModeration = {
-  id: "modr-7F6OMS2qFlEbyDJmjnY9ZLlyq5sxH";
+  id: string;
   model: "text-moderation-004";
   results: [
     {

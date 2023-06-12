@@ -2,7 +2,7 @@ import React from "react";
 
 import { Panel, PanelHeader, PanelHeaderBack } from "@vkontakte/vkui";
 
-import { ChapterTypes, lessonsController } from "$/entity/lessons";
+import { lessonsController, ModeType } from "$/entity/lessons";
 import { chatGpt } from "$/entity/GPT";
 import PanelTitle from "$/components/PanelTitle";
 
@@ -14,13 +14,13 @@ interface IProps {
   id: string;
 }
 
-const chapterTitles: Record<ChapterTypes, string> = {
-  [ChapterTypes.React]: "Темы React",
-  [ChapterTypes.Typescript]: "Темы Typescript",
-  [ChapterTypes.HTMLCSS]: "Темы HTML и CSS",
-  [ChapterTypes.Git]: "Темы Git",
-  [ChapterTypes.JS]: "Темы JavaScript",
-  [ChapterTypes.Vue]: "Темы Vue",
+const chapterTitles: Record<string, string> = {
+  [ModeType.React]: "Темы React",
+  [ModeType.Typescript]: "Темы Typescript",
+  [ModeType.HTMLCSS]: "Темы HTML и CSS",
+  [ModeType.Git]: "Темы Git",
+  [ModeType.JS]: "Темы JavaScript",
+  [ModeType.Vue]: "Темы Vue",
 };
 
 function Chapters({ id }: IProps) {
@@ -36,7 +36,7 @@ function Chapters({ id }: IProps) {
           <PanelHeader shadow before={<PanelHeaderBack onClick={goBack} />}>
             <PanelTitle
               mobileTitle="Темы"
-              title={chapterTitles[currentChapter?.chapterType]}
+              title={chapterTitles[currentChapter?.type]}
             ></PanelTitle>
           </PanelHeader>
         }

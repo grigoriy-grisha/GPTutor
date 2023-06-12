@@ -1,29 +1,20 @@
 import React from "react";
 
-import {
-  classNames,
-  IconButton,
-  PanelHeader,
-  Platform,
-  Title,
-  usePlatform,
-} from "@vkontakte/vkui";
+import { IconButton, Title } from "@vkontakte/vkui";
 
 import { Icon28ServicesOutline } from "@vkontakte/icons";
 
 import { useNavigationContext } from "$/NavigationContext";
 
+import { AppPanelHeader } from "$/components/AppPanelHeader";
+
 import classes from "./HomeHeader.module.css";
 
 function HomeHeader() {
-  const platform = usePlatform();
   const { openApplicationInfo } = useNavigationContext();
 
   return (
-    <PanelHeader
-      className={classNames(classes.panelHeader, {
-        [classes.panelHeaderVkApps]: platform === Platform.VKCOM,
-      })}
+    <AppPanelHeader
       before={
         <IconButton
           onClick={openApplicationInfo}
@@ -36,7 +27,7 @@ function HomeHeader() {
       <div className={classes.wrapper}>
         <Title level="1">GPTutor</Title>
       </div>
-    </PanelHeader>
+    </AppPanelHeader>
   );
 }
 

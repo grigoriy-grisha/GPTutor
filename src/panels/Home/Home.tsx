@@ -4,9 +4,10 @@ import { Panel } from "@vkontakte/vkui";
 
 import { AppContainer } from "$/components/AppContainer";
 import Cards from "$/components/Cards";
-import { lessonsController } from "$/entity/lessons";
+import { lessonsController, ModeType } from "$/entity/lessons";
 import { chatGpt } from "$/entity/GPT";
 import { useNavigationContext } from "$/NavigationContext";
+import { interviews } from "$/entity/interview";
 
 import FreeDialogBlock from "./FreeDialogBlock";
 import HomeHeader from "./HomeHeader";
@@ -18,7 +19,8 @@ interface IProps {
 }
 
 function Home({ id }: IProps) {
-  const { goToChapters, goToChatFree } = useNavigationContext();
+  const { goToChapters, goToChatFree, goToChatInterview } =
+    useNavigationContext();
 
   return (
     <Panel id={id}>
@@ -28,11 +30,17 @@ function Home({ id }: IProps) {
         headerChildren={<HomeHeader />}
       >
         <Cards
-          chapters={lessonsController.chapters}
+          chapters={[...lessonsController.chapters, ...interviews.interviews]}
           isTop
           title="Все темы для обучения"
           onClickChapter={(chapter) => {
-            lessonsController.setCurrentChapter(chapter.chapterType);
+            if (chapter.type === ModeType.HTMLCSS_INTERWIEW) {
+              interviews.setCurrentInterview(chapter.type as ModeType);
+              goToChatInterview();
+              return;
+            }
+
+            lessonsController.setCurrentChapter(chapter.type as ModeType);
             goToChapters();
           }}
         />

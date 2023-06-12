@@ -3,18 +3,18 @@ import React from "react";
 import { Icon28LogoVk } from "@vkontakte/icons";
 
 import { CssIcon, DignalsIcon, ReactIcon, TypeScriptIcon } from "$/icons";
-import { ChapterTypes } from "$/entity/lessons";
+import { ModeType } from "$/entity/lessons";
 
 export const stackData = [
   {
     icon: <ReactIcon />,
     header: "React",
-    chapter: ChapterTypes.React,
+    chapter: ModeType.React,
   },
   {
     icon: <TypeScriptIcon />,
     header: "Typescript",
-    chapter: ChapterTypes.Typescript,
+    chapter: ModeType.Typescript,
   },
   {
     icon: <DignalsIcon />,
@@ -26,5 +26,5 @@ export const stackData = [
     header: "VK/UI",
     href: "https://vkcom.github.io/VKUI/",
   },
-  { icon: <CssIcon />, header: "CSS", chapter: ChapterTypes.HTMLCSS },
+  { icon: <CssIcon />, header: "CSS", chapter: ModeType.HTMLCSS },
 ];

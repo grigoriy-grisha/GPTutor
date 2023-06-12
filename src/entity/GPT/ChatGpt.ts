@@ -4,12 +4,15 @@ import { GptHistoryDialogs } from "$/entity/GPT/GptHistoryDialogs";
 import { LessonItem, lessonsController } from "$/entity/lessons";
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 import { sig } from "dignals";
+import { ChatGptInterview } from "$/entity/GPT/ChatGptInterview";
 
 export class ChatGpt {
   history = new GptHistoryDialogs();
   chatGptFree = new ChatGptFree();
 
   chatGptLesson = new ChatGptLesson();
+
+  chatGptInterview = new ChatGptInterview();
 
   currentChatGpt$ = sig<ChatGptTemplate>(this.chatGptFree);
 
@@ -18,14 +21,6 @@ export class ChatGpt {
     this.chatGptFree.currentHistory = null;
 
     this.currentChatGpt$.set(this.chatGptFree);
-
-    const currentChapter = lessonsController.currentChapter.get();
-    const currentLesson = lessonsController.currentLesson.get();
-
-    if (currentChapter || currentLesson) {
-      lessonsController.clearLesson();
-      lessonsController.clearChapter();
-    }
 
     this.chatGptFree.clearMessages();
     this.chatGptFree.abortSend();
@@ -48,17 +43,21 @@ export class ChatGpt {
   restoreDialogFromHistory(
     id: string,
     goToChatFree: () => void,
-    goToChatLesson: () => void
+    goToChatLesson: () => void,
+    goToChatInterview: () => void
   ) {
     const dialog = this.history.getDialogById(id);
     if (!dialog) return;
 
-    if (dialog.type === "Free") {
+    if (!dialog.type || dialog.type === "Free") {
       this.currentChatGpt$.set(this.chatGptFree);
       this.chatGptFree.restoreDialogFromHistory(dialog, goToChatFree);
-    } else {
+    } else if (dialog.type && dialog.lessonName) {
       this.currentChatGpt$.set(this.chatGptLesson);
       this.chatGptLesson.restoreDialogFromHistory(dialog, goToChatLesson);
+    } else {
+      this.currentChatGpt$.set(this.chatGptInterview);
+      this.chatGptInterview.restoreDialogFromHistory(dialog, goToChatInterview);
     }
   }
 

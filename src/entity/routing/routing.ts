@@ -4,6 +4,7 @@ export enum RoutingPages {
   chatFree = "/chat-free",
   chatLesson = "/chat-lesson",
   openSource = "/open-source",
+  chatInterview = "/chat-interview",
   history = "/history",
   modes = "/modes",
   forbidden = "/forbidden",
@@ -18,6 +19,7 @@ export enum Panels {
   chapters = "chapters",
   chatFree = "chat-free",
   chatLesson = "chat-lesson",
+  chatInterview = "chat-interview",
   openSource = "open-source",
   history = "history",
   modes = "modes",
@@ -27,4 +29,6 @@ export enum Panels {
 export enum Modals {
   chatSettings = "chat-settings",
   applicationInfo = "application-info",
+
+  interviewQuestions = "interview-questions",
 }

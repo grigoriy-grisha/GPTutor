@@ -1,22 +1,26 @@
 import React, { memo } from "react";
 import { HorizontalCell, HorizontalScroll } from "@vkontakte/vkui";
 
-import { ChapterItem } from "$/entity/lessons";
 import { CardBlock } from "$/components/CardBlock";
 import TertiaryTitle from "$/components/TertiaryTitle";
 
 import ChapterCard from "./ChapterCard";
 
+type CardItemType = {
+  type: string;
+};
+
 interface IProps {
   isTop?: boolean;
+  isBottom?: boolean;
   title: string;
-  onClickChapter: (chapter: ChapterItem) => void;
-  chapters: ChapterItem[];
+  onClickChapter: (chapter: CardItemType) => void;
+  chapters: CardItemType[];
 }
 
-function Cards({ chapters, title, isTop, onClickChapter }: IProps) {
+function Cards({ chapters, title, isTop, isBottom, onClickChapter }: IProps) {
   return (
-    <CardBlock isTop={isTop}>
+    <CardBlock isTop={isTop} isBottom={isBottom}>
       <TertiaryTitle>{title}</TertiaryTitle>
       <div style={{ paddingBottom: 8 }}>
         <HorizontalScroll>
@@ -25,7 +29,7 @@ function Cards({ chapters, title, isTop, onClickChapter }: IProps) {
               <HorizontalCell key={index} size="l">
                 <ChapterCard
                   onClick={() => onClickChapter(chapter)}
-                  chapterType={chapter.chapterType}
+                  chapterType={chapter.type}
                 />
               </HorizontalCell>
             ))}

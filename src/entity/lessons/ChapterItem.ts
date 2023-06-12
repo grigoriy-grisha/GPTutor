@@ -1,6 +1,6 @@
 import { sig, Signal } from "dignals";
 
-import { ChapterTypes } from "./chapterTypes";
+import { ModeType } from "./modeType";
 import { LessonItem } from "./LessonItem";
 
 type Lessons = { [key in string]: LessonItem[] };
@@ -9,8 +9,8 @@ export class ChapterItem {
   rawLessons: LessonItem[];
   lessons: Signal<Lessons>;
 
-  constructor(public chapterType: ChapterTypes, lessons: LessonItem[]) {
-    this.chapterType = chapterType;
+  constructor(public type: ModeType, lessons: LessonItem[]) {
+    this.type = type;
     this.rawLessons = lessons;
     this.lessons = sig(this.prepareLessons(lessons));
   }

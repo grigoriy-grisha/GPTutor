@@ -25,7 +25,7 @@ export function getHistoryById(): Promise<History[]> {
 }
 
 export function deleteHistory(id: string) {
-  return fetch(`${BACKEND_HOST}history` + id, {
+  return fetch(`${BACKEND_HOST}/history` + id, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + location.href,
