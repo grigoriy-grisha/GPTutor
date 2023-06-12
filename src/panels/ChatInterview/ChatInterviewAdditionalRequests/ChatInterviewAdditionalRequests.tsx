@@ -32,7 +32,7 @@ function ChatInterviewAdditionalRequests({
     ? isStarted
     : !isQuestioned ||
       isTyping ||
-      chatGpt.chatGptInterview.timer.isStopped$.get();
+      !chatGpt.chatGptInterview.timer.isStopped$.get();
 
   const isLastQuestion = currentInterview.isLastQuestion$.get();
 
