@@ -1,6 +1,6 @@
 import { CreateMessageParams, RemoteMessage } from "$/entity/messages";
 
-const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST || "/api/";
+const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
 
 export function createMessage(params: CreateMessageParams) {
   return fetch(`${BACKEND_HOST}messages`, {
