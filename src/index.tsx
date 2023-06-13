@@ -27,9 +27,9 @@ const storageService = new StorageService();
 bridge
   .send("VKWebAppInit")
   .then(() => {
-    // if (process.env.NODE_ENV === "development") {
-    import("./eruda");
-    // }
+    if (process.env.NODE_ENV === "development") {
+      import("./eruda");
+    }
 
     storageService.get(isFirstVisitFlagName).then((value) => {
       if (value) return;
@@ -52,13 +52,6 @@ const routes = {
   [RoutingPages.modes]: new Page(Panels.modes, Views.viewMain),
   [RoutingPages.forbidden]: new Page(Panels.forbidden, Views.viewMain),
 };
-
-if (process.env.NODE_ENV === "production") {
-  Bugsnag.start({
-    apiKey: String(process.env.REACT_APP_BUGSNAG_API_KEY),
-    plugins: [new BugsnagPluginReact()],
-  });
-}
 
 const router = new Router(routes);
 

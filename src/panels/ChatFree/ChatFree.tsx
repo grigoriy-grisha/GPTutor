@@ -6,6 +6,7 @@ import { chatGpt } from "$/entity/GPT";
 import { useNavigationContext } from "$/NavigationContext";
 
 import { ChatFreeWriteBarBefore } from "./ChatFreeWriteBarBefore";
+import { ChatFreeAdditionalRequests } from "./ChatFreeAdditionalRequests";
 
 interface IProps {
   id: string;
@@ -24,7 +25,9 @@ function ChatFree({ id }: IProps) {
         writeBarBefore={
           <ChatFreeWriteBarBefore onSettingsClick={openChatSettingsModal} />
         }
-        additionalRequest={() => null}
+        additionalRequest={(handleSend) => (
+          <ChatFreeAdditionalRequests handleSend={handleSend} />
+        )}
         onStartChat={onStartChat}
         chatGpt={chatGpt.chatGptFree}
         goBack={goBack}

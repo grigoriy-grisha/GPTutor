@@ -22,7 +22,7 @@ export default class ReactivePromise<DATA, ARGS extends any[]> {
   run(...args: ARGS): Promise<DATA> {
     this.reset();
 
-    const promise = new Promise<DATA>((resolve) => {
+    const promise = new Promise<DATA>((resolve, reject) => {
       this.fn(...args)
         .then((result) => {
           const error = (result as any).error;
@@ -39,7 +39,7 @@ export default class ReactivePromise<DATA, ARGS extends any[]> {
         .catch((err) => {
           this.success.set(false);
           this.error.set(err);
-          resolve(err);
+          reject(err);
         });
     });
 

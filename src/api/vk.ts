@@ -1,6 +1,6 @@
 import { GroupsIsMemberRequest } from "$/entity/vk";
 
-const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST || "/api/";
+const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
 
 export async function groupsIsMember({
   groupId,

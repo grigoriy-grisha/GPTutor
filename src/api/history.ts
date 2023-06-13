@@ -1,7 +1,7 @@
 import { HistoryCreate } from "$/entity/history/types";
 import { History } from "$/entity/history";
 
-const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST || "/api/";
+const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
 
 export function createHistory(params: HistoryCreate): Promise<History> {
   return fetch(`${BACKEND_HOST}history`, {
@@ -25,7 +25,7 @@ export function getHistoryById(): Promise<History[]> {
 }
 
 export function deleteHistory(id: string) {
-  return fetch(`${BACKEND_HOST}/history` + id, {
+  return fetch(`${BACKEND_HOST}history/` + id, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + location.href,
