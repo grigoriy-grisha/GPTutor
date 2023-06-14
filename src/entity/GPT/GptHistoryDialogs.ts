@@ -1,4 +1,4 @@
-import { sig } from "dignals";
+import { memo, sig } from "dignals";
 
 import { UUID_V4 } from "$/entity/common";
 
@@ -6,6 +6,7 @@ import ReactivePromise from "$/services/ReactivePromise";
 import { deleteHistory, getHistoryById } from "$/api/history";
 import { snackbarNotify } from "$/entity/notify";
 import { History } from "$/entity/history";
+import { chatGpt } from "$/entity/GPT/ChatGpt";
 
 export class GptHistoryDialogs {
   deleteHistory$ = ReactivePromise.create((id: string) => deleteHistory(id));
@@ -13,15 +14,25 @@ export class GptHistoryDialogs {
 
   dialogs = sig<History[]>([]);
 
-  async loadHistory() {
-    const history = await this.getHistory$.run();
+  pageNumber = 0;
 
-    this.dialogs.set(
-      history.sort(
-        (a, b) =>
-          new Date(a.lastUpdated).valueOf() - new Date(b.lastUpdated).valueOf()
-      )
-    );
+  hasNextHistory$ = memo(() => {
+    const result = chatGpt.history.getHistory$.result.get();
+    if (result === undefined) return true;
+    return !result.last;
+  });
+
+  async loadHistory() {
+    this.pageNumber = 0;
+    const history = await this.getHistory$.run(this.pageNumber);
+    this.dialogs.set(history.content);
+  }
+
+  async nextLoadHistory() {
+    this.pageNumber++;
+    const history = await this.getHistory$.run(this.pageNumber);
+
+    this.dialogs.set([...this.dialogs.get(), ...history.content]);
   }
 
   async removeHistoryDialog(id: UUID_V4) {
