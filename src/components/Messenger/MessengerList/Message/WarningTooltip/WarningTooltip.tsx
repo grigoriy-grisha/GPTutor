@@ -17,7 +17,7 @@ function WarningTooltip() {
         appearance={appearance === "light" ? "accent" : "white"}
         text="Из-за большой истории диалога,
                    это сообщение не может быть учтено в локальном контексте.
-                   Chat GPT может поддерживать только 1500 слов в текущем диалоге."
+                   Chat GPT может поддерживать только 4000 слов в текущем диалоге."
       >
         <IconButton onClick={() => setShown(!shown)}>
           <Icon24WarningTriangleOutline />

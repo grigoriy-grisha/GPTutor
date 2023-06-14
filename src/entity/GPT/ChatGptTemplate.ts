@@ -13,7 +13,7 @@ import { History } from "$/entity/history";
 import { snackbarNotify } from "$/entity/notify";
 import { interviews } from "$/entity/interview";
 
-const MAX_CONTEXT_WORDS = 1000;
+const MAX_CONTEXT_WORDS = 4000;
 export abstract class ChatGptTemplate {
   isBlockActions$ = sig(false);
 
@@ -100,7 +100,7 @@ export abstract class ChatGptTemplate {
 
   async sendChatCompletions(message: GptMessage) {
     const result = await sendChatCompletions(
-      { model: "gpt-3.5-turbo-0301", messages: this.getMessages() },
+      { model: "gpt-3.5-turbo-16k", messages: this.getMessages() },
       this.onMessage(message),
       () => {
         this.addMessage(
