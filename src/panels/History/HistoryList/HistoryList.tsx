@@ -14,10 +14,9 @@ interface IProps {
 
 function HistoryList({ goBack }: IProps) {
   const dialogs = chatGpt.history.dialogs.get();
+  const loading = chatGpt.history.getHistory$.loading.get();
 
-  const history = [...dialogs].reverse();
-
-  if (dialogs.length === 0) {
+  if (dialogs.length === 0 && !loading) {
     return (
       <Placeholder
         className={classes.placeholder}
@@ -40,7 +39,7 @@ function HistoryList({ goBack }: IProps) {
 
   return (
     <>
-      {history.map((dialog) => (
+      {dialogs.map((dialog) => (
         <HistoryBanner key={dialog.id} dialog={dialog} />
       ))}
     </>

@@ -1,7 +1,7 @@
 import { batch, sig } from "dignals";
 
 export default class ReactivePromise<DATA, ARGS extends any[]> {
-  public result = sig<any | undefined>();
+  public result = sig<DATA | undefined>();
   public success = sig<boolean>();
   public done = sig<boolean>(false);
   public error = sig<Error | undefined>();
