@@ -10,6 +10,7 @@ import {
   HtmlCssInterview,
   HtmlCssLesson,
   JSLesson,
+  LeetCode,
   ReactLesson,
   TypescriptLesson,
   VueLessons,
@@ -25,6 +26,7 @@ const CardIcon: Record<string, React.FC> = {
   [ModeType.Git]: GitLesson,
   [ModeType.HTMLCSS]: HtmlCssLesson,
   [ModeType.HTMLCSS_INTERWIEW]: HtmlCssInterview,
+  [ModeType.LeetCode]: LeetCode,
 };
 
 interface IProps {

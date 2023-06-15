@@ -7,6 +7,7 @@ export * from "./LessonIcons/JSLesson";
 export * from "./LessonIcons/HtmlCssLesson";
 export * from "./LessonIcons/TypescriptLesson";
 export * from "./LessonIcons/HtmlCssInterview";
+export * from "./LessonIcons/LeetCode";
 export * from "./Issue";
 export * from "./DignalsIcon";
 export * from "./CssIcon";

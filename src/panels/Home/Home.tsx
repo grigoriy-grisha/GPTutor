@@ -19,8 +19,12 @@ interface IProps {
 }
 
 function Home({ id }: IProps) {
-  const { goToChapters, goToChatFree, goToChatInterview } =
-    useNavigationContext();
+  const {
+    goToChapters,
+    goToChatFree,
+    goToChatInterview,
+    goToLeetcodeProblems,
+  } = useNavigationContext();
 
   return (
     <Panel id={id}>
@@ -30,10 +34,19 @@ function Home({ id }: IProps) {
         headerChildren={<HomeHeader />}
       >
         <Cards
-          chapters={[...lessonsController.chapters, ...interviews.interviews]}
+          chapters={[
+            ...lessonsController.chapters,
+            ...interviews.interviews,
+            { type: ModeType.LeetCode },
+          ]}
           isTop
           title="Все темы для обучения"
           onClickChapter={(chapter) => {
+            if (chapter.type === ModeType.LeetCode) {
+              goToLeetcodeProblems();
+              return;
+            }
+
             if (chapter.type === ModeType.HTMLCSS_INTERWIEW) {
               interviews.setCurrentInterview(chapter.type as ModeType);
               goToChatInterview();

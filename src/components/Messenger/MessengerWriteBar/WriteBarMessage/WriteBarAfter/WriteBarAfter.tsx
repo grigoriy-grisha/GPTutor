@@ -33,12 +33,14 @@ function WriteBarAfter({ chatGptModel, value, sendMessage }: IProps) {
   const removeDialogDisable =
     chatGptModel.messages$.get().length < 2 || isTyping;
 
+  const blockActions = chatGptModel.isBlockActions$.get();
+
   const sendBars = (
     <>
       {!isTyping ? (
         <WriteBarIcon
           aria-label="Отправить сообщение"
-          disabled={value.length === 0 || isTyping}
+          disabled={value.length === 0 || isTyping || blockActions}
           onClick={sendMessage}
         >
           <Icon28Send fill="var(--vkui--color_icon_accent)" />
@@ -70,7 +72,7 @@ function WriteBarAfter({ chatGptModel, value, sendMessage }: IProps) {
       )}
       <WriteBarIcon
         onClick={() => setShowAlert(true)}
-        disabled={removeDialogDisable}
+        disabled={removeDialogDisable || blockActions}
       >
         <Icon28DeleteOutline />
       </WriteBarIcon>

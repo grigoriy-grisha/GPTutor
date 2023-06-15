@@ -51,6 +51,12 @@ const routes = {
   [RoutingPages.history]: new Page(Panels.history, Views.viewMain),
   [RoutingPages.modes]: new Page(Panels.modes, Views.viewMain),
   [RoutingPages.forbidden]: new Page(Panels.forbidden, Views.viewMain),
+  [RoutingPages.chatLeetCode]: new Page(Panels.chatLeetCode, Views.viewMain),
+  [RoutingPages.problemDetail]: new Page(Panels.problemDetail, Views.viewMain),
+  [RoutingPages.leetcodeProblems]: new Page(
+    Panels.leetcodeProblems,
+    Views.viewMain
+  ),
 };
 
 const router = new Router(routes);

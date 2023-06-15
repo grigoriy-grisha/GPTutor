@@ -4,6 +4,7 @@ import {
   HtmlCssInterview,
   HtmlCssLesson,
   JSLesson,
+  LeetCode,
   ReactLesson,
   TypescriptLesson,
   VueLessons,
@@ -35,6 +36,7 @@ const BannerIcon: Record<string, React.FC> = {
   [ModeType.Git]: GitLesson,
   [ModeType.HTMLCSS]: HtmlCssLesson,
   [ModeType.HTMLCSS_INTERWIEW]: HtmlCssInterview,
+  [ModeType.LeetCode]: LeetCode,
 };
 
 const chapterNames: Record<string, string> = {
@@ -45,6 +47,7 @@ const chapterNames: Record<string, string> = {
   [ModeType.Git]: "Git",
   [ModeType.HTMLCSS]: "HTML/CSS",
   [ModeType.HTMLCSS_INTERWIEW]: "Собеседование HTML/CSS",
+  [ModeType.LeetCode]: "LeetCode",
 };
 
 interface IProps {
@@ -52,7 +55,7 @@ interface IProps {
 }
 
 function HistoryBanner({ dialog }: IProps) {
-  const { goToChatFree, goToChatLesson, goToChatInterview } =
+  const { goToChatFree, goToChatLesson, goToChatInterview, goToChatLeetCode } =
     useNavigationContext();
 
   const chapterType = dialog.type;
@@ -130,7 +133,8 @@ function HistoryBanner({ dialog }: IProps) {
                 dialog.id,
                 goToChatFree,
                 goToChatLesson,
-                goToChatInterview
+                goToChatInterview,
+                goToChatLeetCode
               );
             }}
           >

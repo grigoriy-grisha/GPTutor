@@ -23,6 +23,11 @@ interface IProps {
     handleSend: (value: string) => void,
     scrollToBottom: () => void
   ) => React.ReactNode;
+
+  placeholderHeader?: string;
+  startText?: string;
+  startIsDisabled?: boolean;
+  placeholderText?: string;
 }
 
 function Messenger({
@@ -31,6 +36,10 @@ function Messenger({
   onStartChat,
   writeBarBefore,
   additionalRequest,
+  placeholderHeader,
+  startText,
+  startIsDisabled,
+  placeholderText,
 }: IProps) {
   const { isTyping, scrollRef, showScrollDown, handlerSend, scrollToBottom } =
     useMessenger({ chatGpt });
@@ -44,6 +53,10 @@ function Messenger({
     >
       <MessengerContainer withoutDiv ref={scrollRef}>
         <MessengerList
+          placeholderText={placeholderText}
+          startIsDisabled={startIsDisabled}
+          placeholderHeader={placeholderHeader}
+          startText={startText}
           chatGpt={chatGpt}
           isTyping={isTyping}
           onStartChat={onStartChat}

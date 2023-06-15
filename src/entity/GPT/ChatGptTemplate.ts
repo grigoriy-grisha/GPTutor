@@ -6,12 +6,13 @@ import ReactivePromise from "$/services/ReactivePromise";
 import { GPTDialogHistoryData, GPTDialogHistoryType, GPTRoles } from "./types";
 import { GptMessage } from "./GptMessage";
 import { Timer } from "$/entity/GPT/Timer";
-import { ModeType, lessonsController } from "$/entity/lessons";
+import { lessonsController, ModeType } from "$/entity/lessons";
 import { createHistory } from "$/api/history";
 import { createMessage, getMessagesById } from "$/api/messages";
 import { History } from "$/entity/history";
 import { snackbarNotify } from "$/entity/notify";
 import { interviews } from "$/entity/interview";
+import { leetCode } from "$/entity/leetCode/LeetCode";
 
 const MAX_CONTEXT_WORDS = 4000;
 export abstract class ChatGptTemplate {
@@ -219,6 +220,13 @@ export abstract class ChatGptTemplate {
   }
 
   getChatData(): GPTDialogHistoryData {
+    if (leetCode.currentProblem) {
+      return {
+        chapterType: ModeType.LeetCode,
+        lessonName: leetCode.currentProblemSlug,
+      };
+    }
+
     const type = interviews.getCurrentInterview()?.type;
 
     if (type) return { chapterType: type, lessonName: null };
@@ -234,6 +242,7 @@ export abstract class ChatGptTemplate {
     };
   }
 
+  //todo рефакторинг
   async restoreDialogFromHistory(dialog: History, goToChat: () => void) {
     this.currentHistory = dialog;
 
@@ -249,8 +258,10 @@ export abstract class ChatGptTemplate {
     if (dialog.lessonName && dialog.type) {
       lessonsController.setCurrentChapter(dialog.type as ModeType);
       lessonsController.setCurrentLessonByName(dialog.lessonName);
-    } else if (dialog.type) {
+    } else if (dialog.type === ModeType.HTMLCSS_INTERWIEW) {
       interviews.setCurrentInterview(dialog.type as ModeType);
+    } else if (dialog.type === ModeType.LeetCode) {
+      await leetCode.loadDetailProblem(dialog.lessonName);
     } else {
       lessonsController.clearChapter();
       lessonsController.clearLesson();

@@ -20,6 +20,7 @@ export function useWrite({ chatGpt, handleSend }: HookWriteParams) {
   const onEnterSend = (event: any) => {
     if (platform !== Platform.VKCOM) return;
 
+    if (chatGpt.isBlockActions$.get()) return;
     if (!chatGpt.timer.isStopped$.get()) return;
     if (isTypingRef.current) return;
     if (event.key !== "Enter") return;
@@ -31,6 +32,8 @@ export function useWrite({ chatGpt, handleSend }: HookWriteParams) {
   };
 
   const sendMessage = () => {
+    if (chatGpt.isBlockActions$.get()) return;
+
     handleSend(value);
     setValue("");
   };

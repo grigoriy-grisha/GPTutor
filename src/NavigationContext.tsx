@@ -22,6 +22,10 @@ export type NavigationContextType = {
   openChatSettingsModal: () => void;
   openApplicationInfo: () => void;
   openInterviewQuestions: () => void;
+  goToLeetcodeProblems: () => void;
+  goToChatLeetCode: () => void;
+
+  goToProblemDetail: () => void;
   isForbidden: boolean;
 };
 
@@ -66,6 +70,12 @@ export function NavigationContextProvider({
 
   const goToForbidden = () => push(RoutingPages.forbidden);
 
+  const goToLeetcodeProblems = () => push(RoutingPages.leetcodeProblems);
+
+  const goToChatLeetCode = () => push(RoutingPages.chatLeetCode);
+
+  const goToProblemDetail = () => push(RoutingPages.problemDetail);
+
   const openChatSettingsModal = () => router.pushModal(Modals.chatSettings);
   const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
 
@@ -87,6 +97,9 @@ export function NavigationContextProvider({
         openApplicationInfo,
         goToChatInterview,
         openInterviewQuestions,
+        goToLeetcodeProblems,
+        goToChatLeetCode,
+        goToProblemDetail,
         isForbidden,
       }}
     >

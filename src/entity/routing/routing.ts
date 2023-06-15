@@ -8,6 +8,10 @@ export enum RoutingPages {
   history = "/history",
   modes = "/modes",
   forbidden = "/forbidden",
+  leetcodeProblems = "/leetcode-problems",
+
+  chatLeetCode = "/chat-leetcode",
+  problemDetail = "/problem-detail",
 }
 
 export enum Views {
@@ -24,6 +28,9 @@ export enum Panels {
   history = "history",
   modes = "modes",
   forbidden = "forbidden",
+  leetcodeProblems = "leetcode-problems",
+  chatLeetCode = "chat-leetcode",
+  problemDetail = "problem-detail",
 }
 
 export enum Modals {
