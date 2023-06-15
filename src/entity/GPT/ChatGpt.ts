@@ -1,10 +1,11 @@
 import { ChatGptFree } from "$/entity/GPT/ChatGptFree";
 import { ChatGptLesson } from "$/entity/GPT/ChatGptLesson";
 import { GptHistoryDialogs } from "$/entity/GPT/GptHistoryDialogs";
-import { LessonItem, lessonsController } from "$/entity/lessons";
+import { LessonItem, lessonsController, ModeType } from "$/entity/lessons";
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 import { sig } from "dignals";
 import { ChatGptInterview } from "$/entity/GPT/ChatGptInterview";
+import { ChatGptLeetCode } from "$/entity/GPT/ChatGptLeetCode";
 
 export class ChatGpt {
   history = new GptHistoryDialogs();
@@ -13,6 +14,8 @@ export class ChatGpt {
   chatGptLesson = new ChatGptLesson();
 
   chatGptInterview = new ChatGptInterview();
+
+  chatGptLeetCode = new ChatGptLeetCode();
 
   currentChatGpt$ = sig<ChatGptTemplate>(this.chatGptFree);
 
@@ -44,7 +47,8 @@ export class ChatGpt {
     id: string,
     goToChatFree: () => void,
     goToChatLesson: () => void,
-    goToChatInterview: () => void
+    goToChatInterview: () => void,
+    goToChatLeetCode: () => void
   ) {
     const dialog = this.history.getDialogById(id);
     if (!dialog) return;
@@ -55,6 +59,9 @@ export class ChatGpt {
     } else if (dialog.type && dialog.lessonName) {
       this.currentChatGpt$.set(this.chatGptLesson);
       this.chatGptLesson.restoreDialogFromHistory(dialog, goToChatLesson);
+    } else if (dialog.type === ModeType.LeetCode) {
+      this.currentChatGpt$.set(this.chatGptLeetCode);
+      this.chatGptLeetCode.restoreDialogFromHistory(dialog, goToChatLeetCode);
     } else {
       this.currentChatGpt$.set(this.chatGptInterview);
       this.chatGptInterview.restoreDialogFromHistory(dialog, goToChatInterview);

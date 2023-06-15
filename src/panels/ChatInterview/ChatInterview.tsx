@@ -28,6 +28,7 @@ function ChatInterview({ id }: IProps) {
   return (
     <Panel id={id}>
       <Messenger
+        startText="Начать собеседование"
         writeBarBefore={
           <ChatInterviewWriteBarBefore onClickList={onClickList} />
         }

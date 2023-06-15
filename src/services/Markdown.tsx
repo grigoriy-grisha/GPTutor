@@ -67,7 +67,40 @@ export default class Markdown {
     })
     .use(mila, { attrs: { target: "_blank" } });
 
+  markdownItHtml = new MarkdownIt({
+    breaks: true,
+    html: true,
+    langPrefix: "language-",
+    linkify: true,
+    typographer: false,
+    highlight: function (code: string, lang: string) {
+      const language = getLanguage(lang);
+      const grammar = Prism.languages[language];
+
+      try {
+        if (!grammar)
+          require(`prismjs/components/prism-${language || "text"}.min.js`);
+        if (grammar) return Prism.highlight(code, grammar, language);
+      } catch (err) {
+        console.error(err);
+      }
+
+      return "";
+    },
+  })
+    .use((plugin) => {
+      plugin.renderer.rules.code_block = renderCode(
+        plugin.renderer.rules.code_block
+      );
+      plugin.renderer.rules.fence = renderCode(plugin.renderer.rules.fence);
+    })
+    .use(mila, { attrs: { target: "_blank" } });
+
   render(markdown: string) {
     return this.markdownIt.render(markdown);
+  }
+
+  renderHtml(markdown: string) {
+    return this.markdownItHtml.render(markdown);
   }
 }

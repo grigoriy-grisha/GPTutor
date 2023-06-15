@@ -31,6 +31,9 @@ import { ChatFree } from "$/panels/ChatFree";
 import { ChatLesson } from "$/panels/ChatLesson";
 import ChatInterview from "./panels/ChatInterview/ChatInterview";
 import { InterviewQuestions } from "$/modals/InterviewQuestions";
+import { LeetcodeProblems } from "$/panels/LeetCodeProblems";
+import ChatLeetCode from "./panels/ChatLeetCode/ChatLeetCode";
+import ProblemDetail from "./panels/ProblemDetail/ProblemDetail";
 
 const App = () => {
   const location = useLocation();
@@ -74,6 +77,9 @@ const App = () => {
           <OpenSource id={Panels.openSource} />
           <History id={Panels.history} />
           <Modes id={Panels.modes} />
+          <LeetcodeProblems id={Panels.leetcodeProblems} />
+          <ChatLeetCode id={Panels.chatLeetCode} />
+          <ProblemDetail id={Panels.problemDetail} />
         </View>
       </SplitLayout>
       <SnackbarNotifier />

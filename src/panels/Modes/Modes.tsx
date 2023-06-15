@@ -21,7 +21,8 @@ interface IProps {
 }
 
 function Modes({ id }: IProps) {
-  const { goBack, goToChapters, goToChatInterview } = useNavigationContext();
+  const { goBack, goToChapters, goToChatInterview, goToLeetcodeProblems } =
+    useNavigationContext();
 
   console.log(technologies);
   return (
@@ -57,13 +58,18 @@ function Modes({ id }: IProps) {
         />
 
         <Cards
-          isBottom
           title="Собеседования"
           chapters={interviews.interviews}
           onClickChapter={(chapter) => {
             interviews.setCurrentInterview(chapter.type as ModeType);
             goToChatInterview();
           }}
+        />
+        <Cards
+          isBottom
+          title="Собеседования"
+          chapters={[{ type: ModeType.LeetCode }]}
+          onClickChapter={goToLeetcodeProblems}
         />
       </AppContainer>
     </Panel>

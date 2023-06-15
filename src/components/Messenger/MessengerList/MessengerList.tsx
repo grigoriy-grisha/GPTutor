@@ -11,41 +11,73 @@ interface IProps {
   chatGpt: ChatGptTemplate;
   isTyping: boolean;
   onStartChat: () => void;
+  placeholderHeader?: string;
+  startText?: string;
+
+  startIsDisabled?: boolean;
+  placeholderText?: string;
 }
 
 function MessengerPlaceholder({
   chatGpt,
   onStartChat,
+  placeholderHeader,
+  startText,
+  startIsDisabled,
+  placeholderText,
 }: Omit<IProps, "isTyping">) {
   const isStopped = chatGpt.timer.isStopped$.get();
 
+  console.log({
+    placeholderHeader,
+    startText,
+    startIsDisabled,
+    placeholderText,
+  });
   return (
     <div className={classes.placeholderContainer}>
       <Placeholder
-        header="Начните диалог"
+        header={placeholderHeader || "Начните диалог"}
         action={
           <Button
-            disabled={!isStopped}
-            aria-label="Начать диалог"
+            disabled={startIsDisabled || !isStopped}
+            aria-label={startText || "Начать"}
             mode="outline"
             size="m"
             onClick={onStartChat}
           >
-            Начать
+            {startText || "Начать"}
           </Button>
         }
       >
-        Запустите бота стартовой фразой
+        {placeholderText || "Запустите бота"}
       </Placeholder>
     </div>
   );
 }
 
-function MessengerList({ isTyping, chatGpt, onStartChat }: IProps) {
+function MessengerList({
+  isTyping,
+  chatGpt,
+  onStartChat,
+  placeholderHeader,
+  startText,
+  startIsDisabled,
+  placeholderText,
+}: IProps) {
   const messages = chatGpt.messages$.get();
 
   if (messages.length === 0) {
-    return <MessengerPlaceholder chatGpt={chatGpt} onStartChat={onStartChat} />;
+    return (
+      <MessengerPlaceholder
+        placeholderText={placeholderText}
+        startIsDisabled={startIsDisabled}
+        placeholderHeader={placeholderHeader}
+        startText={startText}
+        chatGpt={chatGpt}
+        onStartChat={onStartChat}
+      />
+    );
   }
 
   return (
