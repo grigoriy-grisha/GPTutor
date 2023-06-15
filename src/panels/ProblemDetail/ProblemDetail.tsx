@@ -54,7 +54,7 @@ function ProblemDetail({ id }: IProps) {
                   size="m"
                   href={`https://leetcode.com/problems/${leetCode.currentProblemSlug}`}
                 >
-                  Перейти в leetcode
+                  Посмотреть задачу в leetcode
                 </Button>
               }
             >
@@ -62,21 +62,23 @@ function ProblemDetail({ id }: IProps) {
             </Placeholder>
           )}
         </AppDiv>
-        <FixedLayout vertical="bottom" className={classes.nextChat}>
-          <Separator wide />
-          <Div className={classes.buttons}>
-            <Button
-              target="_blank"
-              size="m"
-              href={`https://leetcode.com/problems/${leetCode.currentProblemSlug}`}
-            >
-              Перейти в leetcode
-            </Button>
-            <Button size="m" onClick={goToChatLeetCode}>
-              Перейти в чат
-            </Button>
-          </Div>
-        </FixedLayout>
+        {content && (
+          <FixedLayout vertical="bottom" className={classes.nextChat}>
+            <Separator wide />
+            <Div className={classes.buttons}>
+              <Button
+                target="_blank"
+                size="m"
+                href={`https://leetcode.com/problems/${leetCode.currentProblemSlug}`}
+              >
+                Перейти в leetcode
+              </Button>
+              <Button size="m" onClick={goToChatLeetCode}>
+                Перейти в чат
+              </Button>
+            </Div>
+          </FixedLayout>
+        )}
       </AppContainer>
     </Panel>
   );
