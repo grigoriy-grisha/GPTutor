@@ -28,7 +28,7 @@ function SnackbarNotifier() {
       {snackBars$.get().map((snackBar, index) => (
         <Snackbar
           key={index}
-          duration={1000}
+          duration={snackBar.delay || 1000}
           onClose={() => {
             snackBars$.set(
               snackBars$.get().filter((item) => item !== snackBar)
