@@ -30,10 +30,6 @@ function ChatLeetCode({ id }: IProps) {
 
     chatGpt.chatGptLeetCode.initSystemMessage();
     chatGpt.chatGptLeetCode.isBlockActions$.set(!currentContent);
-
-    return () => {
-      leetCode.currentProblem = null;
-    };
   }, []);
 
   return (

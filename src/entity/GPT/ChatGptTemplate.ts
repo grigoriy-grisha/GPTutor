@@ -242,6 +242,24 @@ export abstract class ChatGptTemplate {
     };
   }
 
+  async prepareDialog(dialog: History) {
+    if (dialog.type === ModeType.LeetCode) {
+      await leetCode.loadDetailProblem(dialog.lessonName);
+    }
+
+    if (dialog.lessonName && dialog.type) {
+      lessonsController.setCurrentChapter(dialog.type as ModeType);
+      lessonsController.setCurrentLessonByName(dialog.lessonName);
+      return;
+    }
+    if (dialog.type === ModeType.HTMLCSS_INTERWIEW) {
+      interviews.setCurrentInterview(dialog.type as ModeType);
+      return;
+    }
+
+    lessonsController.clearChapter();
+    lessonsController.clearLesson();
+  }
   //todo рефакторинг
   async restoreDialogFromHistory(dialog: History, goToChat: () => void) {
     this.currentHistory = dialog;
@@ -255,17 +273,9 @@ export abstract class ChatGptTemplate {
       });
     }
 
-    if (dialog.lessonName && dialog.type) {
-      lessonsController.setCurrentChapter(dialog.type as ModeType);
-      lessonsController.setCurrentLessonByName(dialog.lessonName);
-    } else if (dialog.type === ModeType.HTMLCSS_INTERWIEW) {
-      interviews.setCurrentInterview(dialog.type as ModeType);
-    } else if (dialog.type === ModeType.LeetCode) {
-      await leetCode.loadDetailProblem(dialog.lessonName);
-    } else {
-      lessonsController.clearChapter();
-      lessonsController.clearLesson();
-    }
+    console.log(dialog);
+
+    await this.prepareDialog(dialog);
 
     this.messages$.set(
       messages.map((message) => {

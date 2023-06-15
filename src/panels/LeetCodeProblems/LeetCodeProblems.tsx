@@ -25,7 +25,7 @@ interface IProps {
 }
 
 function LeetcodeProblems({ id }: IProps) {
-  const { goBack, goToChatLeetCode } = useNavigationContext();
+  const { goBack, goToProblemDetail } = useNavigationContext();
   const setScrollableElement = useInfinityScroll({
     onLoadMore: () => leetCode.nextLoadProblems(),
     loading: false,
@@ -78,7 +78,7 @@ function LeetcodeProblems({ id }: IProps) {
                 chatGpt.chatGptLeetCode.clearSystemMessage();
                 chatGpt.chatGptLeetCode.clearSelectedMessages();
 
-                goToChatLeetCode();
+                goToProblemDetail();
               }}
             >
               <Text weight="2" className={classes.problemText}>
