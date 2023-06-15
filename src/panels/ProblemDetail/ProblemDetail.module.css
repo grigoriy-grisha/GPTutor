@@ -1,0 +1,14 @@
+.nextChat {
+    background: var(--vkui--color_background_content);
+}
+
+.container {
+    width: 100vw;
+    margin-bottom: 60px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}

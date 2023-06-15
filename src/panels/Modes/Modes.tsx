@@ -15,6 +15,7 @@ import { useNavigationContext } from "$/NavigationContext";
 
 import classes from "./Modes.module.css";
 import { interviews } from "$/entity/interview";
+import { leetCode } from "$/entity/leetCode/LeetCode";
 
 interface IProps {
   id: string;
@@ -24,7 +25,6 @@ function Modes({ id }: IProps) {
   const { goBack, goToChapters, goToChatInterview, goToLeetcodeProblems } =
     useNavigationContext();
 
-  console.log(technologies);
   return (
     <Panel id={id}>
       <AppContainer
@@ -67,9 +67,12 @@ function Modes({ id }: IProps) {
         />
         <Cards
           isBottom
-          title="Собеседования"
+          title="Алгоритмы"
           chapters={[{ type: ModeType.LeetCode }]}
-          onClickChapter={goToLeetcodeProblems}
+          onClickChapter={() => {
+            leetCode.currentProblem = null;
+            goToLeetcodeProblems();
+          }}
         />
       </AppContainer>
     </Panel>

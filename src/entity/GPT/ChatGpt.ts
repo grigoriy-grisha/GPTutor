@@ -43,7 +43,7 @@ export class ChatGpt {
     goToChatLesson();
   }
 
-  restoreDialogFromHistory(
+  async restoreDialogFromHistory(
     id: string,
     goToChatFree: () => void,
     goToChatLesson: () => void,
@@ -55,17 +55,28 @@ export class ChatGpt {
 
     if (!dialog.type || dialog.type === "Free") {
       this.currentChatGpt$.set(this.chatGptFree);
-      this.chatGptFree.restoreDialogFromHistory(dialog, goToChatFree);
-    } else if (dialog.type && dialog.lessonName) {
-      this.currentChatGpt$.set(this.chatGptLesson);
-      this.chatGptLesson.restoreDialogFromHistory(dialog, goToChatLesson);
-    } else if (dialog.type === ModeType.LeetCode) {
-      this.currentChatGpt$.set(this.chatGptLeetCode);
-      this.chatGptLeetCode.restoreDialogFromHistory(dialog, goToChatLeetCode);
-    } else {
-      this.currentChatGpt$.set(this.chatGptInterview);
-      this.chatGptInterview.restoreDialogFromHistory(dialog, goToChatInterview);
+      await this.chatGptFree.restoreDialogFromHistory(dialog, goToChatFree);
+      return;
     }
+    if (dialog.type === ModeType.LeetCode) {
+      this.currentChatGpt$.set(this.chatGptLeetCode);
+      await this.chatGptLeetCode.restoreDialogFromHistory(
+        dialog,
+        goToChatLeetCode
+      );
+      return;
+    }
+    if (dialog.type && dialog.lessonName) {
+      this.currentChatGpt$.set(this.chatGptLesson);
+      await this.chatGptLesson.restoreDialogFromHistory(dialog, goToChatLesson);
+      return;
+    }
+
+    this.currentChatGpt$.set(this.chatGptInterview);
+    await this.chatGptInterview.restoreDialogFromHistory(
+      dialog,
+      goToChatInterview
+    );
   }
 
   getCurrentChatGpt = () => this.currentChatGpt$.get();

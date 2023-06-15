@@ -1,9 +1,12 @@
 import {
+  Button,
+  Div,
+  FixedLayout,
   Panel,
   PanelHeader,
-  PanelHeaderClose,
+  PanelHeaderBack,
   Placeholder,
-  useAdaptivityConditionalRender,
+  Separator,
 } from "@vkontakte/vkui";
 import React, { useMemo } from "react";
 import { useNavigationContext } from "$/NavigationContext";
@@ -11,14 +14,16 @@ import { leetCode } from "$/entity/leetCode/LeetCode";
 import Markdown from "$/services/Markdown";
 import { AppDiv } from "$/components/AppDiv";
 import { Icon56GhostOutline } from "@vkontakte/icons";
+import { AppContainer } from "$/components/AppContainer";
+
+import classes from "./ProblemDetail.module.css";
 
 interface IProps {
   id: string;
 }
 
 function ProblemDetail({ id }: IProps) {
-  const { goBack } = useNavigationContext();
-  const { sizeX } = useAdaptivityConditionalRender();
+  const { goBack, goToChatLeetCode } = useNavigationContext();
 
   const content = leetCode.currentProblem?.data.question.content;
   const markdown = useMemo(() => new Markdown(), []);
@@ -26,31 +31,53 @@ function ProblemDetail({ id }: IProps) {
 
   return (
     <Panel id={id}>
-      <PanelHeader
-        before={
-          sizeX.compact && (
-            <PanelHeaderClose
-              className={sizeX.compact.className}
-              onClick={goBack}
-            />
-          )
+      <AppContainer
+        withoutTabbar
+        headerChildren={
+          <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
+            Условие задачи
+          </PanelHeader>
         }
       >
-        Условие задачи
-      </PanelHeader>
-      <AppDiv>
-        {content ? (
-          <div dangerouslySetInnerHTML={{ __html: html }}></div>
-        ) : (
-          <Placeholder
-            style={{ paddingTop: 70 }}
-            icon={<Icon56GhostOutline />}
-            header="Нет условия"
-          >
-            Условие задачи отсутствует
-          </Placeholder>
-        )}
-      </AppDiv>
+        <AppDiv className={classes.container}>
+          {content ? (
+            <div dangerouslySetInnerHTML={{ __html: html }}></div>
+          ) : (
+            <Placeholder
+              style={{ paddingTop: 70 }}
+              icon={<Icon56GhostOutline />}
+              header="Нет условия"
+              action={
+                <Button
+                  target="_blank"
+                  mode="outline"
+                  size="m"
+                  href={`https://leetcode.com/problems/${leetCode.currentProblemSlug}`}
+                >
+                  Перейти в leetcode
+                </Button>
+              }
+            >
+              Условие задачи отсутствует
+            </Placeholder>
+          )}
+        </AppDiv>
+        <FixedLayout vertical="bottom" className={classes.nextChat}>
+          <Separator wide />
+          <Div className={classes.buttons}>
+            <Button
+              target="_blank"
+              size="m"
+              href={`https://leetcode.com/problems/${leetCode.currentProblemSlug}`}
+            >
+              Перейти в leetcode
+            </Button>
+            <Button size="m" onClick={goToChatLeetCode}>
+              Перейти в чат
+            </Button>
+          </Div>
+        </FixedLayout>
+      </AppContainer>
     </Panel>
   );
 }
