@@ -54,7 +54,7 @@ function ProblemDetail({ id }: IProps) {
                   size="m"
                   href={`https://leetcode.com/problems/${leetCode.currentProblemSlug}`}
                 >
-                  Перейти в leetcode
+                  Посмотреть задачу в leetcode
                 </Button>
               }
             >
