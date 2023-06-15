@@ -20,7 +20,7 @@ export function LeetCode() {
         />
         <path
           d="M567.5 34H421.5C419.015 34 417 36.0147 417 38.5V181.5C417 183.985 419.015 186 421.5 186H567.5C569.985 186 572 183.985 572 181.5V38.5C572 36.0147 569.985 34 567.5 34Z"
-          fill="white"
+          fill="transparent"
           stroke={color}
           strokeWidth="3"
         />
