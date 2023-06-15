@@ -1,4 +1,5 @@
 import { EventSourceMessage, fetchEventSource } from "$/utility";
+import { snackbarNotify } from "$/entity/notify";
 
 const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
 
@@ -11,6 +12,14 @@ export async function sendChatCompletions(
   let isFirst = true;
   let isHasError = false;
 
+  const timeOut = setInterval(() => {
+    snackbarNotify.notify({
+      type: "success",
+      message: "Терпение! Вы находитесь в очереди на ответ.",
+      delay: 3500,
+    });
+  }, 10000);
+
   await fetchEventSource(`${BACKEND_HOST}conversation`, {
     method: "POST",
     headers: {
@@ -20,9 +29,10 @@ export async function sendChatCompletions(
     body: JSON.stringify(body),
     signal: controller.signal,
     onmessage(event: EventSourceMessage) {
-      if (event.data === "[DONE]") return;
+      clearInterval(timeOut);
+
+      if (event.data === "[DONE]")  return;
       if (event.data.startsWith("[Error]")) {
-        console.log(event.data);
         throw new Error(event.data);
       }
 
