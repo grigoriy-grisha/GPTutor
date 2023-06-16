@@ -1,4 +1,5 @@
 import { EventSourceMessage, fetchEventSource } from "$/utility";
+import { log } from "@craco/craco/dist/lib/logger";
 
 const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
 
@@ -22,6 +23,7 @@ export async function sendChatCompletions(
     onmessage(event: EventSourceMessage) {
       if (event.data === "[DONE]") return;
       if (event.data.startsWith("[Error]")) {
+        console.log(event.data);
         throw new Error(event.data);
       }
 
@@ -34,7 +36,8 @@ export async function sendChatCompletions(
       onMessage(delta.content, isFirst);
       isFirst = false;
     },
-    onerror() {
+    onerror(err) {
+      console.log(err, "Ошибка при получении сообщения");
       if (!isHasError) {
         onError();
         isHasError = true;
