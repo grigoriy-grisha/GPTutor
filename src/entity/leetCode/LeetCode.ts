@@ -67,9 +67,9 @@ class LeetCode {
     const regExp = new RegExp(search.toLowerCase(), "g");
 
     this.filteredPagedProblems$.set(
-      this.pagedProblems$
-        .get()
-        .filter((item) => regExp.test(item.stat.question__title.toLowerCase()))
+      this.problems.filter((item) =>
+        regExp.test(item.stat.question__title.toLowerCase())
+      )
     );
   }
 }
