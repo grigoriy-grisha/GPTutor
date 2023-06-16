@@ -60,7 +60,7 @@ export const typescriptLessons = [
     ]
   ),
   new LessonItem(
-    "Типизция функций в typescript",
+    "Типизация функций в typescript",
     BASIS,
     new LessonRequest("Как типизировать функции в Typescript?"),
     [

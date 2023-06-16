@@ -2,7 +2,7 @@ import { LessonItem } from "../LessonItem";
 import { LessonRequest } from "../LessonRequest";
 
 const BasedJS = "Основы JavaScript";
-const AdvancedJS = "Продвнутый JavaScript";
+const AdvancedJS = "Продвинутый JavaScript";
 const DOMJS = "Браузер: DOM";
 
 const lessonJS1 = new LessonItem(
@@ -631,7 +631,7 @@ const lessonJS37 = new LessonItem(
 );
 
 const lessonJS38 = new LessonItem(
-  "Собыйтия мыши",
+  "События мыши",
   DOMJS,
   new LessonRequest("Объясни события мыши в js какие есть виды"),
   [
