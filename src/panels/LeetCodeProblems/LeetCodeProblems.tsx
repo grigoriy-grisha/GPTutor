@@ -66,6 +66,7 @@ function LeetcodeProblems({ id }: IProps) {
         {leetCode.filteredPagedProblems$.get().map((problem) => (
           <>
             <SimpleCell
+              className={classes.cell}
               disabled={leetCode.leetcodeDetailProblems$.loading.get()}
               key={problem.stat.question_id}
               after={<StatusTag status={problem.difficulty.level} />}
