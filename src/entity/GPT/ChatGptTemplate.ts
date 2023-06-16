@@ -27,11 +27,19 @@ export abstract class ChatGptTemplate {
 
   messages$ = sig<GptMessage[]>([]);
 
-  sendCompletions$ = ReactivePromise.create(() => this.sendCompletion());
+  delayTimeout: NodeJS.Timeout | null = null;
+
+  sendCompletions$ = ReactivePromise.create(() => {
+    this.delayTimeout = setTimeout(() => this.isDelay$.set(true), 8000);
+
+    return this.sendCompletion();
+  });
 
   createHistory$ = ReactivePromise.create(createHistory);
 
   getMessages$ = ReactivePromise.create(getMessagesById);
+
+  isDelay$ = sig(false);
 
   inLocalMessages$ = memo(() =>
     this.messages$.get().filter((message) => message.inLocal)
@@ -52,6 +60,11 @@ export abstract class ChatGptTemplate {
   hasSelectedMessages$ = memo(() => this.selectedMessages$.get().length !== 0);
 
   abortController = new AbortController();
+
+  closeDelay() {
+    this.delayTimeout && clearTimeout(this.delayTimeout);
+    this.isDelay$.set(false);
+  }
 
   clearMessages = () => {
     this.abortSend();
@@ -104,6 +117,7 @@ export abstract class ChatGptTemplate {
       { model: "gpt-3.5-turbo-16k", messages: this.getMessages() },
       this.onMessage(message),
       () => {
+        this.closeDelay();
         this.addMessage(
           new GptMessage(
             "Сеть ChatGPT перегружена. Попробуйте через минуту",
@@ -133,6 +147,8 @@ export abstract class ChatGptTemplate {
   }
 
   onMessage = (message: GptMessage) => (value: string, isFirst: boolean) => {
+    this.closeDelay();
+
     if (isFirst) {
       message.onSetMessageContent(value);
       this.addMessage(message);
@@ -262,6 +278,8 @@ export abstract class ChatGptTemplate {
   }
   //todo рефакторинг
   async restoreDialogFromHistory(dialog: History, goToChat: () => void) {
+    this.closeDelay();
+
     this.currentHistory = dialog;
 
     const messages = await this.getMessages$.run(dialog.id);
@@ -272,8 +290,6 @@ export abstract class ChatGptTemplate {
         message: "Ошибка при переходе в диплог",
       });
     }
-
-    console.log(dialog);
 
     await this.prepareDialog(dialog);
 

@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
@@ -43,6 +43,10 @@ function Messenger({
 }: IProps) {
   const { isTyping, scrollRef, showScrollDown, handlerSend, scrollToBottom } =
     useMessenger({ chatGpt });
+
+  useEffect(() => {
+    return () => chatGpt.closeDelay();
+  }, []);
 
   return (
     <AppContainer

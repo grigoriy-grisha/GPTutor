@@ -5,6 +5,7 @@ import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 import classes from "./MessengerWriteBar.module.css";
 import { WriteBarMessage } from "./WriteBarMessage";
 import { SelectedMessagesBar } from "./SelectedMessagesBar";
+import { DelayBlock } from "./DelayBlock";
 
 interface IProps {
   chatGpt: ChatGptTemplate;
@@ -30,6 +31,7 @@ function MessengerWriteBar({
   return (
     <div className={classes.container}>
       <div style={{ width: "100%" }}>
+        {chatGpt.isDelay$.get() && <DelayBlock chatGpt={chatGpt} />}
         <div style={{ display: hasSelectedMessages ? "block" : "none" }}>
           <SelectedMessagesBar chatGpt={chatGpt} />
         </div>
