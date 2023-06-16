@@ -1,5 +1,4 @@
 import React from "react";
-import debounce from "lodash.debounce";
 import throttle from "lodash.throttle";
 
 import { useSyncToRef } from "./useSyncToRef";
@@ -24,12 +23,6 @@ function isWindow(element: HTMLElement | Window | Document): element is Window {
 
 const scrollRemainderDetectors = {
   down: function (element: HTMLElement | Window) {
-    console.log(
-      document.documentElement.scrollHeight,
-      "document.documentElement.scrollHeight"
-    );
-    console.log(window.scrollY, "window.scrollY");
-    console.log(window.innerHeight, "window.innerHeight");
     if (isWindow(element))
       return (
         document.documentElement.scrollHeight -
@@ -99,7 +92,6 @@ function useScrollListener({
       if (!hasNextPage.current || loading.current) return;
       const scrollToEnd = scrollRemainderDetectors[direction](event.target);
 
-      console.log(scrollToEnd);
       if (scrollToEnd > threshold) return;
       onLoadMore.current();
     }, scrollCheckInterval);

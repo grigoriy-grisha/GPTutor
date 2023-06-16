@@ -28,12 +28,6 @@ function MessengerPlaceholder({
 }: Omit<IProps, "isTyping">) {
   const isStopped = chatGpt.timer.isStopped$.get();
 
-  console.log({
-    placeholderHeader,
-    startText,
-    startIsDisabled,
-    placeholderText,
-  });
   return (
     <div className={classes.placeholderContainer}>
       <Placeholder
