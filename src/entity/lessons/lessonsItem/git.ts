@@ -55,7 +55,7 @@ export const gitLessons = [
     ]
   ),
   new LessonItem(
-    "Переписывани истории",
+    "Переписывание истории",
     STARTED,
     new LessonRequest("Расскажи о способах переписывания истории в git"),
     [
