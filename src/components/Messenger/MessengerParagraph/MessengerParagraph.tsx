@@ -15,7 +15,7 @@ interface IProps {
 
 const errorContent = `
 \`\`\`javascript
-Сеть ChatGPT пегружена. Попробуйте через минуту
+Сеть ChatGPT перегружена. Попробуйте через минуту
    _______  GPT
   |.-----.|       Err 
   ||x . x||  GPT Error  

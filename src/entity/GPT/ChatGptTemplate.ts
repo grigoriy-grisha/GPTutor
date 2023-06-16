@@ -106,7 +106,7 @@ export abstract class ChatGptTemplate {
       () => {
         this.addMessage(
           new GptMessage(
-            "Сеть ChatGPT пегружена. Попробуйте через минуту",
+            "Сеть ChatGPT перегружена. Попробуйте через минуту",
             GPTRoles.assistant,
             false,
             true
