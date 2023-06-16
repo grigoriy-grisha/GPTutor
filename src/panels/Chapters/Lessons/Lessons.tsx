@@ -34,6 +34,7 @@ function Lessons({ currentChapter, onClickLesson }: IProps) {
           <TertiaryTitle>{key}</TertiaryTitle>
           {value.map((lesson) => (
             <SimpleCell
+              style={{ whiteSpace: "normal" }}
               key={lesson.id}
               after={<Icon20ChevronRight />}
               onClick={() => onClickLesson(lesson)}
