@@ -212,7 +212,8 @@ export abstract class ChatGptTemplate {
   }
 
   getLastMessage() {
-    return this.messages$.get().at(-1);
+    const messages = this.messages$.get();
+    return messages[messages.length - 1];
   }
 
   async createHistory() {

@@ -36,7 +36,6 @@ function LeetcodeProblems({ id }: IProps) {
     leetCode.loadProblems();
   }, []);
 
-  console.log(leetCode.filteredPagedProblems$.get());
   return (
     <Panel id={id}>
       <AppContainer
