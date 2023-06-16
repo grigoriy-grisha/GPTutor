@@ -23,7 +23,7 @@ export abstract class ChatGptTemplate {
     "Ты программист с опытом веб разработки в 10 лет, отвечаешь на вопросы джуниора, который хочет научиться программированию, добавляй правильную подсветку кода, указывай язык для блоков кода";
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
-  timer = new Timer(10, 0, "decrement");
+  timer = new Timer(1, 0, "decrement");
 
   messages$ = sig<GptMessage[]>([]);
 
