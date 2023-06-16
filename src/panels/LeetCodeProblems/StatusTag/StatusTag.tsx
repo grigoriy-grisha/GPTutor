@@ -10,7 +10,7 @@ interface IProps {
 }
 
 function getText(status: StatusType) {
-  if (status === 1) return "Eazy";
+  if (status === 1) return "Easy";
   if (status === 2) return "Medium";
 
   return "Hard";

@@ -138,7 +138,7 @@ function HistoryBanner({ dialog }: IProps) {
               );
             }}
           >
-            Перейди в диалог
+            Перейти в диалог
           </Button>
           <Button
             disabled={chatGpt.history.deleteHistory$.loading.get()}

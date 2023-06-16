@@ -181,7 +181,7 @@ export const htmlLessons = [
     ]
   ),
   new LessonItem(
-    "Расшиернные селекторы",
+    "Расширенные селекторы",
     CommonCSS,
     new LessonRequest("Объясни сложные селекторы в CSS"),
     [
