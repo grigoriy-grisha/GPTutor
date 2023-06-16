@@ -81,7 +81,7 @@ function ChatInterviewAdditionalRequests({
               </div>
               Подыграйте Чат боту. Представьте, что вы проходите собеседование.
               <br />
-              Отвечайте на вопросы Chat GPT.
+              Отвечайте на вопросы ChatGPT.
             </div>
             <IconButton
               className={classes.cancelIcon}

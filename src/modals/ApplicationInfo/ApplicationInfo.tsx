@@ -58,7 +58,7 @@ function ApplicationInfo({ id }: IProps) {
               GPTutor{" — "}
             </Title>
             это образовательное приложение, которое предлагает уникальный подход
-            к обучению вместе с чат-помощником Chat GPT.
+            к обучению вместе с чат-помощником ChatGPT.
           </Text>
         </AppDiv>
       </Group>
