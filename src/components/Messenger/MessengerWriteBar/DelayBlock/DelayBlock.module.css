@@ -1,0 +1,19 @@
+.delayBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+}
+
+.clock {
+    color: var(--vkui--color_accent_secondary);
+    margin-right: 8px
+}
+
+.close {
+    color: var(--vkui--color_accent_gray--hover);
+}
