@@ -79,7 +79,7 @@ function ChatInterviewAdditionalRequests({
               >
                 <Icon24QuestionOutline width={28} height={28} />
               </div>
-              Подыграйте Чат боту. Представьте, что вы проходите собеседование.
+              Подыграйте Чат-боту. Представьте, что вы проходите собеседование.
               <br />
               Отвечайте на вопросы ChatGPT.
             </div>
