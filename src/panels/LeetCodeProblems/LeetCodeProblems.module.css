@@ -10,3 +10,7 @@
     white-space: nowrap;
     margin-right: 8px;
 }
+
+.cell {
+    background: var(--vkui--color_background_content);
+}
