@@ -9,6 +9,13 @@ import { useLocation, useRouter } from "@happysanta/router";
 
 import { Modals, Panels, RoutingPages, Views } from "$/entity/routing";
 
+export type AlertType = {
+  onAction: () => void;
+  actionText: string;
+  header: string;
+  text: string;
+};
+
 export type NavigationContextType = {
   goBack: () => void;
   goToChapters: () => void;
@@ -26,6 +33,9 @@ export type NavigationContextType = {
   goToChatLeetCode: () => void;
 
   goToProblemDetail: () => void;
+
+  openAlert: (data: AlertType) => void;
+  alert: AlertType;
   isForbidden: boolean;
 };
 
@@ -36,6 +46,13 @@ const NavigationContext = createContext<NavigationContextType>(
 export function NavigationContextProvider({
   children,
 }: PropsWithChildren<any>) {
+  const [alert, setAlert] = useState<AlertType>({
+    onAction: () => {},
+    text: "",
+    actionText: "",
+    header: "",
+  });
+
   const [isForbidden, setForbidden] = useState(false);
 
   const location = useLocation();
@@ -79,6 +96,11 @@ export function NavigationContextProvider({
   const openChatSettingsModal = () => router.pushModal(Modals.chatSettings);
   const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
 
+  const openAlert = (data: AlertType) => {
+    setAlert(data);
+    router.pushPopup(Modals.alert);
+  };
+
   const openInterviewQuestions = () =>
     router.pushModal(Modals.interviewQuestions);
 
@@ -100,6 +122,8 @@ export function NavigationContextProvider({
         goToLeetcodeProblems,
         goToChatLeetCode,
         goToProblemDetail,
+        openAlert,
+        alert,
         isForbidden,
       }}
     >

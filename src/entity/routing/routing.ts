@@ -38,4 +38,6 @@ export enum Modals {
   applicationInfo = "application-info",
 
   interviewQuestions = "interview-questions",
+
+  alert = "alert",
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { useAppearance, WriteBarIcon } from "@vkontakte/vkui";
 import {
@@ -7,11 +7,10 @@ import {
   Icon28Send,
 } from "@vkontakte/icons";
 import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
-
-import ClearMessagesAlert from "./ClearMessagesAlert";
 import Time from "$/components/Time";
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 import { chatGpt } from "$/entity/GPT";
+import { useNavigationContext } from "$/NavigationContext";
 
 import classes from "./WriteBarAfter.module.css";
 
@@ -22,11 +21,11 @@ interface IProps {
 }
 
 function WriteBarAfter({ chatGptModel, value, sendMessage }: IProps) {
+  const { openAlert, goBack } = useNavigationContext();
   const appearance = useAppearance();
 
   const isTyping = chatGptModel.sendCompletions$.loading.get();
 
-  const [showAlert, setShowAlert] = useState(false);
   const timerIsStopped = chatGptModel.timer.isStopped$.get();
   const time = chatGptModel.timer.time$.get();
 
@@ -34,6 +33,17 @@ function WriteBarAfter({ chatGptModel, value, sendMessage }: IProps) {
     chatGptModel.messages$.get().length < 2 || isTyping;
 
   const blockActions = chatGptModel.isBlockActions$.get();
+
+  const applySettings = () => {
+    if (!chatGptModel.currentHistory) return;
+
+    chatGpt.history
+      .removeHistoryDialog(chatGptModel.currentHistory.id)
+      .then(() => {
+        chatGptModel.clearMessages();
+        goBack();
+      });
+  };
 
   const sendBars = (
     <>
@@ -55,23 +65,15 @@ function WriteBarAfter({ chatGptModel, value, sendMessage }: IProps) {
 
   return (
     <div className={classes.container}>
-      {showAlert && (
-        <ClearMessagesAlert
-          closeAlert={() => setShowAlert(false)}
-          applySettings={() => {
-            if (!chatGptModel.currentHistory) return;
-
-            chatGpt.history
-              .removeHistoryDialog(chatGptModel.currentHistory.id)
-              .then(() => {
-                chatGptModel.clearMessages();
-                setShowAlert(false);
-              });
-          }}
-        />
-      )}
       <WriteBarIcon
-        onClick={() => setShowAlert(true)}
+        onClick={() =>
+          openAlert({
+            onAction: applySettings,
+            actionText: "Удалить диалог",
+            header: "Подтвердите действие",
+            text: "Вы уверены? Диалог нельзя будет вернуть!",
+          })
+        }
         disabled={removeDialogDisable || blockActions}
       >
         <Icon28DeleteOutline />
