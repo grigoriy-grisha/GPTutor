@@ -12,7 +12,6 @@ import {
 
 import { chatGpt } from "$/entity/GPT";
 
-import ApplyAlert from "./ApplyAlert";
 import SystemMessageForm from "./SystemMessageForm";
 
 import useChatSettings from "./hooks/useChatSettings";
@@ -28,14 +27,11 @@ function ChatSettings({ id }: IProps) {
 
   const {
     isDirty,
-    showAlert,
     systemMessageValue,
     isChangedSystemMessage,
-    applySettings,
     resetSystemMessage,
     updateSystemMessage,
     onSubmit,
-    closeAlert,
   } = useChatSettings(chatGpt.getCurrentChatGpt());
 
   return (
@@ -60,9 +56,6 @@ function ChatSettings({ id }: IProps) {
         systemMessageValue={systemMessageValue}
         updateSystemMessage={updateSystemMessage}
       />
-      {showAlert && (
-        <ApplyAlert applySettings={applySettings} closeAlert={closeAlert} />
-      )}
       <Spacing size={200} />
     </ModalPage>
   );

@@ -2,14 +2,16 @@ import { useRef, useState } from "react";
 import { useRouter } from "@happysanta/router";
 import { snackbarNotify } from "$/entity/notify";
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
+import { useNavigationContext } from "$/NavigationContext";
 
 function useChatSettings(chatGpt: ChatGptTemplate) {
+  const { openAlert, goBack } = useNavigationContext();
+
   const router = useRouter();
   const systemMessageContent = chatGpt.systemMessage.content$;
   const systemMessage = systemMessageContent.get();
 
   const [systemMessageValue, setSystemMessageValue] = useState(systemMessage);
-  const [showAlert, setShowAlert] = useState(false);
   const initialMessage = useRef(systemMessage);
 
   const isDirty = initialMessage.current !== systemMessageValue;
@@ -39,34 +41,33 @@ function useChatSettings(chatGpt: ChatGptTemplate) {
       return;
     }
 
-    setShowAlert(true);
-  };
-
-  const closeAlert = () => {
-    setShowAlert(false);
+    openAlert({
+      onAction: applySettings,
+      actionText: "Применить настройки",
+      header: "Подтвердите действие",
+      text: "После изменения системных настроек история сообщений будет очищена и будет создан новый диалог!",
+    });
   };
 
   const applySettings = () => {
-    chatGpt.clearMessages();
-    systemMessageContent.set(systemMessageValue);
-    router.popPage();
-
     snackbarNotify.notify({
       type: "success",
       message: "Системные настройки успешно изменены",
     });
+
+    chatGpt.clearMessages();
+    systemMessageContent.set(systemMessageValue);
+    goBack();
+    goBack();
   };
 
   return {
     isDirty,
-    showAlert,
     systemMessageValue,
     isChangedSystemMessage,
     resetSystemMessage,
     updateSystemMessage,
     onSubmit,
-    applySettings,
-    closeAlert,
   };
 }
 

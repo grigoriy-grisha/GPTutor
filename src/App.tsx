@@ -29,11 +29,12 @@ import { ChatSettings } from "$/modals/ChatSettings";
 import { ApplicationInfo } from "$/modals/ApplicationInfo";
 import { ChatFree } from "$/panels/ChatFree";
 import { ChatLesson } from "$/panels/ChatLesson";
-import ChatInterview from "./panels/ChatInterview/ChatInterview";
+import { ChatInterview } from "./panels/ChatInterview";
 import { InterviewQuestions } from "$/modals/InterviewQuestions";
 import { LeetcodeProblems } from "$/panels/LeetCodeProblems";
-import ChatLeetCode from "./panels/ChatLeetCode/ChatLeetCode";
-import ProblemDetail from "./panels/ProblemDetail/ProblemDetail";
+import { ChatLeetCode } from "./panels/ChatLeetCode";
+import { ProblemDetail } from "./panels/ProblemDetail";
+import { AppAlert } from "./modals/AppAlert";
 
 const App = () => {
   const location = useLocation();
@@ -55,6 +56,11 @@ const App = () => {
     <>
       {appearance === "dark" ? <OneDark /> : <OneLight />}
       <SplitLayout
+        popout={
+          <>
+            <AppAlert id={Modals.alert} />
+          </>
+        }
         modal={
           <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
             <ChatSettings id={Modals.chatSettings} />
