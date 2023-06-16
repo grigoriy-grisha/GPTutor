@@ -1,6 +1,6 @@
 [<img width="134" src="https://vk.com/images/apps/mini_apps/vk_mini_apps_logo.svg">](https://vk.com/services)
 
-### Нейросеть Chat GPT во ВКонтакте!
+### Нейросеть ChatGPT во ВКонтакте!
 
 [<img src="./public/gptTutorBanner.png" alt="GPTutor Banner">](https://vk.com/app51602327_548334196)
 
@@ -14,7 +14,7 @@
 
 `npm run start` запускает проект и стартует сервер по адресу [`https://localhost:10888`](https://localhost:10888).
 
-Приложение запустится, но для полноценной работы с Chat GPT нужен бэкенд.
+Приложение запустится, но для полноценной работы с ChatGPT нужен бэкенд.
 Репозиторий бэкенда находится [вот тут](https://github.com/grigoriy-grisha/ChatGPT_Backend) все нужно для запуска найдете
 в Readme.
 
