@@ -268,7 +268,7 @@ export const typescriptLessons = [
   ),
 
   new LessonItem(
-    "Оператор keyof в TypeScrip",
+    "Оператор keyof в TypeScript",
     ADVANCED,
     new LessonRequest("Что такое оператор keyof в TypeScript?"),
     [
