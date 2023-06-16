@@ -10,7 +10,7 @@ export class OnboardingService {
             media: { blob: firstSlide, type: "image" },
             title: "Добро пожаловать!",
             subtitle:
-              "Общайтесь с ботом на любые темы, музыка, программирование, искусство.",
+              "Общайтесь с ботом на любые темы: музыка, программирование, искусство.",
           },
           {
             media: { blob: secondSlide, type: "image" },
