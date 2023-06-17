@@ -1,8 +1,8 @@
 .container {
-    width: 100%;
     border-radius: 16px;
     background-color: var(--vkui--color_background_content);
     padding-top: 8px;
+    width: 100vw;
 }
 
 .containerTop {

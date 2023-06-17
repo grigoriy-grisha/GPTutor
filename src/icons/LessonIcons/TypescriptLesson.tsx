@@ -1,54 +1,50 @@
 import React from "react";
-import { useConfigProvider } from "@vkontakte/vkui";
 
 export function TypescriptLesson() {
-  const { appearance } = useConfigProvider();
-  const color = appearance === "dark" ? "black" : "white";
-
   return (
     <svg viewBox="0 0 624 442" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clipPath="url(#clip0_102_2)">
         <path
           d="M0 114L309 2L618 114L309 226L0 114Z"
-          stroke={color}
+          stroke="var(--vkui--color_background_content)"
           strokeWidth="4"
         />
         <path
           d="M0 150L309 37L618 150L309 263L0 150Z"
-          stroke={color}
+          stroke="var(--vkui--color_background_content)"
           strokeWidth="4"
         />
         <path
           d="M0 195.001L309 82L618 195.001L309 308L0 195.001Z"
-          stroke={color}
+          stroke="var(--vkui--color_background_content)"
           strokeWidth="4"
         />
         <path
           d="M0 229.999L309 118L618 229.999L309 342L0 229.999Z"
-          stroke={color}
+          stroke="var(--vkui--color_background_content)"
           strokeWidth="4"
         />
         <path
           d="M0 275.501L309 163L618 275.501L309 388L0 275.501Z"
-          stroke={color}
+          stroke="var(--vkui--color_background_content)"
           strokeWidth="4"
         />
         <path
           d="M0 328.999L309 217L618 328.999L309 441L0 328.999Z"
-          stroke={color}
+          stroke="var(--vkui--color_background_content)"
           strokeWidth="4"
         />
         <path
           d="M308 442V225.348L623 114L621.613 328.064L308 442Z"
-          fill={color}
+          fill="var(--vkui--color_background_content)"
         />
         <path
           d="M621.228 330L624 111.44L308 0L309.387 214.241L621.228 330Z"
-          fill={color}
+          fill="var(--vkui--color_background_content)"
         />
         <path
           d="M87 102H508.979L560 211.5L508.979 321H87V102Z"
-          fill={color}
+          fill="var(--vkui--color_background_content)"
           stroke="var(--vkui--color_background_accent_themed)"
           strokeWidth="2.4787"
         />
@@ -67,7 +63,11 @@ export function TypescriptLesson() {
       </g>
       <defs>
         <clipPath id="clip0_102_2">
-          <rect width="624" height="442" fill={color} />
+          <rect
+            width="624"
+            height="442"
+            fill="var(--vkui--color_background_content)"
+          />
         </clipPath>
       </defs>
     </svg>
