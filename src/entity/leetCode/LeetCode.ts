@@ -21,6 +21,11 @@ class LeetCode {
 
   search = "";
 
+  clearCurrentProblem() {
+    this.currentProblem = null;
+    this.currentProblemSlug = "";
+  }
+
   loadProblems = async () => {
     if (this.problems.length) return;
 

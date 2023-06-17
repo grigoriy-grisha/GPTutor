@@ -9,7 +9,6 @@ import classes from "./MessengerList.module.css";
 
 interface IProps {
   chatGpt: ChatGptTemplate;
-  isTyping: boolean;
   onStartChat: () => void;
   placeholderHeader?: string;
   startText?: string;
@@ -51,7 +50,6 @@ function MessengerPlaceholder({
 }
 
 function MessengerList({
-  isTyping,
   chatGpt,
   onStartChat,
   placeholderHeader,
