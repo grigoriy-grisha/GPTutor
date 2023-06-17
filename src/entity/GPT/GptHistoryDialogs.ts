@@ -48,6 +48,10 @@ export class GptHistoryDialogs {
         type: "success",
         message: "История успешно удалена",
       });
+
+      if (this.dialogs.get().length === 0) {
+        await this.nextLoadHistory();
+      }
     } catch (e) {
       snackbarNotify.notify({
         type: "error",
