@@ -32,10 +32,7 @@ function Modes({ id }: IProps) {
         className={classes.container}
         headerChildren={
           <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            <PanelTitle
-              mobileTitle="Режимы"
-              title="Режимы для обучения"
-            ></PanelTitle>
+            <PanelTitle mobileTitle="Режимы" title="Режимы"></PanelTitle>
           </PanelHeader>
         }
       >
