@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Panel } from "@vkontakte/vkui";
 
 import { Messenger } from "$/components/Messenger";
@@ -24,6 +24,10 @@ function ChatInterview({ id }: IProps) {
   const onClickList = () => {
     openInterviewQuestions();
   };
+
+  useEffect(() => {
+    return () => chatGpt.chatGptInterview.abortSend();
+  }, []);
 
   return (
     <Panel id={id}>

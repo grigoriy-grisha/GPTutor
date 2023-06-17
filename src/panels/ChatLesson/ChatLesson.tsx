@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Panel } from "@vkontakte/vkui";
 
 import { Messenger } from "$/components/Messenger";
@@ -36,6 +36,10 @@ function ChatLesson({ id }: IProps) {
   const isStopped = chatGpt.chatGptLesson.timer.isStopped$.get();
   const isTyping = chatGpt.chatGptLesson.sendCompletions$.loading.get();
   const isBlockActions = chatGpt.chatGptLesson.isBlockActions$.get();
+
+  useEffect(() => {
+    return () => chatGpt.chatGptLesson.abortSend();
+  }, []);
 
   return (
     <Panel id={id}>

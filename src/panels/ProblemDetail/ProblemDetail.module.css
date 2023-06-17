@@ -3,7 +3,7 @@
 }
 
 .container {
-    width: calc(100vw - var(--vkui--size_base_padding_vertical--regular));
+    width: calc(100vw - var(--vkui--size_base_padding_vertical--regular) * 2);
     margin-bottom: 60px;
 }
 
