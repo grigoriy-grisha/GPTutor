@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Panel } from "@vkontakte/vkui";
 
 import { Messenger } from "$/components/Messenger";
@@ -18,6 +18,10 @@ function ChatFree({ id }: IProps) {
   const onStartChat = () => {
     chatGpt.chatGptFree.send("Привет, что ты можешь?");
   };
+
+  useEffect(() => {
+    return () => chatGpt.chatGptFree.abortSend();
+  }, []);
 
   return (
     <Panel id={id}>
