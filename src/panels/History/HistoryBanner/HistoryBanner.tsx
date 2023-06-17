@@ -55,8 +55,14 @@ interface IProps {
 }
 
 function HistoryBanner({ dialog }: IProps) {
-  const { goToChatFree, goToChatLesson, goToChatInterview, goToChatLeetCode } =
-    useNavigationContext();
+  const {
+    goToChatFree,
+    goToChatLesson,
+    goToChatInterview,
+    goToChatLeetCode,
+    openAlert,
+    goBack,
+  } = useNavigationContext();
 
   const chapterType = dialog.type;
   const lessonName = dialog.lessonName;
@@ -144,7 +150,17 @@ function HistoryBanner({ dialog }: IProps) {
             disabled={chatGpt.history.deleteHistory$.loading.get()}
             appearance="negative"
             mode="outline"
-            onClick={() => chatGpt.history.removeHistoryDialog(dialog.id)}
+            onClick={() => {
+              openAlert({
+                onAction: async () => {
+                  await chatGpt.history.removeHistoryDialog(dialog.id);
+                  goBack();
+                },
+                actionText: "Удалить диалог",
+                header: "Подтвердите действие",
+                text: "Вы уверены? Диалог нельзя будет вернуть!",
+              });
+            }}
           >
             Удалить диалог из истории
           </Button>
