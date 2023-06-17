@@ -5,7 +5,7 @@ function getScrollBottom(elem: HTMLDivElement) {
 }
 
 const maxAutoScrollValue = 200;
-const autoScrollTimeValue = 75;
+const autoScrollTimeValue = 50;
 
 export function useMessengerScroll(isTyping: boolean) {
   const [showScrollDown, setShowScrollDown] = useState(false);
