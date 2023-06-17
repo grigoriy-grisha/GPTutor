@@ -239,7 +239,7 @@ export const htmlLessons = [
     [
       new LessonRequest(
         "Какие есть способы подключать шрифты в css",
-        "Способы подклчения шрифтов"
+        "Способы подключения шрифтов"
       ),
       new LessonRequest(
         "Что такое font-face, для чего оно используется?",
@@ -251,7 +251,7 @@ export const htmlLessons = [
       ),
       new LessonRequest(
         "Как подключать шрифты черезь google-fonts",
-        "Подклчение google-fonts шрифтов"
+        "Подключение google-fonts шрифтов"
       ),
     ]
   ),
@@ -304,7 +304,7 @@ export const htmlLessons = [
       ),
       new LessonRequest(
         "Расскажи о свойстве box-sizing в css",
-        "Переопределение разеров блока"
+        "Переопределение размеров блока"
       ),
     ]
   ),
