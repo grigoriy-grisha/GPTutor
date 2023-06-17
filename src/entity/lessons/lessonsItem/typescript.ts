@@ -13,9 +13,9 @@ export const typescriptLessons = [
     [
       new LessonRequest("Для чего используется?"),
       new LessonRequest("Что такое строгая типизация?", "Строгая типизация"),
-      new LessonRequest("Какие приемущества над javascript?", "Приемущества"),
+      new LessonRequest("Какие преимущества над javascript?", "Преимущества"),
       new LessonRequest(
-        "Чем удобен Typescript приемущества над javascript?",
+        "Чем удобен Typescript преимущества над javascript?",
         "Удобства"
       ),
     ]
@@ -60,7 +60,7 @@ export const typescriptLessons = [
     ]
   ),
   new LessonItem(
-    "Типизация функций в typescript",
+    "Типизация функций в Typescript",
     BASIS,
     new LessonRequest("Как типизировать функции в Typescript?"),
     [
@@ -155,7 +155,7 @@ export const typescriptLessons = [
       ),
       new LessonRequest("Как объявить дженерики в TypeScript?", "Объявление"),
       new LessonRequest(
-        "Какие приемущества дают джинерики в TypeScript?",
+        "Какие преимущества дают джинерики в TypeScript?",
         "Приемущства"
       ),
       new LessonRequest(
@@ -212,7 +212,7 @@ export const typescriptLessons = [
       ),
       new LessonRequest(
         "Какие примеры использования декораторов в TypeScript?",
-        "Примиеры"
+        "Примеры"
       ),
     ]
   ),
@@ -293,7 +293,7 @@ export const typescriptLessons = [
     [
       new LessonRequest(
         "Какова разница между ковариантностью и контрвариантностью в TypeScript?",
-        "ковариантность и контрвариантность"
+        "Ковариантность и контрвариантность"
       ),
       new LessonRequest(
         "Какие возможности предоставляет вариантность типов в TypeScript?",
