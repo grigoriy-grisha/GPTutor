@@ -27,7 +27,7 @@ function AppAlert({ id }: IProps) {
       ]}
       actionsLayout="vertical"
       header={alert.header}
-      text={alert.actionText}
+      text={alert.text}
       onClose={goBack}
     />
   );
