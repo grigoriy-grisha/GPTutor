@@ -39,16 +39,7 @@ function ChapterCard({ chapterType, onClick }: IProps) {
 
   const Icon = CardIcon[chapterType];
 
-  return (
-    <Card onClick={onClick} mode="shadow" className={classes.card}>
-      <Div
-        className={classes.div}
-        style={{ height: sizeX === "compact" ? 144 : 192 }}
-      >
-        {<Icon />}
-      </Div>
-    </Card>
-  );
+  return <Icon />;
 }
 
 export default ChapterCard;
