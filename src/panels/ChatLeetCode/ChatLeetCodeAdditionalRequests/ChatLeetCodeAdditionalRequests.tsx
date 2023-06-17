@@ -6,13 +6,13 @@ import { chatGpt } from "$/entity/GPT";
 import classes from "./ChatLeetCodeAdditionalRequests.module.css";
 
 interface IProps {
+  isStopped: boolean;
   handleSend: (value: string) => void;
 }
 
-function ChatLeetCodeAdditionalRequests({ handleSend }: IProps) {
+function ChatLeetCodeAdditionalRequests({ handleSend, isStopped }: IProps) {
   const isTyping = chatGpt.chatGptLeetCode.sendCompletions$.loading.get();
   const isBlockActions = chatGpt.chatGptLeetCode.isBlockActions$.get();
-  const isStopped = chatGpt.chatGptLeetCode.timer.isStopped$.get();
 
   const isDisabled = isTyping || !isStopped;
 

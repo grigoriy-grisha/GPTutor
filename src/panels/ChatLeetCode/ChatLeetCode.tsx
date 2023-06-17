@@ -47,6 +47,8 @@ function ChatLeetCode({ id }: IProps) {
     );
   }, []);
 
+  const isStopped = chatGpt.chatGptLeetCode.timer.isStopped$.get();
+
   return (
     <Panel id={id}>
       <Messenger
@@ -55,7 +57,10 @@ function ChatLeetCode({ id }: IProps) {
           <ChatLeetCodeWriteBarBefore onClick={goToProblemDetail} />
         }
         additionalRequest={(handleSend) => (
-          <ChatLeetCodeAdditionalRequests handleSend={handleSend} />
+          <ChatLeetCodeAdditionalRequests
+            handleSend={handleSend}
+            isStopped={isStopped}
+          />
         )}
         onStartChat={async () => {
           await chatGpt.chatGptLeetCode.send(
