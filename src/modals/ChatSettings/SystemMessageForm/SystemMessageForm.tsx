@@ -4,6 +4,8 @@ import { Button, Div, FormItem, Group, Textarea, Title } from "@vkontakte/vkui";
 
 import { AppDiv } from "$/components/AppDiv";
 
+import classes from "./SystemMessageForm.module.css";
+
 interface IProps {
   isChangedSystemMessage: boolean;
   systemMessageValue: string;
@@ -31,6 +33,7 @@ function SystemMessageForm({
     >
       <FormItem>
         <Textarea
+          className={classes.wrapper}
           value={systemMessageValue}
           onChange={({ target }) => updateSystemMessage(target.value)}
         />
