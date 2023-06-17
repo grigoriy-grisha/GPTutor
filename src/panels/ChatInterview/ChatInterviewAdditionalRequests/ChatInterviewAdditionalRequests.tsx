@@ -28,11 +28,11 @@ function ChatInterviewAdditionalRequests({
 
   const isTyping = chatGpt.chatGptInterview.sendCompletions$.loading.get();
   const isQuestioned = currentQuestion.isQuestioned$.get();
+  const isStopped = chatGpt.chatGptInterview.timer.isStopped$.get();
+
   const nextQuestionIsDisabled = !isStarted
-    ? isStarted
-    : !isQuestioned ||
-      isTyping ||
-      !chatGpt.chatGptInterview.timer.isStopped$.get();
+    ? false
+    : !isQuestioned || isTyping || !isStopped;
 
   const isLastQuestion = currentInterview.isLastQuestion$.get();
 

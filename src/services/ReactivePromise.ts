@@ -25,8 +25,8 @@ export default class ReactivePromise<DATA, ARGS extends any[]> {
     const promise = new Promise<DATA>((resolve, reject) => {
       this.fn(...args)
         .then((result) => {
-          const error = (result as any).error;
-          const status = (result as any).status;
+          const error = (result as any)?.error;
+          const status = (result as any)?.status;
 
           if (error && status !== 200) {
             throw new Error(error);

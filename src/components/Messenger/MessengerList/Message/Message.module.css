@@ -20,9 +20,6 @@
     background: var(--vkui--color_background_secondary);
 }
 
-.disabled {
-    pointer-events: none;
-}
 
 .topBlock {
     display: flex;
