@@ -77,12 +77,7 @@ function MessengerList({
   return (
     <div className={classes.messagesContainer}>
       {messages.map((message, index) => (
-        <Message
-          key={index}
-          chatGpt={chatGpt}
-          message={message}
-          isDisabled={messages.length - 1 === index && isTyping}
-        />
+        <Message key={index} chatGpt={chatGpt} message={message} />
       ))}
     </div>
   );

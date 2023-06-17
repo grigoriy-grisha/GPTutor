@@ -22,6 +22,8 @@ class LeetCode {
   search = "";
 
   loadProblems = async () => {
+    if (this.problems.length) return;
+
     this.search = "";
     this.pageNumber = 0;
     this.filteredPagedProblems$.set([]);

@@ -54,8 +54,8 @@ export class ChatGptInterview extends ChatGptTemplate {
 
     try {
       await this.sendCompletions$.run();
-      currentQuestion.isQuestioned$.set(true);
     } finally {
+      currentQuestion.isQuestioned$.set(true);
       this.timer.run();
       this.allowActions();
       await this.postMessage(this.getLastMessage());

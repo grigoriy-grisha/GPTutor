@@ -18,33 +18,30 @@ import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
 interface IProps {
   chatGpt: ChatGptTemplate;
-  isDisabled: boolean;
   message: GptMessage;
 }
 
-function Message({ chatGpt, message, isDisabled }: IProps) {
+function Message({ chatGpt, message }: IProps) {
   const runOutOfContextMessages = chatGpt.getRunOutOfContextMessages$.get();
   const selected = message.isSelected$.get() ? classes.selected : "";
-  const disabled = isDisabled ? classes.disabled : "";
 
   const hasSelectedMessages = chatGpt.hasSelectedMessages$.get();
 
   const onClickMessage = () => {
-    if (isDisabled || !hasSelectedMessages) return;
+    if (!hasSelectedMessages) return;
     message.toggleSelected();
   };
 
   const onSelectFirstMessage = (e: any) => {
     e.stopPropagation();
-    !isDisabled && message.toggleSelected();
+    message.toggleSelected();
   };
 
   return (
     <div
       className={classNames(
         { [classes.message]: hasSelectedMessages },
-        selected,
-        disabled
+        selected
       )}
       onClick={onClickMessage}
     >
