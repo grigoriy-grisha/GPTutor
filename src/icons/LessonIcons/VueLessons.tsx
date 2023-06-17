@@ -2,7 +2,7 @@ import React from "react";
 
 export function VueLessons() {
   return (
-    <svg viewBox="0 0 624 442" fill="none">
+    <svg width="100%" height="100%" viewBox="0 0 624 442" fill="none">
       <g clipPath="url(#clip0_508_125)">
         <path
           d="M497 29H38C32.4772 29 28 33.4772 28 39V403C28 408.523 32.4772 413 38 413H497C502.523 413 507 408.523 507 403V39C507 33.4772 502.523 29 497 29Z"

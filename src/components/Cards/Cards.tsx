@@ -26,11 +26,12 @@ function Cards({ chapters, title, isTop, isBottom, onClickChapter }: IProps) {
         <HorizontalScroll>
           <div style={{ display: "flex" }}>
             {chapters.map((chapter, index) => (
-              <ChapterCard
-                key={index}
-                onClick={() => onClickChapter(chapter)}
-                chapterType={chapter.type}
-              />
+              <HorizontalCell key={index} size="l">
+                <ChapterCard
+                  onClick={() => onClickChapter(chapter)}
+                  chapterType={chapter.type}
+                />
+              </HorizontalCell>
             ))}
           </div>
         </HorizontalScroll>

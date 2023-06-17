@@ -2,7 +2,7 @@ import React from "react";
 
 export function GitLesson() {
   return (
-    <svg viewBox="0 0 624 442" fill="none">
+    <svg width="100%" height="100%" viewBox="0 0 624 442" fill="none">
       <g clipPath="url(#clip0_506_51)">
         <path d="M624 0H0V442H624V0Z" fill="transparent" />
         <path

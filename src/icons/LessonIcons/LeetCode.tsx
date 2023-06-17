@@ -2,7 +2,13 @@ import React from "react";
 
 export function LeetCode() {
   return (
-    <svg viewBox="0 0 624 442" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="100%"
+      height="100%"
+      viewBox="0 0 624 442"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g clipPath="url(#clip0_227_4183)">
         <path
           d="M380.74 34H45.2601C42.355 34 40 36.3193 40 39.1802V127.82C40 130.681 42.355 133 45.2601 133H380.74C383.645 133 386 130.681 386 127.82V83.5V39.1802C386 36.3193 383.645 34 380.74 34Z"

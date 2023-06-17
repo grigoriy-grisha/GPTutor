@@ -2,7 +2,7 @@ import React from "react";
 
 export function ReactLesson() {
   return (
-    <svg viewBox="0 0 624 442" fill="none">
+    <svg width="100%" height="100%" viewBox="0 0 624 442" fill="none">
       <rect
         x="39.5"
         y="34.5"
