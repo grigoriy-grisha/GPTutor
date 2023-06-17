@@ -58,13 +58,20 @@ export function NavigationContextProvider({
   const location = useLocation();
   const router = useRouter();
 
-  useEffect(() => router.pushPage(RoutingPages.home), []);
+  useEffect(() => router.replacePage(RoutingPages.home), []);
 
   const activePanel = location.getViewActivePanel(Views.viewMain)!;
 
-  function push(panel: RoutingPages) {
+  function push(panel: RoutingPages, mode: "replace" | "push" = "push") {
     if (panel.slice(1) === activePanel) return;
-    router.pushPage(panel);
+    if (mode === "replace") {
+      if (location.getViewHistory(Views.viewMain).length === 1) {
+        router.pushPage(panel);
+        return;
+      }
+    }
+
+    router[`${mode}Page`](panel);
   }
 
   const goBack = () => {
@@ -82,16 +89,28 @@ export function NavigationContextProvider({
   const goToChatLesson = () => push(RoutingPages.chatLesson);
   const goToChatInterview = () => push(RoutingPages.chatInterview);
   const goToOpenSource = () => push(RoutingPages.openSource);
-  const goToHistory = () => push(RoutingPages.history);
-  const goToModes = () => push(RoutingPages.modes);
+
+  const goToHistory = () => push(RoutingPages.history, "replace");
+
+  const goToModes = () => push(RoutingPages.modes, "replace");
 
   const goToForbidden = () => push(RoutingPages.forbidden);
 
   const goToLeetcodeProblems = () => push(RoutingPages.leetcodeProblems);
 
-  const goToChatLeetCode = () => push(RoutingPages.chatLeetCode);
+  const goToChatLeetCode = () => {
+    const problemPages = location
+      .getViewHistory(Views.viewMain)
+      .filter((item) => item === Panels.problemDetail);
 
-  const goToProblemDetail = () => push(RoutingPages.problemDetail);
+    if (problemPages.length === 2) return goBack();
+
+    push(RoutingPages.chatLeetCode, "push");
+  };
+
+  const goToProblemDetail = () => {
+    push(RoutingPages.problemDetail, "push");
+  };
 
   const openChatSettingsModal = () => router.pushModal(Modals.chatSettings);
   const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
