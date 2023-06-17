@@ -4,7 +4,7 @@ function getScrollBottom(elem: HTMLDivElement) {
   return elem.scrollHeight - elem.scrollTop - elem.clientHeight;
 }
 
-const maxAutoScrollValue = 250;
+const maxAutoScrollValue = 150;
 const autoScrollTimeValue = 50;
 
 export function useMessengerScroll(isTyping: boolean) {
