@@ -49,9 +49,9 @@ code[class*=language-] {
 }
 
 .vkuiTabbar--ios {
-    bottom: 6px;
+    bottom: 8px;
 }
 
 .vkuiWriteBar--ios {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
