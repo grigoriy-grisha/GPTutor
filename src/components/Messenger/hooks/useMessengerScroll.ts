@@ -4,8 +4,8 @@ function getScrollBottom(elem: HTMLDivElement) {
   return elem.scrollHeight - elem.scrollTop - elem.clientHeight;
 }
 
-const maxAutoScrollValue = 150;
-const autoScrollTimeValue = 150;
+const maxAutoScrollValue = 250;
+const autoScrollTimeValue = 50;
 
 export function useMessengerScroll(isTyping: boolean) {
   const [showScrollDown, setShowScrollDown] = useState(false);
@@ -40,12 +40,13 @@ export function useMessengerScroll(isTyping: boolean) {
     scrollRef.current?.addEventListener("scroll", onScrollDetect);
 
     return () => {
+      scrollTimeout.current && clearTimeout(scrollTimeout.current);
       scrollRef.current?.removeEventListener("scroll", onScrollDetect);
     };
   }, []);
 
   useEffect(() => {
-    if (!isTyping) return clearTimeout(intervalId.current);
+    if (!isTyping) return clearInterval(intervalId.current);
 
     intervalId.current = setInterval(() => {
       if (!scrollRef.current || scrollTimeout.current) return;
@@ -55,7 +56,7 @@ export function useMessengerScroll(isTyping: boolean) {
       scrollToBottom();
     }, autoScrollTimeValue);
 
-    return () => clearTimeout(intervalId.current);
+    return () => clearInterval(intervalId.current);
   }, [isTyping]);
 
   useEffect(() => {
