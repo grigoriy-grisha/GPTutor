@@ -58,7 +58,7 @@ function History({ id }: IProps) {
         }
       >
         <div>
-          <HistoryList goBack={goBack} />
+          <HistoryList />
           {loading && (
             <div
               className={classes.loading}

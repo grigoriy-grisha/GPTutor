@@ -1,18 +1,14 @@
 import React from "react";
 
-import { Button, Placeholder } from "@vkontakte/vkui";
-import { Icon16ChevronLeft, Icon56GhostOutline } from "@vkontakte/icons";
+import { Placeholder } from "@vkontakte/vkui";
+import { Icon56GhostOutline } from "@vkontakte/icons";
 
 import HistoryBanner from "$/panels/History/HistoryBanner";
 import { chatGpt } from "$/entity/GPT";
 
 import classes from "./HistoryList.module.css";
 
-interface IProps {
-  goBack: () => void;
-}
-
-function HistoryList({ goBack }: IProps) {
+function HistoryList() {
   const dialogs = chatGpt.history.dialogs.get();
   const loading = chatGpt.history.getHistory$.loading.get();
 
@@ -22,15 +18,6 @@ function HistoryList({ goBack }: IProps) {
         className={classes.placeholder}
         icon={<Icon56GhostOutline />}
         header="История диалогов пуста"
-        action={
-          <Button
-            mode="outline"
-            before={<Icon16ChevronLeft />}
-            onClick={goBack}
-          >
-            Вернуться назад
-          </Button>
-        }
       >
         Тут будут отображаться ваши диалоги из всех разделов
       </Placeholder>
