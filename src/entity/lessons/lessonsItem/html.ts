@@ -149,22 +149,6 @@ export const htmlLessons = [
     ]
   ),
   new LessonItem(
-    "Что такое CSS",
-    StartedCSS,
-    new LessonRequest("Объясни что такое CSS"),
-    [
-      new LessonRequest(
-        "Что нужно для того, чтобы работать с CSS?",
-        "Как начать?"
-      ),
-      new LessonRequest("Что такое стили?"),
-      new LessonRequest(
-        "Какие есть способы задать стили элементам?",
-        "Способы стилизации"
-      ),
-    ]
-  ),
-  new LessonItem(
     "Селекторы",
     StartedCSS,
     new LessonRequest("Объясни что такое селекторы в CSS и покажи примеры"),
@@ -301,26 +285,6 @@ export const htmlLessons = [
       new LessonRequest(
         "Расскажи о внутренних отступах в css",
         "Внутренние отступы"
-      ),
-    ]
-  ),
-  new LessonItem(
-    "Размеры элементов",
-    CommonCSS,
-    new LessonRequest("Расскажи как управлять размерами элементов"),
-    [
-      new LessonRequest("Обхясни свойства width и height", "width и height"),
-      new LessonRequest(
-        "Обхясни свойства min-width и min-height",
-        "min-width и max-height"
-      ),
-      new LessonRequest(
-        "Обхясни свойства max-width и max-height",
-        "max-width и max-height"
-      ),
-      new LessonRequest(
-        "Расскажи о свойстве box-sizing в css",
-        "Переопределение разеров блока"
       ),
     ]
   ),

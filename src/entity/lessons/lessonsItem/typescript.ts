@@ -131,10 +131,6 @@ export const typescriptLessons = [
         "Абстрактный класс"
       ),
       new LessonRequest(
-        "Что такое абстрактный класс в Typescript?",
-        "Абстрактный класс"
-      ),
-      new LessonRequest(
         "Как указать свойства классе readonly? И что это значит?",
         "readonly"
       ),
