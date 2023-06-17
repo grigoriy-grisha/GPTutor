@@ -62,7 +62,6 @@ function Messenger({
           placeholderHeader={placeholderHeader}
           startText={startText}
           chatGpt={chatGpt}
-          isTyping={isTyping}
           onStartChat={onStartChat}
         />
         <ScrollDown isShow={showScrollDown} onClick={scrollToBottom} />

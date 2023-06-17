@@ -33,6 +33,7 @@ function LeetcodeProblems({ id }: IProps) {
   });
 
   useEffect(() => {
+    leetCode.clearCurrentProblem();
     leetCode.loadProblems();
   }, []);
 
