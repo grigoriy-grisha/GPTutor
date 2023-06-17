@@ -4,13 +4,15 @@ function getScrollBottom(elem: HTMLDivElement) {
   return elem.scrollHeight - elem.scrollTop - elem.clientHeight;
 }
 
-const maxAutoScrollValue = 150;
-const autoScrollTimeValue = 50;
+const maxAutoScrollValue = 200;
+const autoScrollTimeValue = 75;
 
 export function useMessengerScroll(isTyping: boolean) {
   const [showScrollDown, setShowScrollDown] = useState(false);
   const scrollRef = useRef<HTMLDivElement>();
   const intervalId = useRef<NodeJS.Timeout>();
+  const blockScrollBottom = useRef(false);
+
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const scrollToBottom = useCallback(() => {
@@ -24,6 +26,24 @@ export function useMessengerScroll(isTyping: boolean) {
     addEventListener("scroll-bottom-messenger", scrollToBottom);
     return () => {
       removeEventListener("scroll-bottom-messenger", scrollToBottom);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleScrollStart = () => {
+      blockScrollBottom.current = true;
+    };
+
+    const handleScrollEnd = () => {
+      blockScrollBottom.current = false;
+    };
+
+    scrollRef.current?.addEventListener("touchstart", handleScrollStart);
+    scrollRef.current?.addEventListener("touchend", handleScrollEnd);
+
+    return () => {
+      scrollRef.current?.removeEventListener("touchstart", handleScrollStart);
+      scrollRef.current?.addEventListener("touchend", handleScrollEnd);
     };
   }, []);
 
@@ -49,6 +69,8 @@ export function useMessengerScroll(isTyping: boolean) {
     if (!isTyping) return clearInterval(intervalId.current);
 
     intervalId.current = setInterval(() => {
+      if (blockScrollBottom.current) return;
+
       if (!scrollRef.current || scrollTimeout.current) return;
 
       if (getScrollBottom(scrollRef.current) > maxAutoScrollValue) return;
