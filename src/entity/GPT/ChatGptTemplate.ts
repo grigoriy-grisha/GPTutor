@@ -78,6 +78,7 @@ export abstract class ChatGptTemplate {
 
   abortSend = () => {
     this.abortController.abort();
+    this.closeDelay();
   };
 
   blockActions = () => {
