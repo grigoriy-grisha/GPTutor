@@ -4,7 +4,7 @@ import { Snackbar } from "@vkontakte/vkui";
 import { Icon28CancelOutline, Icon28DoneOutline } from "@vkontakte/icons";
 
 import { SnackbarNotify, snackbarNotify } from "$/entity/notify";
-import { useThrottle } from "$/hooks/useThrottle";
+import useDebounce from "$/hooks/useDebounce";
 
 import classes from "./SnackbarNotifier.module.css";
 
@@ -12,9 +12,10 @@ function SnackbarNotifier() {
   const snackBars$ = useReactiveState<SnackbarNotify[]>([]);
 
   const addSnackbar = useCallback(
-    useThrottle((alert: SnackbarNotify) => {
-      snackBars$.set([...snackBars$.get(), alert]);
-    }, 500),
+    useDebounce((alert: SnackbarNotify) => {
+      if (snackBars$.get().length > 0) return;
+      snackBars$.set([alert]);
+    }),
     []
   );
 
@@ -29,11 +30,7 @@ function SnackbarNotifier() {
         <Snackbar
           key={index}
           duration={snackBar.delay || 1000}
-          onClose={() => {
-            snackBars$.set(
-              snackBars$.get().filter((item) => item !== snackBar)
-            );
-          }}
+          onClose={() => snackBars$.set([])}
           before={
             snackBar.type === "success" ? (
               <Icon28DoneOutline className={classes.doneIcon} />
