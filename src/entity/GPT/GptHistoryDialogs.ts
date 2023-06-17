@@ -29,6 +29,8 @@ export class GptHistoryDialogs {
   }
 
   async nextLoadHistory() {
+    if (!chatGpt.history.hasNextHistory$.get()) return;
+
     this.pageNumber++;
     const history = await this.getHistory$.run(this.pageNumber);
 
