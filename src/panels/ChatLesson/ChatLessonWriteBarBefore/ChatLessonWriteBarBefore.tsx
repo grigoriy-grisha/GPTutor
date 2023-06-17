@@ -19,7 +19,7 @@ function ChatLessonWriteBarBefore({
 }: IProps) {
   const platform = usePlatform();
 
-  if (additionalRequests?.length) return null;
+  if (!additionalRequests?.length) return null;
 
   return (
     <WriteBarIcon aria-label="Открыть меню" onClick={onClickAdditional}>

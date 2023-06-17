@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Button, Div, Separator } from "@vkontakte/vkui";
+import { Button, Div, HorizontalScroll, Separator } from "@vkontakte/vkui";
 
 import { LessonRequest } from "$/entity/lessons";
 
@@ -25,23 +25,31 @@ function ChatLessonAdditionalRequests({
   return (
     <>
       <Separator wide />
-      <Div className={classes.additionalRequests}>
-        {additionalRequests.map((request, index) => (
-          <Button
-            aria-label={request.name}
-            key={index}
-            disabled={isTyping || !isStopped}
-            mode={request.isSelected ? "outline" : "primary"}
-            size="m"
-            onClick={() => {
-              handleSend(request.text);
-              request.select();
-            }}
-          >
-            {request.name}
-          </Button>
-        ))}
-      </Div>
+      <HorizontalScroll>
+        <Div
+          className={classes.additionalRequests}
+          style={{
+            gridTemplateColumns: `repeat(${additionalRequests?.length}, max-content)`,
+          }}
+        >
+          {additionalRequests.map((request, index) => (
+            <div key={index} className={classes.button}>
+              <Button
+                aria-label={request.name}
+                disabled={isTyping || !isStopped}
+                mode={request.isSelected ? "outline" : "primary"}
+                size="m"
+                onClick={() => {
+                  handleSend(request.text);
+                  request.select();
+                }}
+              >
+                {request.name}
+              </Button>
+            </div>
+          ))}
+        </Div>
+      </HorizontalScroll>
     </>
   );
 }
