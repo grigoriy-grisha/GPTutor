@@ -12,14 +12,14 @@
     margin-inline-end: 0;
 }
 
-ul,ol {
+ul, ol {
     padding: 0;
     list-style: none;
 }
 
 .paragraph {
-   display: block;
-   margin-top: 12px;
+    display: block;
+    margin-top: 12px;
 }
 
 pre {
@@ -46,4 +46,12 @@ code[class*=language-] {
 
 .vkuiPopoutWrapper {
     z-index: 100;
+}
+
+.vkuiTabbar--ios {
+    bottom: 6px;
+}
+
+.vkuiWriteBar--ios {
+    margin-bottom: 6px;
 }
