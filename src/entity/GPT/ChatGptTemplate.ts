@@ -99,10 +99,12 @@ export abstract class ChatGptTemplate {
       await this.postMessage(message);
 
       await this.sendCompletions$.run();
+
+      if (message === this.getLastMessage()) return;
+      await this.postMessage(this.getLastMessage());
     } finally {
       this.timer.run();
       this.allowActions();
-      await this.postMessage(this.getLastMessage());
     }
   };
 
