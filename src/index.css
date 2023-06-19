@@ -47,3 +47,26 @@ code[class*=language-] {
 .vkuiPopoutWrapper {
     z-index: 100;
 }
+
+table {
+    text-align: left;
+    position: relative;
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid var(--vkui--color_text_primary);
+    padding: 5px;
+}
+th {
+    color: var(--vkui--color_text_primary);
+    border-radius: 0;
+    position: sticky;
+    top: 0;
+    padding: 5px;
+}
+
+tfoot > tr  {
+    background: black;
+    color: white;
+}
