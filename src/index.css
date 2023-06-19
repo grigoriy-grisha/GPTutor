@@ -12,14 +12,14 @@
     margin-inline-end: 0;
 }
 
-ul,ol {
+ul, ol {
     padding: 0;
     list-style: none;
 }
 
 .paragraph {
-   display: block;
-   margin-top: 12px;
+    display: block;
+    margin-top: 12px;
 }
 
 pre {
@@ -59,6 +59,7 @@ td, th {
     border: 1px solid var(--vkui--color_text_primary);
     padding: 5px;
 }
+
 th {
     color: var(--vkui--color_text_primary);
     border-radius: 0;
@@ -71,3 +72,12 @@ tfoot > tr  {
     background: black;
     color: white;
 }
+
+.vkuiTabbar--ios {
+    bottom: 8px;
+}
+
+.vkuiWriteBar--ios {
+    margin-bottom: 8px;
+}
+

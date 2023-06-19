@@ -72,4 +72,5 @@ function History({ id }: IProps) {
     </Panel>
   );
 }
+
 export default History;

@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Search, SimpleCell } from "@vkontakte/vkui";
-import { Icon20ChevronRight } from "@vkontakte/icons";
+import { Placeholder, Search, SimpleCell } from "@vkontakte/vkui";
+import { Icon20ChevronRight, Icon56GhostOutline } from "@vkontakte/icons";
 
 import { ChapterItem, LessonItem } from "$/entity/lessons";
 
@@ -22,11 +22,19 @@ function Lessons({ currentChapter, onClickLesson }: IProps) {
         onChange={({ target }) => currentChapter.searchLessons(target.value)}
         after={null}
       />
+      {Object.entries(lessons).length === 0 && (
+        <Placeholder
+          className={classes.placeholder}
+          icon={<Icon56GhostOutline />}
+          header="Ничего не найдено"
+        />
+      )}
       {Object.entries(lessons).map(([key, value]) => (
         <React.Fragment key={key}>
           <TertiaryTitle>{key}</TertiaryTitle>
           {value.map((lesson) => (
             <SimpleCell
+              style={{ whiteSpace: "normal" }}
               key={lesson.id}
               after={<Icon20ChevronRight />}
               onClick={() => onClickLesson(lesson)}

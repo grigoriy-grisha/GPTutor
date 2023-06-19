@@ -100,8 +100,8 @@ export const gitLessons = [
       new LessonRequest("Расскажи о команде ```git merge```", "git merge"),
       new LessonRequest("Расскажи о команде ```git rebase```", "git rebase"),
       new LessonRequest(
-        "Какие есть стратегии слияни в git?",
-        "Стратегии слияни"
+        "Какие есть стратегии слияния в git?",
+        "Стратегии слияния"
       ),
     ]
   ),
@@ -112,7 +112,7 @@ export const gitLessons = [
     [
       new LessonRequest(
         "Какие основные рекомендации для решения конфликта в git?",
-        "Рекоментации"
+        "Рекомендации"
       ),
       new LessonRequest(
         "Какие инструменты можно использовать, чтобы было проще решать конфликты",
@@ -123,7 +123,7 @@ export const gitLessons = [
   new LessonItem("Процессы", TEAM_WORK, new LessonRequest("Какие "), [
     new LessonRequest(
       "Какие основные рабочие процессы есть при работе с git, какой порядок действий в них заложен?",
-      "Рекоментации"
+      "Рекомендации"
     ),
     new LessonRequest("Расскажи о GitFlow Workflow", "GitFlow Workflow"),
     new LessonRequest("Расскажи о Forking Workflow", "Forking Workflow"),

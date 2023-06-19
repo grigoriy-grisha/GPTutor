@@ -16,6 +16,7 @@ import { useNavigationContext } from "$/NavigationContext";
 interface IProps {
   setRef: (ref: HTMLDivElement) => void;
 }
+
 function TabbarApp({ setRef }: IProps) {
   const { goToModes, goToHistory } = useNavigationContext();
 
