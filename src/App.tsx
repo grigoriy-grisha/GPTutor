@@ -12,6 +12,7 @@ import "@vkontakte/vkui/dist/vkui.css";
 import "./index.css";
 
 import { vkUserModel } from "./entity/user";
+import { online } from "./api/online";
 
 import { OneDark } from "./OneDark";
 import { OneLight } from "./OneLight";
@@ -23,15 +24,15 @@ import { OpenSource } from "./panels/OpenSource";
 import { History } from "./panels/History";
 import { Modes } from "./panels/Modes";
 
-import { useNavigationContext } from "$/NavigationContext";
-import { SnackbarNotifier } from "$/components/SnackbarNotifier";
-import { ChatSettings } from "$/modals/ChatSettings";
-import { ApplicationInfo } from "$/modals/ApplicationInfo";
-import { ChatFree } from "$/panels/ChatFree";
-import { ChatLesson } from "$/panels/ChatLesson";
+import { useNavigationContext } from "./NavigationContext";
+import { SnackbarNotifier } from "./components/SnackbarNotifier";
+import { ChatSettings } from "./modals/ChatSettings";
+import { ApplicationInfo } from "./modals/ApplicationInfo";
+import { ChatFree } from "./panels/ChatFree";
+import { ChatLesson } from "./panels/ChatLesson";
 import { ChatInterview } from "./panels/ChatInterview";
-import { InterviewQuestions } from "$/modals/InterviewQuestions";
-import { LeetcodeProblems } from "$/panels/LeetCodeProblems";
+import { InterviewQuestions } from "./modals/InterviewQuestions";
+import { LeetcodeProblems } from "./panels/LeetCodeProblems";
 import { ChatLeetCode } from "./panels/ChatLeetCode";
 import { ProblemDetail } from "./panels/ProblemDetail";
 import { AppAlert } from "./modals/AppAlert";
@@ -46,6 +47,10 @@ const App = () => {
       .send("VKWebAppGetUserInfo")
       .then((user) => vkUserModel.fill(user))
       .catch(goToForbidden);
+  }, []);
+
+  useEffect(() => {
+    online();
   }, []);
 
   const history = location.hasOverlay()
