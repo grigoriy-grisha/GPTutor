@@ -6,7 +6,6 @@ import {
   PanelHeaderClose,
   PanelHeaderSubmit,
   Separator,
-  Spacing,
   useAdaptivityConditionalRender,
 } from "@vkontakte/vkui";
 
@@ -56,7 +55,6 @@ function ChatSettings({ id }: IProps) {
         systemMessageValue={systemMessageValue}
         updateSystemMessage={updateSystemMessage}
       />
-      <Spacing size={200} />
     </ModalPage>
   );
 }
