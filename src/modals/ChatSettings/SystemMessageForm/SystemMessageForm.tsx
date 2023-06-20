@@ -45,7 +45,7 @@ function SystemMessageForm({
     >
       <FormItem>
         <Textarea
-          placeholder="Системное сообщение..."
+          placeholder="Введите промпт..."
           className={classes.wrapper}
           value={systemMessageValue}
           onChange={({ target }) => updateSystemMessage(target.value)}
