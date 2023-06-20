@@ -11,7 +11,7 @@
 }
 
 .panelHeaderVkApps :global(.vkuiPanelHeader__after) {
-    min-width: 0;
+    min-width: 8px;
     flex: none;
 }
 
