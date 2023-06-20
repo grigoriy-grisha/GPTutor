@@ -48,8 +48,7 @@ function Home({ id }: IProps) {
             }
 
             if (chapter.type === ModeType.HTMLCSS_INTERWIEW) {
-              interviews.setCurrentInterview(chapter.type as ModeType);
-              goToChatInterview();
+              chatGpt.moveToInterviewChat(chapter.type, goToChatInterview);
               return;
             }
 

@@ -20,14 +20,34 @@ export * from "./lessonsItem/react";
 export { ModeType } from "./modeType";
 
 export const languages = [
-  new ChapterItem(ModeType.HTMLCSS, htmlLessons),
-  new ChapterItem(ModeType.JS, lessonsJs),
-  new ChapterItem(ModeType.Typescript, typescriptLessons),
+  new ChapterItem(
+    ModeType.HTMLCSS,
+    htmlLessons,
+    "Я хочу, чтобы вы выступили в роли Senior Frontend-разработчика. И помогали мне изучать HTML и CSS"
+  ),
+  new ChapterItem(
+    ModeType.JS,
+    lessonsJs,
+    "Я хочу, чтобы вы выступили в роли Senior Frontend-разработчика. И помогали мне изучать JavaScript"
+  ),
+  new ChapterItem(
+    ModeType.Typescript,
+    typescriptLessons,
+    "Я хочу, чтобы вы выступили в роли Senior Frontend-разработчика. И помогали мне изучать Typescript"
+  ),
 ];
 
 export const technologies = [
-  new ChapterItem(ModeType.React, reactLessons),
-  new ChapterItem(ModeType.Git, gitLessons),
+  new ChapterItem(
+    ModeType.React,
+    reactLessons,
+    "Я хочу, чтобы вы выступили в роли Senior Frontend-разработчика. И помогали мне изучать React"
+  ),
+  new ChapterItem(
+    ModeType.Git,
+    gitLessons,
+    "Я хочу, чтобы вы выступили в роли Senior разработчика. И помогали мне изучать Git"
+  ),
 ];
 
 export const lessonsController = new LessonsController([

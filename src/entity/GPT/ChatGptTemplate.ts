@@ -20,8 +20,8 @@ export abstract class ChatGptTemplate {
   isBlockActions$ = sig(false);
 
   currentHistory: History | null = null;
-  readonly initialSystemContent =
-    "Ты программист с опытом веб разработки в 10 лет, отвечаешь на вопросы джуниора, который хочет научиться программированию, добавляй правильную подсветку кода, указывай язык для блоков кода";
+  initialSystemContent = "";
+
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
   timer = new Timer(15, 0, "decrement");
@@ -72,6 +72,14 @@ export abstract class ChatGptTemplate {
     this.messages$.set([]);
     this.currentHistory = null;
   };
+
+  setInitialSystemMessage(message: string = "") {
+    this.initialSystemContent = message;
+    this.systemMessage = new GptMessage(
+      this.initialSystemContent,
+      GPTRoles.system
+    );
+  }
 
   clearSystemMessage = () => {
     this.systemMessage?.content$.set(this.initialSystemContent);

@@ -6,6 +6,7 @@ import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 import { sig } from "dignals";
 import { ChatGptInterview } from "$/entity/GPT/ChatGptInterview";
 import { ChatGptLeetCode } from "$/entity/GPT/ChatGptLeetCode";
+import { interviews } from "$/entity/interview";
 
 export class ChatGpt {
   history = new GptHistoryDialogs();
@@ -28,6 +29,8 @@ export class ChatGpt {
     this.chatGptFree.clearMessages();
     this.chatGptFree.abortSend();
 
+    this.chatGptLesson.setInitialSystemMessage("");
+
     goToChat();
   };
 
@@ -37,10 +40,18 @@ export class ChatGpt {
     this.chatGptLesson.currentHistory = null;
 
     this.currentChatGpt$.set(this.chatGptLesson);
+    this.chatGptLesson.setInitialSystemMessage(
+      lessonsController.currentChapter.get()?.systemMessage
+    );
 
     lessonsController.setCurrentLesson(lesson.id);
 
     goToChatLesson();
+  }
+
+  moveToInterviewChat(interviewType: string, goToChatInterview: () => void) {
+    interviews.setCurrentInterview(interviewType as ModeType);
+    goToChatInterview();
   }
 
   async restoreDialogFromHistory(

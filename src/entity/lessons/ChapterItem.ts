@@ -9,10 +9,17 @@ export class ChapterItem {
   rawLessons: LessonItem[];
   lessons: Signal<Lessons>;
 
-  constructor(public type: ModeType, lessons: LessonItem[]) {
+  systemMessage: string;
+
+  constructor(
+    public type: ModeType,
+    lessons: LessonItem[],
+    systemMessage: string
+  ) {
     this.type = type;
     this.rawLessons = lessons;
     this.lessons = sig(this.prepareLessons(lessons));
+    this.systemMessage = systemMessage;
   }
 
   prepareLessons(lessons: LessonItem[]): Lessons {
