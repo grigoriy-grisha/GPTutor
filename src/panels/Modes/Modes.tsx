@@ -19,9 +19,11 @@ import {
 import PanelTitle from "$/components/PanelTitle";
 import { useNavigationContext } from "$/NavigationContext";
 
-import classes from "./Modes.module.css";
 import { interviews } from "$/entity/interview";
 import { leetCode } from "$/entity/leetCode/LeetCode";
+import { chatGpt } from "$/entity/GPT";
+
+import classes from "./Modes.module.css";
 
 interface IProps {
   id: string;
@@ -72,8 +74,7 @@ function Modes({ id }: IProps) {
           title="Собеседования"
           chapters={interviews.interviews}
           onClickChapter={(chapter) => {
-            interviews.setCurrentInterview(chapter.type as ModeType);
-            goToChatInterview();
+            chatGpt.moveToInterviewChat(chapter.type, goToChatInterview);
           }}
         />
         <Cards
