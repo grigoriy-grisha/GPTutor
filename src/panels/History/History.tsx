@@ -1,18 +1,15 @@
 import React, { useEffect } from "react";
 
-import {
-  Panel,
-  PanelHeader,
-  PanelHeaderBack,
-  Spinner,
-  Title,
-} from "@vkontakte/vkui";
-import { AppContainer } from "$/components/AppContainer";
+import { Panel, PanelHeaderBack, Spinner, Title } from "@vkontakte/vkui";
 
+import { AppContainer } from "$/components/AppContainer";
 import { useNavigationContext } from "$/NavigationContext";
 import { HistoryList } from "$/panels/History/HistoryList";
 import { useInfinityScroll } from "$/hooks/useInfinityScroll";
 import { chatGpt } from "$/entity/GPT";
+import { AppPanelHeader } from "$/components/AppPanelHeader";
+
+import { HistoryDelete } from "./HistoryDelete";
 
 import classes from "./History.module.css";
 
@@ -42,9 +39,12 @@ function History({ id }: IProps) {
         containerRef={setScrollableElement}
         className={classes.mainContainer}
         headerChildren={
-          <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
+          <AppPanelHeader
+            before={<PanelHeaderBack onClick={goBack} />}
+            after={<HistoryDelete />}
+          >
             <Title level="1">История</Title>
-          </PanelHeader>
+          </AppPanelHeader>
         }
       >
         <div>

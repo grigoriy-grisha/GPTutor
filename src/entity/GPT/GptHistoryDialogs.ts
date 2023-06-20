@@ -3,13 +3,14 @@ import { memo, sig } from "dignals";
 import { UUID_V4 } from "$/entity/common";
 
 import ReactivePromise from "$/services/ReactivePromise";
-import { deleteHistory, getHistoryById } from "$/api/history";
+import { deleteAllHistory, deleteHistory, getHistoryById } from "$/api/history";
 import { snackbarNotify } from "$/entity/notify";
 import { History } from "$/entity/history";
 import { chatGpt } from "$/entity/GPT/ChatGpt";
 
 export class GptHistoryDialogs {
-  deleteHistory$ = ReactivePromise.create((id: string) => deleteHistory(id));
+  deleteHistory$ = ReactivePromise.create(deleteHistory);
+  deleteAllHistory$ = ReactivePromise.create(deleteAllHistory);
   getHistory$ = ReactivePromise.create(getHistoryById);
 
   dialogs = sig<History[]>([]);
@@ -35,6 +36,24 @@ export class GptHistoryDialogs {
     const history = await this.getHistory$.run(this.pageNumber);
 
     this.dialogs.set([...this.dialogs.get(), ...history.content]);
+  }
+
+  async removeAllHistories() {
+    try {
+      await this.deleteAllHistory$.run();
+
+      snackbarNotify.notify({
+        type: "success",
+        message: "История успешно удалена",
+      });
+
+      this.dialogs.set([]);
+    } catch (e) {
+      snackbarNotify.notify({
+        type: "error",
+        message: "Произошла ошибка при удалении!",
+      });
+    }
   }
 
   async removeHistoryDialog(id: UUID_V4) {

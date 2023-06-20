@@ -31,5 +31,14 @@ export function deleteHistory(id: string) {
     headers: {
       Authorization: "Bearer " + location.href,
     },
-  });
+  }).then((res) => res.json());
+}
+
+export function deleteAllHistory() {
+  return fetch(`${BACKEND_HOST}history`, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + location.href,
+    },
+  }).then((res) => res.json());
 }
