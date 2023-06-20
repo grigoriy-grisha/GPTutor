@@ -24,6 +24,8 @@ function ChatSettings({ id }: IProps) {
   const { goBack } = useNavigationContext();
   const { sizeX } = useAdaptivityConditionalRender();
 
+  const gpt = chatGpt.getCurrentChatGpt();
+
   const {
     isDirty,
     systemMessageValue,
@@ -31,7 +33,9 @@ function ChatSettings({ id }: IProps) {
     resetSystemMessage,
     updateSystemMessage,
     onSubmit,
-  } = useChatSettings(chatGpt.getCurrentChatGpt());
+  } = useChatSettings(gpt);
+
+  const initialSystemMessage = gpt.initialSystemContent;
 
   return (
     <ModalPage settlingHeight={100} id={id}>
@@ -50,6 +54,8 @@ function ChatSettings({ id }: IProps) {
       </ModalPageHeader>
       <Separator wide />
       <SystemMessageForm
+        clearSystemMessage={gpt.clearSystemMessage}
+        initialSystemMessage={initialSystemMessage}
         isChangedSystemMessage={isChangedSystemMessage}
         resetSystemMessage={resetSystemMessage}
         systemMessageValue={systemMessageValue}

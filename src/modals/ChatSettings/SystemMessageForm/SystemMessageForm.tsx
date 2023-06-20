@@ -1,19 +1,31 @@
 import React, { memo } from "react";
 
-import { Button, Div, FormItem, Group, Textarea, Title } from "@vkontakte/vkui";
+import {
+  Button,
+  Div,
+  FormItem,
+  Group,
+  Spacing,
+  Textarea,
+  Title,
+} from "@vkontakte/vkui";
 
 import { AppDiv } from "$/components/AppDiv";
 
 import classes from "./SystemMessageForm.module.css";
 
 interface IProps {
+  initialSystemMessage: string;
   isChangedSystemMessage: boolean;
   systemMessageValue: string;
   resetSystemMessage: () => void;
+  clearSystemMessage: () => void;
   updateSystemMessage: (value: string) => void;
 }
 
 function SystemMessageForm({
+  initialSystemMessage,
+  clearSystemMessage,
   isChangedSystemMessage,
   systemMessageValue,
   resetSystemMessage,
@@ -33,12 +45,21 @@ function SystemMessageForm({
     >
       <FormItem>
         <Textarea
+          placeholder="Системное сообщение..."
           className={classes.wrapper}
           value={systemMessageValue}
           onChange={({ target }) => updateSystemMessage(target.value)}
         />
       </FormItem>
       <Div style={{ paddingTop: 0 }}>
+        <Button
+          mode="outline"
+          disabled={initialSystemMessage === ""}
+          onClick={clearSystemMessage}
+        >
+          Отчистить системное сообщение
+        </Button>
+        <Spacing size={8} />
         <Button
           disabled={isChangedSystemMessage}
           mode="outline"

@@ -20,7 +20,7 @@ function useChatSettings(chatGpt: ChatGptTemplate) {
     chatGpt.initialSystemContent === systemMessageValue;
 
   const resetSystemMessage = () => {
-    chatGpt.clearSystemMessage();
+    chatGpt.resetSystemMessage();
     setSystemMessageValue(systemMessageContent.get());
   };
 

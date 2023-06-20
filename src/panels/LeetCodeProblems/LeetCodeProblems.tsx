@@ -76,7 +76,7 @@ function LeetcodeProblems({ id }: IProps) {
                 );
 
                 chatGpt.chatGptLeetCode.clearMessages();
-                chatGpt.chatGptLeetCode.clearSystemMessage();
+                chatGpt.chatGptLeetCode.resetSystemMessage();
                 chatGpt.chatGptLeetCode.clearSelectedMessages();
 
                 goToProblemDetail();

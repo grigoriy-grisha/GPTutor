@@ -82,7 +82,11 @@ export abstract class ChatGptTemplate {
   }
 
   clearSystemMessage = () => {
-    this.systemMessage?.content$.set(this.initialSystemContent);
+    this.systemMessage.content$.set("");
+  };
+
+  resetSystemMessage = () => {
+    this.systemMessage.content$.set(this.initialSystemContent);
   };
 
   abortSend = () => {
@@ -305,6 +309,9 @@ export abstract class ChatGptTemplate {
     }
 
     await this.prepareDialog(dialog);
+
+    this.initialSystemContent = dialog.systemMessage;
+    this.systemMessage = new GptMessage(dialog.systemMessage, GPTRoles.system);
 
     this.messages$.set(
       messages.map((message) => {
