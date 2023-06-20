@@ -24,6 +24,11 @@ function useChatSettings(chatGpt: ChatGptTemplate) {
     setSystemMessageValue(systemMessageContent.get());
   };
 
+  const clearSystemMessage = () => {
+    chatGpt.clearSystemMessage();
+    setSystemMessageValue("");
+  };
+
   const updateSystemMessage = (value: string) => {
     setSystemMessageValue(value);
   };
@@ -65,6 +70,7 @@ function useChatSettings(chatGpt: ChatGptTemplate) {
     isDirty,
     systemMessageValue,
     isChangedSystemMessage,
+    clearSystemMessage,
     resetSystemMessage,
     updateSystemMessage,
     onSubmit,

@@ -31,6 +31,7 @@ function ChatSettings({ id }: IProps) {
     systemMessageValue,
     isChangedSystemMessage,
     resetSystemMessage,
+    clearSystemMessage,
     updateSystemMessage,
     onSubmit,
   } = useChatSettings(gpt);
@@ -54,7 +55,7 @@ function ChatSettings({ id }: IProps) {
       </ModalPageHeader>
       <Separator wide />
       <SystemMessageForm
-        clearSystemMessage={gpt.clearSystemMessage}
+        clearSystemMessage={clearSystemMessage}
         initialSystemMessage={initialSystemMessage}
         isChangedSystemMessage={isChangedSystemMessage}
         resetSystemMessage={resetSystemMessage}
