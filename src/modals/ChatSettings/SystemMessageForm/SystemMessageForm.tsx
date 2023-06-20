@@ -53,7 +53,11 @@ function SystemMessageForm({
       </FormItem>
       <Div style={{ paddingTop: 0 }}>
         {initialSystemMessage !== "" && (
-          <Button mode="outline" onClick={clearSystemMessage}>
+          <Button
+            mode="outline"
+            disabled={systemMessageValue === ""}
+            onClick={clearSystemMessage}
+          >
             Очистить системное сообщение
           </Button>
         )}
