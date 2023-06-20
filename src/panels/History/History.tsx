@@ -4,10 +4,8 @@ import {
   Panel,
   PanelHeader,
   PanelHeaderBack,
-  Platform,
   Spinner,
   Title,
-  usePlatform,
 } from "@vkontakte/vkui";
 import { AppContainer } from "$/components/AppContainer";
 
@@ -23,8 +21,6 @@ interface IProps {
 }
 
 function History({ id }: IProps) {
-  const platform = usePlatform();
-
   const pageNumber = chatGpt.history.pageNumber;
   const loading = chatGpt.history.getHistory$.loading.get();
   const hasNextPage = chatGpt.history.hasNextHistory$.get();
@@ -46,13 +42,7 @@ function History({ id }: IProps) {
         containerRef={setScrollableElement}
         className={classes.mainContainer}
         headerChildren={
-          <PanelHeader
-            before={
-              platform !== Platform.ANDROID && (
-                <PanelHeaderBack onClick={goBack} />
-              )
-            }
-          >
+          <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
             <Title level="1">История</Title>
           </PanelHeader>
         }

@@ -29,14 +29,14 @@ export class ChatGpt {
     this.chatGptFree.clearMessages();
     this.chatGptFree.abortSend();
 
-    this.chatGptLesson.setInitialSystemMessage("");
+    this.chatGptFree.setInitialSystemMessage("");
 
     goToChat();
   };
 
   moveToLessonChat(lesson: LessonItem, goToChatLesson: () => void) {
     this.chatGptLesson.clearMessages();
-    this.chatGptLesson.clearSystemMessage();
+    this.chatGptLesson.resetSystemMessage();
     this.chatGptLesson.currentHistory = null;
 
     this.currentChatGpt$.set(this.chatGptLesson);

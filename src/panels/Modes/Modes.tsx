@@ -1,12 +1,6 @@
 import React from "react";
 
-import {
-  Panel,
-  PanelHeader,
-  PanelHeaderBack,
-  Platform,
-  usePlatform,
-} from "@vkontakte/vkui";
+import { Panel, PanelHeader, PanelHeaderBack } from "@vkontakte/vkui";
 
 import { AppContainer } from "$/components/AppContainer";
 import Cards from "$/components/Cards/Cards";
@@ -30,8 +24,6 @@ interface IProps {
 }
 
 function Modes({ id }: IProps) {
-  const platform = usePlatform();
-
   const { goBack, goToChapters, goToChatInterview, goToLeetcodeProblems } =
     useNavigationContext();
 
@@ -41,13 +33,7 @@ function Modes({ id }: IProps) {
         isSecondary
         className={classes.container}
         headerChildren={
-          <PanelHeader
-            before={
-              platform !== Platform.ANDROID && (
-                <PanelHeaderBack onClick={goBack} />
-              )
-            }
-          >
+          <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
             <PanelTitle mobileTitle="Режимы" title="Режимы"></PanelTitle>
           </PanelHeader>
         }
