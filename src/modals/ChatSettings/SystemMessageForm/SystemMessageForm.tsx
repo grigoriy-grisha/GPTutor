@@ -45,20 +45,18 @@ function SystemMessageForm({
     >
       <FormItem>
         <Textarea
-          placeholder="Системное сообщение..."
+          placeholder="Введите промпт..."
           className={classes.wrapper}
           value={systemMessageValue}
           onChange={({ target }) => updateSystemMessage(target.value)}
         />
       </FormItem>
       <Div style={{ paddingTop: 0 }}>
-        <Button
-          mode="outline"
-          disabled={initialSystemMessage === ""}
-          onClick={clearSystemMessage}
-        >
-          Отчистить системное сообщение
-        </Button>
+        {initialSystemMessage !== "" && (
+          <Button mode="outline" onClick={clearSystemMessage}>
+            Очистить системное сообщение
+          </Button>
+        )}
         <Spacing size={8} />
         <Button
           disabled={isChangedSystemMessage}
