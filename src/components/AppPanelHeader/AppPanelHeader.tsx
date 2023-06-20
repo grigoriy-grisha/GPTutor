@@ -23,9 +23,11 @@ function AppPanelHeader({ after, before, children }: IProps) {
         [classes.panelHeaderVkApps]: platform === Platform.VKCOM,
       })}
       before={before}
-      after={after}
     >
-      <div className={classes.wrapper}>{children}</div>
+      <div className={classes.wrapper}>
+        {children}
+        {after}
+      </div>
     </PanelHeader>
   );
 }
