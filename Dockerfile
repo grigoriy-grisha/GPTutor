@@ -8,7 +8,5 @@ RUN npm install
 
 COPY . .
 
-COPY ../.env-frontend.example ./.env
-
 RUN npm run build
 
