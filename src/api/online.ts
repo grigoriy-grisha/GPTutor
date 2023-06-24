@@ -1,4 +1,4 @@
-const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST_WS;
+const BACKEND_HOST = _env_.REACT_APP_BACKEND_HOST_WS;
 
 export function online() {
   try {

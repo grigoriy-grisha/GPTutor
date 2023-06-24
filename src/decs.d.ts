@@ -12,3 +12,6 @@ declare module "*.css" {
   const content: Record<string, string>;
   export default content;
 }
+
+declare const _env_: Record<string, string>;
+
