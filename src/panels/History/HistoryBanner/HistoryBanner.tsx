@@ -35,7 +35,7 @@ const BannerIcon: Record<string, React.FC> = {
   [ModeType.React]: ReactLesson,
   [ModeType.Git]: GitLesson,
   [ModeType.HTMLCSS]: HtmlCssLesson,
-  [ModeType.HTMLCSS_INTERWIEW]: HtmlCssInterview,
+  [ModeType.HTMLCSS_INTERVIEW]: HtmlCssInterview,
   [ModeType.LeetCode]: LeetCode,
 };
 
@@ -46,7 +46,7 @@ const chapterNames: Record<string, string> = {
   [ModeType.React]: "React",
   [ModeType.Git]: "Git",
   [ModeType.HTMLCSS]: "HTML/CSS",
-  [ModeType.HTMLCSS_INTERWIEW]: "Собеседование HTML/CSS",
+  [ModeType.HTMLCSS_INTERVIEW]: "Собеседование HTML/CSS",
   [ModeType.LeetCode]: "LeetCode",
 };
 

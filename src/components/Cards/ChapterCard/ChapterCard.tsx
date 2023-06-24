@@ -25,7 +25,7 @@ const CardIcon: Record<string, React.FC> = {
   [ModeType.React]: ReactLesson,
   [ModeType.Git]: GitLesson,
   [ModeType.HTMLCSS]: HtmlCssLesson,
-  [ModeType.HTMLCSS_INTERWIEW]: HtmlCssInterview,
+  [ModeType.HTMLCSS_INTERVIEW]: HtmlCssInterview,
   [ModeType.LeetCode]: LeetCode,
 };
 
