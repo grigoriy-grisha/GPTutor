@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Placeholder, Search, SimpleCell } from "@vkontakte/vkui";
 import { Icon20ChevronRight, Icon56GhostOutline } from "@vkontakte/icons";
@@ -16,9 +16,14 @@ interface IProps {
 function Lessons({ currentChapter, onClickLesson }: IProps) {
   const lessons = currentChapter.lessons.get();
 
+  useEffect(() => {
+    currentChapter.searchLessons(currentChapter.searchValue$.get());
+  }, []);
+
   return (
     <div className={classes.lessons}>
       <Search
+        value={currentChapter.searchValue$.get()}
         onChange={({ target }) => currentChapter.searchLessons(target.value)}
         after={null}
       />
