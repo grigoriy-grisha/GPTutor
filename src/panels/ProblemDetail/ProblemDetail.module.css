@@ -7,6 +7,10 @@
     margin-bottom: 60px;
 }
 
+.container pre {
+    white-space: break-spaces;
+}
+
 .buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
