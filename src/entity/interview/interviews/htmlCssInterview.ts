@@ -2,7 +2,7 @@ import { Interview } from "$/entity/interview/Interview";
 import { ModeType } from "$/entity/lessons";
 import { InterviewItem } from "$/entity/interview/InterviewItem";
 
-export const htmlCssInterview = new Interview(ModeType.HTMLCSS_INTERWIEW, [
+export const htmlCssInterview = new Interview(ModeType.HTMLCSS_INTERVIEW, [
   new InterviewItem("Что такое HTML и для чего он используется?"),
   new InterviewItem("Что такое CSS и для чего он используется?"),
   new InterviewItem("Какие бывают методы задания стилей CSS?"),
