@@ -2,7 +2,7 @@ import { HistoryCreate } from "$/entity/history/types";
 import { History } from "$/entity/history";
 import { Pageable } from "$/entity/common";
 
-const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
+const BACKEND_HOST = _env_.REACT_APP_BACKEND_HOST;
 
 export function createHistory(params: HistoryCreate): Promise<History> {
   return fetch(`${BACKEND_HOST}history`, {

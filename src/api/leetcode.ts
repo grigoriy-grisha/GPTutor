@@ -1,6 +1,6 @@
 import { DetailProblem, Problem } from "$/entity/leetCode";
 
-const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
+const BACKEND_HOST = _env_.REACT_APP_BACKEND_HOST;
 export async function leetcodeProblems(): Promise<Problem[]> {
   const response = await fetch(`${BACKEND_HOST}leetcode`, {
     headers: {

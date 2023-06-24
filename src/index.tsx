@@ -1,3 +1,5 @@
+import "./env-config.js";
+
 import React from "react";
 import ReactDOM from "react-dom";
 import bridge from "@vkontakte/vk-bridge";
