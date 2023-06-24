@@ -4,6 +4,7 @@ import {
   Panel,
   PanelHeader,
   PanelHeaderBack,
+  Placeholder,
   Search,
   Separator,
   SimpleCell,
@@ -11,6 +12,8 @@ import {
   Text,
   Title,
 } from "@vkontakte/vkui";
+import { Icon56GhostOutline } from "@vkontakte/icons";
+
 import { AppContainer } from "$/components/AppContainer";
 import { useNavigationContext } from "$/NavigationContext";
 import { leetCode } from "$/entity/leetCode/LeetCode";
@@ -35,7 +38,11 @@ function LeetcodeProblems({ id }: IProps) {
   useEffect(() => {
     leetCode.clearCurrentProblem();
     leetCode.loadProblems();
+    leetCode.searchLProblem(leetCode.searchValue$.get());
   }, []);
+
+  const loading = leetCode.leetcodeProblems$.loading.get();
+  const problems = leetCode.filteredPagedProblems$.get();
 
   return (
     <Panel id={id}>
@@ -52,22 +59,31 @@ function LeetcodeProblems({ id }: IProps) {
       >
         <div>
           <Search
+            value={leetCode.searchValue$.get()}
             placeholder="Поиск проблемы leetcode"
             onChange={(event) => leetCode.searchLProblem(event.target.value)}
           />
         </div>
 
-        {leetCode.leetcodeProblems$.loading.get() && (
+        {loading && (
           <Div>
             <Spinner size="large" />
           </Div>
         )}
 
-        {leetCode.filteredPagedProblems$.get().map((problem) => (
+        {!loading && !problems.length && (
+          <Placeholder
+            style={{ paddingTop: 60 }}
+            icon={<Icon56GhostOutline />}
+            header="Ничего не найдено"
+          />
+        )}
+
+        {problems.map((problem) => (
           <>
             <SimpleCell
               className={classes.cell}
-              disabled={leetCode.leetcodeDetailProblems$.loading.get()}
+              disabled={loading}
               key={problem.stat.question_id}
               after={<StatusTag status={problem.difficulty.level} />}
               onClick={async () => {

@@ -19,7 +19,7 @@ class LeetCode {
 
   leetcodeDetailProblems$ = ReactivePromise.create(leetcodeDetailProblems);
 
-  search = "";
+  searchValue$ = sig("");
 
   clearCurrentProblem() {
     this.currentProblem = null;
@@ -29,7 +29,7 @@ class LeetCode {
   loadProblems = async () => {
     if (this.problems.length) return;
 
-    this.search = "";
+    this.searchValue$.set("");
     this.pageNumber = 0;
     this.filteredPagedProblems$.set([]);
     this.pagedProblems$.set([]);
@@ -39,7 +39,7 @@ class LeetCode {
     this.problems = problems;
     this.pagedProblems$.set(problems.slice(this.pageNumber, page));
     this.filteredPagedProblems$.set(this.pagedProblems$.get());
-    this.searchLProblem(this.search);
+    this.searchLProblem(this.searchValue$.get());
   };
 
   nextLoadProblems = () => {
@@ -53,7 +53,7 @@ class LeetCode {
       ),
     ]);
     this.filteredPagedProblems$.set(this.pagedProblems$.get());
-    this.searchLProblem(this.search);
+    this.searchLProblem(this.searchValue$.get());
   };
 
   async loadDetailProblem(slug: string) {
@@ -62,7 +62,7 @@ class LeetCode {
   }
 
   searchLProblem(search: string) {
-    this.search = search;
+    this.searchValue$.set(search);
 
     if (search.length < 3) {
       this.filteredPagedProblems$.set(

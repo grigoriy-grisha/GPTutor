@@ -11,6 +11,8 @@ export class ChapterItem {
 
   systemMessage: string;
 
+  searchValue$ = sig("");
+
   constructor(
     public type: ModeType,
     lessons: LessonItem[],
@@ -43,8 +45,10 @@ export class ChapterItem {
   }
 
   searchLessons(search: string) {
+    this.searchValue$.set(search)
+
     if (search.length < 3) {
-      this.lessons.set(this.prepareLessons(this.rawLessons));
+      this.resetList()
       return;
     }
 
@@ -55,5 +59,9 @@ export class ChapterItem {
         this.rawLessons.filter((item) => regExp.test(item.name.toLowerCase()))
       )
     );
+  }
+
+  resetList() {
+    this.lessons.set(this.prepareLessons(this.rawLessons));
   }
 }
