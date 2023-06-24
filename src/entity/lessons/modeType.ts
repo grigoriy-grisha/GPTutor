@@ -6,7 +6,7 @@ export enum ModeType {
   HTMLCSS = "HTMLCSS",
   Typescript = "Typescript",
 
-  HTMLCSS_INTERWIEW = "HTMLCSS INTERWIEW",
+  HTMLCSS_INTERVIEW = "HTMLCSS INTERVIEW",
 
   LeetCode = "LeetCode",
 }

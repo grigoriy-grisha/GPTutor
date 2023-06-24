@@ -64,7 +64,7 @@ export class ChatGpt {
     const dialog = this.history.getDialogById(id);
     if (!dialog) return;
 
-    if (!dialog.type || dialog.type === "Free") {
+    if (dialog.type === "Free") {
       this.currentChatGpt$.set(this.chatGptFree);
       await this.chatGptFree.restoreDialogFromHistory(dialog, goToChatFree);
       return;
@@ -77,17 +77,20 @@ export class ChatGpt {
       );
       return;
     }
+
+    if (dialog.type.includes("INTERVIEW")) {
+      this.currentChatGpt$.set(this.chatGptInterview);
+      await this.chatGptInterview.restoreDialogFromHistory(
+        dialog,
+        goToChatInterview
+      );
+    }
+
     if (dialog.type && dialog.lessonName) {
       this.currentChatGpt$.set(this.chatGptLesson);
       await this.chatGptLesson.restoreDialogFromHistory(dialog, goToChatLesson);
       return;
     }
-
-    this.currentChatGpt$.set(this.chatGptInterview);
-    await this.chatGptInterview.restoreDialogFromHistory(
-      dialog,
-      goToChatInterview
-    );
   }
 
   getCurrentChatGpt = () => this.currentChatGpt$.get();
