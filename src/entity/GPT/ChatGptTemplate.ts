@@ -282,13 +282,14 @@ export abstract class ChatGptTemplate {
       await leetCode.loadDetailProblem(dialog.lessonName);
     }
 
+    if (dialog.type.includes("INTERVIEW")) {
+      interviews.setCurrentInterview(dialog.type as ModeType);
+      return;
+    }
+
     if (dialog.lessonName && dialog.type) {
       lessonsController.setCurrentChapter(dialog.type as ModeType);
       lessonsController.setCurrentLessonByName(dialog.lessonName);
-      return;
-    }
-    if (dialog.type === ModeType.HTMLCSS_INTERWIEW) {
-      interviews.setCurrentInterview(dialog.type as ModeType);
       return;
     }
 
