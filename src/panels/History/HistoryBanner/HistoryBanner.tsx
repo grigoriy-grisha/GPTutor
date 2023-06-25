@@ -7,7 +7,7 @@ import {
   LeetCode,
   ReactLesson,
   TypescriptLesson,
-  VueLessons,
+  VueLesson,
 } from "$/icons";
 import {
   Banner,
@@ -31,7 +31,7 @@ import { ErrorBlock } from "$/components/ErrorBlock";
 const BannerIcon: Record<string, React.FC> = {
   [ModeType.JS]: JSLesson,
   [ModeType.Typescript]: TypescriptLesson,
-  [ModeType.Vue]: VueLessons,
+  [ModeType.Vue]: VueLesson,
   [ModeType.React]: ReactLesson,
   [ModeType.Git]: GitLesson,
   [ModeType.HTMLCSS]: HtmlCssLesson,
