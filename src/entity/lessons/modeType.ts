@@ -8,6 +8,8 @@ export enum ModeType {
   Go = "Go",
 
   HTMLCSS_INTERVIEW = "HTMLCSS INTERVIEW",
+  REACT_INTERVIEW = "REACT INTERVIEW",
+  JAVASCRIPT_INTERVIEW = "JAVASCRIPT INTERVIEW",
 
   LeetCode = "LeetCode",
 }

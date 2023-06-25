@@ -15,6 +15,8 @@ import {
   ReactLesson,
   TypescriptLesson,
   VueLesson,
+  ReactInterview,
+  JavascriptInterview,
 } from "$/icons";
 
 import classes from "./ChapterCard.module.css";
@@ -28,6 +30,8 @@ const CardIcon: Record<string, React.FC> = {
   [ModeType.Git]: GitLesson,
   [ModeType.HTMLCSS]: HtmlCssLesson,
   [ModeType.HTMLCSS_INTERVIEW]: HtmlCssInterview,
+  [ModeType.REACT_INTERVIEW]: ReactInterview,
+  [ModeType.JAVASCRIPT_INTERVIEW]: JavascriptInterview,
   [ModeType.LeetCode]: LeetCode,
 };
 
