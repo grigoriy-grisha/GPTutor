@@ -91,11 +91,7 @@ export const vueLessons = [
     [
       new LessonRequest(
         "Как создать компонент в Vue.js?",
-        "Объясни v-for во Vue?"
-      ),
-      new LessonRequest(
-        "Как создать компонент в Vue.js?",
-        "Объясни v-for во Vue?"
+        "Создание компонента"
       ),
       new LessonRequest(
         "Props",
@@ -193,33 +189,6 @@ export const vueLessons = [
       new LessonRequest(
         "Редиректы и алиасы",
         "Как создавать редиректы и алиасы в роутинге Vue?"
-      ),
-    ]
-  ),
-  new LessonItem(
-    "Vue Анимация",
-    FOR_ADVANCED,
-    new LessonRequest("Что такое анимации в Vue? Как их использовать?"),
-    [
-      new LessonRequest(
-        "Переходы",
-        "Как создать анимированные переходы между элементами в Vue?"
-      ),
-      new LessonRequest(
-        "Директивы анимации",
-        "Как использовать директивы анимации в Vue?"
-      ),
-      new LessonRequest(
-        "Пользовательские транзишены",
-        "Как создавать пользовательские транзишены в Vue?"
-      ),
-      new LessonRequest(
-        "Анимация компонентов",
-        "Как анимировать появление и исчезновение компонентов в Vue?"
-      ),
-      new LessonRequest(
-        "Переходы между страницами",
-        "Как создать анимацию переходов между страницами в Vue?"
       ),
     ]
   ),

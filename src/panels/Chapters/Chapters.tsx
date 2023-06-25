@@ -21,6 +21,8 @@ const chapterTitles: Record<string, string> = {
   [ModeType.Git]: "Темы Git",
   [ModeType.JS]: "Темы JavaScript",
   [ModeType.Vue]: "Темы Vue",
+  [ModeType.Go]: "Темы Go",
+  [ModeType.Vue]: "Темы Vue",
 };
 
 function Chapters({ id }: IProps) {

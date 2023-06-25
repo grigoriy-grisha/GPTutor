@@ -416,10 +416,4 @@ export const htmlLessons = [
     ),
     []
   ),
-  new LessonItem(
-    "CSS переменные",
-    CommonCSS,
-    new LessonRequest("Что такое CSS переменные?"),
-    []
-  ),
 ];
