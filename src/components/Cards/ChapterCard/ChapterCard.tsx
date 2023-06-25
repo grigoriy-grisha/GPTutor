@@ -7,6 +7,7 @@ import { ModeType } from "$/entity/lessons";
 
 import {
   GitLesson,
+  GoLesson,
   HtmlCssInterview,
   HtmlCssLesson,
   JSLesson,
@@ -23,6 +24,7 @@ const CardIcon: Record<string, React.FC> = {
   [ModeType.Typescript]: TypescriptLesson,
   [ModeType.React]: ReactLesson,
   [ModeType.Vue]: VueLesson,
+  [ModeType.Go]: GoLesson,
   [ModeType.Git]: GitLesson,
   [ModeType.HTMLCSS]: HtmlCssLesson,
   [ModeType.HTMLCSS_INTERVIEW]: HtmlCssInterview,

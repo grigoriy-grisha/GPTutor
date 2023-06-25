@@ -1,5 +1,6 @@
 export * from "./ChatGPTLogo";
 export * from "./GithubIcon";
+export * from "./LessonIcons/GoLesson";
 export * from "./LessonIcons/VueLesson";
 export * from "./LessonIcons/GitLesson";
 export * from "./LessonIcons/ReactLesson";

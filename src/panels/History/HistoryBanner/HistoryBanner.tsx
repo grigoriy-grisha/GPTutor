@@ -1,6 +1,7 @@
 import {
   ChatGptIcon,
   GitLesson,
+  GoLesson,
   HtmlCssInterview,
   HtmlCssLesson,
   JSLesson,
@@ -32,6 +33,7 @@ const BannerIcon: Record<string, React.FC> = {
   [ModeType.JS]: JSLesson,
   [ModeType.Typescript]: TypescriptLesson,
   [ModeType.Vue]: VueLesson,
+  [ModeType.Go]: GoLesson,
   [ModeType.React]: ReactLesson,
   [ModeType.Git]: GitLesson,
   [ModeType.HTMLCSS]: HtmlCssLesson,
