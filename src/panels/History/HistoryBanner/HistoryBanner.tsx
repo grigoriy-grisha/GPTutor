@@ -113,7 +113,7 @@ function HistoryBanner({ dialog }: IProps) {
               [classes.compactIconContainer]: isCompact,
             })}
           >
-            <Icon />
+            {Icon ? <Icon /> : <ChatGptIcon />}
           </div>
         </div>
       }
