@@ -7,6 +7,7 @@ import { gitLessons } from "./lessonsItem/git";
 import { reactLessons } from "./lessonsItem/react";
 import { typescriptLessons } from "./lessonsItem/typescript";
 import { vueLessons } from "./lessonsItem/vue";
+import { goLessons } from "./lessonsItem/go";
 
 export * from "./LessonsController";
 export * from "./ChapterItem";
@@ -36,6 +37,11 @@ export const languages = [
     ModeType.Typescript,
     typescriptLessons,
     "Я хочу, чтобы вы выступили в роли Senior Frontend-разработчика. И помогали мне изучать Typescript"
+  ),
+  new ChapterItem(
+    ModeType.Go,
+    goLessons,
+    "Я хочу, чтобы вы выступили в роли Senior разработчика. И помогали мне изучать Golang"
   ),
 ];
 
