@@ -4,8 +4,10 @@ import {
   GoLesson,
   HtmlCssInterview,
   HtmlCssLesson,
+  JavascriptInterview,
   JSLesson,
   LeetCode,
+  ReactInterview,
   ReactLesson,
   TypescriptLesson,
   VueLesson,
@@ -38,6 +40,8 @@ const BannerIcon: Record<string, React.FC> = {
   [ModeType.Git]: GitLesson,
   [ModeType.HTMLCSS]: HtmlCssLesson,
   [ModeType.HTMLCSS_INTERVIEW]: HtmlCssInterview,
+  [ModeType.REACT_INTERVIEW]: ReactInterview,
+  [ModeType.JAVASCRIPT_INTERVIEW]: JavascriptInterview,
   [ModeType.LeetCode]: LeetCode,
 };
 
