@@ -45,14 +45,14 @@ export class ChapterItem {
   }
 
   searchLessons(search: string) {
-    this.searchValue$.set(search)
+    this.searchValue$.set(search);
 
     if (search.length < 3) {
-      this.resetList()
+      this.resetList();
       return;
     }
 
-    const regExp = new RegExp(search.toLowerCase(), "g");
+    const regExp = new RegExp(search.trim().toLowerCase(), "g");
 
     this.lessons.set(
       this.prepareLessons(

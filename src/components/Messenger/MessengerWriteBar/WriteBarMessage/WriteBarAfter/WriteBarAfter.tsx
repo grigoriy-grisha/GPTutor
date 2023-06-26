@@ -50,7 +50,7 @@ function WriteBarAfter({ chatGptModel, value, sendMessage }: IProps) {
       {!isTyping ? (
         <WriteBarIcon
           aria-label="Отправить сообщение"
-          disabled={value.length === 0 || isTyping || blockActions}
+          disabled={value.trim().length === 0 || isTyping || blockActions}
           onClick={sendMessage}
         >
           <Icon28Send fill="var(--vkui--color_icon_accent)" />

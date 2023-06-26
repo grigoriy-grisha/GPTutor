@@ -18,6 +18,7 @@ export function useWrite({ chatGpt, handleSend }: HookWriteParams) {
   isTypingRef.current = isTyping;
 
   const onEnterSend = (event: any) => {
+    if (!valueRef.current.trim()) return;
     if (platform !== Platform.VKCOM) return;
 
     if (chatGpt.isBlockActions$.get()) return;
