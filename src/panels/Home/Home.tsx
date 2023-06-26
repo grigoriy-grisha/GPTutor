@@ -18,6 +18,12 @@ interface IProps {
   id: string;
 }
 
+const chapters = [
+  ...lessonsController.chapters,
+  ...interviews.interviews,
+  { type: ModeType.LeetCode },
+].sort(() => (Math.random() > 0.5 ? 1 : -1));
+
 function Home({ id }: IProps) {
   const {
     goToChapters,
@@ -34,13 +40,9 @@ function Home({ id }: IProps) {
         headerChildren={<HomeHeader />}
       >
         <Cards
-          chapters={[
-            ...lessonsController.chapters,
-            ...interviews.interviews,
-            { type: ModeType.LeetCode },
-          ]}
+          chapters={chapters}
           isTop
-          title="Все темы для обучения"
+          title="Все режимы"
           onClickChapter={(chapter) => {
             if (chapter.type === ModeType.LeetCode) {
               goToLeetcodeProblems();
