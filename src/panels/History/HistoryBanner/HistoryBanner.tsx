@@ -51,8 +51,11 @@ const chapterNames: Record<string, string> = {
   [ModeType.Vue]: "Vue",
   [ModeType.React]: "React",
   [ModeType.Git]: "Git",
+  [ModeType.Go]: "Go",
   [ModeType.HTMLCSS]: "HTML/CSS",
   [ModeType.HTMLCSS_INTERVIEW]: "Собеседование HTML/CSS",
+  [ModeType.JAVASCRIPT_INTERVIEW]: "Собеседование JavaScript",
+  [ModeType.REACT_INTERVIEW]: "Собеседование React",
   [ModeType.LeetCode]: "LeetCode",
 };
 
