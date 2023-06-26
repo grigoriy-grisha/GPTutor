@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   ModalPage,
@@ -7,6 +7,7 @@ import {
   RichCell,
   Separator,
   useAdaptivityConditionalRender,
+  useModalRootContext,
 } from "@vkontakte/vkui";
 import { Icon20ChevronRight } from "@vkontakte/icons";
 
@@ -23,49 +24,63 @@ interface IProps {
 function InterviewQuestions({ id }: IProps) {
   const { goBack } = useNavigationContext();
   const { sizeX } = useAdaptivityConditionalRender();
+  const { updateModalHeight } = useModalRootContext();
+
+  useEffect(() => {
+    setTimeout(() => updateModalHeight(), 200);
+  }, []);
 
   return (
-    <ModalPage settlingHeight={100} id={id}>
-      <ModalPageHeader
-        before={
-          sizeX.compact && (
-            <PanelHeaderClose
-              className={sizeX.compact.className}
-              onClick={goBack}
-            />
-          )
-        }
-      >
-        Список вопросов
-      </ModalPageHeader>
-      <Separator wide />
-      {interviews
-        .getCurrentInterview()
-        .getQuestions()
-        .map((question, index) => (
-          <>
-            <RichCell
-              onClick={async () => {
-                interviews.getCurrentInterview().setIndexQuestion(index);
-                goBack();
+    <ModalPage
+      id={id}
+      settlingHeight={100}
+      header={
+        <>
+          <ModalPageHeader
+            before={
+              sizeX.compact && (
+                <PanelHeaderClose
+                  className={sizeX.compact.className}
+                  onClick={goBack}
+                />
+              )
+            }
+          >
+            Список вопросов
+          </ModalPageHeader>
+          <Separator wide />
+        </>
+      }
+    >
+      <div>
+        {interviews
+          .getCurrentInterview()
+          .getQuestions()
+          .map((question, index) => (
+            <>
+              <RichCell
+                onClick={async () => {
+                  interviews.getCurrentInterview().setIndexQuestion(index);
+                  goBack();
 
-                setTimeout(async () => {
-                  await chatGpt.chatGptInterview.sendQuestion(
-                    question.question
-                  );
+                  setTimeout(async () => {
+                    await chatGpt.chatGptInterview.sendQuestion(
+                      question.question
+                    );
 
-                  dispatchEvent(new Event("scroll-bottom-messenger"));
-                }, 200);
-              }}
-              className={classes.richCell}
-              key={question.question}
-              after={<Icon20ChevronRight className={classes.iconChevron} />}
-            >
-              {question.question}
-            </RichCell>
-            <Separator />
-          </>
-        ))}
+                    dispatchEvent(new Event("scroll-bottom-messenger"));
+                  }, 200);
+                }}
+                className={classes.richCell}
+                key={question.question}
+                after={<Icon20ChevronRight className={classes.iconChevron} />}
+              >
+                {question.question}
+              </RichCell>
+              <Separator />
+            </>
+          ))}
+      </div>
     </ModalPage>
   );
 }
