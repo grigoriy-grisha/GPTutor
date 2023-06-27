@@ -23,10 +23,18 @@ class DownloadService {
 
     const url = window.URL.createObjectURL(blob);
 
-    bridge.send("VKWebAppDownloadFile", {
-      url,
-      filename: `${filename}.txt`,
-    });
+    console.log(url);
+    bridge
+      .send("VKWebAppDownloadFile", {
+        url,
+        filename: `${filename}.txt`,
+      })
+      .then((s) => {
+        console.log(s);
+      })
+      .catch((s) => {
+        console.log(s);
+      });
   }
 
   downloadJSON(json: Record<any, any>, filename: string) {
@@ -41,18 +49,18 @@ class DownloadService {
 
     const url = window.URL.createObjectURL(blob);
 
-    bridge.send("VKWebAppDownloadFile", {
-      url: url,
-      filename: `${filename}.json`,
-    });
-  }
-
-  private encode(s: string) {
-    const out = [];
-    for (let i = 0; i < s.length; i++) {
-      out[i] = s.charCodeAt(i);
-    }
-    return new Uint8Array(out);
+    console.log(url);
+    bridge
+      .send("VKWebAppDownloadFile", {
+        url,
+        filename: `${filename}.json`,
+      })
+      .then((s) => {
+        console.log(s);
+      })
+      .catch((s) => {
+        console.log(s);
+      });
   }
 }
 
