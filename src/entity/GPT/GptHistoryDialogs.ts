@@ -95,7 +95,7 @@ export class GptHistoryDialogs {
 
     const foundDialog = this.getDialogById(id);
 
-    downloadService.downloadTxt(
+    await downloadService.downloadTxt(
       messages.reduce(
         (acc, message) =>
           acc +
@@ -112,7 +112,7 @@ export class GptHistoryDialogs {
 
     const foundDialog = this.getDialogById(id);
 
-    downloadService.downloadJSON(
+    await downloadService.downloadJSON(
       [{ role: "system", content: foundDialog?.systemMessage }].concat(
         messages.map((message) => ({
           role: message.role,

@@ -12,7 +12,7 @@ class DownloadService {
     window.URL.revokeObjectURL(url);
   }
 
-  downloadTxt(text: string, filename: string) {
+  async downloadTxt(text: string, filename: string) {
     const BOM = new Uint8Array([0xef, 0xbb, 0xbf]);
     const blob = new Blob([BOM, text]);
 
@@ -21,12 +21,12 @@ class DownloadService {
       return;
     }
 
-    const url = window.URL.createObjectURL(blob);
+    const base64 = await this.blobToBase64(blob);
 
-    console.log(url);
+    console.log(base64);
     bridge
       .send("VKWebAppDownloadFile", {
-        url,
+        url: base64,
         filename: `${filename}.txt`,
       })
       .then((s) => {
@@ -37,7 +37,7 @@ class DownloadService {
       });
   }
 
-  downloadJSON(json: Record<any, any>, filename: string) {
+  async downloadJSON(json: Record<any, any>, filename: string) {
     const str = JSON.stringify(json, null, 4);
     const BOM = new Uint8Array([0xef, 0xbb, 0xbf]);
     const blob = new Blob([BOM, str]);
@@ -47,12 +47,12 @@ class DownloadService {
       return;
     }
 
-    const url = window.URL.createObjectURL(blob);
+    const base64 = await this.blobToBase64(blob);
 
-    console.log(url);
+    console.log(base64);
     bridge
       .send("VKWebAppDownloadFile", {
-        url,
+        url: base64,
         filename: `${filename}.json`,
       })
       .then((s) => {
@@ -61,6 +61,14 @@ class DownloadService {
       .catch((s) => {
         console.log(s);
       });
+  }
+
+  blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.readAsDataURL(blob);
+    });
   }
 }
 
