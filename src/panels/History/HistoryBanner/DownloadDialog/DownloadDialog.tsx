@@ -29,7 +29,6 @@ function DownloadDialog({ downloadTXT, downloadJSON }: IProps) {
                   setShown(false);
                 }}
               >
-                Скачать{" "}
                 <Title className={classes.extension} level="3">
                   JSON
                 </Title>
@@ -41,7 +40,6 @@ function DownloadDialog({ downloadTXT, downloadJSON }: IProps) {
                   setShown(false);
                 }}
               >
-                Скачать{" "}
                 <Title className={classes.extension} level="3">
                   TXT
                 </Title>
