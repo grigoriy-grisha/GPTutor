@@ -1,0 +1,12 @@
+
+.download {
+    color: var(--vkui--color_stroke_accent);
+    position: absolute;
+    right: 0;
+    bottom: -8px;
+}
+
+.extension {
+    color: var(--vkui--color_stroke_accent);
+    display: inline;
+}

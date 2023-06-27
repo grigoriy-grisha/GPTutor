@@ -11,18 +11,20 @@ function WarningTooltip() {
 
   return (
     <OutsideAlerter handleOutside={() => setShown(false)}>
-      <TextTooltip
-        shown={shown}
-        style={{ maxWidth: 200 }}
-        appearance={appearance === "light" ? "accent" : "white"}
-        text="Из-за большой истории диалога,
+      {() => (
+        <TextTooltip
+          shown={shown}
+          style={{ maxWidth: 200 }}
+          appearance={appearance === "light" ? "accent" : "white"}
+          text="Из-за большой истории диалога,
                    это сообщение не может быть учтено в локальном контексте.
                    ChatGPT может поддерживать только 1000 слов в текущем диалоге."
-      >
-        <IconButton onClick={() => setShown(!shown)}>
-          <Icon24WarningTriangleOutline />
-        </IconButton>
-      </TextTooltip>
+        >
+          <IconButton onClick={() => setShown(!shown)}>
+            <Icon24WarningTriangleOutline />
+          </IconButton>
+        </TextTooltip>
+      )}
     </OutsideAlerter>
   );
 }

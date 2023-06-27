@@ -31,6 +31,8 @@ import classes from "./HistoryBanner.module.css";
 import { useNavigationContext } from "$/NavigationContext";
 import { ErrorBlock } from "$/components/ErrorBlock";
 
+import { DownloadDialog } from "./DownloadDialog";
+
 const BannerIcon: Record<string, React.FC> = {
   [ModeType.JS]: JSLesson,
   [ModeType.Typescript]: TypescriptLesson,
@@ -140,40 +142,50 @@ function HistoryBanner({ dialog }: IProps) {
         </>
       }
       actions={
-        <ButtonGroup mode="vertical">
-          <Button
-            disabled={currentChatGpt.getMessages$.loading.get()}
-            onClick={() => {
-              chatGpt.restoreDialogFromHistory(
-                dialog.id,
-                goToChatFree,
-                goToChatLesson,
-                goToChatInterview,
-                goToChatLeetCode
-              );
+        <>
+          <DownloadDialog
+            downloadTXT={async () => {
+              await chatGpt.history.downloadDialogAsTXT(dialog.id);
             }}
-          >
-            Перейти в диалог
-          </Button>
-          <Button
-            disabled={chatGpt.history.deleteHistory$.loading.get()}
-            appearance="negative"
-            mode="outline"
-            onClick={() => {
-              openAlert({
-                onAction: async () => {
-                  await chatGpt.history.removeHistoryDialog(dialog.id);
-                  goBack();
-                },
-                actionText: "Удалить диалог",
-                header: "Подтвердите действие",
-                text: "Вы уверены? Диалог нельзя будет вернуть!",
-              });
+            downloadJSON={async () => {
+              await chatGpt.history.downloadDialogAsJSON(dialog.id);
             }}
-          >
-            Удалить диалог из истории
-          </Button>
-        </ButtonGroup>
+          />
+          <ButtonGroup mode="vertical">
+            <Button
+              disabled={currentChatGpt.getMessages$.loading.get()}
+              onClick={() => {
+                chatGpt.restoreDialogFromHistory(
+                  dialog.id,
+                  goToChatFree,
+                  goToChatLesson,
+                  goToChatInterview,
+                  goToChatLeetCode
+                );
+              }}
+            >
+              Перейти в диалог
+            </Button>
+            <Button
+              disabled={chatGpt.history.deleteHistory$.loading.get()}
+              appearance="negative"
+              mode="outline"
+              onClick={() => {
+                openAlert({
+                  onAction: async () => {
+                    await chatGpt.history.removeHistoryDialog(dialog.id);
+                    goBack();
+                  },
+                  actionText: "Удалить диалог",
+                  header: "Подтвердите действие",
+                  text: "Вы уверены? Диалог нельзя будет вернуть!",
+                });
+              }}
+            >
+              Удалить диалог из истории
+            </Button>
+          </ButtonGroup>
+        </>
       }
     />
   );
