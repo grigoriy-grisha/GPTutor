@@ -7,11 +7,15 @@ import { deleteAllHistory, deleteHistory, getHistoryById } from "$/api/history";
 import { snackbarNotify } from "$/entity/notify";
 import { History } from "$/entity/history";
 import { chatGpt } from "$/entity/GPT/ChatGpt";
+import { getMessagesById } from "$/api/messages";
+import { downloadService } from "$/services/DownloadService";
 
 export class GptHistoryDialogs {
   deleteHistory$ = ReactivePromise.create(deleteHistory);
   deleteAllHistory$ = ReactivePromise.create(deleteAllHistory);
   getHistory$ = ReactivePromise.create(getHistoryById);
+
+  getMessages$ = ReactivePromise.create(getMessagesById);
 
   dialogs = sig<History[]>([]);
 
@@ -84,5 +88,38 @@ export class GptHistoryDialogs {
   getDialogById(id: UUID_V4 | null) {
     if (id === null) return undefined;
     return this.dialogs.get().find((dialog) => dialog.id === id);
+  }
+
+  async downloadDialogAsTXT(id: UUID_V4) {
+    const messages = await this.getMessages$.run(id);
+
+    const foundDialog = this.getDialogById(id);
+
+    downloadService.downloadTxt(
+      messages.reduce(
+        (acc, message) =>
+          acc +
+          `[ system ]\n\n${foundDialog?.systemMessage}\n\n[ ${message.role} ]\n\n${message.content}\n\n`,
+
+        ""
+      ),
+      `${foundDialog?.type} ${foundDialog?.lastUpdated}`
+    );
+  }
+
+  async downloadDialogAsJSON(id: UUID_V4) {
+    const messages = await this.getMessages$.run(id);
+
+    const foundDialog = this.getDialogById(id);
+
+    downloadService.downloadJSON(
+      [{ role: "system", content: foundDialog?.systemMessage }].concat(
+        messages.map((message) => ({
+          role: message.role,
+          content: message.content,
+        }))
+      ),
+      `${foundDialog?.type} ${foundDialog?.lastUpdated}`
+    );
   }
 }
