@@ -16,25 +16,23 @@ class DownloadService {
     const BOM = new Uint8Array([0xef, 0xbb, 0xbf]);
     const blob = new Blob([BOM, text]);
 
-    if (process.env.NODE_ENV === "development") {
-      this.download(blob, filename);
-      return;
-    }
+    this.download(blob, filename);
+    return;
 
-    const url = window.URL.createObjectURL(blob);
-
-    console.log(url);
-    bridge
-      .send("VKWebAppDownloadFile", {
-        url,
-        filename: `${filename}.txt`,
-      })
-      .then((s) => {
-        console.log(s);
-      })
-      .catch((s) => {
-        console.log(s);
-      });
+    // const url = window.URL.createObjectURL(blob);
+    //
+    // console.log(url);
+    // bridge
+    //   .send("VKWebAppDownloadFile", {
+    //     url,
+    //     filename: `${filename}.txt`,
+    //   })
+    //   .then((s) => {
+    //     console.log(s);
+    //   })
+    //   .catch((s) => {
+    //     console.log(s);
+    //   });
   }
 
   downloadJSON(json: Record<any, any>, filename: string) {
@@ -42,33 +40,23 @@ class DownloadService {
     const BOM = new Uint8Array([0xef, 0xbb, 0xbf]);
     const blob = new Blob([BOM, str]);
 
-    if (process.env.NODE_ENV === "development") {
-      this.download(blob, `${filename}.json`);
-      return;
-    }
+    this.download(blob, `${filename}.json`);
+    return;
 
-    const url = window.URL.createObjectURL(blob);
+    // const url = window.URL.createObjectURL(blob);
 
-    console.log(url);
-    bridge
-      .send("VKWebAppDownloadFile", {
-        url,
-        filename: `${filename}.json`,
-      })
-      .then((s) => {
-        console.log(s);
-      })
-      .catch((s) => {
-        console.log(s);
-      });
-  }
-
-  blobToBase64(blob: Blob) {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
+    // console.log(url);
+    // bridge
+    //   .send("VKWebAppDownloadFile", {
+    //     url,
+    //     filename: `${filename}.json`,
+    //   })
+    //   .then((s) => {
+    //     console.log(s);
+    //   })
+    //   .catch((s) => {
+    //     console.log(s);
+    //   });
   }
 }
 

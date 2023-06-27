@@ -96,13 +96,13 @@ export class GptHistoryDialogs {
     const foundDialog = this.getDialogById(id);
 
     await downloadService.downloadTxt(
-      messages.reduce(
-        (acc, message) =>
-          acc +
-          `[ system ]\n\n${foundDialog?.systemMessage}\n\n[ ${message.role} ]\n\n${message.content}\n\n`,
+      "[ system ]\n\n${foundDialog?.systemMessage}\n\n" +
+        messages.reduce(
+          (acc, message) =>
+            acc + `[ ${message.role} ]\n\n${message.content}\n\n`,
 
-        ""
-      ),
+          ""
+        ),
       `${foundDialog?.type} ${foundDialog?.lastUpdated}`
     );
   }
