@@ -25,23 +25,27 @@ function DownloadDialog({ downloadTXT, downloadJSON }: IProps) {
           content={
             <div>
               <SimpleCell
-                className={classes.extension}
+                className={classes.simpleCell}
                 onClick={async () => {
                   await downloadJSON();
                   setShown(false);
                 }}
               >
-                <Title level="3">JSON</Title>
+                <Title level="3" className={classes.extension}>
+                  JSON
+                </Title>
               </SimpleCell>
               <Separator />
               <SimpleCell
-                className={classes.extension}
+                className={classes.simpleCell}
                 onClick={async () => {
                   await downloadTXT();
                   setShown(false);
                 }}
               >
-                <Title level="3">TXT</Title>
+                <Title level="3" className={classes.extension}>
+                  TXT
+                </Title>
               </SimpleCell>
             </div>
           }

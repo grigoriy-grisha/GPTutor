@@ -39,10 +39,19 @@ class DownloadService {
       return;
     }
 
-    await bridge.send("VKWebAppDownloadFile", {
-      url: link,
-      filename: filename,
-    });
+    console.log(link);
+
+    await bridge
+      .send("VKWebAppDownloadFile", {
+        url: link,
+        filename: filename,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   }
 }
 

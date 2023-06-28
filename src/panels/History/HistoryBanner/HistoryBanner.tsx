@@ -18,10 +18,8 @@ import {
   ButtonGroup,
   classNames,
   Headline,
-  Platform,
   Title,
   useAdaptivityWithJSMediaQueries,
-  usePlatform,
 } from "@vkontakte/vkui";
 
 import React from "react";

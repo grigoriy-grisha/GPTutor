@@ -10,3 +10,8 @@
     color: var(--vkui--color_icon_contrast);
     width: 100%;
 }
+
+.simpleCell :global(.vkuiSimpleCell__content) {
+    display: flex;
+    justify-content: center !important;
+}
