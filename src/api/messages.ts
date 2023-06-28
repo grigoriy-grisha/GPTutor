@@ -22,3 +22,7 @@ export function getMessagesById(historyId: string): Promise<RemoteMessage[]> {
     },
   }).then((res) => res.json());
 }
+
+export function downloadMessagesUrl(type: string, historyId: string) {
+  return `${BACKEND_HOST}messages/${type}/${historyId}${location.search}`;
+}
