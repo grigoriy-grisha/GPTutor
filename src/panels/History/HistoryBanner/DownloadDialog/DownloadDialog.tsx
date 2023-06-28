@@ -18,31 +18,30 @@ function DownloadDialog({ downloadTXT, downloadJSON }: IProps) {
     <OutsideAlerter handleOutside={() => setShown(false)}>
       {(getRef) => (
         <RichTooltip
+          appearance="accent"
           getRef={getRef}
           placement="left-end"
           shown={shown}
           content={
             <div>
               <SimpleCell
+                className={classes.extension}
                 onClick={async () => {
                   await downloadJSON();
                   setShown(false);
                 }}
               >
-                <Title className={classes.extension} level="3">
-                  JSON
-                </Title>
+                <Title level="3">JSON</Title>
               </SimpleCell>
               <Separator />
               <SimpleCell
+                className={classes.extension}
                 onClick={async () => {
                   await downloadTXT();
                   setShown(false);
                 }}
               >
-                <Title className={classes.extension} level="3">
-                  TXT
-                </Title>
+                <Title level="3">TXT</Title>
               </SimpleCell>
             </div>
           }

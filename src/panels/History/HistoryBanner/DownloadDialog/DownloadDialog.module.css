@@ -7,6 +7,6 @@
 }
 
 .extension {
-    color: var(--vkui--color_stroke_accent);
-    display: inline;
+    color: var(--vkui--color_icon_contrast);
+    width: 100%;
 }

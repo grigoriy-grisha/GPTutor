@@ -1,6 +1,12 @@
+import bridge from "@vkontakte/vk-bridge";
+
 class DownloadService {
   download(blob: Blob, filename: string) {
     const url = window.URL.createObjectURL(blob);
+    this.downloadLink(url, filename);
+  }
+
+  downloadLink(url: string, filename: string) {
     const a = document.createElement("a");
     a.style.display = "none";
     a.href = url;
@@ -25,6 +31,18 @@ class DownloadService {
 
     this.download(blob, `${filename}.json`);
     return;
+  }
+
+  async downloadByLink(link: string, filename: string) {
+    if (process.env.NODE_ENV === "development") {
+      this.downloadLink(link, filename);
+      return;
+    }
+
+    await bridge.send("VKWebAppDownloadFile", {
+      url: link,
+      filename: filename,
+    });
   }
 }
 

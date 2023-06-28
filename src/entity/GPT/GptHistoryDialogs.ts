@@ -7,7 +7,7 @@ import { deleteAllHistory, deleteHistory, getHistoryById } from "$/api/history";
 import { snackbarNotify } from "$/entity/notify";
 import { History } from "$/entity/history";
 import { chatGpt } from "$/entity/GPT/ChatGpt";
-import { getMessagesById } from "$/api/messages";
+import { downloadMessagesUrl, getMessagesById } from "$/api/messages";
 import { downloadService } from "$/services/DownloadService";
 
 export class GptHistoryDialogs {
@@ -91,35 +91,20 @@ export class GptHistoryDialogs {
   }
 
   async downloadDialogAsTXT(id: UUID_V4) {
-    const messages = await this.getMessages$.run(id);
-
     const foundDialog = this.getDialogById(id);
 
-    await downloadService.downloadTxt(
-      `[ system ]\n\n${foundDialog?.systemMessage}}\n\n` +
-        messages.reduce(
-          (acc, message) =>
-            acc + `[ ${message.role} ]\n\n${message.content}\n\n`,
-
-          ""
-        ),
-      `${foundDialog?.type} ${foundDialog?.lastUpdated}`
+    await downloadService.downloadByLink(
+      downloadMessagesUrl("txt", id),
+      `${foundDialog?.type} ${foundDialog?.lastUpdated}.txt`
     );
   }
 
   async downloadDialogAsJSON(id: UUID_V4) {
-    const messages = await this.getMessages$.run(id);
-
     const foundDialog = this.getDialogById(id);
 
-    await downloadService.downloadJSON(
-      [{ role: "system", content: foundDialog?.systemMessage }].concat(
-        messages.map((message) => ({
-          role: message.role,
-          content: message.content,
-        }))
-      ),
-      `${foundDialog?.type} ${foundDialog?.lastUpdated}`
+    await downloadService.downloadByLink(
+      downloadMessagesUrl("json", id),
+      `${foundDialog?.type} ${foundDialog?.lastUpdated}.json`
     );
   }
 }
