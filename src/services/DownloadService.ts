@@ -1,6 +1,15 @@
 import bridge from "@vkontakte/vk-bridge";
 
 class DownloadService {
+  constructor() {
+    bridge.subscribe(eventHandler);
+
+    // Обработчик событий
+    function eventHandler(e: any) {
+      console.log(e);
+    }
+  }
+
   download(blob: Blob, filename: string) {
     const url = window.URL.createObjectURL(blob);
     this.downloadLink(url, filename);
