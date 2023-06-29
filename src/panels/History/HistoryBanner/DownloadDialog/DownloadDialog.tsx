@@ -20,7 +20,7 @@ function DownloadDialog({ downloadTXT, downloadJSON }: IProps) {
         <RichTooltip
           appearance="accent"
           getRef={getRef}
-          placement="left-end"
+          placement="left"
           shown={shown}
           content={
             <div>
