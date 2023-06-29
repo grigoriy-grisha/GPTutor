@@ -43,24 +43,7 @@ class DownloadService {
   }
 
   async downloadByLink(link: string, filename: string) {
-    if (process.env.NODE_ENV === "development") {
-      this.downloadLink(link, filename);
-      return;
-    }
-
-    console.log(link);
-
-    await bridge
-      .send("VKWebAppDownloadFile", {
-        url: link,
-        filename: filename,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
+    this.downloadLink(link, filename);
   }
 }
 
