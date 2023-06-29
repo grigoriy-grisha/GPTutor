@@ -147,16 +147,16 @@ function HistoryBanner({ dialog }: IProps) {
       }
       actions={
         <>
-          {/*{platform === Platform.VKCOM && (*/}
-          <DownloadDialog
-            downloadTXT={async () => {
-              await chatGpt.history.downloadDialogAsTXT(dialog.id);
-            }}
-            downloadJSON={async () => {
-              await chatGpt.history.downloadDialogAsJSON(dialog.id);
-            }}
-          />
-          {/*)}*/}
+          {platform === Platform.VKCOM && (
+            <DownloadDialog
+              downloadTXT={async () => {
+                await chatGpt.history.downloadDialogAsTXT(dialog.id);
+              }}
+              downloadJSON={async () => {
+                await chatGpt.history.downloadDialogAsJSON(dialog.id);
+              }}
+            />
+          )}
           <ButtonGroup mode="vertical">
             <Button
               disabled={currentChatGpt.getMessages$.loading.get()}
