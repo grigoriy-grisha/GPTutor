@@ -18,8 +18,10 @@ import {
   ButtonGroup,
   classNames,
   Headline,
+  Platform,
   Title,
   useAdaptivityWithJSMediaQueries,
+  usePlatform,
 } from "@vkontakte/vkui";
 
 import React from "react";
@@ -66,6 +68,8 @@ interface IProps {
 }
 
 function HistoryBanner({ dialog }: IProps) {
+  const platform = usePlatform();
+
   const {
     goToChatFree,
     goToChatLesson,
@@ -143,14 +147,16 @@ function HistoryBanner({ dialog }: IProps) {
       }
       actions={
         <>
-          <DownloadDialog
-            downloadTXT={async () => {
-              await chatGpt.history.downloadDialogAsTXT(dialog.id);
-            }}
-            downloadJSON={async () => {
-              await chatGpt.history.downloadDialogAsJSON(dialog.id);
-            }}
-          />
+          {platform === Platform.VKCOM && (
+            <DownloadDialog
+              downloadTXT={async () => {
+                await chatGpt.history.downloadDialogAsTXT(dialog.id);
+              }}
+              downloadJSON={async () => {
+                await chatGpt.history.downloadDialogAsJSON(dialog.id);
+              }}
+            />
+          )}
           <ButtonGroup mode="vertical">
             <Button
               disabled={currentChatGpt.getMessages$.loading.get()}
