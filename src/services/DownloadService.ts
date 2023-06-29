@@ -16,13 +16,12 @@ class DownloadService {
   }
 
   downloadLink(url: string, filename: string) {
-    const a = document.createElement("a");
-    a.style.display = "none";
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
+    const element = document.createElement("a");
+    element.href = url;
+    element.download = filename;
+    element.target = "_blank";
+    element.click();
+    element.remove();
   }
 
   downloadTxt(text: string, filename: string) {
