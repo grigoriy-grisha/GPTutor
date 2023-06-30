@@ -48,7 +48,7 @@ function CodeEditor({ id }: IProps) {
               theme={appearance === "dark" ? "vs-dark" : "light"}
               language="javascript"
               loading={null}
-              value=""
+              value="//Код после комментария"
               onValidate={(...asd) => {
                 console.log(asd);
               }}
