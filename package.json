@@ -17,6 +17,7 @@
         "@bugsnag/js": "^7.20.0",
         "@bugsnag/plugin-react": "^7.19.0",
         "@happysanta/router": "0.3.1",
+        "@monaco-editor/react": "^4.5.1",
         "@types/node": "^12.0.0",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",

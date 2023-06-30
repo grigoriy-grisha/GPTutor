@@ -48,6 +48,7 @@ const routes = {
   [RoutingPages.forbidden]: new Page(Panels.forbidden, Views.viewMain),
   [RoutingPages.chatLeetCode]: new Page(Panels.chatLeetCode, Views.viewMain),
   [RoutingPages.problemDetail]: new Page(Panels.problemDetail, Views.viewMain),
+  [RoutingPages.editor]: new Page(Panels.editor, Views.viewMain),
   [RoutingPages.leetcodeProblems]: new Page(
     Panels.leetcodeProblems,
     Views.viewMain
@@ -62,7 +63,7 @@ ReactDOM.render(
   <ErrorBoundaryApp>
     <RouterContext.Provider value={router}>
       <NavigationContextProvider>
-        <ConfigProvider>
+        <ConfigProvider appearance="dark">
           <AdaptivityProvider>
             <AppRoot>
               <App />

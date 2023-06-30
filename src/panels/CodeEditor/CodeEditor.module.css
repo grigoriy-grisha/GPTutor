@@ -1,0 +1,11 @@
+.light :global(.mtk1) {
+    color: hsl(230, 8%, 24%) !important;
+}
+
+:global(.monaco-editor-background) {
+    background: var(--vkui--color_background_content) !important;
+}
+
+:global(.margin-view-overlays) {
+    background: var(--vkui--color_background_content) !important;
+}

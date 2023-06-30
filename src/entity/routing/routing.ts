@@ -12,6 +12,7 @@ export enum RoutingPages {
 
   chatLeetCode = "/chat-leetcode",
   problemDetail = "/problem-detail",
+  editor = "/editor",
 }
 
 export enum Views {
@@ -31,6 +32,8 @@ export enum Panels {
   leetcodeProblems = "leetcode-problems",
   chatLeetCode = "chat-leetcode",
   problemDetail = "problem-detail",
+
+  editor = "editor",
 }
 
 export enum Modals {
