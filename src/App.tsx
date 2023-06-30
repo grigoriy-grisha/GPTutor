@@ -36,6 +36,7 @@ import { LeetcodeProblems } from "./panels/LeetCodeProblems";
 import { ChatLeetCode } from "./panels/ChatLeetCode";
 import { ProblemDetail } from "./panels/ProblemDetail";
 import { AppAlert } from "./modals/AppAlert";
+import CodeEditor from "./panels/CodeEditor/CodeEditor";
 
 const App = () => {
   const location = useLocation();
@@ -80,6 +81,7 @@ const App = () => {
           onSwipeBack={goBack}
           history={history}
         >
+          <CodeEditor id={Panels.editor} />
           <Home id={Panels.home} />
           <Chapters id={Panels.chapters} />
           <ChatFree id={Panels.chatFree} />

@@ -9,11 +9,12 @@ interface IProps {
   withoutTabbar?: boolean;
   className?: string;
   containerRef?: React.LegacyRef<HTMLDivElement>;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   headerChildren: React.ReactNode;
   style?: React.CSSProperties;
   maxHeight?: boolean;
   isSecondary?: boolean;
+  childrenWithHeight?: (height: string) => JSX.Element;
 }
 
 function AppContainer({
@@ -25,6 +26,7 @@ function AppContainer({
   style,
   maxHeight,
   isSecondary,
+  childrenWithHeight,
 }: IProps) {
   const [headerElem, setHeaderElem] = useState<HTMLDivElement>();
   const [tabbarElem, setTabbarElem] = useState<HTMLDivElement>();
@@ -51,7 +53,7 @@ function AppContainer({
           ...style,
         }}
       >
-        {children}
+        {childrenWithHeight ? childrenWithHeight(height) : children}
       </div>
       {!withoutTabbar && <TabbarApp setRef={setTabbarElem} />}
     </>
