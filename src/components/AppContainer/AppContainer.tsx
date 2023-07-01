@@ -38,7 +38,6 @@ function AppContainer({
 
   return (
     <>
-      STAGE
       {headerChildren && <div ref={setHeaderElem as any}>{headerChildren}</div>}
       <div
         ref={containerRef}
