@@ -1,24 +1,64 @@
 import React from "react";
 import {
-  Button,
-  Div,
   Panel,
   PanelHeaderClose,
   PanelHeaderSubmit,
   useConfigProvider,
 } from "@vkontakte/vkui";
-import { Editor } from "@monaco-editor/react";
+import CodeMirror from "@uiw/react-codemirror";
+import { javascript } from "@codemirror/lang-javascript";
+
 import { AppContainer } from "$/components/AppContainer";
 import { useNavigationContext } from "$/NavigationContext";
-import { oneDarkTheme } from "$/panels/CodeEditor/oneDarkTheme";
-import { oneLightTheme } from "$/panels/CodeEditor/oneLightTheme";
-
-import classes from "./CodeEditor.module.css";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
 
 interface IProps {
   id: string;
 }
+
+const value = `
+// Примеры использования переменных const, let и var
+
+// Переменные const
+const PI = 3.14159;
+console.log(PI); // 3.14159
+
+// Попытка изменить значение переменной const
+const PI = 3.14159;
+PI = 3.14; // Ошибка: переназначение константы запрещено
+
+// Переменные let
+let age = 25;
+console.log(age); // 25
+
+age = 30;
+console.log(age); // 30
+
+// Переменные let с блочной областью видимости
+if (true) {
+  let name = 'John';
+  console.log(name); // John
+}
+
+console.log(name); // Ошибка: переменная name недоступна за пределами блока
+
+// Переменные var
+var age = 25;
+console.log(age); // 25
+
+age = 30;
+console.log(age); // 30
+
+// Переменные var с функциональной областью видимости
+function sayHello() {
+  var message = 'Hello';
+  console.log(message);
+}
+
+sayHello(); // Hello
+console.log(message); // Ошибка: переменная message недоступна за пределами функции
+
+`;
 
 function CodeEditor({ id }: IProps) {
   const { goBack } = useNavigationContext();
@@ -37,35 +77,16 @@ function CodeEditor({ id }: IProps) {
           </AppPanelHeader>
         }
         childrenWithHeight={(height) => (
-          <div
-            style={{ marginTop: 16, width: "100%" }}
-            className={classes[appearance as any]}
-          >
-            <Editor
-              options={{ minimap: { enabled: false } }}
+          <div style={{ marginTop: 16, width: "100%" }}>
+            <CodeMirror
+              theme={appearance}
+              value={value}
               height={height}
-              width="100%"
-              theme={appearance === "dark" ? "vs-dark" : "light"}
-              language="javascript"
-              loading={null}
-              value="//Код после комментария"
-              onValidate={(...asd) => {
+              extensions={[javascript({ jsx: true, typescript: true })]}
+              onChange={(asd) => {
                 console.log(asd);
               }}
-              onMount={(editor, monaco) => {
-                if (appearance === "dark") {
-                  monaco.editor.defineTheme("one-dark", oneDarkTheme as any);
-                  monaco.editor.setTheme("one-dark");
-                  return;
-                }
-
-                monaco.editor.defineTheme("one-light", oneLightTheme as any);
-                monaco.editor.setTheme("one-light");
-              }}
             />
-            <Div>
-              <Button></Button>
-            </Div>
           </div>
         )}
       ></AppContainer>

@@ -76,3 +76,19 @@ tfoot > tr  {
     margin-bottom: 8px;
 }
 
+.cm-gutters {
+    background: var(--vkui--color_background_content) !important;
+}
+
+.ͼo {
+    background: var(--vkui--color_background_content) !important;
+}
+
+.cm-activeLine {
+    background: var(--vkui--color_background_tertiary--hover) !important;
+}
+
+.cm-activeLineGutter {
+    background: var(--vkui--color_background_tertiary--hover) !important;
+}
+
