@@ -22,9 +22,9 @@ const storageService = new StorageService();
 bridge
   .send("VKWebAppInit")
   .then(() => {
-    if (process.env.NODE_ENV === "development") {
-      import("./eruda");
-    }
+    // if (process.env.NODE_ENV === "development") {
+    import("./eruda");
+    // }
 
     storageService.get(isFirstVisitFlagName).then((value) => {
       if (value) return;
@@ -63,7 +63,7 @@ ReactDOM.render(
   <ErrorBoundaryApp>
     <RouterContext.Provider value={router}>
       <NavigationContextProvider>
-        <ConfigProvider appearance="dark">
+        <ConfigProvider>
           <AdaptivityProvider>
             <AppRoot>
               <App />
