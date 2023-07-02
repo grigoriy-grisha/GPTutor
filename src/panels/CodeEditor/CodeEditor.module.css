@@ -26,10 +26,6 @@
     background: var(--vkui--color_background_content) !important;
 }
 
-:global(.ace_mobile-button) {
-    display: none;
-}
-
 .container {
     width: 100%;
     display: flex;
