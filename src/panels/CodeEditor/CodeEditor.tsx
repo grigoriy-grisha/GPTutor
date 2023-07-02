@@ -1,16 +1,34 @@
 import React from "react";
 import {
+  classNames,
   Panel,
   PanelHeaderClose,
   PanelHeaderSubmit,
+  Platform,
   useConfigProvider,
+  usePlatform,
 } from "@vkontakte/vkui";
-import CodeMirror from "@uiw/react-codemirror";
-import { javascript } from "@codemirror/lang-javascript";
+import AceEditor from "react-ace";
+
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/theme-one_dark";
+import "ace-builds/src-noconflict/theme-tomorrow";
+import "ace-builds/src-noconflict/ext-error_marker";
+import "ace-builds/src-min-noconflict/ext-language_tools";
+import "ace-builds/src-min-noconflict/ext-emmet.js";
+import "ace-builds/src-noconflict/ext-inline_autocomplete";
+import "ace-builds/src-noconflict/ext-spellcheck";
+import "ace-builds/src-noconflict/ext-static_highlight";
+import "ace-builds/src-noconflict/ext-modelist";
 
 import { AppContainer } from "$/components/AppContainer";
 import { useNavigationContext } from "$/NavigationContext";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
+import { Editor } from "@monaco-editor/react";
+import { oneDarkTheme } from "$/panels/CodeEditor/oneDarkTheme";
+import { oneLightTheme } from "$/panels/CodeEditor/oneLightTheme";
+
+import classes from "./CodeEditor.module.css";
 
 interface IProps {
   id: string;
@@ -64,6 +82,7 @@ function CodeEditor({ id }: IProps) {
   const { goBack } = useNavigationContext();
   const { appearance } = useConfigProvider();
 
+  const platform = usePlatform();
   return (
     <Panel id={id}>
       <AppContainer
@@ -77,16 +96,36 @@ function CodeEditor({ id }: IProps) {
           </AppPanelHeader>
         }
         childrenWithHeight={(height) => (
-          <div style={{ marginTop: 16, width: "100%" }}>
-            <CodeMirror
-              theme={appearance}
-              value={value}
-              height={height}
-              extensions={[javascript({ jsx: true, typescript: true })]}
-              onChange={(asd) => {
-                console.log(asd);
-              }}
-            />
+          <div
+            style={{ height, width: "100%" }}
+            className={classNames(classes[appearance as string])}
+          >
+            {platform !== Platform.VKCOM ? (
+              <AceEditor
+                mode="javascript"
+                value={value}
+                theme={appearance === "light" ? "tomorrow" : "one_dark"}
+              />
+            ) : (
+              <Editor
+                options={{
+                  minimap: { enabled: false },
+                }}
+                height={height}
+                defaultLanguage="javascript"
+                defaultValue={value}
+                onMount={(editor, monaco) => {
+                  if (appearance === "dark") {
+                    monaco.editor.defineTheme("one-dark", oneDarkTheme as any);
+                    monaco.editor.setTheme("one-dark");
+                    return;
+                  }
+
+                  monaco.editor.defineTheme("one-light", oneLightTheme as any);
+                  monaco.editor.setTheme("one-light");
+                }}
+              />
+            )}
           </div>
         )}
       ></AppContainer>
