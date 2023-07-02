@@ -99,12 +99,14 @@ function CodeEditor({ id }: IProps) {
           >
             {platform !== Platform.VKCOM ? (
               <AceEditor
+                height={height}
                 mode="javascript"
                 value={value}
                 theme={appearance === "light" ? "tomorrow" : "one_dark"}
               />
             ) : (
               <Editor
+                theme={appearance === "dark" ? "vs-dark" : "light"}
                 options={{
                   minimap: { enabled: false },
                 }}
