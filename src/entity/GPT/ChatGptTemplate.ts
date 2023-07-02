@@ -28,7 +28,7 @@ export abstract class ChatGptTemplate {
 
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
-  timer = new Timer(15, 0, "decrement");
+  timer = new Timer(10, 0, "decrement");
 
   messages$ = sig<GptMessage[]>([]);
 

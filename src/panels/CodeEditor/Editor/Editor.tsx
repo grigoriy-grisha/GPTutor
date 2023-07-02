@@ -1,6 +1,11 @@
 import React, { useRef } from "react";
 import AceEditor from "react-ace";
-import { Platform, useConfigProvider, usePlatform } from "@vkontakte/vkui";
+import {
+  PanelSpinner,
+  Platform,
+  useConfigProvider,
+  usePlatform,
+} from "@vkontakte/vkui";
 
 import { Editor as MonacoEditor, Monaco } from "@monaco-editor/react";
 
@@ -74,6 +79,7 @@ function Editor({ currentTrainer, height }: IProps) {
           options={{
             minimap: { enabled: false },
           }}
+          loading={<PanelSpinner size="large" />}
           height={height}
           defaultLanguage={trainers.getCurrentTrainer()?.language}
           defaultValue={currentTrainer?.value$.get()}

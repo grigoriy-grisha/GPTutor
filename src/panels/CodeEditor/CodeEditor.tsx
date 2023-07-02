@@ -72,7 +72,7 @@ function CodeEditor({ id }: IProps) {
             >
               <Title level="2">Песочница</Title>
             </AppPanelHeader>
-            <Tabs>
+            <Tabs className={classes.tabs}>
               <TabsItem
                 selected={selected === "code"}
                 id="code"
@@ -94,18 +94,16 @@ function CodeEditor({ id }: IProps) {
         }
         childrenWithHeight={(height) => (
           <div className={classes.container}>
-            {selected === "code" && (
-              <div
-                style={{
-                  height,
-                  width: "100%",
-                  display: selected === "code" ? "block" : "none",
-                }}
-                className={classNames(classes[appearance as string])}
-              >
-                <Editor height={height} currentTrainer={currentTrainer} />
-              </div>
-            )}
+            <div
+              style={{
+                height,
+                width: "100%",
+                display: selected === "code" ? "block" : "none",
+              }}
+              className={classNames(classes[appearance as string])}
+            >
+              <Editor height={height} currentTrainer={currentTrainer} />
+            </div>
             <div
               style={{
                 height,

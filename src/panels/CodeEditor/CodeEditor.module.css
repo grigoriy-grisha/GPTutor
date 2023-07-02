@@ -36,3 +36,7 @@
     color: #02ba02;
     margin-right: 4px;
 }
+
+.tabs{
+    background: var(--vkui--color_background_content) !important;
+}
