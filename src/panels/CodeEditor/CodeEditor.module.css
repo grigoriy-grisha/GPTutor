@@ -2,6 +2,18 @@
     color: hsl(230, 8%, 24%) !important;
 }
 
+.light :global(.mtk21) {
+    color: #8959A8 !important;
+}
+
+:global(.ace_gutter) {
+    background: var(--vkui--color_background_content) !important;
+}
+
+:global(.ace_content) {
+    background: var(--vkui--color_background_content) !important;
+}
+
 :global(.monaco-editor-background) {
     background: var(--vkui--color_background_content) !important;
 }
