@@ -14,6 +14,10 @@
     background: var(--vkui--color_background_content) !important;
 }
 
+:global(.ace_editor) {
+    width: 100vw !important;
+}
+
 :global(.monaco-editor-background) {
     background: var(--vkui--color_background_content) !important;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   classNames,
   Panel,
@@ -24,7 +24,7 @@ import "ace-builds/src-noconflict/ext-modelist";
 import { AppContainer } from "$/components/AppContainer";
 import { useNavigationContext } from "$/NavigationContext";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
-import { Editor } from "@monaco-editor/react";
+import { Editor, Monaco } from "@monaco-editor/react";
 import { oneDarkTheme } from "$/panels/CodeEditor/oneDarkTheme";
 import { oneLightTheme } from "$/panels/CodeEditor/oneLightTheme";
 
@@ -79,10 +79,26 @@ console.log(message); // Ошибка: переменная message недост
 `;
 
 function CodeEditor({ id }: IProps) {
+  const ref = useRef<Monaco>();
+
   const { goBack } = useNavigationContext();
   const { appearance } = useConfigProvider();
 
   const platform = usePlatform();
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    if (appearance === "dark") {
+      ref.current.editor.defineTheme("one-dark", oneDarkTheme as any);
+      ref.current.editor.setTheme("one-dark");
+      return;
+    }
+
+    ref.current.editor.defineTheme("one-light", oneLightTheme as any);
+    ref.current.editor.setTheme("one-light");
+  }, [appearance]);
+
   return (
     <Panel id={id}>
       <AppContainer
@@ -114,14 +130,7 @@ function CodeEditor({ id }: IProps) {
                 defaultLanguage="javascript"
                 defaultValue={value}
                 onMount={(editor, monaco) => {
-                  if (appearance === "dark") {
-                    monaco.editor.defineTheme("one-dark", oneDarkTheme as any);
-                    monaco.editor.setTheme("one-dark");
-                    return;
-                  }
-
-                  monaco.editor.defineTheme("one-light", oneLightTheme as any);
-                  monaco.editor.setTheme("one-light");
+                  ref.current = monaco;
                 }}
               />
             )}
