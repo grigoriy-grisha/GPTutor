@@ -2,9 +2,9 @@ import React from "react";
 import {
   classNames,
   Panel,
-  PanelHeaderClose,
-  PanelHeaderSubmit,
+  PanelHeaderBack,
   Platform,
+  Title,
   useConfigProvider,
   usePlatform,
 } from "@vkontakte/vkui";
@@ -88,11 +88,8 @@ function CodeEditor({ id }: IProps) {
       <AppContainer
         withoutTabbar
         headerChildren={
-          <AppPanelHeader
-            before={<PanelHeaderClose onClick={goBack} />}
-            after={<PanelHeaderSubmit />}
-          >
-            Редактор
+          <AppPanelHeader before={<PanelHeaderBack onClick={goBack} />}>
+            <Title level="2">Редактор</Title>
           </AppPanelHeader>
         }
         childrenWithHeight={(height) => (
