@@ -1,20 +1,27 @@
 import React, { useEffect, useRef } from "react";
 import {
   classNames,
+  IconButton,
   Panel,
   PanelHeaderBack,
   Platform,
+  Tabs,
+  TabsItem,
   Title,
   useConfigProvider,
   usePlatform,
 } from "@vkontakte/vkui";
+import { Icon32Play } from "@vkontakte/icons";
+
 import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-python.js";
+import "ace-builds/src-noconflict/mode-golang.js";
 import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/theme-tomorrow";
 import "ace-builds/src-noconflict/ext-error_marker";
-import "ace-builds/src-min-noconflict/ext-language_tools";
+import "ace-builds/src-min-noconflict/ext-language_tools.js";
 import "ace-builds/src-min-noconflict/ext-emmet.js";
 import "ace-builds/src-noconflict/ext-inline_autocomplete";
 import "ace-builds/src-noconflict/ext-spellcheck";
@@ -29,56 +36,28 @@ import { oneDarkTheme } from "$/panels/CodeEditor/oneDarkTheme";
 import { oneLightTheme } from "$/panels/CodeEditor/oneLightTheme";
 
 import classes from "./CodeEditor.module.css";
+import { Console } from "$/panels/CodeEditor/Console";
+import Time from "$/components/Time";
+import { trainers } from "$/entity/Trainers";
 
 interface IProps {
   id: string;
 }
 
-const value = `
-// Примеры использования переменных const, let и var
-
-// Переменные const
-const PI = 3.14159;
-console.log(PI); // 3.14159
-
-// Попытка изменить значение переменной const
-const PI = 3.14159;
-PI = 3.14; // Ошибка: переназначение константы запрещено
-
-// Переменные let
-let age = 25;
-console.log(age); // 25
-
-age = 30;
-console.log(age); // 30
-
-// Переменные let с блочной областью видимости
-if (true) {
-  let name = 'John';
-  console.log(name); // John
+function getEditorTabName(language: string) {
+  if (language === "javascript") return "index.js";
+  if (language === "python") return "main.py";
+  if (language === "go") return "main.go";
 }
 
-console.log(name); // Ошибка: переменная name недоступна за пределами блока
-
-// Переменные var
-var age = 25;
-console.log(age); // 25
-
-age = 30;
-console.log(age); // 30
-
-// Переменные var с функциональной областью видимости
-function sayHello() {
-  var message = 'Hello';
-  console.log(message);
+function getAceLanguage(language?: string) {
+  if (language === "go") return "golang";
+  return language;
 }
-
-sayHello(); // Hello
-console.log(message); // Ошибка: переменная message недоступна за пределами функции
-
-`;
 
 function CodeEditor({ id }: IProps) {
+  const [selected, setSelected] = React.useState("code");
+
   const ref = useRef<Monaco>();
 
   const { goBack } = useNavigationContext();
@@ -86,7 +65,7 @@ function CodeEditor({ id }: IProps) {
 
   const platform = usePlatform();
 
-  useEffect(() => {
+  const setupTheme = () => {
     if (!ref.current) return;
 
     if (appearance === "dark") {
@@ -97,42 +76,116 @@ function CodeEditor({ id }: IProps) {
 
     ref.current.editor.defineTheme("one-light", oneLightTheme as any);
     ref.current.editor.setTheme("one-light");
+  };
+
+  useEffect(() => {
+    console.log(appearance);
+    setupTheme();
   }, [appearance]);
+
+  const currentTrainer = trainers.getCurrentTrainer();
+  console.log(currentTrainer);
+
+  if (!currentTrainer) return null;
 
   return (
     <Panel id={id}>
       <AppContainer
         withoutTabbar
         headerChildren={
-          <AppPanelHeader before={<PanelHeaderBack onClick={goBack} />}>
+          <AppPanelHeader
+            before={<PanelHeaderBack onClick={goBack} />}
+            after={
+              currentTrainer.gptInstance.timer.isStopped$.get() ? (
+                <IconButton
+                  disabled={currentTrainer.gptInstance.sendCompletions$.loading.get()}
+                  className={classes.play}
+                  onClick={async () => {
+                    setSelected("console");
+                    await currentTrainer.gptInstance.send(
+                      currentTrainer?.value$.get()
+                    );
+                  }}
+                >
+                  <Icon32Play width={26} height={26} />
+                </IconButton>
+              ) : (
+                <Time seconds={currentTrainer.gptInstance.timer.time$.get()} />
+              )
+            }
+          >
             <Title level="2">Редактор</Title>
           </AppPanelHeader>
         }
         childrenWithHeight={(height) => (
-          <div
-            style={{ height, width: "100%" }}
-            className={classNames(classes[appearance as string])}
-          >
-            {platform !== Platform.VKCOM ? (
-              <AceEditor
-                height={height}
-                mode="javascript"
-                value={value}
-                theme={appearance === "light" ? "tomorrow" : "one_dark"}
-              />
-            ) : (
-              <Editor
-                theme={appearance === "dark" ? "vs-dark" : "light"}
-                options={{
-                  minimap: { enabled: false },
+          <div className={classes.container}>
+            <Tabs>
+              <TabsItem
+                selected={selected === "code"}
+                id="code"
+                aria-controls="tab-content-code"
+                onClick={() => {
+                  setSelected("code");
                 }}
-                height={height}
-                defaultLanguage="javascript"
-                defaultValue={value}
-                onMount={(editor, monaco) => {
-                  ref.current = monaco;
+              >
+                {getEditorTabName(currentTrainer?.language)}
+              </TabsItem>
+              <TabsItem
+                selected={selected === "console"}
+                id="console"
+                aria-controls="tab-content-console"
+                onClick={() => {
+                  setSelected("console");
                 }}
-              />
+              >
+                console
+              </TabsItem>
+            </Tabs>
+
+            {selected === "code" && (
+              <div
+                style={{ height, width: "100%" }}
+                className={classNames(classes[appearance as string])}
+              >
+                {platform !== Platform.VKCOM ? (
+                  <AceEditor
+                    onChange={(value) => {
+                      currentTrainer?.value$.set(value);
+                    }}
+                    enableBasicAutocompletion
+                    enableLiveAutocompletion
+                    enableSnippets
+                    height={height}
+                    mode={getAceLanguage(
+                      trainers.getCurrentTrainer()?.language
+                    )}
+                    value={currentTrainer?.value$.get()}
+                    theme={appearance === "light" ? "tomorrow" : "one_dark"}
+                  />
+                ) : (
+                  <Editor
+                    onChange={(value) => {
+                      currentTrainer?.value$.set(String(value));
+                    }}
+                    theme={appearance === "dark" ? "vs-dark" : "light"}
+                    options={{
+                      minimap: { enabled: false },
+                    }}
+                    height={height}
+                    defaultLanguage={trainers.getCurrentTrainer()?.language}
+                    defaultValue={currentTrainer?.value$.get()}
+                    onMount={(editor, monaco) => {
+                      ref.current = monaco;
+                      setupTheme();
+                    }}
+                  />
+                )}
+              </div>
+            )}
+            {selected === "console" && (
+              <div style={{ height, width: "100%" }}>
+                <Console />
+              </div>
             )}
           </div>
         )}

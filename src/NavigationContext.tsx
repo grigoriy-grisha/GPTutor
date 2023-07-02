@@ -31,7 +31,6 @@ export type NavigationContextType = {
   openInterviewQuestions: () => void;
   goToLeetcodeProblems: () => void;
   goToChatLeetCode: () => void;
-
   goToProblemDetail: () => void;
   goToEditor: () => void;
   openAlert: (data: AlertType) => void;
@@ -58,7 +57,7 @@ export function NavigationContextProvider({
   const location = useLocation();
   const router = useRouter();
 
-  useEffect(() => router.replacePage(RoutingPages.editor), []);
+  useEffect(() => router.replacePage(RoutingPages.home), []);
 
   const activePanel = location.getViewActivePanel(Views.viewMain)!;
 

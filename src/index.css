@@ -92,3 +92,15 @@ tfoot > tr  {
     background: var(--vkui--color_background_tertiary--hover) !important;
 }
 
+.code-buttons {
+    display: flex;
+    align-items: center;
+}
+
+[data-edit-mock] {
+    margin-left: 12px;
+}
+
+[data-edit-code] {
+    margin-left: 12px;
+}

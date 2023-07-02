@@ -10,16 +10,19 @@ import {
   GoLesson,
   HtmlCssInterview,
   HtmlCssLesson,
+  JavascriptInterview,
   JSLesson,
+  JSTraining,
   LeetCode,
+  ReactInterview,
   ReactLesson,
   TypescriptLesson,
   VueLesson,
-  ReactInterview,
-  JavascriptInterview,
 } from "$/icons";
 
 import classes from "./ChapterCard.module.css";
+import { PythonTraining } from "$/icons/LessonIcons/PythonTraining";
+import { GoTraining } from "$/icons/LessonIcons/GoTraining";
 
 const CardIcon: Record<string, React.FC> = {
   [ModeType.JS]: JSLesson,
@@ -33,6 +36,9 @@ const CardIcon: Record<string, React.FC> = {
   [ModeType.REACT_INTERVIEW]: ReactInterview,
   [ModeType.JAVASCRIPT_INTERVIEW]: JavascriptInterview,
   [ModeType.LeetCode]: LeetCode,
+  [ModeType.JS_TRAINING]: JSTraining,
+  [ModeType.PYTHON_TRAINING]: PythonTraining,
+  [ModeType.GO_TRAINING]: GoTraining,
 };
 
 interface IProps {
