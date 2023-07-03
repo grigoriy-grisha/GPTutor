@@ -62,7 +62,7 @@ function Editor({ currentTrainer, height }: IProps) {
       currentTrainer?.value$.set(currentTrainer?.value$.get() + " ");
       setTimeout(() => {
         currentTrainer?.value$.set(currentTrainer?.value$.get().slice(0, -1));
-      });
+      }, 100);
     };
 
     aceRef.current?.editor.on("focus", handle);
