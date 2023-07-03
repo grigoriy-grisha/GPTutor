@@ -4,6 +4,7 @@ import {
   IconButton,
   Panel,
   PanelHeaderBack,
+  Spacing,
   Tabs,
   TabsItem,
   Title,
@@ -43,79 +44,81 @@ function CodeEditor({ id }: IProps) {
 
   return (
     <Panel id={id}>
-      <AppContainer
-        withoutTabbar
-        headerChildren={
-          <>
-            <AppPanelHeader
-              before={<PanelHeaderBack onClick={goBack} />}
-              after={
-                currentTrainer.gptInstance.timer.isStopped$.get() ? (
-                  <IconButton
-                    disabled={currentTrainer.gptInstance.sendCompletions$.loading.get()}
-                    className={classes.play}
-                    onClick={async () => {
-                      setSelected("console");
-                      await currentTrainer.gptInstance.send(
-                        currentTrainer?.value$.get()
-                      );
-                    }}
-                  >
-                    <Icon32Play width={26} height={26} />
-                  </IconButton>
-                ) : (
-                  <Time
-                    seconds={currentTrainer.gptInstance.timer.time$.get()}
-                  />
-                )
-              }
-            >
-              <Title level="2">Песочница</Title>
-            </AppPanelHeader>
-            <Tabs className={classes.tabs}>
-              <TabsItem
-                selected={selected === "code"}
-                id="code"
-                aria-controls="tab-content-code"
-                onClick={() => setSelected("code")}
+      <div style={{ height: "100vh" }}>
+        <AppContainer
+          withoutTabbar
+          headerChildren={
+            <>
+              <AppPanelHeader
+                before={<PanelHeaderBack onClick={goBack} />}
+                after={
+                  currentTrainer.gptInstance.timer.isStopped$.get() ? (
+                    <IconButton
+                      disabled={currentTrainer.gptInstance.sendCompletions$.loading.get()}
+                      className={classes.play}
+                      onClick={async () => {
+                        setSelected("console");
+                        await currentTrainer.gptInstance.send(
+                          currentTrainer?.value$.get()
+                        );
+                      }}
+                    >
+                      <Icon32Play width={26} height={26} />
+                    </IconButton>
+                  ) : (
+                    <Time
+                      seconds={currentTrainer.gptInstance.timer.time$.get()}
+                    />
+                  )
+                }
               >
-                {getEditorTabName(currentTrainer?.language)}
-              </TabsItem>
-              <TabsItem
-                selected={selected === "console"}
-                id="console"
-                aria-controls="tab-content-console"
-                onClick={() => setSelected("console")}
+                <Title level="2">Песочница</Title>
+              </AppPanelHeader>
+              <Tabs className={classes.tabs}>
+                <TabsItem
+                  selected={selected === "code"}
+                  id="code"
+                  aria-controls="tab-content-code"
+                  onClick={() => setSelected("code")}
+                >
+                  {getEditorTabName(currentTrainer?.language)}
+                </TabsItem>
+                <TabsItem
+                  selected={selected === "console"}
+                  id="console"
+                  aria-controls="tab-content-console"
+                  onClick={() => setSelected("console")}
+                >
+                  console
+                </TabsItem>
+              </Tabs>
+            </>
+          }
+          childrenWithHeight={(height) => (
+            <div className={classes.container}>
+              <div
+                style={{
+                  height,
+                  width: "100%",
+                  display: selected === "code" ? "block" : "none",
+                }}
+                className={classNames(classes[appearance as string])}
               >
-                console
-              </TabsItem>
-            </Tabs>
-          </>
-        }
-        childrenWithHeight={(height) => (
-          <div className={classes.container}>
-            <div
-              style={{
-                height,
-                width: "100%",
-                display: selected === "code" ? "block" : "none",
-              }}
-              className={classNames(classes[appearance as string])}
-            >
-              <Editor height={height} currentTrainer={currentTrainer} />
+                <Editor height={height} currentTrainer={currentTrainer} />
+              </div>
+              <div
+                style={{
+                  width: "100%",
+                  display: selected === "console" ? "block" : "none",
+                }}
+              >
+                <Console />
+              </div>
+              <Spacing size={20} />
             </div>
-            <div
-              style={{
-                height,
-                width: "100%",
-                display: selected === "console" ? "block" : "none",
-              }}
-            >
-              <Console />
-            </div>
-          </div>
-        )}
-      ></AppContainer>
+          )}
+        />
+      </div>
     </Panel>
   );
 }
