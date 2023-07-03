@@ -44,3 +44,5 @@ export class CopyService {
     return bridge.send("VKWebAppCopyText", { text });
   }
 }
+
+export const copyService = new CopyService();

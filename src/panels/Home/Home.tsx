@@ -23,7 +23,7 @@ const chapters = [
   ...lessonsController.chapters,
   ...trainers.items,
   ...interviews.interviews,
-  { type: ModeType.LeetCode },
+  { type: ModeType.LeetCode, header: "Решебник задач" },
 ].sort(() => (Math.random() > 0.5 ? 1 : -1));
 
 function Home({ id }: IProps) {

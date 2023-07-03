@@ -36,7 +36,8 @@ import { LeetcodeProblems } from "./panels/LeetCodeProblems";
 import { ChatLeetCode } from "./panels/ChatLeetCode";
 import { ProblemDetail } from "./panels/ProblemDetail";
 import { AppAlert } from "./modals/AppAlert";
-import CodeEditor from "./panels/CodeEditor/CodeEditor";
+import { CodeEditor } from "./panels/CodeEditor";
+import UtilBlock from "./UtilBlock";
 
 const App = () => {
   const location = useLocation();
@@ -95,6 +96,7 @@ const App = () => {
           <ProblemDetail id={Panels.problemDetail} />
         </View>
       </SplitLayout>
+      <UtilBlock />
       <SnackbarNotifier />
     </>
   );

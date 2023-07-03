@@ -6,6 +6,7 @@ import { LessonItem } from "./LessonItem";
 type Lessons = { [key in string]: LessonItem[] };
 
 export class ChapterItem {
+  header = "Учебник";
   rawLessons: LessonItem[];
   lessons: Signal<Lessons>;
 

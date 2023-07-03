@@ -14,7 +14,7 @@ import { snackbarNotify } from "$/entity/notify";
 import { interviews } from "$/entity/interview";
 import { leetCode } from "$/entity/leetCode/LeetCode";
 
-const MAX_CONTEXT_WORDS = 1000;
+const MAX_CONTEXT_WORDS = 7000;
 
 export abstract class ChatGptTemplate {
   isBlockActions$ = sig(false);

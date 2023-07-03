@@ -5,6 +5,7 @@ import { ModeType } from "$/entity/lessons";
 export class TrainerItem {
   value$ = sig("");
 
+  header = "Тренажер";
   gptInstance = new ChatGptTrainer();
   constructor(
     public type: ModeType,
@@ -18,6 +19,12 @@ export class TrainerItem {
 
   setInitialValue() {
     this.value$.set(this.initialValue);
+    this.gptInstance.messages$.set([]);
+  }
+
+  initTrainer(value: string) {
+    this.value$.set(value);
+    this.gptInstance.messages$.set([]);
   }
 
   init() {

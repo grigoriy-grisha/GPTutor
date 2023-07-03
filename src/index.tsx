@@ -63,7 +63,7 @@ ReactDOM.render(
   <ErrorBoundaryApp>
     <RouterContext.Provider value={router}>
       <NavigationContextProvider>
-        <ConfigProvider>
+        <ConfigProvider appearance={"dark"}>
           <AdaptivityProvider>
             <AppRoot>
               <App />

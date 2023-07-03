@@ -72,7 +72,7 @@ function Modes({ id }: IProps) {
         <Cards
           isBottom
           title="Алгоритмы"
-          chapters={[{ type: ModeType.LeetCode }]}
+          chapters={[{ type: ModeType.LeetCode, header: "Решебник задач" }]}
           onClickChapter={() => {
             leetCode.currentProblem = null;
             goToLeetcodeProblems();
