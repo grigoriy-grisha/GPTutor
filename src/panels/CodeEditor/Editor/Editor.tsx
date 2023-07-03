@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import AceEditor from "react-ace";
 import {
   PanelSpinner,
@@ -6,6 +6,7 @@ import {
   useConfigProvider,
   usePlatform,
 } from "@vkontakte/vkui";
+import { IAceEditor } from "react-ace/lib/types";
 
 import { Editor as MonacoEditor, Monaco } from "@monaco-editor/react";
 
@@ -41,6 +42,7 @@ function Editor({ currentTrainer, height }: IProps) {
   const platform = usePlatform();
   const { appearance } = useConfigProvider();
   const ref = useRef<Monaco>();
+  const aceRef = useRef<IAceEditor>(null);
 
   const setupTheme = () => {
     if (!ref.current) return;
@@ -55,10 +57,28 @@ function Editor({ currentTrainer, height }: IProps) {
     ref.current.editor.setTheme("one-light");
   };
 
+  useEffect(() => {
+    const handle = () => {
+      currentTrainer?.value$.set(currentTrainer?.value$.get() + " ");
+      setTimeout(() => {
+        currentTrainer?.value$.set(currentTrainer?.value$.get().slice(0, -1));
+      });
+    };
+
+    aceRef.current?.editor.on("focus", handle);
+    return () => {
+      aceRef.current?.editor.off("focus", handle);
+    };
+  }, []);
+
   return (
     <>
       {platform !== Platform.VKCOM ? (
         <AceEditor
+          ref={aceRef as any}
+          onFocus={() => {
+            console.log("123");
+          }}
           onChange={(value) => {
             currentTrainer?.value$.set(value);
           }}
