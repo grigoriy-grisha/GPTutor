@@ -3,6 +3,9 @@ import { trainers } from "$/entity/Trainers";
 import { useNavigationContext } from "$/NavigationContext";
 import { snackbarNotify } from "$/entity/notify";
 import { copyService } from "$/services/CopyService";
+import { useLocation } from "@happysanta/router";
+import { Panels, Views } from "$/entity/routing";
+import { chatGpt } from "$/entity/GPT";
 
 interface IProps {
   elem?: HTMLElement;
@@ -15,6 +18,8 @@ const isEditableLanguages = [
 ];
 
 function BlockCode({ elem }: IProps) {
+  const location = useLocation();
+
   const { goToEditor } = useNavigationContext();
 
   function getCodeText() {
@@ -60,6 +65,10 @@ function BlockCode({ elem }: IProps) {
     if (!currentTrainer) return;
 
     currentTrainer.initTrainer(getCodeText());
+
+    if (location.getViewActivePanel(Views.viewMain) !== Panels.chatTrainer) {
+      chatGpt.chatGptTrainer.messages$.set([]);
+    }
 
     goToEditor();
   }
