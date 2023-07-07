@@ -26,12 +26,13 @@ export type NavigationContextType = {
   goToHistory: () => void;
   goToModes: () => void;
   goToForbidden: () => void;
-  openChatSettingsModal: () => void;
+  goToChatSettingsModal: () => void;
   openApplicationInfo: () => void;
   openInterviewQuestions: () => void;
   goToLeetcodeProblems: () => void;
   goToChatLeetCode: () => void;
   goToProblemDetail: () => void;
+  goToChatTrainer: () => void;
   goToEditor: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
@@ -87,6 +88,7 @@ export function NavigationContextProvider({
   const goToChatFree = () => push(RoutingPages.chatFree);
   const goToChatLesson = () => push(RoutingPages.chatLesson);
   const goToChatInterview = () => push(RoutingPages.chatInterview);
+  const goToChatTrainer = () => push(RoutingPages.chatTrainer);
   const goToOpenSource = () => push(RoutingPages.openSource);
 
   const goToHistory = () => push(RoutingPages.history, "replace");
@@ -104,18 +106,18 @@ export function NavigationContextProvider({
 
     if (problemPages.length === 2) return goBack();
 
-    push(RoutingPages.chatLeetCode, "push");
+    push(RoutingPages.chatLeetCode);
   };
 
   const goToProblemDetail = () => {
-    push(RoutingPages.problemDetail, "push");
+    push(RoutingPages.problemDetail);
   };
 
   const goToEditor = () => {
-    push(RoutingPages.editor, "push");
+    push(RoutingPages.editor);
   };
 
-  const openChatSettingsModal = () => router.pushModal(Modals.chatSettings);
+  const goToChatSettingsModal = () => push(RoutingPages.chatSettings);
   const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
 
   const openAlert = (data: AlertType) => {
@@ -137,7 +139,7 @@ export function NavigationContextProvider({
         goToModes,
         goToOpenSource,
         goToForbidden,
-        openChatSettingsModal,
+        goToChatSettingsModal,
         openApplicationInfo,
         goToChatInterview,
         openInterviewQuestions,
@@ -146,6 +148,7 @@ export function NavigationContextProvider({
         goToChatLeetCode,
         goToProblemDetail,
         openAlert,
+        goToChatTrainer,
         alert,
         isForbidden,
       }}

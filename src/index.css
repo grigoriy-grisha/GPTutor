@@ -95,9 +95,18 @@ tfoot > tr  {
 .code-buttons {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    margin-top: -12px;
+    margin-left: -12px;
 }
 
 [data-edit-mock] {
+    margin-top: 12px;
+    margin-left: 12px;
+}
+
+[data-copy-mock] {
+    margin-top: 12px;
     margin-left: 12px;
 }
 

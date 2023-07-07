@@ -156,7 +156,7 @@ export const typescriptLessons = [
       new LessonRequest("Как объявить дженерики в TypeScript?", "Объявление"),
       new LessonRequest(
         "Какие преимущества дают джинерики в TypeScript?",
-        "Приемущства"
+        "Преимущества"
       ),
       new LessonRequest(
         "Можно ли использовать дженерики вместе с классами?",

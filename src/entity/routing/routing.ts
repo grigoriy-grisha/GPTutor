@@ -15,6 +15,7 @@ export enum RoutingPages {
   editor = "/editor",
 
   chatTrainer = "/chat-trainer",
+  chatSettings = "/chat-settings",
 }
 
 export enum Views {
@@ -38,10 +39,10 @@ export enum Panels {
   editor = "editor",
 
   chatTrainer = "chat-trainer",
+  chatSettings = "chat-settings",
 }
 
 export enum Modals {
-  chatSettings = "chat-settings",
   applicationInfo = "application-info",
 
   interviewQuestions = "interview-questions",
