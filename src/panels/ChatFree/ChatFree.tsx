@@ -13,7 +13,7 @@ interface IProps {
 }
 
 function ChatFree({ id }: IProps) {
-  const { goBack, openChatSettingsModal } = useNavigationContext();
+  const { goBack, goToChatSettingsModal } = useNavigationContext();
 
   const onStartChat = () => {
     chatGpt.chatGptFree.send("Привет, что ты можешь?");
@@ -27,7 +27,7 @@ function ChatFree({ id }: IProps) {
     <Panel id={id}>
       <Messenger
         writeBarBefore={
-          <ChatFreeWriteBarBefore onSettingsClick={openChatSettingsModal} />
+          <ChatFreeWriteBarBefore onSettingsClick={goToChatSettingsModal} />
         }
         additionalRequest={(handleSend) => (
           <ChatFreeAdditionalRequests handleSend={handleSend} />

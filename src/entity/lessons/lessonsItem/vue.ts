@@ -1,7 +1,7 @@
 import { LessonItem } from "../LessonItem";
 import { LessonRequest } from "../LessonRequest";
 
-const FOR_BEGINNERS = "Для новичоков";
+const FOR_BEGINNERS = "Для новичков";
 const FOR_ADVANCED = "Продвинутые темы";
 
 export const vueLessons = [

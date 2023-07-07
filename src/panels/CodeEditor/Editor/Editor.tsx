@@ -57,31 +57,12 @@ function Editor({ currentTrainer, height }: IProps) {
     ref.current.editor.setTheme("one-light");
   };
 
-  useEffect(() => {
-    const handle = () => {
-      currentTrainer?.value$.set(currentTrainer?.value$.get() + " ");
-      setTimeout(() => {
-        currentTrainer?.value$.set(currentTrainer?.value$.get().slice(0, -1));
-      }, 100);
-    };
-
-    aceRef.current?.editor.on("focus", handle);
-    return () => {
-      aceRef.current?.editor.off("focus", handle);
-    };
-  }, []);
-
   return (
     <>
       {platform !== Platform.VKCOM ? (
         <AceEditor
           ref={aceRef as any}
-          onFocus={() => {
-            console.log("123");
-          }}
-          onChange={(value) => {
-            currentTrainer?.value$.set(value);
-          }}
+          onChange={(value) => currentTrainer?.value$.set(value)}
           enableBasicAutocompletion
           enableLiveAutocompletion
           enableSnippets
@@ -96,9 +77,7 @@ function Editor({ currentTrainer, height }: IProps) {
             currentTrainer?.value$.set(String(value));
           }}
           theme={appearance === "dark" ? "vs-dark" : "light"}
-          options={{
-            minimap: { enabled: false },
-          }}
+          options={{ minimap: { enabled: false } }}
           loading={<PanelSpinner size="large" />}
           height={height}
           defaultLanguage={trainers.getCurrentTrainer()?.language}

@@ -12,7 +12,10 @@ import { Copy } from "../components/Copy";
 // @ts-ignore
 import mila from "markdown-it-link-attributes";
 import { Button } from "@vkontakte/vkui";
-import { Icon28EditOutline } from "@vkontakte/icons";
+import { Icon28BracketsSlashSquareOutline } from "@vkontakte/icons";
+
+require(`prismjs/components/prism-go.min.js`);
+require(`prismjs/components/prism-python.min.js`);
 
 const getLanguage = (lang: string) => {
   return !lang || lang === "html" ? "markup" : lang;
@@ -32,7 +35,7 @@ const copyMockButton = ReactDOM.renderToString(
 const editMockButton = ReactDOM.renderToString(
   <Button
     size="m"
-    before={<Icon28EditOutline width={24} height={24} />}
+    before={<Icon28BracketsSlashSquareOutline width={22} height={22} />}
     mode="secondary"
   >
     Песочница
@@ -80,8 +83,26 @@ export default class Markdown {
       const grammar = Prism.languages[language];
 
       try {
-        if (!grammar)
-          require(`prismjs/components/prism-${language || "text"}.min.js`);
+        if (!grammar) {
+          const gen = (function* () {
+            yield import(
+              `prismjs/components/prism-${language || "text"}.min.js`
+            );
+
+            const grammar = Prism.languages[language];
+            console.log(grammar);
+
+            yield Prism.highlight(code, grammar, language);
+          })();
+
+          gen.next();
+          gen.next();
+          gen.next();
+
+          const a = gen.next().value;
+          return a as any;
+        }
+
         if (grammar) return Prism.highlight(code, grammar, language);
       } catch (err) {
         console.error(err);

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button, Div, IconButton, Separator } from "@vkontakte/vkui";
+import { Button, Div, Separator } from "@vkontakte/vkui";
 
 import { InterviewController } from "$/entity/interview/InterviewController";
 import { chatGpt } from "$/entity/GPT";
-import { Icon24Cancel, Icon24QuestionOutline } from "@vkontakte/icons";
+import { Icon24QuestionOutline } from "@vkontakte/icons";
 
 import classes from "./ChatInterviewAdditionalRequests.module.css";
+import { ChatInfoBlock } from "$/components/Messenger/ChatInfoBlock";
 
 interface IProps {
   interviews: InterviewController;
@@ -68,29 +69,19 @@ function ChatInterviewAdditionalRequests({
       </Div>
       <Separator wide />
       {helpIsClosed && (
-        <Div>
-          <div className={classes.helpWrapper}>
-            <div className={classes.helpBlock}>
-              <div
-                style={{
-                  paddingRight: 8,
-                  color: "var(--vkui--color_background_accent_themed)",
-                }}
-              >
-                <Icon24QuestionOutline width={28} height={28} />
-              </div>
-              Подыграйте Чат-боту. Представьте, что вы проходите собеседование.
-              <br />
-              Отвечайте на вопросы ChatGPT.
-            </div>
-            <IconButton
-              className={classes.cancelIcon}
-              onClick={() => setHelpIsClosed(false)}
-            >
-              <Icon24Cancel />
-            </IconButton>
+        <ChatInfoBlock onClose={() => setHelpIsClosed(false)}>
+          <div
+            style={{
+              paddingRight: 8,
+              color: "var(--vkui--color_background_accent_themed)",
+            }}
+          >
+            <Icon24QuestionOutline width={28} height={28} />
           </div>
-        </Div>
+          Подыграйте Чат-боту. Представьте, что вы проходите собеседование.
+          <br />
+          Отвечайте на вопросы ChatGPT.
+        </ChatInfoBlock>
       )}
     </>
   );
