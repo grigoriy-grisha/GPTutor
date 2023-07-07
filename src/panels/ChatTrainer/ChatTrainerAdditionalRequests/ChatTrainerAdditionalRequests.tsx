@@ -21,9 +21,9 @@ function ChatTrainerAdditionalRequests() {
           >
             <Icon28InfoOutline />
           </div>
-          При выполнении кода, ChatGPT может ошибаться.
+          При выполнении кода ChatGPT может ошибаться.
           <br />
-          Напрвляйте бота в нужное русло!
+          Направляйте бота в нужное русло!
         </ChatInfoBlock>
       )}
     </>
