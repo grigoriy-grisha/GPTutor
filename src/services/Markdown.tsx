@@ -42,7 +42,11 @@ const editMockButton = ReactDOM.renderToString(
   </Button>
 );
 
-const isEditableLanguages = ["language-javascript", "language-python"];
+const isEditableLanguages = [
+  "language-javascript",
+  "language-python",
+  "language-go",
+];
 
 function renderCode(origRule?: RenderRule): RenderRule {
   return (tokens: Token[], idx: number, ...props) => {
