@@ -6,6 +6,7 @@ import { useNavigationContext } from "$/NavigationContext";
 import { chatGpt } from "$/entity/GPT";
 
 import { ChatTrainerWriteBarBefore } from "./ChatTrainerWriteBarBefore";
+import { ChatTrainerAdditionalRequests } from "./ChatTrainerAdditionalRequests";
 
 interface IProps {
   id: string;
@@ -23,7 +24,7 @@ function ChatTrainer({ id }: IProps) {
       <Messenger
         goBack={goBack}
         chatGpt={chatGpt.chatGptTrainer}
-        additionalRequest={() => null}
+        additionalRequest={() => <ChatTrainerAdditionalRequests />}
         writeBarBefore={
           <ChatTrainerWriteBarBefore onOpenEditor={onOpenEditor} />
         }

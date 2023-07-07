@@ -85,6 +85,7 @@ function Modes({ id }: IProps) {
           onClickChapter={(chapter) => {
             trainers.setCurrentTrainer(chapter.type as ModeType);
             trainers.getCurrentTrainer()?.setInitialValue();
+            chatGpt.chatGptTrainer.messages$.set([]);
             goToEditor();
           }}
         />
