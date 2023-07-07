@@ -61,6 +61,10 @@ function CodeEditor({ id }: IProps) {
                               currentTrainer?.value$.get()
                           );
                         }, 400);
+
+                        setTimeout(async () => {
+                          dispatchEvent(new Event("scroll-bottom-messenger"));
+                        }, 500);
                       }}
                     >
                       <Icon32Play width={26} height={26} />

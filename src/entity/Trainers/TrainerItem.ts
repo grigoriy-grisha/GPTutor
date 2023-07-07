@@ -4,7 +4,7 @@ import { ModeType } from "$/entity/lessons";
 export class TrainerItem {
   value$ = sig("");
 
-  header = "Тренажер";
+  header = "Песочница";
 
   constructor(
     public type: ModeType,
