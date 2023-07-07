@@ -114,6 +114,15 @@ export function NavigationContextProvider({
   };
 
   const goToEditor = () => {
+    const editorRoutes = location
+      .getViewHistory(Views.viewMain)
+      .filter((item) => item === Panels.editor);
+
+    if (editorRoutes.length > 1) {
+      goBack();
+      return;
+    }
+
     push(RoutingPages.editor);
   };
 
