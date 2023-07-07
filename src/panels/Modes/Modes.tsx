@@ -80,7 +80,7 @@ function Modes({ id }: IProps) {
         />
         <Cards
           isBottom
-          title="Тренажеры"
+          title="Песочницы"
           chapters={trainers.items}
           onClickChapter={(chapter) => {
             trainers.setCurrentTrainer(chapter.type as ModeType);
