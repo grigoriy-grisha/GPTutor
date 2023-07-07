@@ -8,7 +8,11 @@ interface IProps {
   elem?: HTMLElement;
 }
 
-const isEditableLanguages = ["language-javascript", "language-python"];
+const isEditableLanguages = [
+  "language-javascript",
+  "language-python",
+  "language-go",
+];
 
 function BlockCode({ elem }: IProps) {
   const { goToEditor } = useNavigationContext();
