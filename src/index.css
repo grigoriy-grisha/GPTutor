@@ -68,14 +68,6 @@ tfoot > tr  {
     color: white;
 }
 
-.vkuiTabbar--ios {
-    bottom: 8px;
-}
-
-.vkuiWriteBar--ios {
-    margin-bottom: 8px;
-}
-
 .cm-gutters {
     background: var(--vkui--color_background_content) !important;
 }

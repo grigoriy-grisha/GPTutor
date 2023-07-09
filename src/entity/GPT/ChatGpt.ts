@@ -56,6 +56,7 @@ export class ChatGpt {
 
   moveToInterviewChat(interviewType: string, goToChatInterview: () => void) {
     interviews.setCurrentInterview(interviewType as ModeType);
+    this.chatGptInterview.messages$.set([]);
     goToChatInterview();
   }
 

@@ -43,14 +43,7 @@ function ChatSettings({ id }: IProps) {
       <AppContainer
         headerChildren={
           <AppPanelHeader
-            before={
-              sizeX.compact && (
-                <PanelHeaderBack
-                  className={sizeX.compact.className}
-                  onClick={goBack}
-                />
-              )
-            }
+            before={<PanelHeaderBack onClick={goBack} />}
             after={<PanelHeaderSubmit onClick={onSubmit} disabled={!isDirty} />}
           >
             Настройки
