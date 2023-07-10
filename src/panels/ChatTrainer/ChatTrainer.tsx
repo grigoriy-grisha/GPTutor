@@ -22,6 +22,7 @@ function ChatTrainer({ id }: IProps) {
   return (
     <Panel id={id}>
       <Messenger
+        hideDeleteDialog
         goBack={goBack}
         chatGpt={chatGpt.chatGptTrainer}
         additionalRequest={() => <ChatTrainerAdditionalRequests />}

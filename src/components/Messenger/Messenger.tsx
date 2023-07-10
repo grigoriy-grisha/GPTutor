@@ -12,6 +12,7 @@ import { useMessenger } from "./hooks/useMessenger";
 import ScrollDown from "./ScrollDown";
 
 interface IProps {
+  hideDeleteDialog?: boolean;
   goBack: () => void;
   chatGpt: ChatGptTemplate;
 
@@ -40,6 +41,7 @@ function Messenger({
   startText,
   startIsDisabled,
   placeholderText,
+  hideDeleteDialog,
 }: IProps) {
   const { isTyping, scrollRef, showScrollDown, handlerSend, scrollToBottom } =
     useMessenger({ chatGpt });
@@ -67,6 +69,7 @@ function Messenger({
         <ScrollDown isShow={showScrollDown} onClick={scrollToBottom} />
       </MessengerContainer>
       <MessengerWriteBar
+        hideDeleteDialog={hideDeleteDialog}
         additionalRequest={additionalRequest}
         scrollToBottom={scrollToBottom}
         writeBarBefore={writeBarBefore}

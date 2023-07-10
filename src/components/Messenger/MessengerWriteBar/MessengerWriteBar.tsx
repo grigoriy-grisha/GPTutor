@@ -9,6 +9,7 @@ import { DelayBlock } from "./DelayBlock";
 
 interface IProps {
   chatGpt: ChatGptTemplate;
+  hideDeleteDialog?: boolean;
   handleSend: (message: string) => void;
   isTyping: boolean;
   writeBarBefore: React.ReactNode;
@@ -25,6 +26,7 @@ function MessengerWriteBar({
   writeBarBefore,
   additionalRequest,
   scrollToBottom,
+  hideDeleteDialog,
 }: IProps) {
   const hasSelectedMessages = chatGpt.hasSelectedMessages$.get();
 
@@ -39,6 +41,7 @@ function MessengerWriteBar({
           {additionalRequest(handleSend, scrollToBottom)}
         </div>
         <WriteBarMessage
+          hideDeleteDialog={hideDeleteDialog}
           writeBarBefore={writeBarBefore}
           chatGpt={chatGpt}
           handleSend={handleSend}
