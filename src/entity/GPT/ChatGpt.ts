@@ -7,6 +7,7 @@ import { sig } from "dignals";
 import { ChatGptInterview } from "$/entity/GPT/ChatGptInterview";
 import { ChatGptLeetCode } from "$/entity/GPT/ChatGptLeetCode";
 import { interviews } from "$/entity/interview";
+import { ChatGptTrainer } from "$/entity/GPT/ChatGptTrainer";
 
 export class ChatGpt {
   history = new GptHistoryDialogs();
@@ -17,6 +18,8 @@ export class ChatGpt {
   chatGptInterview = new ChatGptInterview();
 
   chatGptLeetCode = new ChatGptLeetCode();
+
+  chatGptTrainer = new ChatGptTrainer();
 
   currentChatGpt$ = sig<ChatGptTemplate>(this.chatGptFree);
 
@@ -53,6 +56,7 @@ export class ChatGpt {
 
   moveToInterviewChat(interviewType: string, goToChatInterview: () => void) {
     interviews.setCurrentInterview(interviewType as ModeType);
+    this.chatGptInterview.messages$.set([]);
     goToChatInterview();
   }
 

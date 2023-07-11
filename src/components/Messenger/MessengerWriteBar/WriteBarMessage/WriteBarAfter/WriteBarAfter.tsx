@@ -18,9 +18,15 @@ interface IProps {
   chatGptModel: ChatGptTemplate;
   sendMessage: () => void;
   value: string;
+  hideDeleteDialog?: boolean;
 }
 
-function WriteBarAfter({ chatGptModel, value, sendMessage }: IProps) {
+function WriteBarAfter({
+  chatGptModel,
+  value,
+  sendMessage,
+  hideDeleteDialog,
+}: IProps) {
   const { openAlert, goBack } = useNavigationContext();
   const appearance = useAppearance();
 
@@ -65,25 +71,27 @@ function WriteBarAfter({ chatGptModel, value, sendMessage }: IProps) {
 
   return (
     <div className={classes.container}>
-      <WriteBarIcon
-        onClick={() =>
-          openAlert({
-            onAction: applySettings,
-            actionText: "Удалить диалог",
-            header: "Подтвердите действие",
-            text: "Вы уверены? Диалог нельзя будет вернуть!",
-          })
-        }
-        disabled={removeDialogDisable || blockActions}
-      >
-        <Icon28DeleteOutline />
-      </WriteBarIcon>
+      {!hideDeleteDialog && (
+        <WriteBarIcon
+          onClick={() =>
+            openAlert({
+              onAction: applySettings,
+              actionText: "Удалить диалог",
+              header: "Подтвердите действие",
+              text: "Вы уверены? Диалог нельзя будет вернуть!",
+            })
+          }
+          disabled={removeDialogDisable || blockActions}
+        >
+          <Icon28DeleteOutline />
+        </WriteBarIcon>
+      )}
       {timerIsStopped ? (
         sendBars
       ) : (
         <TextTooltip
           appearance={appearance === "light" ? "accent" : "white"}
-          style={{ maxWidth: 150 }}
+          style={{ maxWidth: 150, height: "100%" }}
           text="Подождите, пока истечет время для отправки следующего сообщения"
         >
           <div>

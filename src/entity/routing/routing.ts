@@ -12,6 +12,10 @@ export enum RoutingPages {
 
   chatLeetCode = "/chat-leetcode",
   problemDetail = "/problem-detail",
+  editor = "/editor",
+
+  chatTrainer = "/chat-trainer",
+  chatSettings = "/chat-settings",
 }
 
 export enum Views {
@@ -31,10 +35,14 @@ export enum Panels {
   leetcodeProblems = "leetcode-problems",
   chatLeetCode = "chat-leetcode",
   problemDetail = "problem-detail",
+
+  editor = "editor",
+
+  chatTrainer = "chat-trainer",
+  chatSettings = "chat-settings",
 }
 
 export enum Modals {
-  chatSettings = "chat-settings",
   applicationInfo = "application-info",
 
   interviewQuestions = "interview-questions",

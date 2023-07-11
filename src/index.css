@@ -68,11 +68,68 @@ tfoot > tr  {
     color: white;
 }
 
-.vkuiTabbar--ios {
-    bottom: 8px;
+.cm-gutters {
+    background: var(--vkui--color_background_content) !important;
 }
 
-.vkuiWriteBar--ios {
-    margin-bottom: 8px;
+.ͼo {
+    background: var(--vkui--color_background_content) !important;
 }
 
+.cm-activeLine {
+    background: var(--vkui--color_background_tertiary--hover) !important;
+}
+
+.cm-activeLineGutter {
+    background: var(--vkui--color_background_tertiary--hover) !important;
+}
+
+.code-buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: -12px;
+    margin-left: -12px;
+}
+
+[data-edit-mock] {
+    margin-top: 12px;
+    margin-left: 12px;
+}
+
+[data-copy-mock] {
+    margin-top: 12px;
+    margin-left: 12px;
+}
+
+[data-copy-mock] button{
+    transition: opacity 0.3s;
+}
+
+[data-edit-mock] button{
+    transition: opacity 0.3s;
+}
+
+[data-copy-mock] button:hover{
+    opacity: 0.8;
+}
+
+[data-edit-mock] button:hover{
+    opacity: 0.8;
+}
+
+[data-copy-mock] button:active{
+    opacity: 0.6;
+}
+
+[data-edit-mock] button:active{
+    opacity: 0.6;
+}
+
+.vkuiHorizontalCell__image {
+    padding: 2px 6px;
+}
+
+.vkuiWriteBar__after, .vkuiWriteBar__before, .vkuiWriteBar__form {
+    align-items: center !important;
+}

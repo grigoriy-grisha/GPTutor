@@ -14,7 +14,7 @@ import { snackbarNotify } from "$/entity/notify";
 import { interviews } from "$/entity/interview";
 import { leetCode } from "$/entity/leetCode/LeetCode";
 
-const MAX_CONTEXT_WORDS = 1000;
+const MAX_CONTEXT_WORDS = 7000;
 
 export abstract class ChatGptTemplate {
   isBlockActions$ = sig(false);
@@ -28,7 +28,7 @@ export abstract class ChatGptTemplate {
 
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
-  timer = new Timer(15, 0, "decrement");
+  timer = new Timer(5, 0, "decrement");
 
   messages$ = sig<GptMessage[]>([]);
 

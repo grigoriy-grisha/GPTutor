@@ -45,6 +45,7 @@ function SystemMessageForm({
     >
       <FormItem>
         <Textarea
+          grow
           placeholder="Введите промпт..."
           className={classes.wrapper}
           value={systemMessageValue}

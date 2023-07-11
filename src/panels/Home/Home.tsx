@@ -13,6 +13,7 @@ import FreeDialogBlock from "./FreeDialogBlock";
 import HomeHeader from "./HomeHeader";
 
 import classes from "./Home.module.css";
+import { trainers } from "$/entity/Trainers";
 
 interface IProps {
   id: string;
@@ -20,8 +21,9 @@ interface IProps {
 
 const chapters = [
   ...lessonsController.chapters,
+  ...trainers.items,
   ...interviews.interviews,
-  { type: ModeType.LeetCode },
+  { type: ModeType.LeetCode, header: "Решебник задач" },
 ].sort(() => (Math.random() > 0.5 ? 1 : -1));
 
 function Home({ id }: IProps) {
@@ -30,6 +32,7 @@ function Home({ id }: IProps) {
     goToChatFree,
     goToChatInterview,
     goToLeetcodeProblems,
+    goToEditor,
   } = useNavigationContext();
 
   return (
@@ -46,6 +49,14 @@ function Home({ id }: IProps) {
           onClickChapter={(chapter) => {
             if (chapter.type === ModeType.LeetCode) {
               goToLeetcodeProblems();
+              return;
+            }
+
+            if (chapter.type.includes("TRAINING")) {
+              trainers.setCurrentTrainer(chapter.type as ModeType);
+              trainers.getCurrentTrainer()?.setInitialValue();
+              chatGpt.chatGptTrainer.messages$.set([]);
+              goToEditor();
               return;
             }
 

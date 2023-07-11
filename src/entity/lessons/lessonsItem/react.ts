@@ -1,7 +1,7 @@
 import { LessonItem } from "../LessonItem";
 import { LessonRequest } from "../LessonRequest";
 
-const FOR_BEGINNERS = "Для новичоков";
+const FOR_BEGINNERS = "Для новичков";
 const ADVANCED = "Продвинутые темы";
 
 export const reactLessons = [
@@ -29,7 +29,7 @@ export const reactLessons = [
     ]
   ),
   new LessonItem(
-    "Условный ренндеринг",
+    "Условный рендеринг",
     FOR_BEGINNERS,
     new LessonRequest("Что такое Условный ренеринг в React? Покажи примеры"),
     []
@@ -83,7 +83,7 @@ export const reactLessons = [
       ),
       new LessonRequest(
         "Расскажи о методах жизненного цикла в классовых компонентах",
-        "Методы жиненного цикла"
+        "Методы жизненного цикла"
       ),
       new LessonRequest(
         "Расскажи о Refs в классовых компонентах и для чего нужны",

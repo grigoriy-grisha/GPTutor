@@ -1,11 +1,9 @@
 import React from "react";
 
 import {
-  ModalPage,
-  ModalPageHeader,
-  PanelHeaderClose,
+  Panel,
+  PanelHeaderBack,
   PanelHeaderSubmit,
-  Separator,
   useAdaptivityConditionalRender,
 } from "@vkontakte/vkui";
 
@@ -15,6 +13,8 @@ import SystemMessageForm from "./SystemMessageForm";
 
 import useChatSettings from "./hooks/useChatSettings";
 import { useNavigationContext } from "$/NavigationContext";
+import { AppContainer } from "$/components/AppContainer";
+import { AppPanelHeader } from "$/components/AppPanelHeader";
 
 interface IProps {
   id: string;
@@ -39,30 +39,27 @@ function ChatSettings({ id }: IProps) {
   const initialSystemMessage = gpt.initialSystemContent;
 
   return (
-    <ModalPage settlingHeight={100} id={id}>
-      <ModalPageHeader
-        before={
-          sizeX.compact && (
-            <PanelHeaderClose
-              className={sizeX.compact.className}
-              onClick={goBack}
-            />
-          )
+    <Panel id={id}>
+      <AppContainer
+        headerChildren={
+          <AppPanelHeader
+            before={<PanelHeaderBack onClick={goBack} />}
+            after={<PanelHeaderSubmit onClick={onSubmit} disabled={!isDirty} />}
+          >
+            Настройки
+          </AppPanelHeader>
         }
-        after={<PanelHeaderSubmit onClick={onSubmit} disabled={!isDirty} />}
       >
-        Настройка чата
-      </ModalPageHeader>
-      <Separator wide />
-      <SystemMessageForm
-        clearSystemMessage={clearSystemMessage}
-        initialSystemMessage={initialSystemMessage}
-        isChangedSystemMessage={isChangedSystemMessage}
-        resetSystemMessage={resetSystemMessage}
-        systemMessageValue={systemMessageValue}
-        updateSystemMessage={updateSystemMessage}
-      />
-    </ModalPage>
+        <SystemMessageForm
+          clearSystemMessage={clearSystemMessage}
+          initialSystemMessage={initialSystemMessage}
+          isChangedSystemMessage={isChangedSystemMessage}
+          resetSystemMessage={resetSystemMessage}
+          systemMessageValue={systemMessageValue}
+          updateSystemMessage={updateSystemMessage}
+        />
+      </AppContainer>
+    </Panel>
   );
 }
 

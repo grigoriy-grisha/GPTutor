@@ -26,7 +26,7 @@ import { Modes } from "./panels/Modes";
 
 import { useNavigationContext } from "./NavigationContext";
 import { SnackbarNotifier } from "./components/SnackbarNotifier";
-import { ChatSettings } from "./modals/ChatSettings";
+import { ChatSettings } from "./panels/ChatSettings";
 import { ApplicationInfo } from "./modals/ApplicationInfo";
 import { ChatFree } from "./panels/ChatFree";
 import { ChatLesson } from "./panels/ChatLesson";
@@ -36,6 +36,9 @@ import { LeetcodeProblems } from "./panels/LeetCodeProblems";
 import { ChatLeetCode } from "./panels/ChatLeetCode";
 import { ProblemDetail } from "./panels/ProblemDetail";
 import { AppAlert } from "./modals/AppAlert";
+import { CodeEditor } from "./panels/CodeEditor";
+import { ChatTrainer } from "./panels/ChatTrainer";
+import UtilBlock from "./UtilBlock";
 
 const App = () => {
   const location = useLocation();
@@ -68,7 +71,6 @@ const App = () => {
         }
         modal={
           <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
-            <ChatSettings id={Modals.chatSettings} />
             <ApplicationInfo id={Modals.applicationInfo} />
             <InterviewQuestions id={Modals.interviewQuestions} />
           </ModalRoot>
@@ -80,6 +82,9 @@ const App = () => {
           onSwipeBack={goBack}
           history={history}
         >
+          <ChatSettings id={Panels.chatSettings} />
+          <CodeEditor id={Panels.editor} />
+          <ChatTrainer id={Panels.chatTrainer} />
           <Home id={Panels.home} />
           <Chapters id={Panels.chapters} />
           <ChatFree id={Panels.chatFree} />
@@ -93,6 +98,7 @@ const App = () => {
           <ProblemDetail id={Panels.problemDetail} />
         </View>
       </SplitLayout>
+      <UtilBlock />
       <SnackbarNotifier />
     </>
   );

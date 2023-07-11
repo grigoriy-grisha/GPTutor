@@ -173,7 +173,7 @@ const lessonJS10 = new LessonItem(
     new LessonRequest("Расскажи о  ```Array.isArray``` в js", "Array.isArray"),
     new LessonRequest(
       "Расскажи о методах ```indexOf```, ```lastIndexOf```, ```includes``` в js",
-      "Поиск в массиве по значинию"
+      "Поиск в массиве по значению"
     ),
     new LessonRequest(
       "Расскажи о методах ```find```, ```findIndex```, ```findLastIndex``` в js",

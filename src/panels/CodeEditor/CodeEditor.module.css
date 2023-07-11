@@ -1,0 +1,42 @@
+.light :global(.mtk1) {
+    color: hsl(230, 8%, 24%) !important;
+}
+
+.light :global(.mtk21) {
+    color: #8959A8 !important;
+}
+
+:global(.ace_gutter) {
+    background: var(--vkui--color_background_content) !important;
+}
+
+:global(.ace_content) {
+    background: var(--vkui--color_background_content) !important;
+}
+
+:global(.ace_editor) {
+    width: 100vw !important;
+}
+
+:global(.monaco-editor-background) {
+    background: var(--vkui--color_background_content) !important;
+}
+
+:global(.margin-view-overlays) {
+    background: var(--vkui--color_background_content) !important;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.play {
+    color: #02ba02;
+    margin-right: 4px;
+}
+
+.tabs{
+    background: var(--vkui--color_background_content) !important;
+}

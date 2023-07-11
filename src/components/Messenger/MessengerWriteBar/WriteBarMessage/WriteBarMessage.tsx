@@ -9,9 +9,15 @@ interface IProps {
   chatGpt: ChatGptTemplate;
   handleSend: (value: string) => void;
   writeBarBefore: React.ReactNode;
+  hideDeleteDialog?: boolean;
 }
 
-function WriteBarMessage({ chatGpt, handleSend, writeBarBefore }: IProps) {
+function WriteBarMessage({
+  chatGpt,
+  handleSend,
+  writeBarBefore,
+  hideDeleteDialog,
+}: IProps) {
   const { value, setValue, onEnterSend, sendMessage } = useWrite({
     chatGpt,
     handleSend,
@@ -27,6 +33,7 @@ function WriteBarMessage({ chatGpt, handleSend, writeBarBefore }: IProps) {
         before={writeBarBefore}
         after={
           <WriteBarAfter
+            hideDeleteDialog={hideDeleteDialog}
             chatGptModel={chatGpt}
             sendMessage={sendMessage}
             value={value}

@@ -18,14 +18,20 @@ import { leetCode } from "$/entity/leetCode/LeetCode";
 import { chatGpt } from "$/entity/GPT";
 
 import classes from "./Modes.module.css";
+import { trainers } from "$/entity/Trainers";
 
 interface IProps {
   id: string;
 }
 
 function Modes({ id }: IProps) {
-  const { goBack, goToChapters, goToChatInterview, goToLeetcodeProblems } =
-    useNavigationContext();
+  const {
+    goBack,
+    goToChapters,
+    goToChatInterview,
+    goToLeetcodeProblems,
+    goToEditor,
+  } = useNavigationContext();
 
   return (
     <Panel id={id}>
@@ -66,10 +72,21 @@ function Modes({ id }: IProps) {
         <Cards
           isBottom
           title="Алгоритмы"
-          chapters={[{ type: ModeType.LeetCode }]}
+          chapters={[{ type: ModeType.LeetCode, header: "Решебник задач" }]}
           onClickChapter={() => {
             leetCode.currentProblem = null;
             goToLeetcodeProblems();
+          }}
+        />
+        <Cards
+          isBottom
+          title="Песочницы"
+          chapters={trainers.items}
+          onClickChapter={(chapter) => {
+            trainers.setCurrentTrainer(chapter.type as ModeType);
+            trainers.getCurrentTrainer()?.setInitialValue();
+            chatGpt.chatGptTrainer.messages$.set([]);
+            goToEditor();
           }}
         />
       </AppContainer>

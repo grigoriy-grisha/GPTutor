@@ -4,6 +4,8 @@ import { ModeType } from "$/entity/lessons";
 
 export class Interview {
   private currentInterviewIndex$ = sig(0);
+
+  header = "Собеседование";
   constructor(public type: ModeType, public questions: InterviewItem[]) {}
 
   getCurrentQuestion() {
