@@ -1,0 +1,24 @@
+.spinnerContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 160px;
+}
+
+.spinner {
+    margin-bottom: 40px;
+}
+
+.bottomItem {
+    min-width: 292px;
+    box-sizing: border-box;
+    padding-left: 2px;
+    padding-right: 2px;
+
+}
+
+.bottomItem :global(.vkuiBanner__in)   {
+    height: 75px;
+    display: flex;
+    align-items: flex-start;
+}

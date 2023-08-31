@@ -1,0 +1,7 @@
+.additional {
+    color: var(--vkui--color_icon_secondary);
+}
+
+.codeInfo {
+    display: flex;
+}

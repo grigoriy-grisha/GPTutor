@@ -1,0 +1,22 @@
+.panelHeader :global(.vkuiPanelHeader__before) {
+    flex: none;
+}
+
+.panelHeader :global(.vkuiPanelHeader__content) {
+    flex-grow: 1;
+}
+
+.panelHeader :global(.vkuiPanelHeader__after) {
+    flex: none;
+}
+
+.panelHeaderVkApps :global(.vkuiPanelHeader__after) {
+    min-width: 8px;
+    flex: none;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
