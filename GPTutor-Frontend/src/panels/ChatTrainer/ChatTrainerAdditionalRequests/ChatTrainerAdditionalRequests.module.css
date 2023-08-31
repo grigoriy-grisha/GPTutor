@@ -1,0 +1,5 @@
+.additionalRequests {
+    display: grid;
+    gap: 8px;
+    background: var(--vkui--color_background_content);
+}

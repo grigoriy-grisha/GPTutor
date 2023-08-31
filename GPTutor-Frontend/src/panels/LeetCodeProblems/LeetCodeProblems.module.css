@@ -1,0 +1,16 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.problemText {
+    text-overflow: ellipsis;
+
+    overflow: hidden;
+    white-space: nowrap;
+    margin-right: 8px;
+}
+
+.cell {
+    background: var(--vkui--color_background_content);
+}

@@ -1,0 +1,6 @@
+
+
+.panel {
+    background: var(--vkui--color_background_content);
+    min-height: 100vh;
+}
