@@ -1,0 +1,1 @@
+ALTER TABLE message ADD COLUMN in_local BOOLEAN;
