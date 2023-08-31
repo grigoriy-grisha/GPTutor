@@ -1,16 +1,9 @@
 
 
-docker volume rm gptutor-infrastructure_www-html-stage
+docker volume rm gptutor_www-html-stage
 
 sh .env-stage.sh
 
-cd ./GPTutor-Frontend || exit
-git checkout origin/develop
-git pull origin develop
-
-cd ../
-
-cd ./GPTutor-Backend || exit
 git checkout origin/develop
 git pull origin develop
 
@@ -27,6 +20,10 @@ docker-compose rm --force frontend-stage
 
 docker-compose build frontend-stage
 docker-compose up -d frontend-stage
+
+docker-compose build models
+docker-compose stop  models
+docker-compose up -d models
 
 docker-compose up -d frontend-stage
 docker-compose up -d postgresql-stage
