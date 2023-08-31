@@ -1,3 +1,9 @@
-/node_modules/
+.idea
+
 .env
-vk-hosting-config.json
+.env-stage
+.env-frontend
+.env-frontend-stage
+node_modules
+package.json
+package-lock.json

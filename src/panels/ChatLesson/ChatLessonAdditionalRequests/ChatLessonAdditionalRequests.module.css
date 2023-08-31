@@ -1,9 +1,0 @@
-.additionalRequests {
-    display: grid;
-    gap: 8px;
-    background: var(--vkui--color_background_content);
-}
-
-.button:last-child {
-    padding-right: var(--vkui--size_base_padding_horizontal--regular);
-}
