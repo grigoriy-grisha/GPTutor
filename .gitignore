@@ -5,5 +5,3 @@
 .env-frontend
 .env-frontend-stage
 node_modules
-package.json
-package-lock.json
