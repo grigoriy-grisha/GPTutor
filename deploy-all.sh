@@ -23,8 +23,8 @@ docker-compose up -d frontend
 
 docker-compose down
 
-docker volume rm gptutor-infrastructure_www-html
-docker volume rm gptutor-infrastructure_www-html-stage
+docker volume rm gptutor_www-html
+docker volume rm gptutor_www-html-stage
 
 docker-compose up -d frontend
 docker-compose up -d nginx
