@@ -2,6 +2,7 @@ import json
 import uuid
 from random import randint
 
+import requests
 from flask import Flask, Response, stream_with_context, request
 from g4f import ChatCompletion
 from werkzeug.exceptions import BadRequest
@@ -24,30 +25,88 @@ def get_event_message(chunk):
     })
 
 
-def generate_stream(stream):
+def generate_stream(stream, except_func):
     count = 0
     for chunk in stream:
         count += 1
         yield 'data:' + get_event_message(chunk) + '\n\n'
 
     if count == 0:
-        raise BadRequest()
+        yield from except_func()
     else:
         print("DONE")
         yield "data: [DONE]\n\n"
 
 
-@app.post('/gpt')
-def gpt():
-    response = ChatCompletion.create(
-        model=request.json["model"],
-        messages=request.json["messages"],
-        chatId=uuid.uuid4(),
-        stream=True
+def default_model():
+    messages = request.json['messages']
+
+    def raise_func():
+        raise BadRequest()
+
+    def func_binjie():
+        print("binjie")
+        yield from generate_stream(
+            stream_download_conversation(messages),
+            raise_func
+        )
+
+    def func_bing():
+        print("bing")
+        try:
+            yield from generate_stream(
+                ChatCompletion.create(
+                    model="gpt-4",
+                    messages=messages,
+                    chatId=uuid.uuid4(),
+                    stream=True,
+                ),
+                func_binjie
+            )
+        except:
+            yield from func_binjie()
+
+    print("defualt")
+
+    return Response(
+        stream_with_context(
+            generate_stream(
+                ChatCompletion.create(
+                    model=request.json["model"],
+                    messages=messages,
+                    chatId=uuid.uuid4(),
+                    stream=True
+                ),
+                func_bing
+            ),
+
+        ),
+        mimetype='text/event-stream;charset=UTF-8'
     )
 
-    return Response(generate_stream(stream_with_context(response)), mimetype='text/event-stream;charset=UTF-8')
+
+@app.post('/gpt')
+def gpt():
+    return default_model()
+
+
+def stream_download_conversation(messages):
+    response = requests.post(url="https://api.binjie.fun/api/generateStream",
+                             headers={
+                                 "origin": "https://chat.jinshutuan.com",
+                                 "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ("
+                                               "KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36",
+                             },
+                             json={
+                                 "system": "",
+                                 "withoutContext": False,
+                                 "stream": True,
+                                 "messages": messages
+                             }, stream=True)
+
+    for chunk in response.iter_content(chunk_size=8):
+        yield chunk.decode('utf-8', "ignore")
 
 
 if __name__ == '__main__':
-    app.run(debug=False, port=1338, host="localhost")
+    app.run(debug=True, port=1337, host="0.0.0.0")
