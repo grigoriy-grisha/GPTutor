@@ -44,27 +44,16 @@ def default_model():
     def raise_func():
         raise BadRequest()
 
-    def func_binjie():
-        print("binjie")
+    def func_bing():
         yield from generate_stream(
-            stream_download_conversation(messages),
+            ChatCompletion.create(
+                model="gpt-4",
+                messages=messages,
+                chatId=uuid.uuid4(),
+                stream=True,
+            ),
             raise_func
         )
-
-    def func_bing():
-        print("bing")
-        try:
-            yield from generate_stream(
-                ChatCompletion.create(
-                    model="gpt-4",
-                    messages=messages,
-                    chatId=uuid.uuid4(),
-                    stream=True,
-                ),
-                func_binjie
-            )
-        except:
-            yield from func_binjie()
 
     print("defualt")
 
