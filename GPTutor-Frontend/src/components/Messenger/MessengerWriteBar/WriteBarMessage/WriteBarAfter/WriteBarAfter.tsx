@@ -91,7 +91,7 @@ function WriteBarAfter({
       ) : (
         <TextTooltip
           appearance={appearance === "light" ? "accent" : "white"}
-          style={{ maxWidth: 150, height: "100%" }}
+          style={{ maxWidth: 150 }}
           text="Подождите, пока истечет время для отправки следующего сообщения"
         >
           <div>
