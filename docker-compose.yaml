@@ -122,7 +122,6 @@ services:
     image: certbot/certbot
     depends_on:
       - nginx
-      - certbot
     container_name: certbot-stage
     volumes:
       - etc-letsencrypt:/etc/letsencrypt
