@@ -17,37 +17,37 @@ interface IProps {
   placeholderText?: string;
 }
 
-function MessengerPlaceholder({
-  chatGpt,
-  onStartChat,
-  placeholderHeader,
-  startText,
-  startIsDisabled,
-  placeholderText,
-}: Omit<IProps, "isTyping">) {
-  const isStopped = chatGpt.timer.isStopped$.get();
+// function MessengerPlaceholder({
+//   chatGpt,
+//   onStartChat,
+//   placeholderHeader,
+//   startText,
+//   startIsDisabled,
+//   placeholderText,
+// }: Omit<IProps, "isTyping">) {
+//   const isStopped = chatGpt.timer.isStopped$.get();
 
-  return (
-    <div className={classes.placeholderContainer}>
-      <Placeholder
-        header={placeholderHeader || "Начните диалог"}
-        action={
-          <Button
-            disabled={startIsDisabled || !isStopped}
-            aria-label={startText || "Начать"}
-            mode="outline"
-            size="m"
-            onClick={onStartChat}
-          >
-            {startText || "Начать"}
-          </Button>
-        }
-      >
-        {placeholderText || "Запустите бота"}
-      </Placeholder>
-    </div>
-  );
-}
+//   return (
+//     <div className={classes.placeholderContainer}>
+//       <Placeholder
+//         header={placeholderHeader || "Начните диалог"}
+//         action={
+//           <Button
+//             disabled={startIsDisabled || !isStopped}
+//             aria-label={startText || "Начать"}
+//             mode="outline"
+//             size="m"
+//             onClick={onStartChat}
+//           >
+//             {startText || "Начать"}
+//           </Button>
+//         }
+//       >
+//         {placeholderText || "Запустите бота"}
+//       </Placeholder>
+//     </div>
+//   );
+// }
 
 function MessengerList({
   chatGpt,
@@ -58,17 +58,28 @@ function MessengerList({
   placeholderText,
 }: IProps) {
   const messages = chatGpt.messages$.get();
+  const isStopped = chatGpt.timer.isStopped$.get();
 
   if (messages.length === 0) {
     return (
-      <MessengerPlaceholder
-        placeholderText={placeholderText}
-        startIsDisabled={startIsDisabled}
-        placeholderHeader={placeholderHeader}
-        startText={startText}
-        chatGpt={chatGpt}
-        onStartChat={onStartChat}
-      />
+      <div className={classes.placeholderContainer}>
+        <Placeholder
+          header={placeholderHeader || "Начните диалог"}
+          action={
+            <Button
+              disabled={startIsDisabled || !isStopped}
+              aria-label={startText || "Начать"}
+              mode="outline"
+              size="m"
+              onClick={onStartChat}
+            >
+              {startText || "Начать"}
+            </Button>
+          }
+        >
+          {placeholderText || "Запустите бота"}
+        </Placeholder>
+      </div>
     );
   }
 
