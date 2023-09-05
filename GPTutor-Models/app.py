@@ -4,7 +4,7 @@ from random import randint
 
 import requests
 from flask import Flask, Response, stream_with_context, request
-from g4f import ChatCompletion
+from g4f import ChatCompletion, Provider
 from werkzeug.exceptions import BadRequest
 
 app = Flask(__name__)
@@ -25,14 +25,17 @@ def get_event_message(chunk):
     })
 
 
-def generate_stream(stream, except_func):
+def generate_stream(stream, except_func, attempt):
+    if attempt == 10:
+        except_func()
+
     count = 0
     for chunk in stream:
         count += 1
         yield 'data:' + get_event_message(chunk) + '\n\n'
 
     if count == 0:
-        yield from except_func()
+        yield from generate_stream(stream, except_func, attempt + 1)
     else:
         print("DONE")
         yield "data: [DONE]\n\n"
@@ -44,33 +47,22 @@ def default_model():
     def raise_func():
         raise BadRequest()
 
-    def func_bing():
-        yield from generate_stream(
-            ChatCompletion.create(
-                model="gpt-4",
-                messages=messages,
-                chatId=uuid.uuid4(),
-                stream=True,
-            ),
-            raise_func
-        )
-
-    print("defualt")
-
     return Response(
         stream_with_context(
             generate_stream(
                 ChatCompletion.create(
                     model=request.json["model"],
+                    provider=Provider.DeepAi,
                     messages=messages,
                     chatId=uuid.uuid4(),
                     stream=True
                 ),
-                func_bing
+                raise_func,
+                1
             ),
 
         ),
-        mimetype='text/event-stream;charset=UTF-8'
+        mimetype='text/event-stream;charset=UTF-8',
     )
 
 
