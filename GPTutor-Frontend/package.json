@@ -2,8 +2,8 @@
     "name": "chat",
     "version": "0.0.0",
     "scripts": {
-        "start": "cross-env GENERATE_SOURCEMAP=false PORT=10888 HTTPS=true DISABLE_NEW_JSX_TRANSFORM=true craco start",
-        "build": "cross-env GENERATE_SOURCEMAP=false DISABLE_NEW_JSX_TRANSFORM=true  craco build",
+        "start": "cross-env GENERATE_SOURCEMAP=false PORT=10888 HTTPS=true craco start",
+        "build": "cross-env GENERATE_SOURCEMAP=false craco build",
         "test": "craco test",
         "predeploy": "npm run build",
         "deploy": "vk-miniapps-deploy"
@@ -33,7 +33,7 @@
         "cross-env": "^7.0.3",
         "dignals": "0.1.0",
         "dignals-model": "0.1.0",
-        "dignals-react": "0.1.26",
+        "dignals-react": "0.1.27",
         "eruda": "^2.4.1",
         "eruda-code": "^2.0.0",
         "eruda-dom": "^2.0.0",
