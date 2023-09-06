@@ -1,11 +1,11 @@
 import "./env-config.js";
+import "dignals-react/jsxPatch17";
 
 import React from "react";
 import ReactDOM from "react-dom";
 import bridge from "@vkontakte/vk-bridge";
 import { Page, Router, RouterContext } from "@happysanta/router";
 import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
-import "dignals-react/jsxPatch17";
 import { enableLogger } from "dignals";
 
 import App from "./App";
