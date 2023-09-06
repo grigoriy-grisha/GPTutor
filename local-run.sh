@@ -4,6 +4,6 @@ docker-compose up -d models
 
 cd ./GPTutor-Frontend || exit
 
-npm i --force
+npm i --force --legacy-peer-deps
 
 npm run start

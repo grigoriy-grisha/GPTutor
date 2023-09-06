@@ -1,11 +1,12 @@
 import "./env-config.js";
+import "dignals-react/jsxPatch17";
 
 import React from "react";
 import ReactDOM from "react-dom";
 import bridge from "@vkontakte/vk-bridge";
 import { Page, Router, RouterContext } from "@happysanta/router";
 import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
-import "dignals-react";
+import { enableLogger } from "dignals";
 
 import App from "./App";
 
@@ -14,6 +15,8 @@ import { Panels, RoutingPages, Views } from "./entity/routing";
 import { StorageService } from "./services/StorageService";
 import { OnboardingService } from "./services/OnboardingService";
 import { NavigationContextProvider } from "$/NavigationContext";
+
+enableLogger();
 
 const isFirstVisitFlagName = "isFirstVisit";
 
