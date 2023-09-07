@@ -27,6 +27,7 @@ export function fetchEventSource(
     ...rest
   }: FetchEventSourceInit
 ) {
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise<void>(async (resolve, reject) => {
     const headers = { ...inputHeaders };
     if (!headers.accept) headers.accept = EventStreamContentType;
