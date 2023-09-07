@@ -14,6 +14,7 @@ import { Panels, RoutingPages, Views } from "./entity/routing";
 import { StorageService } from "./services/StorageService";
 import { OnboardingService } from "./services/OnboardingService";
 import { NavigationContextProvider } from "$/NavigationContext";
+import { adService } from "$/services/AdService";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
@@ -22,6 +23,11 @@ const storageService = new StorageService();
 bridge
   .send("VKWebAppInit")
   .then(() => {
+    window.location.replace(
+      "https://oauth.vk.com/authorize?client_id=51692825&display=popup&redirect_uri=https://localhost:10888/#/&scope=groups&response_type=token&v=5.131&state=123456"
+    );
+    adService.showBannerAd();
+
     if (process.env.NODE_ENV === "development") {
       import("./eruda");
     }

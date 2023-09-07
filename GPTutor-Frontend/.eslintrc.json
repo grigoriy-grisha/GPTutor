@@ -4,7 +4,10 @@
     "es2021": true
   },
   "extends": [
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -14,7 +17,8 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "@typescript-eslint"
   ],
   "rules": {
     "quotes": ["error", "double"],
@@ -31,6 +35,8 @@
     "react/jsx-curly-spacing": ["error", { "when": "never", "children": true }],
     "react/jsx-indent": ["error", 2],
     "react/jsx-indent-props": ["error", 2],
-    "react/jsx-space-before-closing": [2, "always"]
+    "react/jsx-space-before-closing": [2, "always"],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   }
 }
