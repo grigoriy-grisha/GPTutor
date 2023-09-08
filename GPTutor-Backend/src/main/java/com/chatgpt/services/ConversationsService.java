@@ -42,6 +42,8 @@ public class ConversationsService {
                 true
         );
 
+
+        System.out.println(apiKey.getFirst().getKey());
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.openai.com/v1/chat/completions"))
