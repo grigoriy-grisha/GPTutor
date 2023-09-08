@@ -77,6 +77,9 @@ public class ConversationsService {
             {
                 apiRequestsService.addApiRequest("OfficialGPT", respInfo.statusCode());
 
+                System.out.println(apiKey);
+                System.out.println(respInfo.statusCode());
+
                 if (respInfo.statusCode() == 200) {
                     return new SseSubscriber((data) -> {
                         SseEmitter.SseEventBuilder event = SseEmitter.event()
@@ -92,7 +95,7 @@ public class ConversationsService {
                 }
 
                 try {
-                    if (attempt == 15) {
+                    if (attempt == 100) {
                         emitter.send("[Error]:[" + respInfo.statusCode() + "]");
                         emitter.complete();
                         return null;
