@@ -16,7 +16,15 @@ export class Timer {
     this.time$ = sig(start);
   }
 
+  isDisabled = false;
+
+  setDisabled = () => {
+    this.isDisabled = true;
+  };
+
   run() {
+    if (this.isDisabled) return;
+
     this.time$ = sig(this.start);
     this.isStopped$.set(false);
     this.intervalId = setInterval(() => {
@@ -26,6 +34,8 @@ export class Timer {
   }
 
   stop() {
+    if (this.isDisabled) return;
+
     clearInterval(this.intervalId);
     this.isStopped$.set(true);
   }

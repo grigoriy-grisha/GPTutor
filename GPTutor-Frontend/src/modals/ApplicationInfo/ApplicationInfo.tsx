@@ -18,6 +18,7 @@ import {
   Icon28LogoVk,
   Icon28MessageHeart,
   Icon28Users,
+  Icon20DonutCircleFillYellow,
 } from "@vkontakte/icons";
 
 import { useNavigationContext } from "$/NavigationContext";
@@ -62,6 +63,15 @@ function ApplicationInfo({ id }: IProps) {
           </Text>
         </AppDiv>
       </Group>
+      <Group style={{ marginTop: 0, padding: 0 }}>
+        <SimpleCell
+          before={<Icon20DonutCircleFillYellow width={28} height={24} />}
+          href="https://vk.com/gptutor?source=description&w=donut_payment-220371433"
+          target="_blank"
+        >
+          <Text weight="2">Снять ограничения</Text>
+        </SimpleCell>
+      </Group>
       <Group style={{ padding: 0 }}>
         <SimpleCell
           before={<Icon28LogoVk />}
@@ -70,7 +80,6 @@ function ApplicationInfo({ id }: IProps) {
         >
           <Text weight="2">Наше сообщество</Text>
         </SimpleCell>
-
         <SimpleCell
           before={<Icon28MessageHeart />}
           href="https://vk.me/public220371433"
