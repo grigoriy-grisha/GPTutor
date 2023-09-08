@@ -42,6 +42,8 @@ public class ConversationsService {
                 true
         );
 
+
+        System.out.println(apiKey.getFirst().getKey());
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.openai.com/v1/chat/completions"))
@@ -49,6 +51,8 @@ public class ConversationsService {
                 .header("Authorization", "Bearer " + apiKey.getFirst().getKey())
                 .POST(HttpRequest.BodyPublishers.ofString(input))
                 .build();
+
+        System.out.println(apiKey.getFirst().getKey());
 
         HttpRequest requestFreeGPT = HttpRequest.newBuilder()
                 .uri(URI.create("http://models:1337/gpt"))
@@ -77,7 +81,6 @@ public class ConversationsService {
             {
                 apiRequestsService.addApiRequest("OfficialGPT", respInfo.statusCode());
 
-                System.out.println(apiKey);
                 System.out.println(respInfo.statusCode());
 
                 if (respInfo.statusCode() == 200) {
