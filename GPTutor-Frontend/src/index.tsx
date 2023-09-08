@@ -23,9 +23,6 @@ const storageService = new StorageService();
 bridge
   .send("VKWebAppInit")
   .then(() => {
-    window.location.replace(
-      `https://oauth.vk.com/authorize?client_id=51692825&display=popup&redirect_uri=${location.href}&scope=groups&response_type=token&v=5.131&state=123456`
-    );
     adService.showBannerAd();
 
     if (process.env.NODE_ENV === "development") {
