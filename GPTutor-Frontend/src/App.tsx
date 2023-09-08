@@ -62,15 +62,6 @@ const App = () => {
     ? []
     : location.getViewHistory(Views.viewMain);
 
-  const [state, setState] = useState("");
-  const onClick = () => {
-    console.log(window.location.href);
-    console.log(
-      `https://oauth.vk.com/authorize?client_id=51692825&display=popup&redirect_uri=${window.location.href}&scope=groups&response_type=token&v=5.131&state=123456`
-    );
-    window.location.replace(state);
-  };
-
   return (
     <>
       {appearance === "dark" ? <OneDark /> : <OneLight />}
@@ -87,36 +78,27 @@ const App = () => {
           </ModalRoot>
         }
       >
-        <div>
-          <Input
-            value={state}
-            onChange={(e) => {
-              setState(e.target.value);
-            }}
-          ></Input>
-          <Button onClick={onClick}>redirect</Button>
-        </div>
-        {/*<View*/}
-        {/*  id={Views.viewMain}*/}
-        {/*  activePanel={location.getViewActivePanel(Views.viewMain)!}*/}
-        {/*  onSwipeBack={goBack}*/}
-        {/*  history={history}*/}
-        {/*>*/}
-        {/*  <ChatSettings id={Panels.chatSettings} />*/}
-        {/*  <CodeEditor id={Panels.editor} />*/}
-        {/*  <ChatTrainer id={Panels.chatTrainer} />*/}
-        {/*  <Home id={Panels.home} />*/}
-        {/*  <Chapters id={Panels.chapters} />*/}
-        {/*  <ChatFree id={Panels.chatFree} />*/}
-        {/*  <ChatLesson id={Panels.chatLesson} />*/}
-        {/*  <ChatInterview id={Panels.chatInterview} />*/}
-        {/*  <OpenSource id={Panels.openSource} />*/}
-        {/*  <History id={Panels.history} />*/}
-        {/*  <Modes id={Panels.modes} />*/}
-        {/*  <LeetcodeProblems id={Panels.leetcodeProblems} />*/}
-        {/*  <ChatLeetCode id={Panels.chatLeetCode} />*/}
-        {/*  <ProblemDetail id={Panels.problemDetail} />*/}
-        {/*</View>*/}
+        <View
+          id={Views.viewMain}
+          activePanel={location.getViewActivePanel(Views.viewMain)!}
+          onSwipeBack={goBack}
+          history={history}
+        >
+          <ChatSettings id={Panels.chatSettings} />
+          <CodeEditor id={Panels.editor} />
+          <ChatTrainer id={Panels.chatTrainer} />
+          <Home id={Panels.home} />
+          <Chapters id={Panels.chapters} />
+          <ChatFree id={Panels.chatFree} />
+          <ChatLesson id={Panels.chatLesson} />
+          <ChatInterview id={Panels.chatInterview} />
+          <OpenSource id={Panels.openSource} />
+          <History id={Panels.history} />
+          <Modes id={Panels.modes} />
+          <LeetcodeProblems id={Panels.leetcodeProblems} />
+          <ChatLeetCode id={Panels.chatLeetCode} />
+          <ProblemDetail id={Panels.problemDetail} />
+        </View>
       </SplitLayout>
       <UtilBlock />
       <SnackbarNotifier />

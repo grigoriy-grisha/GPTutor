@@ -47,6 +47,7 @@ function Messenger({
     useMessenger({ chatGpt });
 
   useEffect(() => {
+    chatGpt.init();
     return () => chatGpt.closeDelay();
   }, []);
 
