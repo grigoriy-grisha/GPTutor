@@ -39,6 +39,7 @@ bridge
 
     await authService.setupToken();
     const isDon = await groupsService.checkIsDon();
+
     if (!isDon) {
       adService.showBannerAd();
     }

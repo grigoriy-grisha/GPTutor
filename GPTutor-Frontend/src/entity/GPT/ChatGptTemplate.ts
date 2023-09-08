@@ -29,7 +29,7 @@ export abstract class ChatGptTemplate {
 
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
-  timer = new Timer(20, 0, "decrement");
+  timer = new Timer(15, 0, "decrement");
 
   messages$ = sig<GptMessage[]>([]);
 
@@ -67,11 +67,12 @@ export abstract class ChatGptTemplate {
 
   abortController = new AbortController();
 
-  constructor() {
+  init() {
     if (groupsService.isDon) {
       this.timer.setDisabled();
     }
   }
+
   closeDelay() {
     this.delayTimeout && clearTimeout(this.delayTimeout);
     this.isDelay$.set(false);
