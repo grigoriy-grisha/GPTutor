@@ -50,6 +50,8 @@ public class ConversationsService {
                 .POST(HttpRequest.BodyPublishers.ofString(input))
                 .build();
 
+        System.out.println(apiKey.getFirst().getKey());
+
         HttpRequest requestFreeGPT = HttpRequest.newBuilder()
                 .uri(URI.create("http://models:1337/gpt"))
                 .header("Content-Type", "application/json")
@@ -77,7 +79,6 @@ public class ConversationsService {
             {
                 apiRequestsService.addApiRequest("OfficialGPT", respInfo.statusCode());
 
-                System.out.println(apiKey);
                 System.out.println(respInfo.statusCode());
 
                 if (respInfo.statusCode() == 200) {
