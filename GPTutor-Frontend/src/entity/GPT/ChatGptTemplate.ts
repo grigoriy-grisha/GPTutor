@@ -13,6 +13,7 @@ import { History } from "$/entity/history";
 import { snackbarNotify } from "$/entity/notify";
 import { interviews } from "$/entity/interview";
 import { leetCode } from "$/entity/leetCode/LeetCode";
+import { groupsService } from "$/services/GroupsService";
 
 const MAX_CONTEXT_WORDS = 1500;
 
@@ -28,7 +29,7 @@ export abstract class ChatGptTemplate {
 
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
-  timer = new Timer(20, 0, "decrement");
+  timer = new Timer(15, 0, "decrement");
 
   messages$ = sig<GptMessage[]>([]);
 
@@ -65,6 +66,12 @@ export abstract class ChatGptTemplate {
   hasSelectedMessages$ = memo(() => this.selectedMessages$.get().length !== 0);
 
   abortController = new AbortController();
+
+  init() {
+    if (groupsService.isDon) {
+      this.timer.setDisabled();
+    }
+  }
 
   closeDelay() {
     this.delayTimeout && clearTimeout(this.delayTimeout);

@@ -14,6 +14,9 @@ import { Panels, RoutingPages, Views } from "./entity/routing";
 import { StorageService } from "./services/StorageService";
 import { OnboardingService } from "./services/OnboardingService";
 import { NavigationContextProvider } from "$/NavigationContext";
+import { adService } from "$/services/AdService";
+import { authService } from "$/services/AuthService";
+import { groupsService } from "$/services/GroupsService";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
@@ -21,7 +24,7 @@ const storageService = new StorageService();
 
 bridge
   .send("VKWebAppInit")
-  .then(() => {
+  .then(async () => {
     if (process.env.NODE_ENV === "development") {
       import("./eruda");
     }
@@ -33,6 +36,13 @@ bridge
       onboardingService.runOnBoarding();
       storageService.set(isFirstVisitFlagName, true);
     });
+
+    await authService.setupToken();
+    const isDon = await groupsService.checkIsDon();
+
+    if (!isDon) {
+      adService.showBannerAd();
+    }
   })
   .catch(console.log);
 
