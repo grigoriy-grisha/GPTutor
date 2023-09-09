@@ -1,0 +1,13 @@
+.loading {
+    background: var(--vkui--color_background_content);
+    padding-top: 38vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.spinner {
+    padding-top: 10vh;
+    height: 0;
+}

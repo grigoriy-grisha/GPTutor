@@ -17,6 +17,7 @@ import { NavigationContextProvider } from "$/NavigationContext";
 import { adService } from "$/services/AdService";
 import { authService } from "$/services/AuthService";
 import { groupsService } from "$/services/GroupsService";
+import { appService } from "$/services/AppService";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
@@ -43,6 +44,8 @@ bridge
     if (!isDon) {
       adService.showBannerAd();
     }
+
+    appService.toggleLoading();
   })
   .catch(console.log);
 
