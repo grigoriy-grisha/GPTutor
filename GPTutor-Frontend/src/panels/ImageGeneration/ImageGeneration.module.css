@@ -1,0 +1,86 @@
+.container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1.1fr;
+    gap: 12px;
+}
+
+.formItem {
+    padding: 0;
+}
+
+.textArea {
+    width: 100%;
+}
+
+.image {
+    color: var(--vkui--color_text_accent_themed);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 284px;
+    border: 1px solid var(--vkui--color_field_border_alpha);
+    width: 100%;
+    border-radius: 8px;
+}
+
+.button {
+    width: 100%;
+}
+
+.banner {
+    padding: 0;
+}
+
+.banner :global(.vkuiBanner__content) {
+    justify-content: flex-start;
+}
+
+.banner :global(.vkuiBanner__actions) {
+    margin-top: auto;
+}
+
+.buttons {
+    display: flex;
+    width: 100%;
+    color: var(--vkui--color_text_accent_themed);
+}
+
+.accordion {
+    color: var(--vkui--color_text_secondary);
+    border-radius: var(--vkui--size_border_radius--regular);
+    border: 1px solid var(--vkui--color_field_border_alpha);
+}
+
+.accordionTitle {
+    color: var(--vkui--color_text_secondary);
+}
+
+.accordionItems {
+    padding-bottom: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.accordionItem {
+    width: 100%;
+    cursor: pointer;
+}
+
+.accordionItemSelected :global(.vkuiImageBaseOverlay){
+    opacity: 1;
+}
+
+.badge {
+    border-radius: 50%;
+    padding: 1px;
+    background:  var(--vkui--color_background_modal);
+    color: var(--vkui--color_text_accent_themed);
+}
+
+.accordionImage {
+    width: 100% !important;
+    height: 122px !important;
+    margin-bottom: 4px;
+}

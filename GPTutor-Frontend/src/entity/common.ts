@@ -31,3 +31,8 @@ export type Pageable<T> = {
   numberOfElements: number;
   empty: boolean;
 };
+
+export type ErrorResponseType = {
+  error: string;
+  status: number;
+};

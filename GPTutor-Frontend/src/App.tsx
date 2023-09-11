@@ -44,6 +44,7 @@ import UtilBlock from "./UtilBlock";
 
 import { appService } from "$/services/AppService";
 import { LoadingPanel } from "$/panels/LoadingPanel";
+import { ImageGeneration } from "$/panels/ImageGeneration";
 
 const App = () => {
   const location = useLocation();
@@ -105,6 +106,7 @@ const App = () => {
             <LeetcodeProblems id={Panels.leetcodeProblems} />
             <ChatLeetCode id={Panels.chatLeetCode} />
             <ProblemDetail id={Panels.problemDetail} />
+            <ImageGeneration id={Panels.generationImages} />
           </View>
         )}
       </SplitLayout>

@@ -64,6 +64,10 @@ const routes = {
   [RoutingPages.editor]: new Page(Panels.editor, Views.viewMain),
   [RoutingPages.chatTrainer]: new Page(Panels.chatTrainer, Views.viewMain),
   [RoutingPages.chatSettings]: new Page(Panels.chatSettings, Views.viewMain),
+  [RoutingPages.generationImages]: new Page(
+    Panels.generationImages,
+    Views.viewMain
+  ),
   [RoutingPages.leetcodeProblems]: new Page(
     Panels.leetcodeProblems,
     Views.viewMain

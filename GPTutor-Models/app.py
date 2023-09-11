@@ -1,11 +1,14 @@
 import json
 import uuid
+from io import BytesIO
 from random import randint
 
-import requests
-from flask import Flask, Response, stream_with_context, request
+import freeGPT
+from flask import Flask, Response, request, make_response
 from g4f import ChatCompletion, Provider
 from werkzeug.exceptions import BadRequest
+
+from images.prodia import prodia
 
 app = Flask(__name__)
 
@@ -63,6 +66,19 @@ def default_model():
 @app.post('/gpt')
 def gpt():
     return default_model()
+
+
+async def generate_image(prompt):
+    return await getattr(freeGPT, "prodia").Generation().create(prompt)
+
+
+@app.post("/image")
+async def image():
+    print(request.json["model"])
+    response = make_response(BytesIO(await prodia(prompt=request.json["prompt"], model=request.json["model"])).getvalue())
+    response.headers['Content-Type'] = 'image/png'
+
+    return response
 
 
 if __name__ == '__main__':

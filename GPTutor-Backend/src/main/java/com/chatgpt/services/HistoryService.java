@@ -31,7 +31,7 @@ public class HistoryService {
     @Autowired
     MessageRepository messageRepository;
 
-    public History createHistory(String vkUserId, CreateHistoryRequest createHistoryRequest) throws Exception {
+    public History createHistory(String vkUserId, CreateHistoryRequest createHistoryRequest) {
         var user = userService.getOrCreateVkUser(vkUserId);
 
         var history = new History(

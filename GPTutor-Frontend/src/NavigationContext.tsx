@@ -32,6 +32,7 @@ export type NavigationContextType = {
   goToLeetcodeProblems: () => void;
   goToChatLeetCode: () => void;
   goToProblemDetail: () => void;
+  goToGenerationImages: () => void;
   goToChatTrainer: () => void;
   goToEditor: () => void;
   openAlert: (data: AlertType) => void;
@@ -58,7 +59,7 @@ export function NavigationContextProvider({
   const location = useLocation();
   const router = useRouter();
 
-  useEffect(() => router.replacePage(RoutingPages.home), []);
+  useEffect(() => router.replacePage(RoutingPages.generationImages), []);
 
   const activePanel = location.getViewActivePanel(Views.viewMain)!;
 
@@ -98,6 +99,8 @@ export function NavigationContextProvider({
   const goToForbidden = () => push(RoutingPages.forbidden);
 
   const goToLeetcodeProblems = () => push(RoutingPages.leetcodeProblems);
+
+  const goToGenerationImages = () => push(RoutingPages.generationImages);
 
   const goToChatLeetCode = () => {
     const problemPages = location
@@ -158,6 +161,7 @@ export function NavigationContextProvider({
         goToProblemDetail,
         openAlert,
         goToChatTrainer,
+        goToGenerationImages,
         alert,
         isForbidden,
       }}
