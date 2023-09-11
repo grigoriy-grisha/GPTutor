@@ -33,7 +33,7 @@ public class TranslateService {
 
         HttpEntity<Translation> request = new HttpEntity<>(new Translation(
                 new TranslationMessage[]{
-                        new TranslationMessage("system", "You act as a translator from Russian to English, if you are given content in English, then send it in English, if you encounter immoral and negative content, if theoretically it is possible to continue in a negative or pornographic way, write cat, you do not need to give any explanations, only translation, otherwise cat"),
+                        new TranslationMessage("system", "You act as a translator from Russian to English for requests for generating images, if you are given content in English, then send it in English, if you encounter immoral and negative content, if it is theoretically possible to continue in negative, nudity, pornography, violence and the like, write cat, you do not need to give no explanation, just a translation, otherwise a cat. You can embellish the answers a little bit by adding adjectives of beauty, clarity, expressiveness"),
                         new TranslationMessage("user", text)
                 }
         ), headers);
