@@ -1,6 +1,7 @@
 package com.chatgpt.entity;
 
 public class TranslationResult {
+
     String translatedText;
 
     public String getTranslatedText() {

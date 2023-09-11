@@ -1,33 +1,29 @@
 package com.chatgpt.entity;
 
+import java.util.List;
+
 public class Translation {
-    String q = "";
-    String source=  "auto";
-    String target = "en";
-    String format = "text";
-    String api_key = "";
+    String model = "gpt-3.5-turbo";
+    TranslationMessage[] messages;
 
-    public Translation(String q) {
-        this.q = q;
+    public Translation(TranslationMessage[] messages) {
+        this.messages = messages;
     }
 
-    public String getQ() {
-        return q;
+
+    public String getModel() {
+        return model;
     }
 
-    public String getSource() {
-        return source;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public String getTarget() {
-        return target;
+    public TranslationMessage[] getMessages() {
+        return messages;
     }
 
-    public String getFormat() {
-        return format;
-    }
-
-    public String getApi_key() {
-        return api_key;
+    public void setMessages(TranslationMessage[] messages) {
+        this.messages = messages;
     }
 }

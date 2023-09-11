@@ -43,13 +43,13 @@ public class ImagesService {
         String fileUrl = "http://models:1337/image";
         File tempFile = null;
 
-
         try {
 
             if (badListService.checkText(generateImageRequest.getPrompt())) {
                 throw new BadRequestException("Запрос содержит неприемлемое содержимое");
             }
-            var prompt = translateService.translate(generateImageRequest.getPrompt());
+
+            var prompt = translateService.translate(generateImageRequest.getPrompt(), 0);
             generateImageRequest.setPrompt(prompt);
 
             if (badListService.checkText(generateImageRequest.getPrompt())) {
