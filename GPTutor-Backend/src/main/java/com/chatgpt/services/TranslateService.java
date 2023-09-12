@@ -14,14 +14,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Objects;
-
 @Service
 public class TranslateService {
     @Autowired
     ApiKeysService apiKeysService;
 
-    String system = "You are acting as a translator from Russian to English to generate images. Don't give any explanations, if you were given the text in English, just duplicate it. Block any questions that may generate negative and naked content";
+    String system = "You are acting as a translator from Russian to English to generate images. Don't give any explanations, if you were given the text in English, just duplicate it.";
 
     public String translate(String text, int attempt) throws JsonProcessingException {
 

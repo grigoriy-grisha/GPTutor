@@ -58,11 +58,6 @@ public class ImagesService {
             var prompt = translateService.translate(generateImageRequest.getPrompt(), 0);
             generateImageRequest.setPrompt(prompt);
 
-            if (badListService.checkText(generateImageRequest.getPrompt())) {
-                throw new BadRequestException("Запрос содержит неприемлемое содержимое");
-            }
-
-            System.out.println(prompt);
             URL url = new URL(fileUrl);
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
