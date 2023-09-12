@@ -4,6 +4,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
@@ -37,5 +38,9 @@ public class S3Service {
 
     public void uploadObject(String key, File file) {
         s3.putObject(new PutObjectRequest("gptutor-bucket", key, file));
+    }
+
+    public void deleteObject(String key) {
+        s3.deleteObject(new DeleteObjectRequest("gptutor-bucket", key));
     }
 }

@@ -21,6 +21,8 @@ public class TranslateService {
     @Autowired
     ApiKeysService apiKeysService;
 
+    String system = "You are acting as a translator from Russian to English to generate images. Don't give any explanations, if you were given the text in English, just duplicate it. Block any questions that may generate negative and naked content";
+
     public String translate(String text, int attempt) throws JsonProcessingException {
 
         Pair<ApiKey, String> apiKey = apiKeysService.getKey();
@@ -33,7 +35,7 @@ public class TranslateService {
 
         HttpEntity<Translation> request = new HttpEntity<>(new Translation(
                 new TranslationMessage[]{
-                        new TranslationMessage("system", "You act as a translator from Russian to English for requests for generating images, if you are given content in English, then send it in English, if you encounter immoral and negative content, if it is theoretically possible to continue in negative, nudity, pornography, violence and the like, write cat, you do not need to give no explanation, just a translation, otherwise a cat. You can embellish the answers a little bit by adding adjectives of beauty, clarity, expressiveness"),
+                        new TranslationMessage("system", system),
                         new TranslationMessage("user", text)
                 }
         ), headers);

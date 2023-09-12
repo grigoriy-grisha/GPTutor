@@ -3,14 +3,20 @@ package com.chatgpt.services;
 import com.chatgpt.Exceptions.BadRequestException;
 import com.chatgpt.entity.GenerateImageRequest;
 import com.chatgpt.entity.Image;
+import com.chatgpt.entity.Translation;
+import com.chatgpt.entity.TranslationMessage;
+import com.chatgpt.entity.requests.NudeDetectRequest;
 import com.chatgpt.repositories.ImageRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
@@ -82,6 +88,39 @@ public class ImagesService {
 
             var uuid = UUID.randomUUID().toString();
             s3Service.uploadObject(uuid, tempFile);
+
+            RestTemplate restTemplate = new RestTemplate();
+            String urlNudeDetect = "http://models:1337/nude-detect";
+            HttpEntity<NudeDetectRequest> request = new HttpEntity<>(new NudeDetectRequest("https://storage.yandexcloud.net/gptutor-bucket/" + uuid));
+
+            var response = restTemplate.postForEntity(urlNudeDetect, request, String.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode resultArray = objectMapper.readTree(response.getBody()).get("result");
+
+                var disabledClasses = new String[]{"BUTTOCKS_EXPOSED", "FEMALE_BREAST_EXPOSED", "FEMALE_GENITALIA_EXPOSED", "ANUS_EXPOSED", "MALE_GENITALIA_EXPOSED"};
+
+                boolean isNudes = false;
+                for (JsonNode object : resultArray) {
+
+                    for (var value : disabledClasses) {
+                        if (object.has("class") && object.get("class").asText().equals(value)) {
+                            isNudes = true;
+                            break;
+                        }
+                    }
+
+                }
+
+                if (isNudes) {
+                    System.out.println(uuid);
+                    s3Service.deleteObject(uuid);
+
+                    throw new BadRequestException("Изображение содержит непримелимое содержание, попробуйте еще");
+                }
+            }
+
 
             var user = userService.getOrCreateVkUser(vkUserId);
             var image = new Image(

@@ -37,8 +37,9 @@ class ImageGeneration {
     if (as.error) {
       this.result$.set(null);
 
+      console.log(as);
       if (as.status === 400) {
-        this.error$.set("Запрос содержит неприемлемое содержимое!");
+        this.error$.set(as.error);
         return;
       }
 

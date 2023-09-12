@@ -1,11 +1,14 @@
 package com.chatgpt.controllers;
 
+import com.chatgpt.Exceptions.BadRequestException;
 import com.chatgpt.entity.GenerateImageRequest;
 import com.chatgpt.entity.Image;
 import com.chatgpt.services.ImagesService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -4,7 +4,7 @@ import typing
 
 import aiohttp
 
-from . import enums
+from images import enums
 
 PRODIA_API = "https://api.prodia.com"
 
@@ -29,7 +29,7 @@ async def prodia(
             "new": "true",
             "prompt": prompt,
             "model": model,
-            "negative_prompt": negative_prompt if negative else "nude, naked, explicit, drugs, cocaine, heroin, "
+            "negative_prompt": negative_prompt if negative else "nudity,nipples,unclothes,sex,vagina,penis,tits ,boobs,nude, naked, explicit, drugs, cocaine, heroin, "
                                                                 "marijuana, murder, violence, porn, adult content, "
                                                                 "explicit materia, homophobic, sexist, fascist, "
                                                                 "racist, terrorists, extremists, hate groups, "

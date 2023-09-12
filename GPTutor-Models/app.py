@@ -3,12 +3,12 @@ import uuid
 from io import BytesIO
 from random import randint
 
-import freeGPT
 from flask import Flask, Response, request, make_response
 from g4f import ChatCompletion, Provider
 from werkzeug.exceptions import BadRequest
 
 from images.prodia import prodia
+from nudenet.nudenet import NudeDetector
 
 app = Flask(__name__)
 
@@ -68,17 +68,20 @@ def gpt():
     return default_model()
 
 
-async def generate_image(prompt):
-    return await getattr(freeGPT, "prodia").Generation().create(prompt)
-
-
 @app.post("/image")
 async def image():
     print(request.json["model"])
-    response = make_response(BytesIO(await prodia(prompt=request.json["prompt"], model=request.json["model"])).getvalue())
+    response = make_response(
+        BytesIO(await prodia(prompt=request.json["prompt"], model=request.json["model"])).getvalue())
     response.headers['Content-Type'] = 'image/png'
-
     return response
+
+
+@app.post("/nude-detect")
+def nude_detect():
+    return {
+        "result": NudeDetector().detect(request.json["url"])
+    }
 
 
 if __name__ == '__main__':
