@@ -3,7 +3,6 @@ package com.chatgpt.services;
 import com.chatgpt.entity.ApiKey;
 import com.chatgpt.entity.Translation;
 import com.chatgpt.entity.TranslationMessage;
-import com.chatgpt.entity.TranslationResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +21,9 @@ public class TranslateService {
     String system = "You are acting as a translator from Russian to English to generate images. Don't give any explanations, if you were given the text in English, just duplicate it.";
 
     public String translate(String text, int attempt) throws JsonProcessingException {
+        if (calculateCharacterFrequency(text) > 0.5) {
+            return text;
+        }
 
         Pair<ApiKey, String> apiKey = apiKeysService.getKey();
 
@@ -53,5 +55,21 @@ public class TranslateService {
         }
 
         return "cat";
+    }
+
+    private static double calculateCharacterFrequency(String text) {
+        text = text.toLowerCase();
+        int totalCharacters = 0;
+        int englishCharacters = 0;
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c >= 'a' && c <= 'z') {
+                englishCharacters++;
+            }
+            totalCharacters++;
+        }
+
+        return (double) englishCharacters / totalCharacters;
     }
 }
