@@ -73,7 +73,7 @@ public class ImagesService {
                 JsonNode resultArray = new ObjectMapper().readTree(responseNude.getBody()).get("nudenet");
                 String nsfw = new ObjectMapper().readTree(responseNude.getBody()).get("nsfw").asText();
 
-                var disabledClasses = new String[]{"FEMALE_GENITALIA_COVERED","BUTTOCKS_EXPOSED", "FEMALE_BREAST_EXPOSED", "FEMALE_GENITALIA_EXPOSED", "ANUS_EXPOSED", "MALE_GENITALIA_EXPOSED"};
+                var disabledClasses = new String[]{"BUTTOCKS_EXPOSED", "FEMALE_BREAST_EXPOSED", "FEMALE_GENITALIA_EXPOSED", "ANUS_EXPOSED", "MALE_GENITALIA_EXPOSED"};
                 boolean isNudes = Objects.equals(nsfw, "nude");
 
                 for (JsonNode object : resultArray) {
