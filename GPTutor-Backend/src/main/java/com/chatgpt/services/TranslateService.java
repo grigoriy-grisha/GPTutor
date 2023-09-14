@@ -18,7 +18,7 @@ public class TranslateService {
     @Autowired
     ApiKeysService apiKeysService;
 
-    String system = "You are acting as a translator from Russian to English to generate images. Don't give any explanations, if you were given the text in English, just duplicate it.";
+    String system = "You are acting as a translator from Russian to English to generate images. Don't give any explanations. ";
 
     public String translate(String text, int attempt) throws JsonProcessingException {
         if (calculateCharacterFrequency(text) > 0.5) {

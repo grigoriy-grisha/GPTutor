@@ -4,6 +4,7 @@ from urllib import request
 import cv2
 import numpy as np
 import onnxruntime
+import requests
 
 __labels = [
     "FEMALE_GENITALIA_COVERED",
@@ -28,12 +29,13 @@ __labels = [
 
 
 def _read_image(image_url, input_width, input_height):
-    # From ultralytics
+    byte_array = ""
+    response = requests.get(image_url)
 
-    with request.urlopen(image_url) as url:
-        s = url.read()
+    if response.status_code == 200:
+        byte_array = bytearray(response.content)
 
-    arr = np.asarray(bytearray(s), dtype=np.uint8)
+    arr = np.asarray(byte_array, dtype=np.uint8)
 
     img = cv2.imdecode(arr, -1)
     img_height, img_width = img.shape[:2]

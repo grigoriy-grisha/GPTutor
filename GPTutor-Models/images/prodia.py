@@ -1,84 +1,280 @@
+import requests
+import time
 import asyncio
-import random
-import typing
 
-import aiohttp
-
-from images import enums
-
-PRODIA_API = "https://api.prodia.com"
+api_key = None
 
 
-async def prodia(
-        prompt: str,
-        model,
-        steps: int = 30,
-        cfg: float = 7.5,
+def Client(api_key: str = None):
+    if api_key is None:
+        print("No API key provided")
+        return
+    else:
+        global key
+        key = api_key
+
+
+def txt2img(
+        prompt: str = "kittens on cloud",
+        negative_prompt: str = "((nude)),((boobs)),((nudity)),((tits)),((nipples)),((sex)),((vigina)),((genitals)),((penis)),bad drawn, low quality, low detailed, ugly, mutated, blurry, watermark",
+        model: str = "deliberate_v2.safetensors [10ec4b29]",
+        sampler: str = "Heun",
+        aspect_ratio: str = "square",
+        steps: int = 25,
+        cfg_scale: int = 7,
         seed: int = -1,
-        sampler: enums.ProdiaSampler = enums.ProdiaSampler.DPMPP_SDE_KARRAS,
-        negative: bool = True,
-        negative_prompt: str = "",
-        sleep: float = 1,
-        request_args: typing.Optional[typing.Dict[str, typing.Any]] = None,
-        session_args: typing.Optional[typing.Dict[str, typing.Any]] = None,
-) -> bytes:
-    request_args = request_args or {}
-
-    async with aiohttp.ClientSession(**(session_args or {})) as session:
-        params = {
-            "new": "true",
+        upscale: bool = False):
+    if key is None:
+        print(
+            "ERROR: API key is corrupted or not defined, get your API kay at https://app.prodia.com/api\nto define api key use:\nprodia.api_key = 'your-key'")
+    else:
+        if prompt == "kittens on cloud":
+            print("LOG: Prompt was not defined, used default (kittens on cloud)")
+        url = "https://api.prodia.com/v1/job"
+        payload = {
             "prompt": prompt,
             "model": model,
-            "negative_prompt": negative_prompt if negative else "nudity,nipples,unclothes,sex,vagina,penis,tits ,boobs,nude, naked, explicit, drugs, cocaine, heroin, "
-                                                                "marijuana, murder, violence, porn, adult content, "
-                                                                "explicit materia, homophobic, sexist, fascist, "
-                                                                "racist, terrorists, extremists, hate groups, "
-                                                                "(nsfw:1.5),verybadimagenegative_v1.3, "
-                                                                "ng_deepnegative_v1_75t, (ugly face:0.5),cross-eyed,"
-                                                                "sketches, (worst quality:2), (low quality:2.1), "
-                                                                "(normal quality:2), lowres, normal quality, "
-                                                                "((monochrome)), ((grayscale)), skin spots, acnes, "
-                                                                "skin blemishes, bad anatomy, DeepNegative, "
-                                                                "facing away, tilted head, {Multiple people}, lowres, "
-                                                                "bad anatomy, bad hands, text, error, "
-                                                                "missing fingers, extra digit, fewer digits, cropped, "
-                                                                "worstquality, low quality, normal quality, "
-                                                                "jpegartifacts, signature, watermark, username, "
-                                                                "blurry, bad feet, cropped, poorly drawn hands, "
-                                                                "poorly drawn face, mutation, deformed, "
-                                                                "worst quality, low quality, normal quality, "
-                                                                "jpeg artifacts, signature, watermark, extra fingers, "
-                                                                "fewer digits, extra limbs, extra arms,extra legs, "
-                                                                "malformed limbs, fused fingers, too many fingers, "
-                                                                "long neck, cross-eyed,mutated hands, polar lowres, "
-                                                                "bad body, bad proportions, gross proportions, text, "
-                                                                "error, missing fingers, missing arms, missing legs, "
-                                                                "extra digit, extra arms, extra leg, extra foot, "
-                                                                "repeating hair",
+            "sampler": sampler,
+            "negative_prompt": negative_prompt,
             "steps": steps,
-            "cfg": cfg,
-            "seed": random.randint(0, 9999999999999) if seed < 0 else seed,
-            "sampler": sampler.value,
-            "aspect_ratio": "square",
+            "cfg_scale": cfg_scale,
+            "seed": seed,
+            "upscale": upscale,
+            "aspect_ratio": aspect_ratio
         }
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "X-Prodia-Key": key
+        }
+        headersrecieve = {
+            "accept": "application/json",
+            "X-Prodia-Key": key
+        }
+        print(f"LOG: txt2img image with params:\n{payload}")
+        response = requests.post(url, json=payload, headers=headers)
+        job_id = response.json()['job']
+        time.sleep(3)
 
-        async with session.get(
-                url=f"{PRODIA_API}/generate",
-                params=params,
-                **request_args,
-        ) as response:
-            job_id = (await response.json())["job"]
-
-        while True:
-            async with session.get(
-                    url=f"{PRODIA_API}/job/{job_id}",
-                    **request_args,
-            ) as response:
-                status = (await response.json())["status"]
-
+        rec_url = f'https://api.prodia.com/v1/job/{job_id}'
+        stt = True
+        while stt is True:
+            rec = requests.get(rec_url, headers=headersrecieve)
+            status = rec.json()['status']
             if status == "succeeded":
-                url = f"https://images.prodia.xyz/{job_id}.png?download=1"
-                async with session.get(url=url, **request_args) as response:
-                    return await response.read()
+                print(f"Image {job_id} generated!")
+                image_url = rec.json()['imageUrl']
+                stt = False
+                return image_url
+            elif status == "queued":
+                print("Still working...")
+                time.sleep(2)
+            elif status == "generating":
+                print("Still working...")
+                time.sleep(2)
+            else:
+                print(f"ERROR: Something went wrong! Please try later, error: {status}")
+                stt = False
+                return status
 
-            await asyncio.sleep(sleep)
+
+def img2img(
+        imageUrl: str = None,
+        model: str = "deliberate_v2.safetensors [10ec4b29]",
+        prompt: str = None,
+        denoising_strength: float = 0.7,
+        negative_prompt: str = "badly drawn, low detailed, ugly, mutated, unralistic",
+        steps: int = 25,
+        cfg_scale: int = 7,
+        seed: int = -1,
+        upscale: bool = False,
+        sampler: str = "Heun"):
+    if key is None:
+        print(
+            "ERROR: API key is corrupted or not defined, get your API kay at https://app.prodia.com/api\nto define api key use:\nprodia.api_key = 'your-key'")
+    elif imageUrl is None:
+        print("ERROR: Image URL is required and cannot be empty")
+    elif prompt is None:
+        print("ERROR: Prompt is required and cannot be empty")
+    else:
+        url = "https://api.prodia.com/v1/transform"
+
+        payload = {
+            "steps": steps,
+            "sampler": sampler,
+            "imageUrl": imageUrl,
+            "model": model,
+            "prompt": prompt,
+            "denoising_strength": denoising_strength,
+            "negative_prompt": negative_prompt,
+            "cfg_scale": cfg_scale,
+            "seed": seed,
+            "upscale": upscale
+        }
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "X-Prodia-Key": key
+        }
+        headersrecieve = {
+            "accept": "application/json",
+            "X-Prodia-Key": key
+        }
+        print(f"LOG: img2img image with params:\n{payload}")
+        response = requests.post(url, json=payload, headers=headers)
+        job_id = response.json()['job']
+        time.sleep(5)
+
+        rec_url = f'https://api.prodia.com/v1/job/{job_id}'
+        stt = True
+        while stt is True:
+            rec = requests.get(rec_url, headers=headersrecieve)
+            status = rec.json()['status']
+            if status == "succeeded":
+                print(f"LOG: Image {job_id} generated!")
+                image_url = rec.json()['imageUrl']
+                stt = False
+                return image_url
+            elif status == "queued":
+                print("Still working...")
+                time.sleep(5)
+            elif status == "generating":
+                print("Still working...")
+                time.sleep(5)
+            else:
+                print(f"ERROR: Something went wrong! Please try later, error: {status}")
+                stt = False
+                return status
+
+
+async def arunv1(
+        prompt: str = "kittens on cloud",
+        negative_prompt: str = "bad drawn, low quality, low detailed, ugly, mutated, blurry, watermark, (tits: 1.5),(nipples: 1.5),(genitals: 1.5),(topless: 1.5), (nude: 1.5), (ugly face:0.5)",
+        model: str = "deliberate_v2.safetensors [10ec4b29]",
+        sampler: str = "Heun",
+        aspect_ratio: str = "square",
+        steps: int = 25,
+        cfg_scale: int = 7,
+        seed: int = -1,
+        upscale: bool = False):
+    if key is None:
+        print(
+            "ERROR: API key is corrupted or not defined, get your API kay at https://app.prodia.com/api\nto define api key use:\nprodia.api_key = 'your-key'")
+    else:
+        if prompt == "kittens on cloud" or prompt == "" or prompt == " ":
+            print("LOG: Prompt was not defined, used default (kittens on cloud)")
+        url = "https://api.prodia.com/v1/job"
+        payload = {
+            "prompt": prompt,
+            "model": model,
+            "sampler": sampler,
+            "negative_prompt": negative_prompt,
+            "steps": steps,
+            "cfg_scale": cfg_scale,
+            "seed": seed,
+            "upscale": upscale,
+            "aspect_ratio": aspect_ratio
+        }
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "X-Prodia-Key": key
+        }
+        headersrecieve = {
+            "accept": "application/json",
+            "X-Prodia-Key": key
+        }
+        print(f"LOG: txt2img image with params:\n{payload}")
+        response = requests.post(url, json=payload, headers=headers)
+        job_id = response.json()['job']
+        await asyncio.sleep(3)
+
+        rec_url = f'https://api.prodia.com/v1/job/{job_id}'
+        stt = True
+        while stt is True:
+            rec = requests.get(rec_url, headers=headersrecieve)
+            status = rec.json()['status']
+            if status == "succeeded":
+                print(f"Image {job_id} generated!")
+                image_url = rec.json()['imageUrl']
+                stt = False
+                return image_url
+            elif status == "queued":
+                print("Still working...")
+                await asyncio.sleep(2)
+            elif status == "generating":
+                print("Still working...")
+                await asyncio.sleep(2)
+            else:
+                print(f"ERROR: Something went wrong! Please try later, error: {status}")
+                stt = False
+                return status
+
+
+async def arunv2(
+        imageUrl: str = None,
+        model: str = "deliberate_v2.safetensors [10ec4b29]",
+        prompt: str = None,
+        denoising_strength: float = 0.7,
+        negative_prompt: str = "badly drawn, low detailed, ugly, mutated, unralistic",
+        steps: int = 25,
+        cfg_scale: int = 7,
+        seed: int = -1,
+        upscale: bool = False,
+        sampler: str = "Heun"):
+    if key is None:
+        print(
+            "ERROR: API key is corrupted or not defined, get your API kay at https://app.prodia.com/api\nto define api key use:\nprodia.api_key = 'your-key'")
+    elif imageUrl is None:
+        print("ERROR: Image URL is required and cannot be empty")
+    elif prompt is None:
+        print("ERROR: Prompt is required and cannot be empty")
+    else:
+        url = "https://api.prodia.com/v1/transform"
+
+        payload = {
+            "steps": steps,
+            "sampler": sampler,
+            "imageUrl": imageUrl,
+            "model": model,
+            "prompt": prompt,
+            "denoising_strength": denoising_strength,
+            "negative_prompt": negative_prompt,
+            "cfg_scale": cfg_scale,
+            "seed": seed,
+            "upscale": upscale
+        }
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "X-Prodia-Key": key
+        }
+        headersrecieve = {
+            "accept": "application/json",
+            "X-Prodia-Key": key
+        }
+        print(f"LOG: img2img image with params:\n{payload}")
+        response = requests.post(url, json=payload, headers=headers)
+        job_id = response.json()['job']
+        await asyncio.sleep(3)
+
+        rec_url = f'https://api.prodia.com/v1/job/{job_id}'
+        stt = True
+        while stt is True:
+            rec = requests.get(rec_url, headers=headersrecieve)
+            status = rec.json()['status']
+            if status == "succeeded":
+                print(f"LOG: Image {job_id} generated!")
+                image_url = rec.json()['imageUrl']
+                stt = False
+                return image_url
+            elif status == "queued":
+                print("Still working...")
+                await asyncio.sleep(2)
+            elif status == "generating":
+                print("Still working...")
+                await asyncio.sleep(2)
+            else:
+                print(f"ERROR: Something went wrong! Please try later, error: {status}")
+                stt = False
+                return status

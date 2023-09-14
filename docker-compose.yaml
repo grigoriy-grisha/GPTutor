@@ -30,6 +30,7 @@ services:
     networks:
       - app
   models:
+    env_file: .env
     container_name: models
     build:
       context: GPTutor-Models

@@ -3,8 +3,6 @@ package com.chatgpt.services;
 import com.chatgpt.Exceptions.BadRequestException;
 import com.chatgpt.entity.GenerateImageRequest;
 import com.chatgpt.entity.Image;
-import com.chatgpt.entity.Translation;
-import com.chatgpt.entity.TranslationMessage;
 import com.chatgpt.entity.requests.NudeDetectRequest;
 import com.chatgpt.repositories.ImageRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,17 +13,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.file.Files;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -46,7 +42,6 @@ public class ImagesService {
     S3Service s3Service;
 
     public Image generateImage(String vkUserId, GenerateImageRequest generateImageRequest) {
-        String fileUrl = "http://models:1337/image";
         File tempFile = null;
 
         try {
@@ -58,45 +53,29 @@ public class ImagesService {
             var prompt = translateService.translate(generateImageRequest.getPrompt(), 0);
             generateImageRequest.setPrompt(prompt);
 
-            URL url = new URL(fileUrl);
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type", "application/json");
-
-            ObjectMapper mapper = new ObjectMapper();
-
-            OutputStream outputStream = connection.getOutputStream();
-            outputStream.write(mapper.writeValueAsString(generateImageRequest).getBytes());
-            outputStream.close();
-
-
-            InputStream inputStream = connection.getInputStream();
-
-            tempFile = File.createTempFile("temp-", ".png");
-
-            Files.write(tempFile.toPath(), inputStream.readAllBytes());
-
-            inputStream.close();
-
-            var uuid = UUID.randomUUID().toString();
-            s3Service.uploadObject(uuid, tempFile);
-
             RestTemplate restTemplate = new RestTemplate();
+            String urlGenerate = "http://models:1337/image";
+            HttpEntity<GenerateImageRequest> requestImage = new HttpEntity<>(generateImageRequest);
+            var responseImage = restTemplate.postForEntity(urlGenerate, requestImage, String.class);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            System.out.println(responseImage.getBody());
+
+            String imageUrl = objectMapper.readTree(responseImage.getBody()).get("url").asText();
+
             String urlNudeDetect = "http://models:1337/nude-detect";
-            HttpEntity<NudeDetectRequest> request = new HttpEntity<>(new NudeDetectRequest("https://storage.yandexcloud.net/gptutor-bucket/" + uuid));
+            HttpEntity<NudeDetectRequest> request = new HttpEntity<>(new NudeDetectRequest(imageUrl));
 
-            var response = restTemplate.postForEntity(urlNudeDetect, request, String.class);
+            var responseNude = restTemplate.postForEntity(urlNudeDetect, request, String.class);
 
-            if (response.getStatusCode().is2xxSuccessful()) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode resultArray = objectMapper.readTree(response.getBody()).get("result");
+            // если nudenet не содержит ни один из запрещенных значений или пустой
+            if (responseNude.getStatusCode().is2xxSuccessful()) {
+                JsonNode resultArray = new ObjectMapper().readTree(responseNude.getBody()).get("nudenet");
+                String nsfw = new ObjectMapper().readTree(responseNude.getBody()).get("nsfw").asText();
 
                 var disabledClasses = new String[]{"FEMALE_GENITALIA_COVERED","BUTTOCKS_EXPOSED", "FEMALE_BREAST_EXPOSED", "FEMALE_GENITALIA_EXPOSED", "ANUS_EXPOSED", "MALE_GENITALIA_EXPOSED"};
+                boolean isNudes = Objects.equals(nsfw, "nude");
 
-                boolean isNudes = false;
                 for (JsonNode object : resultArray) {
 
                     for (var value : disabledClasses) {
@@ -109,12 +88,33 @@ public class ImagesService {
                 }
 
                 if (isNudes) {
-                    System.out.println(uuid);
-                    s3Service.deleteObject(uuid);
-
                     throw new BadRequestException("Изображение содержит непримелимое содержание, попробуйте еще");
                 }
             }
+
+            try {
+                // Отправляем GET-запрос и получаем ответ в виде массива байтов
+                ResponseEntity<byte[]> response = restTemplate.getForEntity(imageUrl, byte[].class);
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    byte[] imageBytes = response.getBody();
+                    if (imageBytes != null) {
+                        tempFile = File.createTempFile("image-", ".png");
+                        Files.write(tempFile.toPath(), imageBytes);
+                        System.out.println("Картинка успешно сохранена во временный файл: " + tempFile.getAbsolutePath());
+                    } else {
+                        System.out.println("Ошибка: пустое содержимое картинки");
+                    }
+                } else {
+                    System.out.println("Не удалось загрузить картинку: " + response.getStatusCode());
+                }
+            } catch (IOException e) {
+                System.out.println("Ошибка при сохранении картинки: " + e.getMessage());
+            }
+
+            var uuid = UUID.randomUUID().toString();
+            s3Service.uploadObject(uuid, tempFile);
+
+
 
 
             var user = userService.getOrCreateVkUser(vkUserId);
