@@ -1,0 +1,6 @@
+ALTER TABLE image ADD COLUMN sampler VARCHAR;
+ALTER TABLE image ADD COLUMN negative_prompt VARCHAR;
+ALTER TABLE image ADD COLUMN aspect_ratio VARCHAR;
+ALTER TABLE image ADD COLUMN cfg_scale INT;
+ALTER TABLE image ADD COLUMN seed INT;
+ALTER TABLE image ADD COLUMN steps INT;

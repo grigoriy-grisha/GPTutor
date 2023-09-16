@@ -40,6 +40,7 @@ import { ProblemDetail } from "./panels/ProblemDetail";
 import { AppAlert } from "./modals/AppAlert";
 import { CodeEditor } from "./panels/CodeEditor";
 import { ChatTrainer } from "./panels/ChatTrainer";
+import { ImageGenerationResult } from "./panels/ImageGenerationResult";
 import UtilBlock from "./UtilBlock";
 
 import { appService } from "$/services/AppService";
@@ -107,6 +108,7 @@ const App = () => {
             <ChatLeetCode id={Panels.chatLeetCode} />
             <ProblemDetail id={Panels.problemDetail} />
             <ImageGeneration id={Panels.generationImages} />
+            <ImageGenerationResult id={Panels.generationImagesResult} />
           </View>
         )}
       </SplitLayout>

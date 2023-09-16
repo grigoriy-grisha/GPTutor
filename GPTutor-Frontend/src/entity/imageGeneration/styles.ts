@@ -1,22 +1,22 @@
 export const styles = [
   {
     value: "ICantBelieveItsNotPhotography_seco.safetensors [4e7a3dfd]",
-    imageName: "realistyc.png",
+    imageName: "realistic-style.png",
     label: "Реалистичный",
   },
   {
     value: "childrensStories_v13D.safetensors [9dfaabcb]",
-    imageName: "3D.png",
+    imageName: "3D-style.png",
     label: "3D",
   },
   {
     value: "childrensStories_v1ToonAnime.safetensors [2ec7b88b]",
-    imageName: "art.png",
+    imageName: "art-style.png",
     label: "Цифровой Арт",
   },
   {
     value: "toonyou_beta6.safetensors [980f6b15]",
-    imageName: "toon.png",
+    imageName: "toon-style.png",
     label: "Мультик",
   },
   {
@@ -25,13 +25,8 @@ export const styles = [
     label: "Аниме",
   },
   {
-    value: "anything-v4.5-pruned.ckpt [65745d25]",
-    imageName: "drawn.png",
-    label: "Нарисованный",
-  },
-  {
     value: "mechamix_v10.safetensors [ee685731]",
-    imageName: "comic.png",
+    imageName: "futuristic-style.png",
     label: "Футуристичный",
   },
 ];
@@ -214,4 +209,32 @@ export const models = [
     label: "ToonYou Beta 6",
   },
 ];
+
+export const samplers = [
+  {
+    value: "Euler",
+    label: "Euler",
+  },
+  {
+    value: "Euler a",
+    label: "Euler a",
+  },
+  {
+    value: "Heun",
+    label: "Heun",
+  },
+  {
+    value: "DPM++ 2M Karras",
+    label: "DPM++ 2M Karras",
+  },
+  {
+    value: "DPM++ SDE Karras",
+    label: "DPM++ SDE Karras",
+  },
+  {
+    value: "DDIM",
+    label: "DDIM",
+  },
+];
 export const defaultModel = styles[0].value;
+export const defaultSampler = samplers[0].value;

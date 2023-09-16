@@ -13,14 +13,25 @@
     width: 100%;
 }
 
+.imageSticky :global(.vkuiCard__in) {
+    position: sticky;
+    top: 0;
+}
+
 .image {
+    position: relative;
     color: var(--vkui--color_text_accent_themed);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 284px;
     border: 1px solid var(--vkui--color_field_border_alpha);
     width: 100%;
+    border-radius: 8px;
+}
+
+.imageResult {
+    width: 100%;
+    border: 1px solid var(--vkui--color_field_border_alpha);
     border-radius: 8px;
 }
 
@@ -52,14 +63,35 @@
     border: 1px solid var(--vkui--color_field_border_alpha);
 }
 
+.accordion :global(.vkuiFormItem) {
+    padding: 0 0 8px;
+}
+
+.accordion :global(.vkuiBanner) {
+    margin: 0;
+}
+
+.accordion :global(.vkuiSlider__dragger):before {
+    background: var(--vkui--color_text_accent_themed);
+}
+
+.accordion :global(.vkuiSlider__thumb) {
+    cursor: pointer;
+}
+
 .accordionTitle {
     color: var(--vkui--color_text_secondary);
+}
+
+.sizeDisable {
+    pointer-events: none;
+    opacity: 0.6;
 }
 
 .accordionItems {
     padding-bottom: 8px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
 }
 
@@ -81,6 +113,147 @@
 
 .accordionImage {
     width: 100% !important;
-    height: 122px !important;
+    height: 160px !important;
     margin-bottom: 4px;
+}
+
+.sizes { 
+    transition: opacity 0.5s;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.sizes :global(.vkuiBanner__aside) {
+    display: none;
+}
+
+.sizes :global(.vkuiBanner) {
+    padding: 0;
+}
+
+.sizes :global(.vkuiTappable) {
+    min-height: 36px;
+    max-height: 36px;
+}
+
+.sizes :global(.vkuiBanner__before) {
+    display: flex;
+    align-items: center;
+}
+
+.size {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    background: var(--vkui--color_text_accent_themed);
+}
+
+.square {
+    width: 36px;
+    height: 36px;
+}
+
+.portrait {
+    width: 24px;
+    height: 36px;
+    margin-right: 12px;
+}
+
+.landscape {
+    width: 36px;
+    height: 24px;
+}
+
+.sizeText {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sizeActive {
+    opacity: 0.7;
+}
+
+.imagesquare {
+    padding-bottom: 100%;
+    width: 100%;
+}
+
+.imageportrait {
+    padding-bottom: 150%;
+    width: 100%;
+}
+
+.imagelandscape {
+    padding-bottom: 67%;
+    width: 100%;
+}
+
+.separator {
+    color: var(--vkui--color_field_border_alpha);
+    padding-bottom: 8px;
+}
+
+.formItemTitle {
+    display: grid;
+    align-items: center;
+    gap: 6px;
+    grid-template-columns: max-content max-content;
+}
+
+.formItemTitle :global(.vkuiIcon) {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.formItemTitle :global(.vkuiIcon):hover {
+    cursor: pointer;
+    color: var(--vkui--color_text_accent_themed);
+}
+
+.mobileContainer {
+    width: 100%;
+}
+
+.mobileContainer :global(.vkuiImageBaseOverlay) {
+    opacity: 0;
+}
+
+.imagePlaceholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@media screen and (max-width: 530px) {
+    .accordionItems {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .accordionImage {
+        height: 200px !important;
+    }
+
+
+    .sizes {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .accordionItems {
+        grid-template-columns: 1fr;
+    }
+
+    .accordionImage {
+        height: 250px !important;
+    }
+
+
+    .sizes {
+        grid-template-columns: 1fr;
+    }
 }

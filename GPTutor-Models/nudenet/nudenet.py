@@ -1,5 +1,4 @@
 import os
-from urllib import request
 
 import cv2
 import numpy as np

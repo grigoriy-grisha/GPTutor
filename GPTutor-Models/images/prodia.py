@@ -16,9 +16,9 @@ def Client(api_key: str = None):
 
 def txt2img(
         prompt: str = "kittens on cloud",
-        negative_prompt: str = "((nude)),((boobs)),((nudity)),((tits)),((nipples)),((sex)),((vigina)),((genitals)),((penis)),bad drawn, low quality, low detailed, ugly, mutated, blurry, watermark",
+        negative_prompt: str = "((nude)),(((boobs))),(((nudity))),(((tits))),((nipples)),((sex)),((vigina)),((genitals)),((penis)),bad drawn, low quality, low detailed, ugly, mutated, blurry, watermark, bad anatomy, disfigured, blurry, cloned face, low contrast, over/underexposed",
         model: str = "deliberate_v2.safetensors [10ec4b29]",
-        sampler: str = "Heun",
+        sampler: str = "DPM++ 2M Karras",
         aspect_ratio: str = "square",
         steps: int = 25,
         cfg_scale: int = 7,
@@ -103,7 +103,7 @@ def img2img(
             "steps": steps,
             "sampler": sampler,
             "imageUrl": imageUrl,
-            "model": model,
+            "nsfw_detector": model,
             "prompt": prompt,
             "denoising_strength": denoising_strength,
             "negative_prompt": negative_prompt,
@@ -166,7 +166,7 @@ async def arunv1(
         url = "https://api.prodia.com/v1/job"
         payload = {
             "prompt": prompt,
-            "model": model,
+            "nsfw_detector": model,
             "sampler": sampler,
             "negative_prompt": negative_prompt,
             "steps": steps,
@@ -236,7 +236,7 @@ async def arunv2(
             "steps": steps,
             "sampler": sampler,
             "imageUrl": imageUrl,
-            "model": model,
+            "nsfw_detector": model,
             "prompt": prompt,
             "denoising_strength": denoising_strength,
             "negative_prompt": negative_prompt,

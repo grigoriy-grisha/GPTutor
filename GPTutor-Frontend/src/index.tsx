@@ -68,6 +68,10 @@ const routes = {
     Panels.generationImages,
     Views.viewMain
   ),
+  [RoutingPages.generationImagesResult]: new Page(
+    Panels.generationImagesResult,
+    Views.viewMain
+  ),
   [RoutingPages.leetcodeProblems]: new Page(
     Panels.leetcodeProblems,
     Views.viewMain

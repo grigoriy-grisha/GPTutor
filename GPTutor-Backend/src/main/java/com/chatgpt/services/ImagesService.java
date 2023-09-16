@@ -5,7 +5,6 @@ import com.chatgpt.entity.GenerateImageRequest;
 import com.chatgpt.entity.Image;
 import com.chatgpt.entity.requests.NudeDetectRequest;
 import com.chatgpt.repositories.ImageRepository;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -68,32 +66,15 @@ public class ImagesService {
 
             var responseNude = restTemplate.postForEntity(urlNudeDetect, request, String.class);
 
-            // если nudenet не содержит ни один из запрещенных значений или пустой
             if (responseNude.getStatusCode().is2xxSuccessful()) {
-                JsonNode resultArray = new ObjectMapper().readTree(responseNude.getBody()).get("nudenet");
-                String nsfw = new ObjectMapper().readTree(responseNude.getBody()).get("nsfw").asText();
+                boolean isNude = new ObjectMapper().readTree(responseNude.getBody()).get("isNude").asBoolean();
 
-                var disabledClasses = new String[]{"BUTTOCKS_EXPOSED", "FEMALE_BREAST_EXPOSED", "FEMALE_GENITALIA_EXPOSED", "ANUS_EXPOSED", "MALE_GENITALIA_EXPOSED"};
-                boolean isNudes = Objects.equals(nsfw, "nude");
-
-                for (JsonNode object : resultArray) {
-
-                    for (var value : disabledClasses) {
-                        if (object.has("class") && object.get("class").asText().equals(value)) {
-                            isNudes = true;
-                            break;
-                        }
-                    }
-
-                }
-
-                if (isNudes) {
+                if (isNude) {
                     throw new BadRequestException("Изображение содержит непримелимое содержание, попробуйте еще");
                 }
             }
 
             try {
-                // Отправляем GET-запрос и получаем ответ в виде массива байтов
                 ResponseEntity<byte[]> response = restTemplate.getForEntity(imageUrl, byte[].class);
                 if (response.getStatusCode() == HttpStatus.OK) {
                     byte[] imageBytes = response.getBody();
@@ -114,17 +95,8 @@ public class ImagesService {
             var uuid = UUID.randomUUID().toString();
             s3Service.uploadObject(uuid, tempFile);
 
-
-
-
             var user = userService.getOrCreateVkUser(vkUserId);
-            var image = new Image(
-                    uuid,
-                    user,
-                    generateImageRequest.getCreatedAt(),
-                    generateImageRequest.getPrompt(),
-                    generateImageRequest.getModel()
-            );
+            var image = new Image(uuid, user, generateImageRequest);
 
             imageRepository.save(image);
 
