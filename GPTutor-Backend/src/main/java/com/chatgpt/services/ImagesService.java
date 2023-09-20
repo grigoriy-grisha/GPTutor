@@ -52,14 +52,21 @@ public class ImagesService {
             generateImageRequest.setPrompt(prompt);
 
             RestTemplate restTemplate = new RestTemplate();
-            String urlGenerate = "http://models:1337/image";
-            HttpEntity<GenerateImageRequest> requestImage = new HttpEntity<>(generateImageRequest);
-            var responseImage = restTemplate.postForEntity(urlGenerate, requestImage, String.class);
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            System.out.println(responseImage.getBody());
+            String imageUrl;
 
-            String imageUrl = objectMapper.readTree(responseImage.getBody()).get("url").asText();
+            try {
+                String urlGenerate = "http://models:1337/image";
+                HttpEntity<GenerateImageRequest> requestImage = new HttpEntity<>(generateImageRequest);
+                var responseImage = restTemplate.postForEntity(urlGenerate, requestImage, String.class);
+                ObjectMapper objectMapper = new ObjectMapper();
+                System.out.println(responseImage.getBody());
+
+                imageUrl = objectMapper.readTree(responseImage.getBody()).get("url").asText();
+            } catch (Exception e) {
+                throw new BadRequestException("Компонент переводов не активен, напишите свой запрос на английском");
+            }
+
 
             String urlNudeDetect = "http://models:1337/nude-detect";
             HttpEntity<NudeDetectRequest> request = new HttpEntity<>(new NudeDetectRequest(imageUrl));

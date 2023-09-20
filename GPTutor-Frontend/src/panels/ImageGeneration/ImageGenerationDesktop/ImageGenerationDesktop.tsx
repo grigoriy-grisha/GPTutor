@@ -28,8 +28,12 @@ import { imageGeneration } from "$/entity/imageGeneration";
 import { AppDiv } from "$/components/AppDiv";
 import { models, samplers, styles } from "$/entity/imageGeneration/styles";
 import {
+  Icon20SunOutline,
   Icon20Verified,
+  Icon24DownloadOutline,
   Icon24HelpOutline,
+  Icon24MagicWandOutline,
+  Icon24UploadOutline,
   Icon28ArrowDownToSquareOutline,
   Icon28CheckCircleOn,
   Icon28ShareOutline,
@@ -40,8 +44,10 @@ import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextToo
 import bridge from "@vkontakte/vk-bridge";
 import React, { useEffect } from "react";
 import { getImageSize } from "$/panels/ImageGeneration/utils";
+import { useNavigationContext } from "$/NavigationContext";
 
 function ImageGenerationDesktop() {
+  const { goToGenerationImagesExamples } = useNavigationContext();
   const { appearance } = useConfigProvider();
   const generateImage = imageGeneration.generateImage$;
 
@@ -51,6 +57,8 @@ function ImageGenerationDesktop() {
   useEffect(() => {
     imageGeneration.imageSize.set(imageGeneration.aspectRatio$.get());
   }, [imageGeneration.result$.get()]);
+
+  const lastMessageChatGPt = imageGeneration.chatGpt.getLastAssistantMessage();
 
   return (
     <AppContainer
@@ -81,6 +89,28 @@ function ImageGenerationDesktop() {
                 placeholder="Напишите запрос для изображения"
               />
             </FormItem>
+            <Spacing size={12} />
+            <div className={classes.ideas}>
+              <Button
+                onClick={goToGenerationImagesExamples}
+                size="l"
+                mode="outline"
+                after={<Icon20SunOutline />}
+              >
+                Примеры
+              </Button>
+              <Button
+                loading={imageGeneration.chatGpt.sendCompletions$.loading.get()}
+                onClick={() => {
+                  imageGeneration.runChatGpt();
+                }}
+                size="l"
+                mode="outline"
+                after={<Icon24MagicWandOutline />}
+              >
+                Придумать запрос
+              </Button>
+            </div>
 
             <Spacing size={12} />
             <Button
@@ -93,46 +123,6 @@ function ImageGenerationDesktop() {
             >
               Сгенерировать
             </Button>
-            <Spacing size={12} />
-
-            <Accordion open={true} className={classes.accordion}>
-              <Accordion.Summary>
-                <Title level="3" weight="3" className={classes.accordionTitle}>
-                  Выбрать стиль
-                </Title>
-              </Accordion.Summary>
-              <Separator wide className={classes.separator} />
-              <AppDiv className={classes.styles}>
-                <div className={classes.accordionItems}>
-                  {styles.map((model) => (
-                    <div
-                      onClick={() => imageGeneration.setModel(model.value)}
-                      key={model.value}
-                      className={classNames(classes.accordionItem)}
-                    >
-                      <Image
-                        className={classes.accordionImage}
-                        src={`https://storage.yandexcloud.net/gptutor-bucket/${model.imageName}`}
-                      >
-                        {imageGeneration.model$.get() === model.value && (
-                          <Image.Badge>
-                            <Icon28CheckCircleOn
-                              className={classes.badge}
-                              width={24}
-                              height={24}
-                            />
-                          </Image.Badge>
-                        )}
-                        <Image.Overlay>
-                          <></>
-                        </Image.Overlay>
-                      </Image>
-                      <Caption level="1">{model.label}</Caption>
-                    </div>
-                  ))}
-                </div>
-              </AppDiv>
-            </Accordion>
             <Spacing size={12} />
             <Accordion open={true} className={classes.accordion}>
               <Accordion.Summary>
@@ -179,6 +169,45 @@ function ImageGenerationDesktop() {
                   ))}
                 </div>
                 <Spacing size={8} />
+              </AppDiv>
+            </Accordion>
+            <Spacing size={12} />
+            <Accordion open={true} className={classes.accordion}>
+              <Accordion.Summary>
+                <Title level="3" weight="3" className={classes.accordionTitle}>
+                  Выбрать стиль
+                </Title>
+              </Accordion.Summary>
+              <Separator wide className={classes.separator} />
+              <AppDiv className={classes.styles}>
+                <div className={classes.accordionItems}>
+                  {styles.map((model) => (
+                    <div
+                      onClick={() => imageGeneration.setModel(model.value)}
+                      key={model.value}
+                      className={classNames(classes.accordionItem)}
+                    >
+                      <Image
+                        className={classes.accordionImage}
+                        src={`https://storage.yandexcloud.net/gptutor-bucket/${model.imageName}`}
+                      >
+                        {imageGeneration.model$.get() === model.value && (
+                          <Image.Badge>
+                            <Icon28CheckCircleOn
+                              className={classes.badge}
+                              width={24}
+                              height={24}
+                            />
+                          </Image.Badge>
+                        )}
+                        <Image.Overlay>
+                          <></>
+                        </Image.Overlay>
+                      </Image>
+                      <Caption level="1">{model.label}</Caption>
+                    </div>
+                  ))}
+                </div>
               </AppDiv>
             </Accordion>
             <Spacing size={12} />
@@ -298,7 +327,7 @@ function ImageGenerationDesktop() {
                         min={0}
                         max={20}
                         id="CFGScale"
-                        value={Number(imageGeneration.CFGScale$.get())}
+                        value={imageGeneration.CFGScale$.get()}
                         onChange={imageGeneration.setCFGScale}
                       />
                     </div>
@@ -329,7 +358,7 @@ function ImageGenerationDesktop() {
                         min={1}
                         max={50}
                         id="step"
-                        value={Number(imageGeneration.step$.get())}
+                        value={imageGeneration.step$.get()}
                         onChange={imageGeneration.setStep}
                       />
                     </div>
@@ -358,7 +387,9 @@ function ImageGenerationDesktop() {
                       type="text"
                       value={imageGeneration.seed$.get()}
                       onChange={(event) =>
-                        imageGeneration.setSeed(Number(event.target.value))
+                        imageGeneration.setSeed(
+                          event.target.value as unknown as number
+                        )
                       }
                     />
                   </FormItem>
@@ -397,7 +428,17 @@ function ImageGenerationDesktop() {
                       alt="Картинка"
                     />
                   )}
+                  <Spacing size={12} />
                   <div className={classes.buttons}>
+                    <Button
+                      disabled={imageGeneration.loading$.get()}
+                      style={{ width: "100%" }}
+                      size="l"
+                      align="center"
+                      mode="primary"
+                    >
+                      Cохранить
+                    </Button>
                     <IconButton
                       onClick={() => {
                         bridge.send("VKWebAppDownloadFile", {

@@ -46,9 +46,7 @@ function ImageGenerationMobile() {
 
   return (
     <AppContainer
-      headerChildren={
-        <AppPanelHeader before={<PanelHeaderBack />}>Картинки</AppPanelHeader>
-      }
+      headerChildren={<AppPanelHeader>Картинки</AppPanelHeader>}
       fixedBottomContent={
         <Div>
           <Button
@@ -278,7 +276,7 @@ function ImageGenerationMobile() {
                     min={0}
                     max={20}
                     id="CFGScale"
-                    value={Number(imageGeneration.CFGScale$.get())}
+                    value={imageGeneration.CFGScale$.get()}
                     onChange={imageGeneration.setCFGScale}
                   />
                 </div>
@@ -307,7 +305,7 @@ function ImageGenerationMobile() {
                     min={1}
                     max={50}
                     id="step"
-                    value={Number(imageGeneration.step$.get())}
+                    value={imageGeneration.step$.get()}
                     onChange={imageGeneration.setStep}
                   />
                 </div>
@@ -334,7 +332,9 @@ function ImageGenerationMobile() {
                   type="text"
                   value={imageGeneration.seed$.get()}
                   onChange={(event) =>
-                    imageGeneration.setSeed(Number(event.target.value))
+                    imageGeneration.setSeed(
+                      event.target.value as unknown as number
+                    )
                   }
                 />
               </FormItem>

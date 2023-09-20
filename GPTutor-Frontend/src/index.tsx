@@ -76,6 +76,10 @@ const routes = {
     Panels.leetcodeProblems,
     Views.viewMain
   ),
+  [RoutingPages.generationImagesExamples]: new Page(
+    Panels.generationImagesExamples,
+    Views.viewMain
+  ),
 };
 
 const router = new Router(routes);

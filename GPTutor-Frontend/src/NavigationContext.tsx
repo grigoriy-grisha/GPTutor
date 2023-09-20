@@ -36,6 +36,7 @@ export type NavigationContextType = {
   goToChatTrainer: () => void;
   goToEditor: () => void;
   goToGenerationImagesResult: () => void;
+  goToGenerationImagesExamples: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -104,6 +105,8 @@ export function NavigationContextProvider({
   const goToGenerationImages = () => push(RoutingPages.generationImages);
   const goToGenerationImagesResult = () =>
     push(RoutingPages.generationImagesResult);
+  const goToGenerationImagesExamples = () =>
+    push(RoutingPages.generationImagesExamples);
 
   const goToChatLeetCode = () => {
     const problemPages = location
@@ -146,6 +149,7 @@ export function NavigationContextProvider({
   return (
     <NavigationContext.Provider
       value={{
+        goToGenerationImagesExamples,
         goBack,
         goToHistory,
         goToChapters,

@@ -11,6 +11,7 @@ export enum RoutingPages {
   leetcodeProblems = "/leetcode-problems",
   generationImages = "/generation-images",
   generationImagesResult = "/generation-images-result",
+  generationImagesExamples = "/generation-images-examples",
 
   chatLeetCode = "/chat-leetcode",
   problemDetail = "/problem-detail",
@@ -39,6 +40,7 @@ export enum Panels {
   problemDetail = "problem-detail",
   generationImages = "generation-images",
   generationImagesResult = "generation-images-result",
+  generationImagesExamples = "generation-images-examples",
 
   editor = "editor",
 

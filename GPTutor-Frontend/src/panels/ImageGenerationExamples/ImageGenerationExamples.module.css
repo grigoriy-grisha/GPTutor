@@ -1,0 +1,28 @@
+.container {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: max-content;
+    width: 100%;
+}
+
+.image {
+    width: 150px !important;
+    height: 150px !important;
+    object-fit: cover;
+}
+
+.card {
+    height: 100%;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.card :global(.vkuiTappable[aria-disabled=true]) {
+    cursor: pointer;
+}
+
+.card:hover {
+    opacity: 0.6;
+}
+

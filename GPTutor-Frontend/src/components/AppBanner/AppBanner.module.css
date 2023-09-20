@@ -1,0 +1,14 @@
+.banner {
+    position: relative;
+    margin: 8px 0;
+}
+
+.compactBanner :global(.vkuiBanner__in) {
+    display: flex;
+    flex-direction: column;
+}
+
+.compactBanner :global(.vkuiBanner__before) {
+    margin-right: 0;
+    margin-bottom: 12px;
+}

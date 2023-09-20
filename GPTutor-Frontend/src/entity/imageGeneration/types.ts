@@ -10,6 +10,17 @@ export type GenerateImageRequest = {
   aspectRatio: ImageAspectRatio;
 };
 
+export type ImageExample = {
+  url: string;
+  seed: number;
+  steps: number;
+  prompt: string;
+  cfgScale: number;
+  sampler: string;
+  model: string;
+  negativePrompt: string;
+};
+
 export type GeneratedImage = {
   createdAt: string;
   id: string;

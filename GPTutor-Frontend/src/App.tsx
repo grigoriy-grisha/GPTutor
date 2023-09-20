@@ -46,6 +46,7 @@ import UtilBlock from "./UtilBlock";
 import { appService } from "$/services/AppService";
 import { LoadingPanel } from "$/panels/LoadingPanel";
 import { ImageGeneration } from "$/panels/ImageGeneration";
+import { ImageGenerationExamples } from "$/panels/ImageGenerationExamples";
 
 const App = () => {
   const location = useLocation();
@@ -109,6 +110,7 @@ const App = () => {
             <ProblemDetail id={Panels.problemDetail} />
             <ImageGeneration id={Panels.generationImages} />
             <ImageGenerationResult id={Panels.generationImagesResult} />
+            <ImageGenerationExamples id={Panels.generationImagesExamples} />
           </View>
         )}
       </SplitLayout>
