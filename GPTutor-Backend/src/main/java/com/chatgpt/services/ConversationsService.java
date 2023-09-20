@@ -59,6 +59,8 @@ public class ConversationsService {
             apiRequestsService.addApiRequest("OfficialGPT", respInfo.statusCode());
 
             System.out.println(respInfo.statusCode());
+            System.out.println(respInfo.headers());
+            System.out.println(respInfo);
 
             if (respInfo.statusCode() == 200) {
                 return new SseSubscriber((data) -> {
