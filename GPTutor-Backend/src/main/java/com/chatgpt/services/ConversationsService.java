@@ -54,16 +54,13 @@ public class ConversationsService {
 
         System.out.println(apiKey.getFirst().getKey());
 
-        HttpRequest requestFreeGPT = HttpRequest.newBuilder()
-                .uri(URI.create("http://models:1337/gpt"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(input))
-                .build();
+        HttpClient.newHttpClient().sendAsync(request, respInfo ->
+        {
+            apiRequestsService.addApiRequest("OfficialGPT", respInfo.statusCode());
 
-        HttpClient.newHttpClient().sendAsync(requestFreeGPT, respInfoFreeGPT -> {
-            apiRequestsService.addApiRequest("FreeGPT", respInfoFreeGPT.statusCode());
+            System.out.println(respInfo.statusCode());
 
-            if (respInfoFreeGPT.statusCode() == 200) {
+            if (respInfo.statusCode() == 200) {
                 return new SseSubscriber((data) -> {
                     SseEmitter.SseEventBuilder event = SseEmitter.event()
                             .data(data);
@@ -77,42 +74,19 @@ public class ConversationsService {
                 });
             }
 
-            HttpClient.newHttpClient().sendAsync(request, respInfo ->
-            {
-                apiRequestsService.addApiRequest("OfficialGPT", respInfo.statusCode());
-
-                System.out.println(respInfo.statusCode());
-
-                if (respInfo.statusCode() == 200) {
-                    return new SseSubscriber((data) -> {
-                        SseEmitter.SseEventBuilder event = SseEmitter.event()
-                                .data(data);
-
-                        if (data.equals("[DONE]")) emitter.complete();
-                        try {
-                            emitter.send(event);
-                        } catch (IOException e) {
-                            emitter.completeWithError(e);
-                        }
-                    });
+            try {
+                if (attempt == 50) {
+                    emitter.send("[Error]:[" + respInfo.statusCode() + "]");
+                    emitter.complete();
+                    return null;
                 }
 
-                try {
-                    if (attempt == 100) {
-                        emitter.send("[Error]:[" + respInfo.statusCode() + "]");
-                        emitter.complete();
-                        return null;
-                    }
+                Thread.sleep(1000);
+                fetchCompletion(emitter, conversationRequest, attempt + 1);
+            } catch (IOException | InterruptedException e) {
+                emitter.completeWithError(e);
+            }
 
-                    Thread.sleep(200);
-                    fetchCompletion(emitter, conversationRequest, attempt + 1);
-                } catch (IOException | InterruptedException e) {
-                    emitter.completeWithError(e);
-                }
-
-
-                return null;
-            });
 
             return null;
         });
