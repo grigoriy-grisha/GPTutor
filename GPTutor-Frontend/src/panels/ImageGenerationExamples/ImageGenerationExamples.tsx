@@ -1,22 +1,12 @@
 import React from "react";
-import {
-  ContentCard,
-  Div,
-  Panel,
-  PanelHeaderBack,
-  Tappable,
-} from "@vkontakte/vkui";
+import { ContentCard, Div, Panel, PanelHeaderBack } from "@vkontakte/vkui";
 import { AppContainer } from "$/components/AppContainer";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
 import { useNavigationContext } from "$/NavigationContext";
 
 import classes from "./ImageGenerationExamples.module.css";
-import {
-  GenerateImageRequest,
-  ImageAspectRatio,
-  ImageExample,
-} from "$/entity/imageGeneration/types";
-import { imageGeneration } from "$/entity/imageGeneration";
+import { ImageExample } from "$/entity/image/types";
+import { imageGeneration } from "$/entity/image";
 
 interface IProps {
   id: string;

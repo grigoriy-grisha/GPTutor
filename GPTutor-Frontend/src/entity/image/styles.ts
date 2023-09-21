@@ -62,15 +62,15 @@ export const models = [
   },
   {
     value: "childrensStories_v13D.safetensors [9dfaabcb]",
-    label: "Children's Stories V1 3D",
+    label: "Stories V1 3D",
   },
   {
     value: "childrensStories_v1SemiReal.safetensors [a1c56dbb]",
-    label: "Children's Stories V1 SemiReal",
+    label: "Stories V1 SemiReal",
   },
   {
     value: "childrensStories_v1ToonAnime.safetensors [2ec7b88b]",
-    label: "Children's Stories V1 Toon-Anime",
+    label: "Stories V1 Toon-Anime",
   },
   {
     value: "cyberrealistic_v33.safetensors [82b0d085]",
@@ -122,7 +122,7 @@ export const models = [
   },
   {
     value: "ICantBelieveItsNotPhotography_seco.safetensors [4e7a3dfd]",
-    label: "I Cant Believe Its Not Photography Seco",
+    label: "Its Not Photography",
   },
   {
     value: "juggernaut_aftermath.safetensors [5e20c455]",
@@ -182,7 +182,7 @@ export const models = [
   },
   {
     value: "rundiffusionFX_v10.safetensors [cd4e694d]",
-    label: "RunDiffusion FX Photorealistic V1.0",
+    label: "RunDiffusion FX V1.0",
   },
   {
     value: "sdv1_4.ckpt [7460a6fa]",
@@ -194,7 +194,7 @@ export const models = [
   },
   {
     value: "shoninsBeautiful_v10.safetensors [25d8c546]",
-    label: "Shonin's Beautiful People V1.0",
+    label: "Shonin's People V1.0",
   },
   {
     value: "theallys-mix-ii-churned.safetensors [5d9225a4]",
@@ -209,6 +209,10 @@ export const models = [
     label: "ToonYou Beta 6",
   },
 ];
+
+export function getModelByValue(value: string) {
+  return models.find((model) => model.value === value)!;
+}
 
 export const samplers = [
   {

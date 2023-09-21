@@ -49,6 +49,7 @@ services:
       - app
     environment:
       SPRING_APPLICATION_JSON: '{
+                  "spring.flyway.debug": true,
                   "spring.datasource.url": "jdbc:postgresql://postgresql:5432/postgres",
                   "spring.datasource.username": "${POSTGRES_USER}",
                   "spring.datasource.password": "${POSTGRES_PASSWORD}",
@@ -63,6 +64,8 @@ services:
            }'
   postgresql:
     image: 'postgres:13.1-alpine'
+    ports:
+      - "5432:5432"
     container_name: postgresql
     env_file: .env
     volumes:

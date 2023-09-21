@@ -8,6 +8,7 @@ export type GenerateImageRequest = {
   seed: number;
   steps: number;
   aspectRatio: ImageAspectRatio;
+  expireTimestamp: Date;
 };
 
 export type ImageExample = {
@@ -22,11 +23,18 @@ export type ImageExample = {
 };
 
 export type GeneratedImage = {
+  aspectRatio: string;
+  cfgScale: number;
   createdAt: string;
+  expire: string | null;
   id: string;
   model: string;
-  objectId: string;
+  negativePrompt: string;
   prompt: string;
+  sampler: string;
+  seed: number;
+  steps: number;
+  url: string;
 };
 
 export enum ImageAspectRatio {

@@ -43,4 +43,8 @@ public class S3Service {
     public void deleteObject(String key) {
         s3.deleteObject(new DeleteObjectRequest("gptutor-bucket", key));
     }
+
+    public String getBucketUrl(String objectId) {
+        return "https://storage.yandexcloud.net/gptutor-bucket/" + objectId;
+    }
 }

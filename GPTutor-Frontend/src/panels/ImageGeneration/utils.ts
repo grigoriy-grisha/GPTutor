@@ -1,4 +1,4 @@
-import { ImageAspectRatio } from "$/entity/imageGeneration/types";
+import { ImageAspectRatio } from "$/entity/image/types";
 
 export function getImageSize(aspectRatio: ImageAspectRatio) {
   if (aspectRatio === ImageAspectRatio.portrait) return "512x768";

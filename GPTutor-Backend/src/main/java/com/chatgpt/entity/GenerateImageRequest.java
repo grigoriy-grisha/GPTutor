@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class GenerateImageRequest {
     String model;
     Timestamp createdAt;
+    Timestamp expireTimestamp;
     String prompt;
     String sampler;
     String negativePrompt;
@@ -88,5 +89,13 @@ public class GenerateImageRequest {
 
     public int getSeed() {
         return seed;
+    }
+
+    public Timestamp getExpireTimestamp() {
+        return expireTimestamp;
+    }
+
+    public void setExpireTimestamp(Timestamp expireTimestamp) {
+        this.expireTimestamp = expireTimestamp;
     }
 }

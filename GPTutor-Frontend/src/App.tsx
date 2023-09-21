@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
-  Button,
-  Input,
   ModalRoot,
   SplitLayout,
   useConfigProvider,
@@ -47,6 +45,7 @@ import { appService } from "$/services/AppService";
 import { LoadingPanel } from "$/panels/LoadingPanel";
 import { ImageGeneration } from "$/panels/ImageGeneration";
 import { ImageGenerationExamples } from "$/panels/ImageGenerationExamples";
+import Gallery from "$/panels/Gallery";
 
 const App = () => {
   const location = useLocation();
@@ -111,6 +110,7 @@ const App = () => {
             <ImageGeneration id={Panels.generationImages} />
             <ImageGenerationResult id={Panels.generationImagesResult} />
             <ImageGenerationExamples id={Panels.generationImagesExamples} />
+            <Gallery id={Panels.gallery} />
           </View>
         )}
       </SplitLayout>

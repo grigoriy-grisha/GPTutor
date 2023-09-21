@@ -80,6 +80,7 @@ const routes = {
     Panels.generationImagesExamples,
     Views.viewMain
   ),
+  [RoutingPages.gallery]: new Page(Panels.gallery, Views.viewMain),
 };
 
 const router = new Router(routes);

@@ -8,6 +8,7 @@ import React, {
 import { useLocation, useRouter } from "@happysanta/router";
 
 import { Modals, Panels, RoutingPages, Views } from "$/entity/routing";
+import { appService } from "$/services/AppService";
 
 export type AlertType = {
   onAction: () => void;
@@ -37,6 +38,7 @@ export type NavigationContextType = {
   goToEditor: () => void;
   goToGenerationImagesResult: () => void;
   goToGenerationImagesExamples: () => void;
+  goToGallery: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -61,7 +63,14 @@ export function NavigationContextProvider({
   const location = useLocation();
   const router = useRouter();
 
-  useEffect(() => router.replacePage(RoutingPages.generationImages), []);
+  useEffect(() => {
+    if (appService.isStableArt()) {
+      router.replacePage(RoutingPages.generationImages);
+      return;
+    }
+
+    router.replacePage(RoutingPages.home);
+  }, []);
 
   const activePanel = location.getViewActivePanel(Views.viewMain)!;
 
@@ -107,6 +116,7 @@ export function NavigationContextProvider({
     push(RoutingPages.generationImagesResult);
   const goToGenerationImagesExamples = () =>
     push(RoutingPages.generationImagesExamples);
+  const goToGallery = () => push(RoutingPages.gallery);
 
   const goToChatLeetCode = () => {
     const problemPages = location
@@ -149,6 +159,7 @@ export function NavigationContextProvider({
   return (
     <NavigationContext.Provider
       value={{
+        goToGallery,
         goToGenerationImagesExamples,
         goBack,
         goToHistory,

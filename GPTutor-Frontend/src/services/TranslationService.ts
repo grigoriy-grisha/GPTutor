@@ -11,7 +11,6 @@ export class TranslationService {
   }
 
   async translate(text: string) {
-    console.log(this.attempts);
     if (this.isEnglishOver50Percent(text)) return text;
     if (this.attempts === 0) return text;
     this.attempts--;

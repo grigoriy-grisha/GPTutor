@@ -13,9 +13,16 @@
 }
 
 .card {
+    min-height: 250px;
     height: 100%;
     transition: 0.3s;
     cursor: pointer;
+}
+
+.card :global(.vkuiContentCard__tappable) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card :global(.vkuiTappable[aria-disabled=true]) {

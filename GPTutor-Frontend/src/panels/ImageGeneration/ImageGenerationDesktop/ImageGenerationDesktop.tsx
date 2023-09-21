@@ -13,6 +13,7 @@ import {
   IconButton,
   Image,
   Input,
+  PanelHeader,
   PanelHeaderBack,
   Select,
   Separator,
@@ -22,14 +23,17 @@ import {
   Textarea,
   Title,
   useConfigProvider,
+  usePlatform,
 } from "@vkontakte/vkui";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
-import { imageGeneration } from "$/entity/imageGeneration";
+import { imageGeneration } from "$/entity/image";
 import { AppDiv } from "$/components/AppDiv";
-import { models, samplers, styles } from "$/entity/imageGeneration/styles";
+import { models, samplers, styles } from "$/entity/image/styles";
 import {
   Icon20SunOutline,
   Icon20Verified,
+  Icon24Done,
+  Icon24DoneOutline,
   Icon24DownloadOutline,
   Icon24HelpOutline,
   Icon24MagicWandOutline,
@@ -39,14 +43,19 @@ import {
   Icon28ShareOutline,
   Icon48PictureOutline,
 } from "@vkontakte/icons";
-import { ImageAspectRatio } from "$/entity/imageGeneration/types";
+import { ImageAspectRatio } from "$/entity/image/types";
 import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
 import bridge from "@vkontakte/vk-bridge";
 import React, { useEffect } from "react";
 import { getImageSize } from "$/panels/ImageGeneration/utils";
 import { useNavigationContext } from "$/NavigationContext";
+import { downloadService } from "$/services/DownloadService";
+import Time from "$/components/Time";
+import { shareService } from "$/services/ShareService";
 
 function ImageGenerationDesktop() {
+  const platform = usePlatform();
+
   const { goToGenerationImagesExamples } = useNavigationContext();
   const { appearance } = useConfigProvider();
   const generateImage = imageGeneration.generateImage$;
@@ -60,12 +69,14 @@ function ImageGenerationDesktop() {
 
   const lastMessageChatGPt = imageGeneration.chatGpt.getLastAssistantMessage();
 
+  function isSaved() {
+    const result = imageGeneration.result$.get();
+    if (!result) return false;
+    return result.expire === null;
+  }
+
   return (
-    <AppContainer
-      headerChildren={
-        <AppPanelHeader before={<PanelHeaderBack />}>Картинки</AppPanelHeader>
-      }
-    >
+    <AppContainer headerChildren={<PanelHeader>Stable Art</PanelHeader>}>
       <Div className={classes.container}>
         <Card mode="shadow">
           <Div>
@@ -114,6 +125,7 @@ function ImageGenerationDesktop() {
 
             <Spacing size={12} />
             <Button
+              disabled={!imageGeneration.timer.isStopped$.get()}
               loading={generateImage.loading.get()}
               className={classes.button}
               size="l"
@@ -121,7 +133,14 @@ function ImageGenerationDesktop() {
               mode="primary"
               onClick={imageGeneration.generate}
             >
-              Сгенерировать
+              {imageGeneration.timer.isStopped$.get() ? (
+                "Сгенерировать"
+              ) : (
+                <Time
+                  className={classes.timer}
+                  seconds={imageGeneration.timer.time$.get()}
+                />
+              )}
             </Button>
             <Spacing size={12} />
             <Accordion open={true} className={classes.accordion}>
@@ -420,31 +439,44 @@ function ImageGenerationDesktop() {
                       </div>
                     </div>
                   ) : (
-                    <img
-                      className={classNames(classes.image)}
-                      src={`https://storage.yandexcloud.net/gptutor-bucket/${
-                        imageGeneration.result$.get()?.objectId
-                      }`}
-                      alt="Картинка"
-                    />
+                    <div
+                      className={classNames(
+                        classes.image,
+                        classes[`image${imageGeneration.imageSize.get()}`]
+                      )}
+                    >
+                      <img
+                        className={classNames(
+                          classes.image,
+                          classes.generatedImage
+                        )}
+                        src={imageGeneration.result$.get()?.url}
+                        alt="Картинка"
+                      />
+                    </div>
                   )}
                   <Spacing size={12} />
                   <div className={classes.buttons}>
                     <Button
-                      disabled={imageGeneration.loading$.get()}
+                      onClick={() => {
+                        imageGeneration.save(imageGeneration.result$.get()!.id);
+                      }}
+                      loading={imageGeneration.saveImage$.loading.get()}
+                      disabled={!imageGeneration.result$.get() || isSaved()}
+                      before={isSaved() ? <Icon24DoneOutline /> : null}
                       style={{ width: "100%" }}
                       size="l"
                       align="center"
                       mode="primary"
                     >
-                      Cохранить
+                      {isSaved() ? "Сохранено" : "Сохранить"}
                     </Button>
                     <IconButton
                       onClick={() => {
-                        bridge.send("VKWebAppDownloadFile", {
-                          url: "https://sun9-28.userapi.com/c846420/v846420985/1526c3/ISX7VF8NjZk.jpg",
-                          filename: "test.jpg",
-                        });
+                        downloadService.appDownloadLink(
+                          platform,
+                          imageGeneration.result$.get()!.url
+                        );
                       }}
                       disabled={isDisabled}
                     >
@@ -453,16 +485,9 @@ function ImageGenerationDesktop() {
                     <IconButton
                       disabled={isDisabled}
                       onClick={() => {
-                        console.log(
-                          `https://storage.yandexcloud.net/gptutor-bucket/${
-                            imageGeneration.result$.get()?.objectId
-                          }`
+                        shareService.shareLink(
+                          imageGeneration.result$.get()!.url
                         );
-                        bridge.send("VKWebAppShare", {
-                          link: `https://storage.yandexcloud.net/gptutor-bucket/${
-                            imageGeneration.result$.get()?.objectId
-                          }`,
-                        });
                       }}
                     >
                       <Icon28ShareOutline />

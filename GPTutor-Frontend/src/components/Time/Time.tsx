@@ -1,10 +1,11 @@
 import React from "react";
-import { Title } from "@vkontakte/vkui";
+import { classNames, Title } from "@vkontakte/vkui";
 
 import classes from "./Time.module.css";
 
 interface IProps {
   seconds: number;
+  className?: string;
 }
 
 function format(value: number) {
@@ -19,9 +20,9 @@ function getSeconds(seconds: number) {
   return seconds % 60;
 }
 
-function Time({ seconds }: IProps) {
+function Time({ seconds, className }: IProps) {
   return (
-    <Title level="3" className={classes.time}>
+    <Title level="3" className={classNames(className, classes.time)}>
       {getMinute(seconds)}:{format(getSeconds(seconds))}
     </Title>
   );

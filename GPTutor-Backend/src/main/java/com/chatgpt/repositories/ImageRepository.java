@@ -8,6 +8,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.UUID;
 
 public interface ImageRepository extends CrudRepository<Image, UUID> {
-    Image findByObjectId(String objectId);
     Page<Image> findAllByVkUserId(UUID vkId, PageRequest pageable);
+
 }

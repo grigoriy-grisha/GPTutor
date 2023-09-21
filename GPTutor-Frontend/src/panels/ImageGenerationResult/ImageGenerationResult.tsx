@@ -15,14 +15,17 @@ import {
 import React from "react";
 import { useNavigationContext } from "$/NavigationContext";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
-import { imageGeneration } from "$/entity/imageGeneration";
+import { imageGeneration } from "$/entity/image";
 import {
   Icon16ErrorCircleFill,
+  Icon24DoneOutline,
   Icon28ArrowDownToSquareOutline,
   Icon28ShareOutline,
   Icon48PictureOutline,
 } from "@vkontakte/icons";
 import bridge from "@vkontakte/vk-bridge";
+import { downloadService } from "$/services/DownloadService";
+import { shareService } from "$/services/ShareService";
 
 interface IProps {
   id: string;
@@ -36,6 +39,12 @@ function ImageGenerationResult({ id }: IProps) {
   const isDisabled =
     !imageGeneration.result$.get() || generateImage.loading.get();
 
+  function isSaved() {
+    const result = imageGeneration.result$.get();
+    if (!result) return false;
+    return result.expire === null;
+  }
+
   return (
     <Panel id={id}>
       <AppContainer
@@ -47,14 +56,18 @@ function ImageGenerationResult({ id }: IProps) {
         fixedBottomContent={
           <Div>
             <Button
-              loading={generateImage.loading.get()}
-              className={classes.button}
-              size="m"
+              onClick={() => {
+                imageGeneration.save(imageGeneration.result$.get()!.id);
+              }}
+              loading={imageGeneration.saveImage$.loading.get()}
+              disabled={!imageGeneration.result$.get() || isSaved()}
+              before={isSaved() ? <Icon24DoneOutline /> : null}
+              style={{ width: "100%" }}
+              size="l"
               align="center"
               mode="primary"
-              onClick={goBack}
             >
-              Вернуться к настройкам
+              {isSaved() ? "Сохранено" : "Сохранить"}
             </Button>
           </Div>
         }
@@ -88,21 +101,29 @@ function ImageGenerationResult({ id }: IProps) {
                   </div>
                 </div>
               ) : (
-                <img
-                  className={classes.imageResult}
-                  src={`https://storage.yandexcloud.net/gptutor-bucket/${
-                    imageGeneration.result$.get()?.objectId
-                  }`}
-                  alt="Картинка"
-                />
+                <div
+                  className={classNames(
+                    classes.image,
+                    classes[`image${imageGeneration.imageSize.get()}`]
+                  )}
+                >
+                  <img
+                    className={classNames(
+                      classes.image,
+                      classes.generatedImage
+                    )}
+                    src={imageGeneration.result$.get()?.url}
+                    alt="Картинка"
+                  />
+                </div>
               )}
               <div className={classes.buttons}>
                 <IconButton
                   onClick={() => {
-                    bridge.send("VKWebAppDownloadFile", {
-                      url: "https://sun9-28.userapi.com/c846420/v846420985/1526c3/ISX7VF8NjZk.jpg",
-                      filename: "test.jpg",
-                    });
+                    downloadService.appDownloadLink(
+                      platform,
+                      imageGeneration.result$.get()!.url
+                    );
                   }}
                   disabled={isDisabled}
                 >
@@ -110,18 +131,9 @@ function ImageGenerationResult({ id }: IProps) {
                 </IconButton>
                 <IconButton
                   disabled={isDisabled}
-                  onClick={() => {
-                    console.log(
-                      `https://storage.yandexcloud.net/gptutor-bucket/${
-                        imageGeneration.result$.get()?.objectId
-                      }`
-                    );
-                    bridge.send("VKWebAppShare", {
-                      link: `https://storage.yandexcloud.net/gptutor-bucket/${
-                        imageGeneration.result$.get()?.objectId
-                      }`,
-                    });
-                  }}
+                  onClick={() =>
+                    shareService.shareLink(imageGeneration.result$.get()!.url)
+                  }
                 >
                   <Icon28ShareOutline />
                 </IconButton>

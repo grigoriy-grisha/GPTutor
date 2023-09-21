@@ -1,0 +1,42 @@
+.container {
+    display: grid;
+}
+
+.container :global(.vkuiBanner__content) {
+    justify-content: start;
+}
+
+.container :global(.vkuiBanner__actions) {
+    margin-top: auto;
+}
+
+.image {
+    width: 150px;
+    object-fit: cover;
+    border-radius: var(--vkui--size_border_radius--regular);
+    border: 1px solid var(--vkui--color_field_border_alpha);
+}
+
+.imageMobile {
+    width: 100%;
+}
+
+.subHeader {
+    display: grid;
+    margin-bottom: 12px;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.additionButtons {
+    display: grid;
+    grid-template-columns: min-content min-content;
+    gap: 4px;
+    position: absolute;
+    right: -11px;
+    bottom: -11px;
+}

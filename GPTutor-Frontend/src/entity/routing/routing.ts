@@ -12,6 +12,7 @@ export enum RoutingPages {
   generationImages = "/generation-images",
   generationImagesResult = "/generation-images-result",
   generationImagesExamples = "/generation-images-examples",
+  gallery = "/gallery",
 
   chatLeetCode = "/chat-leetcode",
   problemDetail = "/problem-detail",
@@ -41,6 +42,7 @@ export enum Panels {
   generationImages = "generation-images",
   generationImagesResult = "generation-images-result",
   generationImagesExamples = "generation-images-examples",
+  gallery = "gallery",
 
   editor = "editor",
 

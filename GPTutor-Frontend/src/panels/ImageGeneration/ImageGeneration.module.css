@@ -24,6 +24,8 @@
     top: 0;
 }
 
+
+
 .image {
     position: relative;
     color: var(--vkui--color_text_accent_themed);
@@ -33,6 +35,14 @@
     border: 1px solid var(--vkui--color_field_border_alpha);
     width: 100%;
     border-radius: 8px;
+}
+
+.generatedImage {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
 }
 
 .imageResult {
@@ -223,6 +233,7 @@
 }
 
 .mobileContainer {
+    max-width: 100vw;
     width: 100%;
 }
 
@@ -271,4 +282,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
+}
+
+.timer {
+    color: var(--vkui--color_text_contrast_themed);
 }

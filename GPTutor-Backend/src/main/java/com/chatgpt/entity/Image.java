@@ -13,7 +13,8 @@ public class Image {
 
     private String prompt;
 
-    private String objectId;
+    private String url;
+    private Timestamp expire;
 
     private String model;
 
@@ -30,7 +31,6 @@ public class Image {
 
     private String aspectRatio;
 
-
     @ManyToOne()
     private VkUser vkUser;
 
@@ -38,9 +38,10 @@ public class Image {
 
     }
 
-    public Image(String objectId, VkUser vkUser, GenerateImageRequest generateImageRequest) {
-        this.objectId = objectId;
+    public Image(String url, VkUser vkUser, GenerateImageRequest generateImageRequest) {
+        this.url = url;
         this.vkUser = vkUser;
+        this.expire = generateImageRequest.getExpireTimestamp();
         this.createdAt = generateImageRequest.getCreatedAt();
         this.prompt = generateImageRequest.getPrompt();
         this.model = generateImageRequest.getModel();
@@ -59,14 +60,6 @@ public class Image {
 
     public void setVkUser(VkUser vkUser) {
         this.vkUser = vkUser;
-    }
-
-    public String getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
     }
 
     public Timestamp getCreatedAt() {
@@ -148,5 +141,21 @@ public class Image {
 
     public void setSteps(int steps) {
         this.steps = steps;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Timestamp getExpire() {
+        return expire;
+    }
+
+    public void setExpire(Timestamp expire) {
+        this.expire = expire;
     }
 }

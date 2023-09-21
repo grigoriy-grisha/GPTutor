@@ -6,7 +6,7 @@ import {
   usePlatform,
 } from "@vkontakte/vkui";
 import ImageGenerationDesktop from "./ImageGenerationDesktop";
-import { imageGeneration } from "$/entity/imageGeneration";
+import { imageGeneration } from "$/entity/image";
 import ImageGenerationMobile from "./ImageGenerationMobile";
 
 interface IProps {
