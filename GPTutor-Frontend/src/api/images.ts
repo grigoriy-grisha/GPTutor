@@ -5,7 +5,7 @@ const BACKEND_HOST = _env_.REACT_APP_BACKEND_HOST;
 
 export function generateImage(
   params: GenerateImageRequest
-): Promise<GeneratedImage & ErrorResponseType> {
+): Promise<GeneratedImage[] & ErrorResponseType> {
   return fetch(`${BACKEND_HOST}image`, {
     method: "POST",
     headers: {

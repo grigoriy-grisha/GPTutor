@@ -26,7 +26,7 @@ function AppPanelHeader({ after, before, children }: IProps) {
     >
       <div className={classes.wrapper}>
         {children}
-        {after}
+        <span className={classes.after}>{after}</span>
       </div>
     </PanelHeader>
   );

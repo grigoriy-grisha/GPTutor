@@ -1,212 +1,151 @@
 export const styles = [
   {
-    value: "ICantBelieveItsNotPhotography_seco.safetensors [4e7a3dfd]",
-    imageName: "realistic-style.png",
+    value: "sd",
+    imageName: "universal.png",
+    label: "Универсальный",
+  },
+  {
+    value: "realistic-vision-v40",
+    imageName: "realystic-vision.png",
     label: "Реалистичный",
   },
   {
-    value: "childrensStories_v13D.safetensors [9dfaabcb]",
-    imageName: "3D-style.png",
-    label: "3D",
-  },
-  {
-    value: "childrensStories_v1ToonAnime.safetensors [2ec7b88b]",
-    imageName: "art-style.png",
-    label: "Цифровой Арт",
-  },
-  {
-    value: "toonyou_beta6.safetensors [980f6b15]",
-    imageName: "toon-style.png",
-    label: "Мультик",
-  },
-  {
-    value: "meinamix_meinaV11.safetensors [b56ce717]",
-    imageName: "anime-style.png",
+    value: "anything-v3",
+    imageName: "anything-4.png",
     label: "Аниме",
   },
   {
-    value: "mechamix_v10.safetensors [ee685731]",
-    imageName: "futuristic-style.png",
-    label: "Футуристичный",
+    value: "samaritan-3d-cartoon",
+    imageName: "3D-toon.png",
+    label: "3D мультик",
+  },
+  {
+    value: "food-crit",
+    imageName: "creepy.png",
+    label: "Чудовища",
+  },
+  {
+    value: "lowpoly-diffusion",
+    imageName: "lowpoly.png",
+    label: "Низкополигональный",
+  },
+  {
+    value: "pixel-sprite",
+    imageName: "sprite.png",
+    label: "Пиксель спрайты",
+  },
+  {
+    value: "vector-art",
+    imageName: "vector.png",
+    label: "Векторный",
+  },
+  {
+    value: "synthwave-diffusion",
+    imageName: "SynthwavePunk.png",
+    label: "SynthwavePunk",
+  },
+  {
+    value: "midjourney-papercut",
+    imageName: "paper.png",
+    label: "Бумажный",
+  },
+  {
+    value: "icons-diffusion",
+    imageName: "icons.png",
+    label: "Иконки",
+  },
+  {
+    value: "woolitize-diffusion",
+    imageName: "woolitize.png",
+    label: "Плюшевый",
   },
 ];
 
 export const models = [
   {
-    value: "absolutereality_V16.safetensors [37db0fc3]",
-    label: "Absolute Reality V1.6",
+    value: "sd",
+    label: "Stable Diffusion 1.5",
+  },
+
+  {
+    value: "f222-diffusion",
+    label: "F222 Diffusion",
   },
   {
-    value: "absolutereality_v181.safetensors [3d9d4d2b]",
-    label: "Absolute Reality V1.8.1",
+    value: "dream-shaper-8797",
+    label: "Dream Shaper 8797",
   },
   {
-    value: "analog-diffusion-1.0.ckpt [9ca13f02]",
-    label: "Analog V1",
+    value: "realistic-vision-v13",
+    label: "Realistic Vision V13",
   },
   {
-    value: "anythingv3_0-pruned.ckpt [2700c435]",
-    label: "Anything V3",
-  },
-  {
-    value: "anything-v4.5-pruned.ckpt [65745d25]",
-    label: "Anything V4.5",
-  },
-  {
-    value: "anythingV5_PrtRE.safetensors [893e49b9]",
+    value: "anything-v5",
     label: "Anything V5",
   },
   {
-    value: "AOM3A3_orangemixs.safetensors [9600da17]",
-    label: "AbyssOrangeMix V3",
+    value: "anything-v3",
+    label: "Anything V3",
   },
   {
-    value: "childrensStories_v13D.safetensors [9dfaabcb]",
-    label: "Stories V1 3D",
+    value: "anything-v4",
+    label: "Anything V4",
   },
   {
-    value: "childrensStories_v1SemiReal.safetensors [a1c56dbb]",
-    label: "Stories V1 SemiReal",
+    value: "realistic-vision-v40",
+    label: "Realistic Vision",
   },
   {
-    value: "childrensStories_v1ToonAnime.safetensors [2ec7b88b]",
-    label: "Stories V1 Toon-Anime",
+    value: "samaritan-3d-cartoon",
+    label: "Samaritan 3D Cartoon",
   },
   {
-    value: "cyberrealistic_v33.safetensors [82b0d085]",
-    label: "CyberRealistic V3.3",
+    value: "real-cartoon-realist",
+    label: "Real Cartoon Realist",
   },
   {
-    value: "deliberate_v2.safetensors [10ec4b29]",
-    label: "Deliberate V2",
+    value: "food-crit",
+    label: "Food Crit",
   },
   {
-    value: "dreamlike-anime-1.0.safetensors [4520e090]",
-    label: "Dreamlike Anime V1",
+    value: "lowpoly-diffusion",
+    label: "Lowpoly Diffusion",
   },
   {
-    value: "dreamlike-diffusion-1.0.safetensors [5c9fd6e0]",
-    label: "Dreamlike Diffusion V1",
+    value: "pixel-sprite",
+    label: "Pixel Sprite",
   },
   {
-    value: "dreamlike-photoreal-2.0.safetensors [fdcf65e7]",
-    label: "Dreamlike Photoreal V2",
+    value: "mix-appfactory",
+    label: "Mix Appfactory",
   },
   {
-    value: "dreamshaper_6BakedVae.safetensors [114c8abb]",
-    label: "Dreamshaper 6 baked vae",
+    value: "inkmix",
+    label: "Inkmix",
   },
   {
-    value: "dreamshaper_7.safetensors [5cf5ae06]",
-    label: "Dreamshaper 7",
+    value: "vector-art",
+    label: "Vector Art",
   },
   {
-    value: "dreamshaper_8.safetensors [9d40847d]",
-    label: "Dreamshaper 8",
+    value: "synthwave-diffusion",
+    label: "Synthwave Diffusion",
   },
   {
-    value: "edgeOfRealism_eorV20.safetensors [3ed5de15]",
-    label: "Edge of Realism EOR V2.0",
+    value: "midjourney-papercut",
+    label: "Midjourney Papercut",
   },
   {
-    value: "EimisAnimeDiffusion_V1.ckpt [4f828a15]",
-    label: "Eimis Anime Diffusion V1.0",
+    value: "icons-diffusion",
+    label: "Icons Diffusion",
   },
   {
-    value: "elldreths-vivid-mix.safetensors [342d9d26]",
-    label: "Elldreth's Vivid",
+    value: "disney-pixar-cartoon",
+    label: "Disney Pixar Cartoon",
   },
   {
-    value: "epicrealism_naturalSinRC1VAE.safetensors [90a4c676]",
-    label: "EpiCRealism Natural Sin RC1",
-  },
-  {
-    value: "ICantBelieveItsNotPhotography_seco.safetensors [4e7a3dfd]",
-    label: "Its Not Photography",
-  },
-  {
-    value: "juggernaut_aftermath.safetensors [5e20c455]",
-    label: "Juggernaut Aftermath",
-  },
-  {
-    value: "lyriel_v16.safetensors [68fceea2]",
-    label: "Lyriel V1.6",
-  },
-  {
-    value: "mechamix_v10.safetensors [ee685731]",
-    label: "MechaMix V1.0",
-  },
-  {
-    value: "meinamix_meinaV9.safetensors [2ec66ab0]",
-    label: "MeinaMix Meina V9",
-  },
-  {
-    value: "meinamix_meinaV11.safetensors [b56ce717]",
-    label: "MeinaMix Meina V11",
-  },
-  {
-    value: "openjourney_V4.ckpt [ca2f377f]",
-    label: "Openjourney V4",
-  },
-  {
-    value: "portraitplus_V1.0.safetensors [1400e684]",
-    label: "Portrait+ V1",
-  },
-  {
-    value: "Realistic_Vision_V1.4-pruned-fp16.safetensors [8d21810b]",
-    label: "Realistic Vision V1.4",
-  },
-  {
-    value: "Realistic_Vision_V2.0.safetensors [79587710]",
-    label: "Realistic Vision V2.0",
-  },
-  {
-    value: "Realistic_Vision_V4.0.safetensors [29a7afaa]",
-    label: "Realistic Vision V4.0",
-  },
-  {
-    value: "Realistic_Vision_V5.0.safetensors [614d1063]",
-    label: "Realistic Vision V5.0",
-  },
-  {
-    value: "redshift_diffusion-V10.safetensors [1400e684]",
-    label: "Redshift Diffusion V1.0",
-  },
-  {
-    value: "revAnimated_v122.safetensors [3f4fefd9]",
-    label: "ReV Animated V1.2.2",
-  },
-  {
-    value: "rundiffusionFX25D_v10.safetensors [cd12b0ee]",
-    label: "RunDiffusion FX 2.5D V1.0",
-  },
-  {
-    value: "rundiffusionFX_v10.safetensors [cd4e694d]",
-    label: "RunDiffusion FX V1.0",
-  },
-  {
-    value: "sdv1_4.ckpt [7460a6fa]",
-    label: "SD V1.4",
-  },
-  {
-    value: "v1-5-pruned-emaonly.safetensors [d7049739]",
-    label: "SD V1.5",
-  },
-  {
-    value: "shoninsBeautiful_v10.safetensors [25d8c546]",
-    label: "Shonin's People V1.0",
-  },
-  {
-    value: "theallys-mix-ii-churned.safetensors [5d9225a4]",
-    label: "TheAlly's Mix II",
-  },
-  {
-    value: "timeless-1.0.ckpt [7c4971d4]",
-    label: "Timeless V1",
-  },
-  {
-    value: "toonyou_beta6.safetensors [980f6b15]",
-    label: "ToonYou Beta 6",
+    value: "woolitize-diffusion",
+    label: "Woolitize Diffusion",
   },
 ];
 
@@ -215,29 +154,66 @@ export function getModelByValue(value: string) {
 }
 
 export const samplers = [
-  {
-    value: "Euler",
-    label: "Euler",
-  },
+  { value: "DDPMScheduler", label: "DDPMScheduler" },
   {
     value: "Euler a",
     label: "Euler a",
   },
   {
-    value: "Heun",
-    label: "Heun",
+    value: "Euler",
+    label: "Euler",
+  },
+  {
+    value: "DPM++ 2M",
+    label: "DPM++ 2M",
   },
   {
     value: "DPM++ 2M Karras",
     label: "DPM++ 2M Karras",
   },
   {
+    value: "DPM++ 2M SDE",
+    label: "DPM++ 2M SDE",
+  },
+  {
+    value: "DPM++ 2M SDE Karras",
+    label: "DPM++ 2M SDE Karras",
+  },
+  {
+    value: "DPM++ SDE",
+    label: "DPM++ SDE",
+  },
+  {
     value: "DPM++ SDE Karras",
     label: "DPM++ SDE Karras",
   },
   {
-    value: "DDIM",
-    label: "DDIM",
+    value: "DPM2",
+    label: "DPM2",
+  },
+  {
+    value: "DPM2 Karras",
+    label: "DPM2 Karras",
+  },
+  {
+    value: "DPM2 a",
+    label: "DPM2 a",
+  },
+  {
+    value: "DPM2 a Karras",
+    label: "DPM2 a Karras",
+  },
+  {
+    value: "Heun",
+    label: "Heun",
+  },
+  {
+    value: "LMS",
+    label: "LMS",
+  },
+  {
+    value: "LMS Karras",
+    label: "LMS Karras",
   },
 ];
 export const defaultModel = styles[0].value;

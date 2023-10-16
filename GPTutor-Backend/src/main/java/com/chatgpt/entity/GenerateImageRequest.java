@@ -3,26 +3,29 @@ package com.chatgpt.entity;
 import java.sql.Timestamp;
 
 public class GenerateImageRequest {
-    String model;
+
     Timestamp createdAt;
     Timestamp expireTimestamp;
+    String modelId;
     String prompt;
-    String sampler;
+    String scheduler;
     String negativePrompt;
-    int cfgScale;
+    int guidanceScale;
+    String seed;
+    int numInferenceSteps;
+    int width;
+    int height;
 
-    int seed;
+    int samples;
 
-    int steps;
+    String upscale;
 
-    String aspectRatio;
-
-    public String getModel() {
-        return model;
+    public String getModelId() {
+        return modelId;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 
     public Timestamp getCreatedAt() {
@@ -33,6 +36,14 @@ public class GenerateImageRequest {
         this.createdAt = createdAt;
     }
 
+    public Timestamp getExpireTimestamp() {
+        return expireTimestamp;
+    }
+
+    public void setExpireTimestamp(Timestamp expireTimestamp) {
+        this.expireTimestamp = expireTimestamp;
+    }
+
     public String getPrompt() {
         return prompt;
     }
@@ -41,12 +52,12 @@ public class GenerateImageRequest {
         this.prompt = prompt;
     }
 
-    public String getSampler() {
-        return sampler;
+    public String getScheduler() {
+        return scheduler;
     }
 
-    public void setSampler(String sampler) {
-        this.sampler = sampler;
+    public void setScheduler(String scheduler) {
+        this.scheduler = scheduler;
     }
 
     public String getNegativePrompt() {
@@ -57,45 +68,60 @@ public class GenerateImageRequest {
         this.negativePrompt = negativePrompt;
     }
 
-    public int getCfgScale() {
-        return cfgScale;
-    }
 
-
-
-    public String getAspectRatio() {
-        return aspectRatio;
-    }
-
-    public void setAspectRatio(String aspectRatio) {
-        this.aspectRatio = aspectRatio;
-    }
-
-    public void setCfgScale(int cfgScale) {
-        this.cfgScale = cfgScale;
-    }
-
-    public void setSeed(int seed) {
-        this.seed = seed;
-    }
-
-    public int getSteps() {
-        return steps;
-    }
-
-    public void setSteps(int steps) {
-        this.steps = steps;
-    }
-
-    public int getSeed() {
+    public String getSeed() {
         return seed;
     }
 
-    public Timestamp getExpireTimestamp() {
-        return expireTimestamp;
+    public void setSeed(String seed) {
+        this.seed = seed;
     }
 
-    public void setExpireTimestamp(Timestamp expireTimestamp) {
-        this.expireTimestamp = expireTimestamp;
+    public int getNumInferenceSteps() {
+        return numInferenceSteps;
+    }
+
+    public void setNumInferenceSteps(int numInferenceSteps) {
+        this.numInferenceSteps = numInferenceSteps;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getSamples() {
+        return samples;
+    }
+
+    public void setSamples(int samples) {
+        this.samples = samples;
+    }
+
+    public String getUpscale() {
+        return upscale;
+    }
+
+    public void setUpscale(String upscale) {
+        this.upscale = upscale;
+    }
+
+    public int getGuidanceScale() {
+        return guidanceScale;
+    }
+
+    public void setGuidanceScale(int guidanceScale) {
+        this.guidanceScale = guidanceScale;
     }
 }

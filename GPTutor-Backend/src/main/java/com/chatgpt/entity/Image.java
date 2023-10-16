@@ -10,27 +10,20 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    private String prompt;
-
     private String url;
     private Timestamp expire;
-
-    private String model;
-
     private Timestamp createdAt;
+    String modelId;
+    String prompt;
+    String scheduler;
+    String negativePrompt;
+    int guidanceScale;
+    String seed;
+    int numInferenceSteps;
+    int width;
+    int height;
 
-    private String sampler;
-
-    private String negativePrompt;
-    private int cfgScale;
-
-    private int steps;
-
-    private int seed;
-
-    private String aspectRatio;
-
+    String upscale;
     @ManyToOne()
     private VkUser vkUser;
 
@@ -44,13 +37,15 @@ public class Image {
         this.expire = generateImageRequest.getExpireTimestamp();
         this.createdAt = generateImageRequest.getCreatedAt();
         this.prompt = generateImageRequest.getPrompt();
-        this.model = generateImageRequest.getModel();
-        this.sampler = generateImageRequest.getSampler();
+        this.modelId = generateImageRequest.getModelId();
+        this.scheduler = generateImageRequest.getScheduler();
         this.negativePrompt = generateImageRequest.getNegativePrompt();
         this.seed = generateImageRequest.getSeed();
-        this.cfgScale = generateImageRequest.getCfgScale();
-        this.aspectRatio = generateImageRequest.getAspectRatio();
-        this.steps = generateImageRequest.getSteps();
+        this.guidanceScale = generateImageRequest.getGuidanceScale();
+        this.width = generateImageRequest.getWidth();
+        this.height = generateImageRequest.getHeight();
+        this.upscale = generateImageRequest.getUpscale();
+        this.numInferenceSteps = generateImageRequest.getNumInferenceSteps();
     }
 
 
@@ -86,22 +81,6 @@ public class Image {
         this.id = id;
     }
 
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getSampler() {
-        return sampler;
-    }
-
-    public void setSampler(String sampler) {
-        this.sampler = sampler;
-    }
-
     public String getNegativePrompt() {
         return negativePrompt;
     }
@@ -110,37 +89,12 @@ public class Image {
         this.negativePrompt = negativePrompt;
     }
 
-    public int getCfgScale() {
-        return cfgScale;
-    }
-
-    public void setCfgScale(int cfgScale) {
-        this.cfgScale = cfgScale;
-    }
-
-    public int getSeed() {
+    public String getSeed() {
         return seed;
     }
 
-    public void setSeed(int seed) {
+    public void setSeed(String seed) {
         this.seed = seed;
-    }
-
-    public String getAspectRatio() {
-        return aspectRatio;
-    }
-
-    public void setAspectRatio(String aspectRatio) {
-        this.aspectRatio = aspectRatio;
-    }
-
-
-    public int getSteps() {
-        return steps;
-    }
-
-    public void setSteps(int steps) {
-        this.steps = steps;
     }
 
     public String getUrl() {
@@ -157,5 +111,61 @@ public class Image {
 
     public void setExpire(Timestamp expire) {
         this.expire = expire;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
+
+    public String getScheduler() {
+        return scheduler;
+    }
+
+    public void setScheduler(String scheduler) {
+        this.scheduler = scheduler;
+    }
+
+    public int getNumInferenceSteps() {
+        return numInferenceSteps;
+    }
+
+    public void setNumInferenceSteps(int numInferenceSteps) {
+        this.numInferenceSteps = numInferenceSteps;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public String getUpscale() {
+        return upscale;
+    }
+
+    public void setUpscale(String upscale) {
+        this.upscale = upscale;
+    }
+
+    public int getGuidanceScale() {
+        return guidanceScale;
+    }
+
+    public void setGuidanceScale(int guidanceScale) {
+        this.guidanceScale = guidanceScale;
     }
 }

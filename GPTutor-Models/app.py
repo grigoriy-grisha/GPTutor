@@ -2,22 +2,13 @@ import json
 import uuid
 from random import randint
 
-import tensorflow as tf
 from flask import Flask, Response, request
 from g4f import ChatCompletion, Provider
 from werkzeug.exceptions import BadRequest
 
-from images.prodia import Client, txt2img
-from nsfw_detector import predict
-from nsfw_detector.detect_nsfw import detect_nsfw
-from nudenet.nudenet import NudeDetector
+from images.sd import textToImage
 
 app = Flask(__name__)
-
-Client(api_key="06077131-20d6-4982-8258-995ff0f0f40e")
-
-model = predict.load_model('nsfw_detector/nsfw_model.h5')
-tf.data.experimental.enable_debug_mode()
 
 
 def get_event_message(chunk):
@@ -77,41 +68,23 @@ def gpt():
 
 @app.post("/image")
 async def image():
-    url = txt2img(
+    return textToImage(
         prompt=request.json["prompt"],
-        model=request.json["model"],
+        model_id=request.json["modelId"],
         negative_prompt=request.json["negativePrompt"],
-        sampler=request.json["sampler"],
-        cfg_scale=request.json["cfgScale"],
+        scheduler=request.json["scheduler"],
+        guidance_scale=request.json["guidanceScale"],
         seed=request.json["seed"],
-        aspect_ratio=request.json["aspectRatio"],
-        steps=request.json["steps"],
+        width=request.json["width"],
+        height=request.json["height"],
+        num_inference_steps=request.json["numInferenceSteps"],
+        upscale=request.json["upscale"],
+        samples=request.json["samples"]
     )
-
-    return {"url": url}
 
 
 nude_classes = {"FEMALE_BREAST_EXPOSED", 'FEMALE_GENITALIA_EXPOSED', 'MALE_GENITALIA_EXPOSED', 'BUTTOCKS_EXPOSED',
                 'ANUS_EXPOSED'}
 
-
-@app.post("/nude-detect")
-async def nude_detect():
-    result = await detect_nsfw(model, request.json["url"])
-
-    isNude = result["data"]["is_nsfw"]
-    if isNude:
-        return {"isNude": isNude}
-
-    nude_detect_data = NudeDetector().detect(request.json["url"])
-
-    for elem in nude_detect_data:
-        for nude_class in nude_classes:
-            if elem["class"] == nude_class:
-                isNude = True
-
-    return {"isNude": isNude}
-
-
 if __name__ == '__main__':
-    app.run(debug=False, port=1337, host="0.0.0.0")
+    app.run(debug=True, port=1337, host="0.0.0.0")

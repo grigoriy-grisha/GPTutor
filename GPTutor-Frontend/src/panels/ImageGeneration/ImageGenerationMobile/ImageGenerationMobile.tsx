@@ -7,9 +7,9 @@ import {
   Div,
   FormItem,
   FormLayoutGroup,
+  IconButton,
   Image,
   Input,
-  PanelHeader,
   Select,
   Separator,
   Slider,
@@ -30,15 +30,20 @@ import {
   Icon24HelpOutline,
   Icon24MagicWandOutline,
   Icon28CheckCircleOn,
+  Icon28ServicesOutline,
 } from "@vkontakte/icons";
 import { ImageAspectRatio } from "$/entity/image/types";
 import { getImageSize } from "$/panels/ImageGeneration/utils";
 import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
 import { useNavigationContext } from "$/NavigationContext";
+import { AppPanelHeader } from "$/components/AppPanelHeader";
 
 function ImageGenerationMobile() {
-  const { goToGenerationImagesResult, goToGenerationImagesExamples } =
-    useNavigationContext();
+  const {
+    goToGenerationImagesResult,
+    goToGenerationImagesExamples,
+    goToGenerationImagesPrompts,
+  } = useNavigationContext();
   const { appearance } = useConfigProvider();
   const generateImage = imageGeneration.generateImage$;
 
@@ -48,7 +53,18 @@ function ImageGenerationMobile() {
 
   return (
     <AppContainer
-      headerChildren={<PanelHeader>Stable Art</PanelHeader>}
+      headerChildren={
+        <AppPanelHeader
+          before={<Icon28ServicesOutline />}
+          after={
+            <IconButton onClick={goToGenerationImagesExamples}>
+              <Icon20SunOutline />
+            </IconButton>
+          }
+        >
+          Stable Art
+        </AppPanelHeader>
+      }
       fixedBottomContent={
         <Div>
           <Button
@@ -89,25 +105,13 @@ function ImageGenerationMobile() {
         <Spacing size={12} />
         <Button
           style={{ width: "100%" }}
-          onClick={goToGenerationImagesExamples}
-          size="s"
-          mode="outline"
-          after={<Icon20SunOutline />}
-        >
-          Примеры
-        </Button>
-        <Spacing size={12} />
-        <Button
-          style={{ width: "100%" }}
           loading={imageGeneration.chatGpt.sendCompletions$.loading.get()}
-          onClick={() => {
-            imageGeneration.runChatGpt();
-          }}
+          onClick={goToGenerationImagesPrompts}
           size="s"
           mode="outline"
           after={<Icon24MagicWandOutline />}
         >
-          Придумать запрос
+          Собрать запрос
         </Button>
         <Spacing size={12} />
         <Accordion open={true} className={classes.accordion}>

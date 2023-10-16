@@ -71,7 +71,7 @@ function Gallery({ id }: IProps) {
                   />
                 }
                 key={image.item.url}
-                header={getModelByValue(image.item.model).label}
+                header={getModelByValue(image.item.modelId).label}
                 subheader={
                   <div className={classes.subHeader}>
                     <div>{image.item.prompt}</div>

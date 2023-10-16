@@ -1,0 +1,6 @@
+.promptItem {
+    display: grid;
+    gap: 12px;
+    width: max-content;
+    grid-template-columns: max-content;
+}

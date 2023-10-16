@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,7 +18,7 @@ public class ImagesController {
 
 
     @PostMapping(path = "/image")
-    Image generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) {
+    List<Image> generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) {
         return imagesService.generateImage((String) request.getAttribute("vkUserId"), prompt);
     }
 
@@ -28,8 +29,8 @@ public class ImagesController {
 
     @GetMapping(path = "/image")
     Page<Image> getImages(HttpServletRequest request,
-                         @RequestParam(defaultValue = "0") int pageNumber,
-                         @RequestParam(defaultValue = "10") int pageSize) {
+                          @RequestParam(defaultValue = "0") int pageNumber,
+                          @RequestParam(defaultValue = "10") int pageSize) {
 
         return imagesService.getImages((String) request.getAttribute("vkUserId"),
                 pageNumber,

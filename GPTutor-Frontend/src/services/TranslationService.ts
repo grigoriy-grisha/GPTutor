@@ -17,7 +17,6 @@ export class TranslationService {
     if (this.attempts === 0) {
       this.runCleanAttempts();
     }
-
     const result = (await bridge.send(
       <AnyRequestMethodName>"VKWebAppTranslate",
       {
@@ -26,8 +25,7 @@ export class TranslationService {
       } as any
     )) as any;
 
-    console.log(result, "result");
-    return result.result.texts[0];
+    return result.result.texts.join("");
   }
 
   isEnglishOver50Percent(text: string) {

@@ -1,5 +1,5 @@
 .time {
-    width: 40px;
+    font-family: monospace;
     color: var(--vkui--color_icon_accent);
     padding-right: 2px;
     padding-left: 4px;

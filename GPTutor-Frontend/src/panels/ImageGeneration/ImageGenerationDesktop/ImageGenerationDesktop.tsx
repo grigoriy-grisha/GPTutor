@@ -1,85 +1,85 @@
-import { AppContainer } from "$/components/AppContainer";
-import { AppPanelHeader } from "$/components/AppPanelHeader";
+import React, { useEffect } from "react";
+
 import {
   Accordion,
   Banner,
   Button,
-  Caption,
   Card,
   classNames,
   Div,
   FormItem,
   FormLayoutGroup,
   IconButton,
-  Image,
   Input,
-  PanelHeader,
-  PanelHeaderBack,
   Select,
   Separator,
   Slider,
   Spacing,
-  Spinner,
   Textarea,
   Title,
+  Text,
   useConfigProvider,
-  usePlatform,
 } from "@vkontakte/vkui";
+import { AppContainer } from "$/components/AppContainer";
+
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { imageGeneration } from "$/entity/image";
 import { AppDiv } from "$/components/AppDiv";
-import { models, samplers, styles } from "$/entity/image/styles";
+import { models, samplers } from "$/entity/image/styles";
 import {
+  Icon20Clear,
   Icon20SunOutline,
   Icon20Verified,
-  Icon24Done,
-  Icon24DoneOutline,
-  Icon24DownloadOutline,
   Icon24HelpOutline,
   Icon24MagicWandOutline,
-  Icon24UploadOutline,
-  Icon28ArrowDownToSquareOutline,
-  Icon28CheckCircleOn,
-  Icon28ShareOutline,
-  Icon48PictureOutline,
+  Icon28ServicesOutline,
 } from "@vkontakte/icons";
 import { ImageAspectRatio } from "$/entity/image/types";
 import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
-import bridge from "@vkontakte/vk-bridge";
-import React, { useEffect } from "react";
 import { getImageSize } from "$/panels/ImageGeneration/utils";
 import { useNavigationContext } from "$/NavigationContext";
-import { downloadService } from "$/services/DownloadService";
-import Time from "$/components/Time";
-import { shareService } from "$/services/ShareService";
+import { ImageGenerationDesktopResult } from "$/panels/ImageGeneration/ImageGenerationDesktop/ImageGenerationDesktopResult";
+import { AppPanelHeader } from "$/components/AppPanelHeader";
+import { Attempts } from "$/panels/ImageGeneration/Attempts";
 
 function ImageGenerationDesktop() {
-  const platform = usePlatform();
-
-  const { goToGenerationImagesExamples } = useNavigationContext();
+  const { goToGenerationImagesExamples, goToGenerationImagesPrompts } =
+    useNavigationContext();
   const { appearance } = useConfigProvider();
   const generateImage = imageGeneration.generateImage$;
 
-  const isDisabled =
-    !imageGeneration.result$.get() || generateImage.loading.get();
-
   useEffect(() => {
-    imageGeneration.imageSize.set(imageGeneration.aspectRatio$.get());
+    if (imageGeneration.resultIsEmpty$.get()) {
+      imageGeneration.imageSize.set(imageGeneration.aspectRatio$.get());
+      imageGeneration.widthView$.set(imageGeneration.width$.get());
+      imageGeneration.heightView$.set(imageGeneration.height$.get());
+    }
   }, [imageGeneration.result$.get()]);
 
-  const lastMessageChatGPt = imageGeneration.chatGpt.getLastAssistantMessage();
-
-  function isSaved() {
-    const result = imageGeneration.result$.get();
-    if (!result) return false;
-    return result.expire === null;
-  }
-
   return (
-    <AppContainer headerChildren={<PanelHeader>Stable Art</PanelHeader>}>
+    <AppContainer
+      headerChildren={
+        <AppPanelHeader
+          before={
+            <IconButton>
+              <Icon28ServicesOutline />
+            </IconButton>
+          }
+          after={
+            <IconButton onClick={goToGenerationImagesExamples}>
+              <Icon20SunOutline width={28} height={28} />
+            </IconButton>
+          }
+        >
+          <Title level="2">Stable Art</Title>
+        </AppPanelHeader>
+      }
+    >
       <Div className={classes.container}>
         <Card mode="shadow">
           <Div>
+            <Attempts />
+            <Spacing size={12} />
             <FormItem
               className={classes.formItem}
               onFocus={() => {
@@ -89,43 +89,38 @@ function ImageGenerationDesktop() {
               status={imageGeneration.error$.get() ? "error" : "default"}
               bottom={imageGeneration.error$.get()}
             >
-              <Textarea
-                maxLength={1000}
-                value={imageGeneration.prompt$.get()}
-                onChange={(event) =>
-                  imageGeneration.setPrompt(event.target.value)
-                }
-                id="prompt"
-                className={classes.textArea}
-                placeholder="Напишите запрос для изображения"
-              />
+              <div className={classes.textAreaContainer}>
+                <Textarea
+                  maxLength={1000}
+                  value={imageGeneration.prompt$.get()}
+                  onChange={(event) =>
+                    imageGeneration.setPrompt(event.target.value)
+                  }
+                  id="prompt"
+                  className={classes.textArea}
+                  placeholder="Напишите запрос для изображения"
+                />
+                <IconButton
+                  onClick={() => imageGeneration.prompt$.set("")}
+                  className={classes.clearIcon}
+                  disabled={!imageGeneration.prompt$.get()}
+                >
+                  <Icon20Clear width={16} height={16} />
+                </IconButton>
+              </div>
             </FormItem>
             <Spacing size={12} />
-            <div className={classes.ideas}>
-              <Button
-                onClick={goToGenerationImagesExamples}
-                size="l"
-                mode="outline"
-                after={<Icon20SunOutline />}
-              >
-                Примеры
-              </Button>
-              <Button
-                loading={imageGeneration.chatGpt.sendCompletions$.loading.get()}
-                onClick={() => {
-                  imageGeneration.runChatGpt();
-                }}
-                size="l"
-                mode="outline"
-                after={<Icon24MagicWandOutline />}
-              >
-                Придумать запрос
-              </Button>
-            </div>
-
+            <Button
+              className={classes.button}
+              onClick={() => goToGenerationImagesPrompts()}
+              size="l"
+              mode="outline"
+              after={<Icon24MagicWandOutline />}
+            >
+              Собрать запрос
+            </Button>
             <Spacing size={12} />
             <Button
-              disabled={!imageGeneration.timer.isStopped$.get()}
               loading={generateImage.loading.get()}
               className={classes.button}
               size="l"
@@ -133,100 +128,102 @@ function ImageGenerationDesktop() {
               mode="primary"
               onClick={imageGeneration.generate}
             >
-              {imageGeneration.timer.isStopped$.get() ? (
-                "Сгенерировать"
-              ) : (
-                <Time
-                  className={classes.timer}
-                  seconds={imageGeneration.timer.time$.get()}
-                />
-              )}
+              Сгенерировать
             </Button>
             <Spacing size={12} />
             <Accordion open={true} className={classes.accordion}>
               <Accordion.Summary>
                 <Title level="3" weight="3" className={classes.accordionTitle}>
-                  Размер фотографии
+                  Параметры результата
                 </Title>
               </Accordion.Summary>
               <Separator wide className={classes.separator} />
               <AppDiv>
+                <Spacing size={6} />
                 <div
                   className={classNames(classes.sizes, {
                     [classes.sizeDisable]: imageGeneration.loading$.get(),
                   })}
                 >
-                  {Object.values(ImageAspectRatio).map((aspectRatio) => (
-                    <Banner
-                      className={classNames({
-                        [classes.sizeActive]:
-                          imageGeneration.aspectRatio$.get() === aspectRatio,
-                      })}
-                      key={aspectRatio}
-                      onClick={() =>
-                        imageGeneration.setAspectRatio(aspectRatio)
-                      }
-                      asideMode="expand"
-                      header={
-                        <div className={classes.sizeText}>
-                          {getImageSize(aspectRatio)}
-                          {imageGeneration.aspectRatio$.get() ===
-                            aspectRatio && (
-                            <Icon20Verified width={24} height={24} />
-                          )}
-                        </div>
-                      }
-                      before={
-                        <div
-                          className={classNames(
-                            classes.size,
-                            classes[aspectRatio]
-                          )}
-                        />
-                      }
-                    />
-                  ))}
+                  {Object.values(ImageAspectRatio).map((aspectRatio) => {
+                    if (aspectRatio === ImageAspectRatio.custom) return null;
+
+                    return (
+                      <Banner
+                        className={classNames({
+                          [classes.sizeActive]:
+                            imageGeneration.aspectRatio$.get() === aspectRatio,
+                        })}
+                        key={aspectRatio}
+                        onClick={() =>
+                          imageGeneration.setAspectRatio(aspectRatio)
+                        }
+                        asideMode="expand"
+                        header={
+                          <div className={classes.sizeText}>
+                            {getImageSize(aspectRatio)}
+                            {imageGeneration.aspectRatio$.get() ===
+                              aspectRatio && (
+                              <Icon20Verified width={24} height={24} />
+                            )}
+                          </div>
+                        }
+                        before={
+                          <div
+                            className={classNames(
+                              classes.size,
+                              classes[aspectRatio]
+                            )}
+                          />
+                        }
+                      />
+                    );
+                  })}
                 </div>
+
                 <Spacing size={8} />
-              </AppDiv>
-            </Accordion>
-            <Spacing size={12} />
-            <Accordion open={true} className={classes.accordion}>
-              <Accordion.Summary>
-                <Title level="3" weight="3" className={classes.accordionTitle}>
-                  Выбрать стиль
-                </Title>
-              </Accordion.Summary>
-              <Separator wide className={classes.separator} />
-              <AppDiv className={classes.styles}>
-                <div className={classes.accordionItems}>
-                  {styles.map((model) => (
-                    <div
-                      onClick={() => imageGeneration.setModel(model.value)}
-                      key={model.value}
-                      className={classNames(classes.accordionItem)}
-                    >
-                      <Image
-                        className={classes.accordionImage}
-                        src={`https://storage.yandexcloud.net/gptutor-bucket/${model.imageName}`}
-                      >
-                        {imageGeneration.model$.get() === model.value && (
-                          <Image.Badge>
-                            <Icon28CheckCircleOn
-                              className={classes.badge}
-                              width={24}
-                              height={24}
-                            />
-                          </Image.Badge>
-                        )}
-                        <Image.Overlay>
-                          <></>
-                        </Image.Overlay>
-                      </Image>
-                      <Caption level="1">{model.label}</Caption>
-                    </div>
-                  ))}
-                </div>
+                <FormItem id="step" top="Ширина">
+                  <div>
+                    {imageGeneration.width$.get()}
+                    <Spacing size={4} />
+                    <Slider
+                      step={8}
+                      min={512}
+                      max={1024}
+                      id="step"
+                      value={imageGeneration.width$.get()}
+                      onChange={imageGeneration.setWidth}
+                    />
+                  </div>
+                </FormItem>
+                <FormItem id="step" top="Высота">
+                  <div>
+                    {imageGeneration.height$.get()}
+                    <Spacing size={4} />
+                    <Slider
+                      step={8}
+                      min={512}
+                      max={1024}
+                      id="step"
+                      value={imageGeneration.height$.get()}
+                      onChange={imageGeneration.setHeight}
+                    />
+                  </div>
+                </FormItem>
+                <Spacing size={8} />
+                <FormItem top="Количество изображений">
+                  <Select
+                    options={["1", "2", "3", "4"].map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                    onChange={(event) => {
+                      imageGeneration.setSamples(event.target.value);
+                    }}
+                    value={String(imageGeneration.samples$.get())}
+                  />
+                </FormItem>
+                <Spacing size={6} />
               </AppDiv>
             </Accordion>
             <Spacing size={12} />
@@ -418,86 +415,7 @@ function ImageGenerationDesktop() {
             </Accordion>
           </Div>
         </Card>
-        <Card mode="shadow" className={classes.imageSticky}>
-          <Div>
-            {
-              <div>
-                <div>
-                  {isDisabled ? (
-                    <div
-                      className={classNames(
-                        classes.image,
-                        classes[`image${imageGeneration.aspectRatio$.get()}`]
-                      )}
-                    >
-                      <div className={classes.imagePlaceholder}>
-                        {generateImage.loading.get() ? (
-                          <Spinner size="large" />
-                        ) : (
-                          <Icon48PictureOutline width={86} height={86} />
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      className={classNames(
-                        classes.image,
-                        classes[`image${imageGeneration.imageSize.get()}`]
-                      )}
-                    >
-                      <img
-                        className={classNames(
-                          classes.image,
-                          classes.generatedImage
-                        )}
-                        src={imageGeneration.result$.get()?.url}
-                        alt="Картинка"
-                      />
-                    </div>
-                  )}
-                  <Spacing size={12} />
-                  <div className={classes.buttons}>
-                    <Button
-                      onClick={() => {
-                        imageGeneration.save(imageGeneration.result$.get()!.id);
-                      }}
-                      loading={imageGeneration.saveImage$.loading.get()}
-                      disabled={!imageGeneration.result$.get() || isSaved()}
-                      before={isSaved() ? <Icon24DoneOutline /> : null}
-                      style={{ width: "100%" }}
-                      size="l"
-                      align="center"
-                      mode="primary"
-                    >
-                      {isSaved() ? "Сохранено" : "Сохранить"}
-                    </Button>
-                    <IconButton
-                      onClick={() => {
-                        downloadService.appDownloadLink(
-                          platform,
-                          imageGeneration.result$.get()!.url
-                        );
-                      }}
-                      disabled={isDisabled}
-                    >
-                      <Icon28ArrowDownToSquareOutline />
-                    </IconButton>
-                    <IconButton
-                      disabled={isDisabled}
-                      onClick={() => {
-                        shareService.shareLink(
-                          imageGeneration.result$.get()!.url
-                        );
-                      }}
-                    >
-                      <Icon28ShareOutline />
-                    </IconButton>
-                  </div>
-                </div>
-              </div>
-            }
-          </Div>
-        </Card>
+        <ImageGenerationDesktopResult />
       </Div>
     </AppContainer>
   );

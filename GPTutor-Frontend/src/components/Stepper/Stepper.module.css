@@ -1,0 +1,19 @@
+.stepper {
+    display: grid;
+    grid-template-columns: 1fr 0.2fr 1fr;
+    gap: 12px;
+    width: 100%;
+}
+
+.value {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.actionText {
+    position: relative;
+    top: -3px;
+}

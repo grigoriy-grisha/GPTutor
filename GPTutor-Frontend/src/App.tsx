@@ -46,6 +46,7 @@ import { LoadingPanel } from "$/panels/LoadingPanel";
 import { ImageGeneration } from "$/panels/ImageGeneration";
 import { ImageGenerationExamples } from "$/panels/ImageGenerationExamples";
 import Gallery from "$/panels/Gallery";
+import ImageCreatePrompts from "$/panels/ImageCreatePrompts";
 
 const App = () => {
   const location = useLocation();
@@ -111,6 +112,7 @@ const App = () => {
             <ImageGenerationResult id={Panels.generationImagesResult} />
             <ImageGenerationExamples id={Panels.generationImagesExamples} />
             <Gallery id={Panels.gallery} />
+            <ImageCreatePrompts id={Panels.generationImagesPrompts} />
           </View>
         )}
       </SplitLayout>

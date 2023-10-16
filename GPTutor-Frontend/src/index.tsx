@@ -80,6 +80,10 @@ const routes = {
     Panels.generationImagesExamples,
     Views.viewMain
   ),
+  [RoutingPages.generationImagesPrompts]: new Page(
+    Panels.generationImagesPrompts,
+    Views.viewMain
+  ),
   [RoutingPages.gallery]: new Page(Panels.gallery, Views.viewMain),
 };
 

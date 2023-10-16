@@ -15,8 +15,28 @@
     padding: 0;
 }
 
+.textAreaContainer {
+    position: relative;
+}
+
+.clearIcon {
+    color: var(--vkui--color_text_secondary);
+    position: absolute;
+    bottom: -7px;
+    right: 0;
+}
+
+.clearIcon :global(.vkuiIcon) {
+    padding: 6px;
+
+}
+
 .textArea {
     width: 100%;
+}
+
+.textArea :global(.vkuiTextarea__el) {
+    padding-right: 22px;
 }
 
 .imageSticky :global(.vkuiCard__in) {
@@ -27,6 +47,7 @@
 
 
 .image {
+    transition: 0.3s;
     position: relative;
     color: var(--vkui--color_text_accent_themed);
     display: flex;
@@ -110,7 +131,7 @@
 .accordionItems {
     padding-bottom: 8px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 8px;
 }
 
@@ -206,7 +227,7 @@
 }
 
 .imagelandscape {
-    padding-bottom: 67%;
+    padding-bottom: 66%;
     width: 100%;
 }
 

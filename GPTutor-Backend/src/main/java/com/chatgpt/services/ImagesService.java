@@ -3,6 +3,7 @@ package com.chatgpt.services;
 import com.chatgpt.Exceptions.BadRequestException;
 import com.chatgpt.Exceptions.NotAFoundException;
 import com.chatgpt.entity.GenerateImageRequest;
+import com.chatgpt.entity.GenerateImageResponse;
 import com.chatgpt.entity.Image;
 import com.chatgpt.entity.requests.NudeDetectRequest;
 import com.chatgpt.repositories.ImageRepository;
@@ -21,6 +22,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -87,26 +90,18 @@ public class ImagesService {
 
     }
 
-    public Image generateImage(String vkUserId, GenerateImageRequest generateImageRequest) {
+    public List<Image> generateImage(String vkUserId, GenerateImageRequest generateImageRequest) {
         if (badListService.checkText(generateImageRequest.getPrompt())) {
             throw new BadRequestException("Запрос содержит неприемлемое содержимое");
         }
 
         try {
-            generateImageRequest.setPrompt(
-                    translateService.translate(
-                            generateImageRequest.getPrompt(),
-                            0
-                    )
-            );
-        } catch (Exception e) {
-            throw new BadRequestException("Компонент переводов не активен, напишите свой запрос на английском");
-        }
 
-        try {
-            var imageUrl = generateImage(generateImageRequest);
-            checkNude(imageUrl);
-            return createImage(imageUrl, vkUserId, generateImageRequest);
+            var images = generateImage(generateImageRequest);
+            return Arrays
+                    .stream(images)
+                    .map((image) -> createImage(image, vkUserId, generateImageRequest))
+                    .toList();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -127,29 +122,16 @@ public class ImagesService {
         return imageRepository.findAllByVkUserId(user.getId(), pageable);
     }
 
-    String generateImage(GenerateImageRequest generateImageRequest) throws JsonProcessingException {
+    String[] generateImage(GenerateImageRequest generateImageRequest) throws JsonProcessingException {
         String urlGenerate = "http://models:1337/image";
         HttpEntity<GenerateImageRequest> requestImage = new HttpEntity<>(generateImageRequest);
         var responseImage = restTemplate.postForEntity(urlGenerate, requestImage, String.class);
+
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println(responseImage.getBody());
 
-        return objectMapper.readTree(responseImage.getBody()).get("url").asText();
-    }
+        GenerateImageResponse imageResponse = objectMapper.readValue(responseImage.getBody(), GenerateImageResponse.class);
 
-    void checkNude(String imageUrl) throws JsonProcessingException {
-        String urlNudeDetect = "http://models:1337/nude-detect";
-        HttpEntity<NudeDetectRequest> request = new HttpEntity<>(new NudeDetectRequest(imageUrl));
-
-        var responseNude = restTemplate.postForEntity(urlNudeDetect, request, String.class);
-
-        if (responseNude.getStatusCode().is2xxSuccessful()) {
-            boolean isNude = new ObjectMapper().readTree(responseNude.getBody()).get("isNude").asBoolean();
-
-            if (isNude) {
-                throw new BadRequestException("Изображение содержит непримелимое содержание, попробуйте еще");
-            }
-        }
+        return imageResponse.getOutput();
     }
 
 }

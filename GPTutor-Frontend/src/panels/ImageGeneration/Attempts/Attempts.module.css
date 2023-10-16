@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text {
+    display: grid;
+    gap: 4px;
+    align-items: center;
+    grid-template-columns: auto auto auto;
+}
+
+.positive {
+    color: var(--vkui--color_background_positive--active);
+}
+
+.orange {
+    color: var(--vkui--color_accent_orange--active);
+}
+
+.negative {
+    color: var(--vkui--color_accent_red--active);
+}
