@@ -1,10 +1,7 @@
-
-
 sh .env.sh
 
 git checkout main
 git pull
-
 
 docker-compose stop  frontend
 docker-compose rm --force frontend
@@ -28,12 +25,15 @@ sh .env-stage.sh
 git checkout origin/develop
 git pull origin develop
 
+docker-compose stop nginx
+
 docker-compose stop  frontend-stage
 docker-compose rm --force frontend-stage
 
 docker-compose build frontend-stage
 docker-compose up -d frontend-stage
 
+docker-compose up -d nginx
 docker-compose up -d frontend-stage
 docker-compose up -d postgresql-stage
 docker-compose up -d backend-stage
