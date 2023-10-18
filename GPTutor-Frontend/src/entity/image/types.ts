@@ -1,6 +1,7 @@
 export type GenerateImageRequest = {
   modelId: string;
   prompt: string;
+  originalPrompt: string;
   createdAt: Date;
   guidanceScale: number;
   expireTimestamp: Date;
@@ -34,7 +35,8 @@ export type GeneratedImage = {
   modelId: string;
   negativePrompt: string;
   prompt: string;
-  seed: null | number;
+  seed: null | string;
+  generatedSeed: null | string;
   numInferenceSteps: number;
   width: number;
   height: number;
@@ -63,7 +65,8 @@ export const emptyImageGenerated: GeneratedImage = {
   height: 1,
   scheduler: "",
   negativePrompt: "",
-  seed: 1,
+  seed: "",
   numInferenceSteps: 1,
   upscale: "no",
+  generatedSeed: "",
 };

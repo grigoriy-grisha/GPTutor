@@ -8,11 +8,13 @@ import com.chatgpt.entity.Image;
 import com.chatgpt.entity.requests.NudeDetectRequest;
 import com.chatgpt.repositories.ImageRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,19 +99,19 @@ public class ImagesService {
 
         try {
 
-            var images = generateImage(generateImageRequest);
+            var pair = generateImage(generateImageRequest);
             return Arrays
-                    .stream(images)
-                    .map((image) -> createImage(image, vkUserId, generateImageRequest))
+                    .stream(pair.getFirst())
+                    .map((image) -> createImage(image, vkUserId, pair.getSecond(), generateImageRequest))
                     .toList();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    Image createImage(String url, String vkUserId, GenerateImageRequest generateImageRequest) {
+    Image createImage(String url, String vkUserId, String generatedSeed, GenerateImageRequest generateImageRequest) {
         var user = userService.getOrCreateVkUser(vkUserId);
-        var image = new Image(url, user, generateImageRequest);
+        var image = new Image(url, user, generatedSeed, generateImageRequest);
 
         imageRepository.save(image);
 
@@ -122,7 +124,7 @@ public class ImagesService {
         return imageRepository.findAllByVkUserId(user.getId(), pageable);
     }
 
-    String[] generateImage(GenerateImageRequest generateImageRequest) throws JsonProcessingException {
+    Pair<String[], String> generateImage(GenerateImageRequest generateImageRequest) throws JsonProcessingException {
         String urlGenerate = "http://models:1337/image";
         HttpEntity<GenerateImageRequest> requestImage = new HttpEntity<>(generateImageRequest);
         var responseImage = restTemplate.postForEntity(urlGenerate, requestImage, String.class);
@@ -131,7 +133,10 @@ public class ImagesService {
 
         GenerateImageResponse imageResponse = objectMapper.readValue(responseImage.getBody(), GenerateImageResponse.class);
 
-        return imageResponse.getOutput();
-    }
+        JsonNode response = objectMapper.readTree(responseImage.getBody());
+        JsonNode meta = response.get("meta");
+        JsonNode seed = meta != null ? meta.get("seed") : null;
 
+        return Pair.of(imageResponse.getOutput(), seed != null ? seed.asText() : "-1");
+    }
 }

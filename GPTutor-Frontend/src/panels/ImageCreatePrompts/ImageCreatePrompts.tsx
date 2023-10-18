@@ -22,7 +22,6 @@ import {
   randomPromptsStyles,
   randomPromptsTwo,
 } from "$/entity/image/prompts";
-import { AppDiv } from "$/components/AppDiv";
 
 interface ImageCreatePromptsProps {
   id: string;

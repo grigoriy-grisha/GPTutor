@@ -220,15 +220,15 @@ function ImageGenerationMobile() {
                 </div>
               }
             >
-              <Input
-                placeholder="Что не должно быть на изображении, перечислите через запятую"
-                id="seed"
-                type="text"
-                value={imageGeneration.negativePrompts$.get()}
-                onChange={(event) =>
-                  imageGeneration.setNegativePrompts(event.target.value)
-                }
-              />
+              {/*<Input*/}
+              {/*  placeholder="Что не должно быть на изображении, перечислите через запятую"*/}
+              {/*  id="seed"*/}
+              {/*  type="text"*/}
+              {/*  value={imageGeneration.negativePrompts$.get()}*/}
+              {/*  onChange={(event) =>*/}
+              {/*    imageGeneration.setNegativePrompts(event.target.value)*/}
+              {/*  }*/}
+              {/*/>*/}
             </FormItem>
             <FormLayoutGroup mode="vertical">
               <FormItem
@@ -357,6 +357,7 @@ function ImageGenerationMobile() {
                 }
               >
                 <Input
+                  placeholder="Стартовая точка для генерации изображения"
                   id="seed"
                   type="text"
                   value={imageGeneration.seed$.get()}

@@ -21,33 +21,16 @@ def textToImage(
         num_inference_steps=20,
         seed=None,
         guidance_scale=7,
-        upscale='no'
+        upscale='no',
+        attempts=1
 ):
-
-    print({
-        "key": os.environ.get("IMAGES_API_KEY"),
-        "prompt": prompt,
-        "negative_prompt": negative_prompt_default + negative_prompt,
-        "model_id": model_id,
-        "width": str(width),
-        "height": str(height),
-        "samples": str(samples),
-        "num_inference_steps": str(num_inference_steps),
-        "guidance_scale": guidance_scale,
-        "upscale": upscale,
-        "safety_checker": "yes",
-        "multi_lingual": "yes",
-        "panorama": "no",
-        "self_attention": "no",
-        "embeddings_model": None,
-        "webhook": None,
-        "track_id": None,
-        **getScheduler(scheduler),
-        **getSeed(seed)
-    })
+    if attempts == 6:
+        return {
+            "status": "failed"
+        }
 
     payload = json.dumps({
-        "key": os.environ.get("IMAGES_API_KEY"),
+        "key": "YtbAxupBBktr6Mlmyc2m6yUYXex7y1bBrESTDFhuovoS4wRaOPJ0U7Lv9SQI",
         "prompt": prompt,
         "negative_prompt": negative_prompt_default + negative_prompt,
         "model_id": model_id,
@@ -71,9 +54,8 @@ def textToImage(
     })
 
     print(payload)
-    headers = {
-        'Content-Type': 'application/json'
-    }
+
+    headers = {'Content-Type': 'application/json'}
 
     if model_id == "sd":
         print(model_id)
@@ -84,7 +66,21 @@ def textToImage(
                                     data=payload)
 
     result = response.json()
-    print(result)
+
+    if result['status'] == "failed":
+        time.sleep(3)
+        return textToImage(model_id=model_id,
+                           prompt=prompt,
+                           negative_prompt=negative_prompt,
+                           scheduler=scheduler,
+                           width=width,
+                           height=height,
+                           samples=samples,
+                           num_inference_steps=num_inference_steps,
+                           seed=seed,
+                           guidance_scale=guidance_scale,
+                           upscale=upscale, attempts=attempts + 1
+                           )
 
     if result['status'] == "processing":
         time.sleep(result['eta'])
@@ -139,7 +135,7 @@ def getScheduler(scheduler) -> dict:
 
 
 def getSeed(seed):
-    if seed == -1:
+    if seed == -1 or seed == "-1":
         return {}
 
     return {"seed": str(seed)}

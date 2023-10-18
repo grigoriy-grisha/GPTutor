@@ -8,6 +8,7 @@ public class GenerateImageRequest {
     Timestamp expireTimestamp;
     String modelId;
     String prompt;
+    String originalPrompt;
     String scheduler;
     String negativePrompt;
     int guidanceScale;
@@ -123,5 +124,13 @@ public class GenerateImageRequest {
 
     public void setGuidanceScale(int guidanceScale) {
         this.guidanceScale = guidanceScale;
+    }
+
+    public String getOriginalPrompt() {
+        return originalPrompt;
+    }
+
+    public void setOriginalPrompt(String originalPrompt) {
+        this.originalPrompt = originalPrompt;
     }
 }

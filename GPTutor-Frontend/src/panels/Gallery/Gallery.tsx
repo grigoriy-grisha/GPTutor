@@ -8,6 +8,7 @@ import {
   Panel,
   PanelHeaderBack,
   Platform,
+  Tappable,
   usePlatform,
 } from "@vkontakte/vkui";
 import { AppContainer } from "$/components/AppContainer";
@@ -25,6 +26,7 @@ import AppBanner from "$/components/AppBanner";
 import { getModelByValue } from "$/entity/image/styles";
 import { downloadService } from "$/services/DownloadService";
 import { imageGeneration } from "$/entity/image";
+import { imageService } from "$/services/ImageService";
 
 interface IProps {
   id: string;
@@ -54,7 +56,7 @@ function Gallery({ id }: IProps) {
         containerRef={setScrollableElement}
         headerChildren={
           <AppPanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            Галлерея
+            Коллекция
           </AppPanelHeader>
         }
       >
@@ -63,12 +65,18 @@ function Gallery({ id }: IProps) {
             return (
               <AppBanner
                 before={
-                  <img
-                    className={classNames(classes.image, {
-                      [classes.imageMobile]: platform !== Platform.VKCOM,
-                    })}
-                    src={image.item.url}
-                  />
+                  <Tappable
+                    hoverMode="opacity"
+                    activeMode="opacity"
+                    onClick={() => imageService.openImages([image.item.url])}
+                  >
+                    <img
+                      className={classNames(classes.image, {
+                        [classes.imageMobile]: platform !== Platform.VKCOM,
+                      })}
+                      src={image.item.url}
+                    />
+                  </Tappable>
                 }
                 key={image.item.url}
                 header={getModelByValue(image.item.modelId).label}

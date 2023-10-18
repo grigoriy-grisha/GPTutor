@@ -1,30 +1,28 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import {
   Button,
+  Caption,
   Card,
   classNames,
   Div,
-  FormField,
-  FormItem,
   IconButton,
   Spacing,
-  Spinner,
+  Tappable,
   usePlatform,
 } from "@vkontakte/vkui";
 import { imageGeneration } from "$/entity/image";
 import {
   Icon24DoneOutline,
   Icon28ArrowDownToSquareOutline,
-  Icon28ShareOutline,
   Icon48PictureOutline,
+  Icon24ClockOutline,
 } from "@vkontakte/icons";
 import { downloadService } from "$/services/DownloadService";
-import { shareService } from "$/services/ShareService";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
-import { Stepper } from "$/components/Stepper";
-import bridge from "@vkontakte/vk-bridge";
 import TimeLoading from "../../../../components/TimeLoading/TimeLoading";
+import { imageService } from "$/services/ImageService";
+import { ImageSeed } from "$/panels/ImageGeneration/ImageSeed";
 
 function ImageGenerationDesktopResult() {
   const platform = usePlatform();
@@ -36,11 +34,22 @@ function ImageGenerationDesktopResult() {
     (imageGeneration.heightView$.get() / imageGeneration.widthView$.get()) *
     100;
 
-  // Проверка готовности рекламы
-
   return (
     <Card mode="shadow" className={classes.imageSticky}>
       <Div>
+        <Card mode="outline">
+          <Div className={classes.time}>
+            <div className={classes.timeIcon}>
+              <Icon24ClockOutline />
+            </div>
+            <div>
+              <Caption>Средне время ожидания 30 секунд</Caption>
+              <Spacing size={4} />
+              <Caption>Максимальное время ожидания 3 минуты</Caption>
+            </div>
+          </Div>
+        </Card>
+        <Spacing size={8} />
         {
           <div>
             {result.get().map((resultImage) => {
@@ -67,19 +76,32 @@ function ImageGenerationDesktopResult() {
                       </div>
                     </div>
                   ) : (
-                    <div
-                      style={{ paddingBottom: `${aspectRatioPadding}%` }}
-                      className={classNames(classes.image)}
+                    <Tappable
+                      hoverMode="opacity"
+                      activeMode="opacity"
+                      onClick={() => imageService.openImages([resultImage.url])}
                     >
-                      <img
-                        className={classNames(
-                          classes.image,
-                          classes.generatedImage
-                        )}
-                        src={resultImage.url}
-                        alt="Картинка"
-                      />
-                    </div>
+                      <div
+                        style={{ paddingBottom: `${aspectRatioPadding}%` }}
+                        className={classNames(classes.image)}
+                      >
+                        <img
+                          className={classNames(
+                            classes.image,
+                            classes.generatedImage
+                          )}
+                          src={resultImage.url}
+                          alt="Картинка"
+                        />
+                      </div>
+                    </Tappable>
+                  )}
+
+                  {resultImage.generatedSeed && (
+                    <>
+                      <Spacing size={6} />
+                      <ImageSeed seed={resultImage.generatedSeed} />
+                    </>
                   )}
                   <Spacing size={12} />
                   <div className={classes.buttons}>

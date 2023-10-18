@@ -16,7 +16,11 @@ import { datePlus30Days } from "$/utility/date";
 import { ImageGenerationPrompt } from "$/entity/image/ImageGenerationPrompt";
 import { Timer } from "$/entity/GPT/Timer";
 
+import { ChipOption } from "@vkontakte/vkui/dist/components/Chip/Chip";
+
 class ImageGeneration {
+  advancedSettingOpen = false;
+
   timer = new Timer(0, 1000000, "increment", 10, 5);
   imageGenerationPrompt = new ImageGenerationPrompt();
   chatGpt = new ChatGptImages();
@@ -26,8 +30,8 @@ class ImageGeneration {
   sampler$ = sig(defaultSampler);
   step$ = sig(25);
   CFGScale$ = sig(8);
-  negativePrompts$ = sig("");
-  seed$ = sig(-1);
+  negativePrompts$ = sig<ChipOption[]>([]);
+  seed$ = sig("");
   result$ = sig<GeneratedImage[]>([]);
   error$ = sig<string>("");
   aspectRatio$ = sig<ImageAspectRatio>(ImageAspectRatio.square);
@@ -54,6 +58,10 @@ class ImageGeneration {
   constructor() {
     this.setResults();
   }
+
+  toggleAdvancedSettingOpen = () => {
+    this.advancedSettingOpen = !this.advancedSettingOpen;
+  };
 
   setSamples(value: string) {
     this.samples$.set(Number(value));
@@ -96,11 +104,7 @@ class ImageGeneration {
     this.result$.set(emptyResults);
   }
 
-  runChatGpt() {
-    this.prompt$.set(getRandomPromptImage());
-  }
-
-  setNegativePrompts(negativePrompts: string) {
+  setNegativePrompts(negativePrompts: ChipOption[]) {
     this.negativePrompts$.set(negativePrompts);
   }
 
@@ -109,10 +113,18 @@ class ImageGeneration {
   };
 
   setModel(model: string) {
+    if (model !== "sd") {
+      this.samples$.set(1);
+      this.setResults();
+    }
     this.model$.set(model);
   }
 
-  setSeed(seed: number) {
+  setSeed(seed: any) {
+    if (isNaN(Number(seed))) {
+      return;
+    }
+
     this.seed$.set(seed);
   }
 
@@ -125,7 +137,7 @@ class ImageGeneration {
     this.aspectRatio$.set(ImageAspectRatio.custom);
 
     if (!this.loading$.get() && !this.resultHasEmpty$.get()) {
-      imageGeneration.widthView$.set(width);
+      this.widthView$.set(width);
     }
   };
   setHeight = (height: number) => {
@@ -133,7 +145,7 @@ class ImageGeneration {
     this.aspectRatio$.set(ImageAspectRatio.custom);
 
     if (!this.loading$.get() && !this.resultHasEmpty$.get()) {
-      imageGeneration.heightView$.set(height);
+      this.heightView$.set(height);
     }
   };
 
@@ -167,15 +179,22 @@ class ImageGeneration {
   applyExample(example: ImageExample) {
     this.prompt$.set(example.prompt);
     this.model$.set(example.modelId);
-    this.negativePrompts$.set(example.negativePrompt);
-    this.seed$.set(example.seed ? example.seed : -1);
+    this.seed$.set(example.seed ? String(example.seed) : "");
     this.step$.set(example.numInferenceSteps);
     this.CFGScale$.set(example.guidanceScale);
     this.sampler$.set(example.scheduler);
     this.aspectRatio$.set(ImageAspectRatio.square);
+
+    this.negativePrompts$.set(
+      example.negativePrompt
+        .split(",")
+        .map((value) => ({ value, label: value }))
+    );
   }
 
   generateImage = async () => {
+    this.loading$.set(true);
+
     this.error$.set("");
     if (this.prompt$.get().trim() === "") {
       this.error$.set("Ввод промпта обязателен!");
@@ -190,26 +209,30 @@ class ImageGeneration {
 
     const seed = this.seed$.get();
 
-    this.loading$.set(true);
     const result = await generateImage({
       modelId: this.model$.get(),
       prompt: translatedPrompt,
       createdAt: new Date(),
-      negativePrompt: this.negativePrompts$.get(),
       guidanceScale: this.CFGScale$.get(),
-      seed: isNaN(parseInt(String(seed))) ? "-1" : String(seed),
+      seed: !seed ? "-1" : seed,
       expireTimestamp: datePlus30Days(),
       samples: this.samples$.get(),
+      originalPrompt: this.prompt$.get(),
       scheduler: this.sampler$.get(),
       width: this.width$.get(),
       height: this.height$.get(),
       upscale: this.upscale$.get(),
       numInferenceSteps: this.step$.get(),
+      negativePrompt: this.negativePrompts$
+        .get()
+        .map(({ label }) => label)
+        .join(","),
     });
 
     if (result.error) {
       this.setResults();
       this.timer.stop();
+      this.loading$.set(false);
 
       if (result.status === 400) {
         this.error$.set(result.error);

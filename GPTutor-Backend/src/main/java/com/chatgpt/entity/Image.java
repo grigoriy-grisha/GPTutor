@@ -15,9 +15,11 @@ public class Image {
     private Timestamp createdAt;
     String modelId;
     String prompt;
+    String originalPrompt;
     String scheduler;
     String negativePrompt;
     int guidanceScale;
+    String generatedSeed;
     String seed;
     int numInferenceSteps;
     int width;
@@ -31,7 +33,7 @@ public class Image {
 
     }
 
-    public Image(String url, VkUser vkUser, GenerateImageRequest generateImageRequest) {
+    public Image(String url, VkUser vkUser, String generatedSeed, GenerateImageRequest generateImageRequest) {
         this.url = url;
         this.vkUser = vkUser;
         this.expire = generateImageRequest.getExpireTimestamp();
@@ -41,11 +43,13 @@ public class Image {
         this.scheduler = generateImageRequest.getScheduler();
         this.negativePrompt = generateImageRequest.getNegativePrompt();
         this.seed = generateImageRequest.getSeed();
+        this.generatedSeed = generatedSeed;
         this.guidanceScale = generateImageRequest.getGuidanceScale();
         this.width = generateImageRequest.getWidth();
         this.height = generateImageRequest.getHeight();
         this.upscale = generateImageRequest.getUpscale();
         this.numInferenceSteps = generateImageRequest.getNumInferenceSteps();
+        this.originalPrompt = generateImageRequest.getOriginalPrompt();
     }
 
 
@@ -167,5 +171,21 @@ public class Image {
 
     public void setGuidanceScale(int guidanceScale) {
         this.guidanceScale = guidanceScale;
+    }
+
+    public String getOriginalPrompt() {
+        return originalPrompt;
+    }
+
+    public void setOriginalPrompt(String originalPrompt) {
+        this.originalPrompt = originalPrompt;
+    }
+
+    public String getGeneratedSeed() {
+        return generatedSeed;
+    }
+
+    public void setGeneratedSeed(String generatedSeed) {
+        this.generatedSeed = generatedSeed;
     }
 }

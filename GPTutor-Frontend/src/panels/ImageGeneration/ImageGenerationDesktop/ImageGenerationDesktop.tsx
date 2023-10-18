@@ -33,6 +33,7 @@ import {
   Icon24HelpOutline,
   Icon24MagicWandOutline,
   Icon28ServicesOutline,
+  Icon32StarsOutline,
 } from "@vkontakte/icons";
 import { ImageAspectRatio } from "$/entity/image/types";
 import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
@@ -41,7 +42,8 @@ import { useNavigationContext } from "$/NavigationContext";
 import { ImageGenerationDesktopResult } from "$/panels/ImageGeneration/ImageGenerationDesktop/ImageGenerationDesktopResult";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
 import { Attempts } from "$/panels/ImageGeneration/Attempts";
-
+import { ChipsSelect } from "@vkontakte/vkui/dist/components/ChipsSelect/ChipsSelect";
+import { negativePrompts } from "$/entity/image/prompts";
 function ImageGenerationDesktop() {
   const { goToGenerationImagesExamples, goToGenerationImagesPrompts } =
     useNavigationContext();
@@ -67,7 +69,7 @@ function ImageGenerationDesktop() {
           }
           after={
             <IconButton onClick={goToGenerationImagesExamples}>
-              <Icon20SunOutline width={28} height={28} />
+              <Icon32StarsOutline width={28} height={28} />
             </IconButton>
           }
         >
@@ -89,25 +91,16 @@ function ImageGenerationDesktop() {
               status={imageGeneration.error$.get() ? "error" : "default"}
               bottom={imageGeneration.error$.get()}
             >
-              <div className={classes.textAreaContainer}>
-                <Textarea
-                  maxLength={1000}
-                  value={imageGeneration.prompt$.get()}
-                  onChange={(event) =>
-                    imageGeneration.setPrompt(event.target.value)
-                  }
-                  id="prompt"
-                  className={classes.textArea}
-                  placeholder="Напишите запрос для изображения"
-                />
-                <IconButton
-                  onClick={() => imageGeneration.prompt$.set("")}
-                  className={classes.clearIcon}
-                  disabled={!imageGeneration.prompt$.get()}
-                >
-                  <Icon20Clear width={16} height={16} />
-                </IconButton>
-              </div>
+              <Textarea
+                maxLength={1000}
+                value={imageGeneration.prompt$.get()}
+                onChange={(event) =>
+                  imageGeneration.setPrompt(event.target.value)
+                }
+                id="prompt"
+                className={classes.textArea}
+                placeholder="Напишите запрос для изображения"
+              />
             </FormItem>
             <Spacing size={12} />
             <Button
@@ -131,20 +124,20 @@ function ImageGenerationDesktop() {
               Сгенерировать
             </Button>
             <Spacing size={12} />
-            <Accordion open={true} className={classes.accordion}>
+            <Accordion open className={classes.accordion}>
               <Accordion.Summary>
                 <Title level="3" weight="3" className={classes.accordionTitle}>
                   Параметры результата
                 </Title>
               </Accordion.Summary>
               <Separator wide className={classes.separator} />
-              <AppDiv>
+              <AppDiv
+                className={classNames(classes.imageSettings, {
+                  [classes.sizeDisable]: imageGeneration.loading$.get(),
+                })}
+              >
                 <Spacing size={6} />
-                <div
-                  className={classNames(classes.sizes, {
-                    [classes.sizeDisable]: imageGeneration.loading$.get(),
-                  })}
-                >
+                <div className={classNames(classes.sizes)}>
                   {Object.values(ImageAspectRatio).map((aspectRatio) => {
                     if (aspectRatio === ImageAspectRatio.custom) return null;
 
@@ -216,6 +209,8 @@ function ImageGenerationDesktop() {
                     options={["1", "2", "3", "4"].map((item) => ({
                       label: item,
                       value: item,
+                      disabled:
+                        item != "1" && imageGeneration.model$.get() !== "sd",
                     }))}
                     onChange={(event) => {
                       imageGeneration.setSamples(event.target.value);
@@ -227,8 +222,13 @@ function ImageGenerationDesktop() {
               </AppDiv>
             </Accordion>
             <Spacing size={12} />
-            <Accordion className={classes.accordion}>
-              <Accordion.Summary>
+            <Accordion
+              open={imageGeneration.advancedSettingOpen}
+              className={classes.accordion}
+            >
+              <Accordion.Summary
+                onClick={imageGeneration.toggleAdvancedSettingOpen}
+              >
                 <Title level="3" weight="3" className={classes.accordionTitle}>
                   Расширенные настройки
                 </Title>
@@ -236,12 +236,11 @@ function ImageGenerationDesktop() {
               <Separator wide className={classes.separator} />
               <AppDiv>
                 <FormItem
-                  htmlFor="seed"
+                  htmlFor="negative"
                   top={
                     <div className={classes.formItemTitle}>
                       Негативные подсказки
                       <TextTooltip
-                        id="step"
                         text="Негативные подсказки, то, чего не должно быть на изображении. Значения вписываются через запятую. Например: уродство, деформированные конечности, усы"
                         appearance={appearance === "light" ? "accent" : "white"}
                         style={{ maxWidth: 350 }}
@@ -252,14 +251,15 @@ function ImageGenerationDesktop() {
                     </div>
                   }
                 >
-                  <Input
-                    placeholder="Что не должно быть на изображении, перечислите через запятую"
-                    id="seed"
-                    type="text"
-                    value={imageGeneration.negativePrompts$.get()}
-                    onChange={(event) =>
-                      imageGeneration.setNegativePrompts(event.target.value)
+                  <ChipsSelect
+                    id="negative"
+                    placeholder="Чего не должно быть на изображении"
+                    onChange={(value) =>
+                      imageGeneration.setNegativePrompts(value)
                     }
+                    options={negativePrompts}
+                    creatable
+                    value={imageGeneration.negativePrompts$.get()}
                   />
                 </FormItem>
                 <FormLayoutGroup mode="vertical">
@@ -399,6 +399,7 @@ function ImageGenerationDesktop() {
                     }
                   >
                     <Input
+                      placeholder="Стартовая точка для генерации изображения"
                       id="seed"
                       type="text"
                       value={imageGeneration.seed$.get()}
