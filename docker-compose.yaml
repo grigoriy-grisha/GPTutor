@@ -49,6 +49,7 @@ services:
       - app
     environment:
       SPRING_APPLICATION_JSON: '{
+                  "spring.flyway.debug": true,
                   "spring.datasource.url": "jdbc:postgresql://postgresql:5432/postgres",
                   "spring.datasource.username": "${POSTGRES_USER}",
                   "spring.datasource.password": "${POSTGRES_PASSWORD}",
@@ -57,16 +58,21 @@ services:
                   "vk.key": "${VK_KEY}",
                   "cors.allowed.origins": "${CORS_ORIGIN}",
                   "api.keys.120dollars": "${API_KEYS_120}",
-                  "api.keys.5dollars": "${API_KEYS_5}"
+                  "api.keys.5dollars": "${API_KEYS_5}",
+                  "s3.accessKey": "${S3_ACCESS_KEY}",
+                  "s3.secretKey": "${S3_SECRET_KEY}"
            }'
   postgresql:
     image: 'postgres:13.1-alpine'
+    ports:
+      - "5432:5432"
     container_name: postgresql
     env_file: .env
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
       - app
+
   certbot:
     image: certbot/certbot
     depends_on:
@@ -103,16 +109,19 @@ services:
                   "spring.datasource.url": "jdbc:postgresql://postgresql-stage:5432/postgres",
                   "spring.datasource.username": "${POSTGRES_USER}",
                   "spring.datasource.password": "${POSTGRES_PASSWORD}",
-                  "auth.client.secret": "${AUTH_SECRET_KEY}",
-                  "auth.skip": ${SKIP_AUTH},
-                  "vk.key": "${VK_KEY}",
+                  "auth.client.secret": "7JnZrfRn0LOp9mN1CHIF",
+                  "auth.skip": true,
+                  "vk.key": "1267bc731267bc731267bc73b21174dfe4112671267bc73764d324056fbb15ed217eeab",
                   "cors.allowed.origins": "${CORS_ORIGIN}",
                   "api.keys.120dollars": "${API_KEYS_120}",
-                  "api.keys.5dollars": "${API_KEYS_5}"
+                  "api.keys.5dollars": "${API_KEYS_5}",
+                  "s3.accessKey": "YCAJEN2pnohdUo1foIMaZ73S-",
+                  "s3.secretKey": "YCMQMB4L28yvmiaIsPcHCsVGmZMfJvkjMbHYbYSF"
            }'
   postgresql-stage:
     image: 'postgres:13.1-alpine'
     container_name: postgresql-stage
+
     env_file: .env-stage
     volumes:
       - db-data-stage:/var/lib/postgresql/data

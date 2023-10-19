@@ -67,7 +67,7 @@ def gpt():
 
 
 @app.post("/image")
-async def image():
+def image():
     return textToImage(
         prompt=request.json["prompt"],
         model_id=request.json["modelId"],
@@ -82,9 +82,6 @@ async def image():
         samples=request.json["samples"]
     )
 
-
-nude_classes = {"FEMALE_BREAST_EXPOSED", 'FEMALE_GENITALIA_EXPOSED', 'MALE_GENITALIA_EXPOSED', 'BUTTOCKS_EXPOSED',
-                'ANUS_EXPOSED'}
 
 if __name__ == '__main__':
     app.run(debug=True, port=1337, host="0.0.0.0")

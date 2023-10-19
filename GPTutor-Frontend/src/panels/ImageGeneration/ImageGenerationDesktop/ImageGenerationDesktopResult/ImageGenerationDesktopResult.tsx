@@ -43,9 +43,9 @@ function ImageGenerationDesktopResult() {
               <Icon24ClockOutline />
             </div>
             <div>
-              <Caption>Средне время ожидания 30 секунд</Caption>
+              <Caption>Среднее время ожидания 15 секунд</Caption>
               <Spacing size={4} />
-              <Caption>Максимальное время ожидания 3 минуты</Caption>
+              <Caption>Максимальное время ожидания 1 минута</Caption>
             </div>
           </Div>
         </Card>
