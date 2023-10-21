@@ -25,9 +25,9 @@ export class TranslationService {
       } as any
     )) as any;
 
-    console.log(result);
-
-    if (!result.result) return text;
+    if (result.texts) {
+      return result.texts.join("");
+    }
 
     return result.result.texts.join("");
   }
