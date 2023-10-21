@@ -25,6 +25,10 @@ export class TranslationService {
       } as any
     )) as any;
 
+    console.log(result);
+
+    if (!result.result) return text;
+
     return result.result.texts.join("");
   }
 
