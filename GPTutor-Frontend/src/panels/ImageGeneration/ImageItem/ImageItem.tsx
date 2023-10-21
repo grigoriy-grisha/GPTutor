@@ -37,7 +37,6 @@ function ImageItem({ resultImage }: IProps) {
 
   const loading = imageGeneration.loading$.get();
 
-  console.log(loading);
   return (
     <div key={resultImage.id}>
       {isEmpty ? (

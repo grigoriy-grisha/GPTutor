@@ -10,7 +10,7 @@ import {
   Spacing,
 } from "@vkontakte/vkui";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigationContext } from "$/NavigationContext";
 import { imageGeneration } from "$/entity/image";
 import { Icon16ErrorCircleFill, Icon24RepeatOutline } from "@vkontakte/icons";
@@ -27,6 +27,14 @@ function ImageGenerationResult({ id }: IProps) {
   const { goBack } = useNavigationContext();
 
   const result = imageGeneration.result$;
+
+  useEffect(() => {
+    if (imageGeneration.resultIsEmpty$.get()) {
+      imageGeneration.imageSize.set(imageGeneration.aspectRatio$.get());
+      imageGeneration.widthView$.set(imageGeneration.width$.get());
+      imageGeneration.heightView$.set(imageGeneration.height$.get());
+    }
+  }, [imageGeneration.result$.get()]);
 
   return (
     <Panel id={id}>
