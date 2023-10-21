@@ -17,3 +17,16 @@ export async function groupsIsMember({
 
   return await response.json();
 }
+
+export async function uploadPhoto(uploadUrl: string, imageUrl: string) {
+  const response = await fetch(`${BACKEND_HOST}upload-photo`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + location.href,
+    },
+    body: JSON.stringify({ uploadUrl, imageUrl }),
+  });
+
+  return await response.json();
+}

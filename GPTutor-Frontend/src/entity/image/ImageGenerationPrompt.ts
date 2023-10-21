@@ -27,16 +27,6 @@ export class ImageGenerationPrompt {
   }
 
   getPrompt() {
-    if (this.selectedPrompt$.get() && this.selectedStyles$.get().join(", ")) {
-      return `${this.selectedPrompt$.get()}, ${this.selectedStyles$
-        .get()
-        .join(", ")}`;
-    }
-
-    if (this.selectedPrompt$.get()) {
-      return this.selectedPrompt$.get();
-    }
-
-    return this.selectedStyles$.get().join(", ");
+    return this.selectedPrompt$.get();
   }
 }

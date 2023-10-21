@@ -42,7 +42,7 @@ function ImageCreatePrompts({ id }: ImageCreatePromptsProps) {
       <AppContainer
         headerChildren={
           <AppPanelHeader
-            before={<PanelHeaderBack onClick={submitPrompts} />}
+            before={<PanelHeaderBack onClick={goBack} />}
             after={<PanelHeaderSubmit onClick={submitPrompts} />}
           >
             <div />

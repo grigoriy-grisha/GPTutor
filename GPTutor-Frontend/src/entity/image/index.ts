@@ -10,32 +10,32 @@ import {
   ImageExample,
 } from "$/entity/image/types";
 import { ChatGptImages } from "$/entity/GPT/ChatGptImages";
-import { getRandomPromptImage } from "$/entity/image/imageCreations";
 import { translationService } from "$/services/TranslationService";
 import { datePlus30Days } from "$/utility/date";
 import { ImageGenerationPrompt } from "$/entity/image/ImageGenerationPrompt";
-import { Timer } from "$/entity/GPT/Timer";
 
 import { ChipOption } from "@vkontakte/vkui/dist/components/Chip/Chip";
+import { StopWatch } from "$/entity/stopWatch";
 
 class ImageGeneration {
+  requestParameters = false;
   advancedSettingOpen = false;
 
-  timer = new Timer(0, 1000000, "increment", 10, 5);
+  timer = new StopWatch();
   imageGenerationPrompt = new ImageGenerationPrompt();
   chatGpt = new ChatGptImages();
 
   prompt$ = sig("");
   model$ = sig(defaultModel);
   sampler$ = sig(defaultSampler);
-  step$ = sig(25);
-  CFGScale$ = sig(8);
+  step$ = sig(32);
+  CFGScale$ = sig(10);
   negativePrompts$ = sig<ChipOption[]>([]);
   seed$ = sig("");
   result$ = sig<GeneratedImage[]>([]);
   error$ = sig<string>("");
   aspectRatio$ = sig<ImageAspectRatio>(ImageAspectRatio.square);
-  samples$ = sig(1);
+  samples$ = sig(4);
   height$ = sig(512);
   width$ = sig(512);
   widthView$ = sig(512);
@@ -61,6 +61,10 @@ class ImageGeneration {
 
   toggleAdvancedSettingOpen = () => {
     this.advancedSettingOpen = !this.advancedSettingOpen;
+  };
+
+  toggleRequestParameters = () => {
+    this.requestParameters = !this.requestParameters;
   };
 
   setSamples(value: string) {
@@ -204,7 +208,9 @@ class ImageGeneration {
     this.timer.run();
 
     const translatedPrompt = await translationService.translate(
-      this.prompt$.get()
+      `${this.prompt$.get()}, ${this.imageGenerationPrompt.selectedStyles$
+        .get()
+        .join(", ")}`
     );
 
     const seed = this.seed$.get();

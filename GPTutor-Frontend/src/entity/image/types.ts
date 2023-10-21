@@ -17,7 +17,7 @@ export type GenerateImageRequest = {
 
 export type ImageExample = {
   url: string;
-  seed: number | null;
+  seed: string | null;
   numInferenceSteps: number;
   prompt: string;
   guidanceScale: number;

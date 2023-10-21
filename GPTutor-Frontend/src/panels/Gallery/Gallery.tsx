@@ -27,6 +27,7 @@ import { getModelByValue } from "$/entity/image/styles";
 import { downloadService } from "$/services/DownloadService";
 import { imageGeneration } from "$/entity/image";
 import { imageService } from "$/services/ImageService";
+import ImageSeed from "../ImageGeneration/ImageSeed/ImageSeed";
 
 interface IProps {
   id: string;
@@ -84,14 +85,15 @@ function Gallery({ id }: IProps) {
                   <div className={classes.subHeader}>
                     <div>{image.item.prompt}</div>
                     <div>
+                      Создано:
                       <Headline
                         style={{ display: "inline" }}
                         level="2"
                         weight="1"
                       >
-                        Создано:
-                      </Headline>{" "}
-                      {new Date(image.item.createdAt).toLocaleString()}
+                        {" "}
+                        {new Date(image.item.createdAt).toLocaleString()}
+                      </Headline>
                     </div>
 
                     <div>
@@ -100,11 +102,10 @@ function Gallery({ id }: IProps) {
                         level="2"
                         weight="1"
                       >
-                        Хранение:
-                      </Headline>{" "}
-                      {image.item.expire
-                        ? new Date(image.item.expire).toLocaleString()
-                        : "Бессрочно"}
+                        {image.item.generatedSeed && (
+                          <ImageSeed seed={image.item.generatedSeed} />
+                        )}
+                      </Headline>
                     </div>
                   </div>
                 }
@@ -115,16 +116,6 @@ function Gallery({ id }: IProps) {
                         platform === Platform.VKCOM ? "horizontal" : "vertical"
                       }
                     >
-                      {image.item.expire && (
-                        <Button
-                          size="m"
-                          mode="outline"
-                          loading={image.loading$.get()}
-                          onClick={() => imageHistory.saveImage(image)}
-                        >
-                          Сохранить
-                        </Button>
-                      )}
                       <Button
                         size="m"
                         after={<Icon24RepeatOutline />}

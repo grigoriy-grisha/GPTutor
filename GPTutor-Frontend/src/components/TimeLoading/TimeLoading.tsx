@@ -1,14 +1,13 @@
 import React from "react";
 
 import { Icon28HourglassOutline } from "@vkontakte/icons";
-
-import { Timer } from "$/entity/GPT/Timer";
 import Time from "$/components/Time";
+import { StopWatch } from "$/entity/stopWatch";
 
 import classes from "./TimeLoading.module.css";
 
 interface IProps {
-  timer: Timer;
+  timer: StopWatch;
 }
 
 function TimeLoading({ timer }: IProps) {

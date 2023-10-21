@@ -8,7 +8,7 @@ class AuthService {
     await bridge
       .send("VKWebAppGetAuthToken", {
         app_id: appService.isStableArt() ? 51692825 : 51602327,
-        scope: "groups,wall",
+        scope: "wall,groups,photos",
       })
       .then((data) => {
         console.log(data, "data");

@@ -8,7 +8,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 2fr 1.1fr;
-    gap: 12px;
+    gap: 8px;
 }
 
 .formItem {
@@ -39,7 +39,7 @@
     padding-right: 22px;
 }
 
-.imageSticky :global(.vkuiCard__in) {
+.imageSticky  {
     position: sticky;
     top: 0;
 }
@@ -89,10 +89,10 @@
 }
 
 .buttons {
-    display: flex;
+    display: grid;
     align-items: center;
-    gap: 2px;
-    grid-template-columns: 1fr 0.2fr 0.2fr;
+    gap: 6px;
+    grid-template-columns: 1fr 0.2fr;
     width: 100%;
     color: var(--vkui--color_text_accent_themed);
 }
@@ -267,14 +267,6 @@
     color: var(--vkui--color_text_accent_themed);
 }
 
-.mobileContainer {
-    max-width: 100vw;
-    width: 100%;
-}
-
-.mobileContainer :global(.vkuiImageBaseOverlay) {
-    opacity: 0;
-}
 
 .imagePlaceholder {
     position: absolute;

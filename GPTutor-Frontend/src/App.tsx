@@ -68,7 +68,6 @@ const App = () => {
     ? []
     : location.getViewHistory(Views.viewMain);
 
-  console.log(appService.loading.get());
   return (
     <>
       {appearance === "dark" ? <OneDark /> : <OneLight />}

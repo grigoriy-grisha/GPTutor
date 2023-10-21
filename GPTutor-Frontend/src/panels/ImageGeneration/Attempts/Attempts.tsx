@@ -1,6 +1,14 @@
 import React from "react";
 
-import { Button, Card, Div, Text, Title } from "@vkontakte/vkui";
+import {
+  Button,
+  Card,
+  Div,
+  Platform,
+  Text,
+  Title,
+  usePlatform,
+} from "@vkontakte/vkui";
 
 import { plural } from "$/utility/strings";
 
@@ -13,12 +21,13 @@ function getAttemptColor(attempts: number) {
 }
 
 function Attempts() {
+  const platform = usePlatform();
+
   const attempts = 50;
   return (
-    <Card mode="outline">
+    <Card mode="shadow">
       <Div className={classes.container}>
         <Text className={classes.text} weight="1">
-          <span>{plural(attempts, ["Осталась", "Осталось", "Осталось"])}</span>
           <Title
             style={{ display: "inline" }}
             level="2"
@@ -27,11 +36,11 @@ function Attempts() {
             {attempts}
           </Title>{" "}
           <span>
-            {plural(attempts, ["генерация", "генерации", "генераций"])}
+            {plural(attempts, ["Генерация", "Генерации", "Генераций"])}
           </span>
         </Text>
         <Button size="s" mode="secondary" width="100%">
-          Добавить генерации
+          {platform === Platform.VKCOM ? "Добавить генерации" : "Добавить"}
         </Button>
       </Div>
     </Card>
