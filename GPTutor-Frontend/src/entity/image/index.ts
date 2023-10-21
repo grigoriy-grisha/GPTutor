@@ -28,8 +28,8 @@ class ImageGeneration {
   prompt$ = sig("");
   model$ = sig(defaultModel);
   sampler$ = sig(defaultSampler);
-  step$ = sig(32);
-  CFGScale$ = sig(10);
+  step$ = sig(25);
+  CFGScale$ = sig(7);
   negativePrompts$ = sig<ChipOption[]>([]);
   seed$ = sig("");
   result$ = sig<GeneratedImage[]>([]);
