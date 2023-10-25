@@ -1,0 +1,31 @@
+.title {
+    display: grid;
+    grid-template-columns: max-content max-content max-content;
+    align-items: center;
+    gap: 6px;
+}
+
+.text {
+    display: grid;
+    grid-template-rows: max-content max-content;
+    gap: 4px
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.count {
+    color: var(--vkui--color_background_accent);
+}
+
+.countError {
+    color: var(--vkui--color_background_negative)
+}
+
+.subTitle {
+
+    color: var(--vkui--color_text_secondary)
+}

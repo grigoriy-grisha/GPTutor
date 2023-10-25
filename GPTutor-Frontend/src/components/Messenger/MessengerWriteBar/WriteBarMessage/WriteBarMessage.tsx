@@ -23,10 +23,13 @@ function WriteBarMessage({
     handleSend,
   });
 
+  const isDisableUsing = !chatGpt.subscriptionGPT.$isAllowSendMessage.get();
+
   return (
     <>
       <Separator wide />
       <WriteBar
+        disabled={isDisableUsing}
         onKeyDown={onEnterSend}
         value={value}
         onChange={(e) => setValue(e.target.value)}
