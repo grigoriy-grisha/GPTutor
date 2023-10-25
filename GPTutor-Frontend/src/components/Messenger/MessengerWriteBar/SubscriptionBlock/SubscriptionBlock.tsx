@@ -1,12 +1,14 @@
 import React from "react";
 
 import {
+  Button,
+  Caption,
+  classNames,
   Div,
+  Platform,
   Separator,
   Title,
-  Text,
-  Button,
-  classNames,
+  usePlatform,
 } from "@vkontakte/vkui";
 
 import classes from "./SubscriptionBlock.module.css";
@@ -18,18 +20,22 @@ interface IProps {
 }
 
 function SubscriptionBlock({ chatGpt }: IProps) {
+  const platform = usePlatform();
+
   const subscriptionGPT = chatGpt.subscriptionGPT;
 
   if (subscriptionGPT.isSubscribe$.get()) return null;
 
   const attempts = subscriptionGPT.$attempts.get();
+
   return (
     <div>
       <Separator wide />
       <Div className={classes.container}>
         <div className={classes.text}>
           <Title level="3" className={classes.title}>
-            {plural(attempts, ["Доступен", "Доступно", "Доступно"])}{" "}
+            {platform === Platform.VKCOM &&
+              plural(attempts, ["Доступен", "Доступно", "Доступно"])}{" "}
             <Title
               level="1"
               className={classNames(classes.count, {
@@ -40,9 +46,9 @@ function SubscriptionBlock({ chatGpt }: IProps) {
             </Title>{" "}
             {plural(attempts, ["запрос", "запроса", "запросов"])}
           </Title>
-          <Text weight="2" className={classes.subTitle}>
+          <Caption weight="2" className={classes.subTitle}>
             Подпишитесь на группу, чтобы убрать ограничения 😉
-          </Text>
+          </Caption>
         </div>
         <Button onClick={subscriptionGPT.$subscribe}>Подписаться</Button>
       </Div>
