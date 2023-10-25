@@ -6,6 +6,8 @@
 }
 
 .text {
+    width: 50%;
+
     display: grid;
     grid-template-rows: max-content max-content;
     gap: 4px
@@ -26,6 +28,5 @@
 }
 
 .subTitle {
-
     color: var(--vkui--color_text_secondary)
 }
