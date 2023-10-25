@@ -70,7 +70,7 @@ function ImageGenerationMobile() {
         </Div>
       }
     >
-      <div className={classes.container}>
+      <Div className={classes.container}>
         <Attempts />
 
         <Spacing size={8} />
@@ -80,7 +80,7 @@ function ImageGenerationMobile() {
         <RequestParameters />
         <Spacing size={8} />
         <AdvancedSettings />
-      </div>
+      </Div>
     </AppContainer>
   );
 }

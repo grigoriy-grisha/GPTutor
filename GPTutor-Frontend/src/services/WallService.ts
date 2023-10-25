@@ -49,7 +49,7 @@ class WallService {
     bridge
       .send("VKWebAppShowWallPostBox", {
         message:
-          "Генерирую нейрокартинки в Stable Art! https://vk.com/app51602327",
+          "Генерирую нейрокартинки в Stable Art! https://vk.com/app51692825",
         attachments: `photo${owner_id}_${photo_id}`,
       })
       .then((data) => {

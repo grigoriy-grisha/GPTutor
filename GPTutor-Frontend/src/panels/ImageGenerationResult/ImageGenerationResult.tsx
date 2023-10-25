@@ -60,7 +60,7 @@ function ImageGenerationResult({ id }: IProps) {
           </Div>
         }
       >
-        <div className={classes.container}>
+        <Div className={classes.container}>
           <TimeGenerationInfo />
           <Spacing size={8} />
           {imageGeneration.error$.get() && (
@@ -85,7 +85,7 @@ function ImageGenerationResult({ id }: IProps) {
               </div>
             ))}
           </div>
-        </div>
+        </Div>
       </AppContainer>
     </Panel>
   );
