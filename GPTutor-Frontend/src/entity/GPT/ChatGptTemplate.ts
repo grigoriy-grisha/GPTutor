@@ -14,10 +14,14 @@ import { snackbarNotify } from "$/entity/notify";
 import { interviews } from "$/entity/interview";
 import { leetCode } from "$/entity/leetCode/LeetCode";
 import { groupsService } from "$/services/GroupsService";
+import { createReactiveModelBuilder } from "dignals-model";
+import { SubscriptionGPT } from "$/entity/GPT/SubscriptionGPT";
 
 const MAX_CONTEXT_WORDS = 1000;
 
 export abstract class ChatGptTemplate {
+  subscriptionGPT = new SubscriptionGPT();
+
   isBlockActions$ = sig(false);
 
   currentHistory: History | null = null;
@@ -110,6 +114,8 @@ export abstract class ChatGptTemplate {
   };
 
   send = async (content: string) => {
+    if (!this.subscriptionGPT.$isAllowSendMessage.get()) return;
+
     try {
       this.sendCompletions$.loading.set(true);
       const message = new GptMessage(content, GPTRoles.user);
@@ -122,6 +128,7 @@ export abstract class ChatGptTemplate {
 
       if (message === this.getLastMessage()) return;
       await this.postMessage(this.getLastMessage());
+      this.subscriptionGPT.$handleSendMessage();
     } catch {
       this.timer.run();
     } finally {

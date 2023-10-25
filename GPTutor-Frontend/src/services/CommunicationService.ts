@@ -12,15 +12,19 @@ class CommunicationService {
           type: "success",
           message: "Вы уже подписаны.",
         });
-        return;
+        return true;
       }
       await bridge.send("VKWebAppJoinGroup", { group_id: 220371433 });
+      return true;
     } catch (error) {
       snackbarNotify.notify({
         type: "error",
-        message: "Невозможно подписаться.",
+        message: "Вы не были подписаны на группу!",
       });
-      console.log(error);
+
+      console.log(error, "asd;lkas;ldk;laskd;laks;dlkas;ldkl+___A_SD_ASD_");
+
+      return false;
     }
   }
   async addToFavorite() {
@@ -35,14 +39,19 @@ class CommunicationService {
     await bridge.send("VKWebAppAddToFavorites");
   }
 
-  private async getIsMember() {
+  async getIsMember() {
+    if (!this.isMember) {
+      this.isMember = await this.userIsMember();
+    }
+    return this.isMember;
+  }
+
+  async userIsMember(): Promise<boolean> {
     const urlParams = this.getSearchParams();
     const userId = urlParams.get("vk_user_id")!;
     const groupId = "220371433"; // ID группы
-    if (!this.isMember) {
-      this.isMember = await groupsIsMember({ groupId, userId });
-    }
-    return this.isMember;
+
+    return await groupsIsMember({ groupId, userId });
   }
 
   private getSearchParams() {
