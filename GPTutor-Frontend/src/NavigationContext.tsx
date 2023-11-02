@@ -39,6 +39,7 @@ export type NavigationContextType = {
   goToGenerationImagesResult: () => void;
   goToGenerationImagesExamples: () => void;
   goToGenerationImagesPrompts: () => void;
+  goToImageDonutModal: () => void;
   goToGallery: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
@@ -151,6 +152,8 @@ export function NavigationContextProvider({
   };
 
   const goToChatSettingsModal = () => push(RoutingPages.chatSettings);
+
+  const goToImageDonutModal = () => router.pushModal(Modals.imageDonut);
   const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
 
   const openAlert = (data: AlertType) => {
@@ -187,6 +190,7 @@ export function NavigationContextProvider({
         goToGenerationImages,
         goToGenerationImagesResult,
         goToGenerationImagesPrompts,
+        goToImageDonutModal,
         alert,
         isForbidden,
       }}

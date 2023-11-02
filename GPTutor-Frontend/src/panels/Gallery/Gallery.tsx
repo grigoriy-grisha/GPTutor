@@ -19,6 +19,7 @@ import { imageHistory } from "$/entity/image/ImageHistory";
 import {
   Icon24RepeatOutline,
   Icon28ArrowDownToSquareOutline,
+  Icon28ShareOutline,
 } from "@vkontakte/icons";
 
 import classes from "./Gallery.module.css";
@@ -28,6 +29,7 @@ import { downloadService } from "$/services/DownloadService";
 import { imageGeneration } from "$/entity/image";
 import { imageService } from "$/services/ImageService";
 import ImageSeed from "../ImageGeneration/ImageSeed/ImageSeed";
+import { wallService } from "$/services/WallService";
 
 interface IProps {
   id: string;
@@ -112,6 +114,7 @@ function Gallery({ id }: IProps) {
                 actions={
                   <div className={classes.buttons}>
                     <ButtonGroup
+                      style={{ alignItems: "center" }}
                       mode={
                         platform === Platform.VKCOM ? "horizontal" : "vertical"
                       }
@@ -131,6 +134,11 @@ function Gallery({ id }: IProps) {
                       >
                         Повторить
                       </Button>
+                      <IconButton
+                        onClick={() => wallService.createPost(image.item.url)}
+                      >
+                        <Icon28ShareOutline />
+                      </IconButton>
                     </ButtonGroup>
                     <div className={classes.additionButtons}>
                       <IconButton

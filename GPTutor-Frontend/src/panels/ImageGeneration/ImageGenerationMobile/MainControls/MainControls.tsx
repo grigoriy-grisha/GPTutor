@@ -14,6 +14,7 @@ import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { imageGeneration } from "$/entity/image";
 import { PromptStyles } from "$/panels/ImageGeneration/PromptStyles";
 import { useNavigationContext } from "$/NavigationContext";
+import { NotEnoughAttempts } from "$/panels/ImageGeneration/NotEnoughAttempts";
 
 function MainControls() {
   const { goToGenerationImagesPrompts } = useNavigationContext();
@@ -41,6 +42,7 @@ function MainControls() {
         </FormItem>
         <Spacing size={6} />
         <PromptStyles />
+
         <Spacing size={6} />
         <Button
           className={classes.button}

@@ -1,0 +1,9 @@
+.container :global(.vkuiCard__in) {
+    display: flex;
+    justify-content: space-between;
+    background: var(--vkui--color_field_background);
+}
+
+.copy {
+    color: var(--vkui--color_icon_accent_themed);
+}

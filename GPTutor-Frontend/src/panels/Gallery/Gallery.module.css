@@ -30,13 +30,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    color: var(--vkui--color_icon_accent_themed);
 }
 
 .additionButtons {
     display: grid;
     grid-template-columns: min-content min-content;
-    gap: 4px;
     position: absolute;
-    right: -11px;
-    bottom: -11px;
+    right: 0;
+    bottom: 0;
+    color: var(--vkui--color_icon_accent_themed);
 }

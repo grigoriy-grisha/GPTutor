@@ -1,11 +1,27 @@
 import React, { useEffect } from "react";
 
-import { Div, IconButton, Spacing, Title } from "@vkontakte/vkui";
+import {
+  Accordion,
+  Caption,
+  classNames,
+  Div,
+  IconButton,
+  Separator,
+  Spacing,
+  Title,
+  Image,
+  HorizontalScroll,
+  HorizontalCell,
+} from "@vkontakte/vkui";
 import { AppContainer } from "$/components/AppContainer";
 
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { imageGeneration } from "$/entity/image";
-import { Icon28ServicesOutline, Icon32StarsOutline } from "@vkontakte/icons";
+import {
+  Icon28CheckCircleOn,
+  Icon28ServicesOutline,
+  Icon32StarsOutline,
+} from "@vkontakte/icons";
 import { useNavigationContext } from "$/NavigationContext";
 import { ImageGenerationDesktopResult } from "$/panels/ImageGeneration/ImageGenerationDesktopResult";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
@@ -13,6 +29,9 @@ import { Attempts } from "$/panels/ImageGeneration/Attempts";
 import { RequestParameters } from "$/panels/ImageGeneration/RequestParameters";
 import { AdvancedSettings } from "$/panels/ImageGeneration/AdvancedSettings";
 import { MainControls } from "$/panels/ImageGeneration/ImageGenerationDesktop/MainControls";
+import { AppDiv } from "$/components/AppDiv";
+import { styles } from "$/entity/image/styles";
+import { ImageStyles } from "$/panels/ImageGeneration/ImageStyles";
 
 function ImageGenerationDesktop() {
   const { goToGenerationImagesExamples, goToGenerationImagesPrompts } =
@@ -30,18 +49,15 @@ function ImageGenerationDesktop() {
     <AppContainer
       headerChildren={
         <AppPanelHeader
-          before={
-            <IconButton>
-              <Icon28ServicesOutline />
-            </IconButton>
-          }
           after={
             <IconButton onClick={goToGenerationImagesExamples}>
               <Icon32StarsOutline width={28} height={28} />
             </IconButton>
           }
         >
-          <Title level="2">Stable Art</Title>
+          <Title style={{ marginLeft: 12 }} level="2">
+            Stable Art
+          </Title>
         </AppPanelHeader>
       }
     >
@@ -51,7 +67,8 @@ function ImageGenerationDesktop() {
 
           <Spacing size={8} />
           <MainControls />
-
+          <Spacing size={8} />
+          <ImageStyles />
           <Spacing size={8} />
           <RequestParameters />
           <Spacing size={8} />

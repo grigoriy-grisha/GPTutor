@@ -1,6 +1,9 @@
-import { Card, Chip } from "@vkontakte/vkui";
+import { Card, Chip, IconButton } from "@vkontakte/vkui";
 import React from "react";
 import { imageGeneration } from "$/entity/image";
+import { Icon16CopyOutline } from "@vkontakte/icons";
+
+import classes from "./PromptStyles.module.css";
 
 function PromptStyles() {
   const imageGenerationPrompt = imageGeneration.imageGenerationPrompt;
@@ -10,10 +13,7 @@ function PromptStyles() {
   }
 
   return (
-    <Card
-      mode="outline"
-      style={{ backgroundColor: "var(--vkui--color_field_background)" }}
-    >
+    <Card mode="outline" className={classes.container}>
       <div style={{ padding: 4 }}>
         {imageGenerationPrompt.selectedStyles$.get().map((style) => (
           <Chip
@@ -25,6 +25,11 @@ function PromptStyles() {
             {style}
           </Chip>
         ))}
+      </div>
+      <div>
+        <IconButton>
+          <Icon16CopyOutline className={classes.copy} />
+        </IconButton>
       </div>
     </Card>
   );

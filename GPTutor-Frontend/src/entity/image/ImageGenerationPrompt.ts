@@ -5,6 +5,10 @@ export class ImageGenerationPrompt {
   selectedStyles$ = sig<string[]>([]);
 
   $selectPrompt(prompt: string) {
+    if (this.selectedPrompt$.get() === prompt) {
+      this.selectedPrompt$.set("");
+      return;
+    }
     this.selectedPrompt$.set(prompt);
   }
 

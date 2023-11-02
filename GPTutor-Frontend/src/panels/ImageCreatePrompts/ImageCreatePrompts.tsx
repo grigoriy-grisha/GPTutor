@@ -33,7 +33,8 @@ function ImageCreatePrompts({ id }: ImageCreatePromptsProps) {
   const imageGenerationPrompt = imageGeneration.imageGenerationPrompt;
 
   function submitPrompts() {
-    imageGeneration.setPrompt(imageGenerationPrompt.getPrompt());
+    const prompt = imageGenerationPrompt.getPrompt();
+    if (prompt) imageGeneration.setPrompt(prompt);
     goBack();
   }
 

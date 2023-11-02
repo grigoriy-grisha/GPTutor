@@ -133,3 +133,8 @@ tfoot > tr  {
 .vkuiWriteBar__after, .vkuiWriteBar__before, .vkuiWriteBar__form {
     align-items: center !important;
 }
+
+.vkui--vkBase--dark, .vkui--vkBase--light, .vkui--vkCom--dark, .vkui--vkCom--light, :root {
+    --vkui--size_border_radius--regular: 12px;
+    --vkui--size_card_border_radius--regular: 12px;
+}

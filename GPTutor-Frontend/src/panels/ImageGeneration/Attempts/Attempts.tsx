@@ -3,6 +3,7 @@ import React from "react";
 import {
   Button,
   Card,
+  Counter,
   Div,
   Platform,
   Text,
@@ -13,6 +14,9 @@ import {
 import { plural } from "$/utility/strings";
 
 import classes from "./Attempts.module.css";
+import { useNavigationContext } from "$/NavigationContext";
+import CountIndicator from "../../../components/CountIndicator/CountIndicator";
+import { attempts } from "$/entity/attempts";
 
 function getAttemptColor(attempts: number) {
   if (attempts < 10) return classes.negative;
@@ -21,25 +25,32 @@ function getAttemptColor(attempts: number) {
 }
 
 function Attempts() {
+  const { goToImageDonutModal } = useNavigationContext();
   const platform = usePlatform();
 
-  const attempts = 50;
+  const count = attempts.$requests.get();
+  const freeCount = attempts.$attemptsToFree.get();
+
   return (
     <Card mode="shadow">
       <Div className={classes.container}>
         <Text className={classes.text} weight="1">
-          <Title
-            style={{ display: "inline" }}
-            level="2"
-            className={getAttemptColor(attempts)}
-          >
-            {attempts}
-          </Title>{" "}
-          <span>
-            {plural(attempts, ["Генерация", "Генерации", "Генераций"])}
-          </span>
+          <CountIndicator negativeCount={3} warningCount={6} count={count} />{" "}
+          <span>{plural(count, ["Генерация", "Генерации", "Генераций"])}</span>
         </Text>
-        <Button size="s" mode="secondary" width="100%">
+        <Button
+          size="m"
+          mode="secondary"
+          width="100%"
+          onClick={goToImageDonutModal}
+          after={
+            !!freeCount && (
+              <Counter mode="primary" size="s">
+                {freeCount}
+              </Counter>
+            )
+          }
+        >
           {platform === Platform.VKCOM ? "Добавить генерации" : "Добавить"}
         </Button>
       </Div>

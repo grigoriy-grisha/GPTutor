@@ -1,13 +1,30 @@
 import React from "react";
 
-import { Card, Div, Spacing } from "@vkontakte/vkui";
+import { Button, Card, Div, Spacing, Text, Title } from "@vkontakte/vkui";
 import { imageGeneration } from "$/entity/image";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { ImageItem } from "$/panels/ImageGeneration/ImageItem";
 import { TimeGenerationInfo } from "$/components/TimeGenerationInfo";
+import { attempts } from "$/entity/attempts";
+import {
+  Icon12ArrowDownCircle,
+  Icon28CancelCircleFillRed,
+} from "@vkontakte/icons";
+import { NotEnoughAttempts } from "$/panels/ImageGeneration/NotEnoughAttempts";
 
 function ImageGenerationDesktopResult() {
   const result = imageGeneration.result$;
+  const generationIsDisable = attempts.$requests.get() === 0;
+
+  if (generationIsDisable) {
+    return (
+      <div>
+        <TimeGenerationInfo />
+        <Spacing size={8} />
+        <NotEnoughAttempts />
+      </div>
+    );
+  }
 
   return (
     <div>

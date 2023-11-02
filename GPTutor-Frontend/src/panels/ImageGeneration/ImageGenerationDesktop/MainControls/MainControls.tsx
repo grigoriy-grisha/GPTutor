@@ -15,11 +15,13 @@ import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { imageGeneration } from "$/entity/image";
 import { PromptStyles } from "$/panels/ImageGeneration/PromptStyles";
 import { useNavigationContext } from "$/NavigationContext";
+import { attempts } from "$/entity/attempts";
 
 function MainControls() {
   const { goToGenerationImagesPrompts } = useNavigationContext();
 
   const generateImage = imageGeneration.generateImage$;
+  const generationIsDisable = attempts.$requests.get() === 0;
 
   return (
     <Card mode="shadow">
@@ -56,6 +58,7 @@ function MainControls() {
         </Button>
         <Spacing size={8} />
         <Button
+          disabled={generationIsDisable}
           loading={generateImage.loading.get()}
           className={classes.button}
           size="l"

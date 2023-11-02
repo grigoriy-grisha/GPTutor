@@ -7,7 +7,7 @@
 .container {
     width: 100%;
     display: grid;
-    grid-template-columns: 2fr 1.1fr;
+    grid-template-columns: 64.5% 32%;
     gap: 8px;
 }
 
@@ -143,14 +143,12 @@
 }
 
 .accordionItems {
-    padding-bottom: 8px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 8px;
+    display: flex;
+    align-items: center;
 }
 
 .accordionItem {
-    width: 100%;
+    width: 120px;
     cursor: pointer;
 }
 
@@ -276,8 +274,12 @@
 }
 
 @media screen and (max-width: 530px) {
-    .accordionItems {
-        grid-template-columns: 1fr 1fr;
+    .accordionItem {
+        width: 200px;
+    }
+
+    .accordionItem :global(.vkuiImageBaseOverlay) {
+        opacity: 0;
     }
 
     .accordionImage {
@@ -291,9 +293,6 @@
 }
 
 @media screen and (max-width: 380px) {
-    .accordionItems {
-        grid-template-columns: 1fr;
-    }
 
     .accordionImage {
         height: 250px !important;

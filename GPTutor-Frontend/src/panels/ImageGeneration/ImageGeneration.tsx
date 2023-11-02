@@ -8,6 +8,7 @@ import {
 import ImageGenerationDesktop from "./ImageGenerationDesktop";
 import { imageGeneration } from "$/entity/image";
 import ImageGenerationMobile from "./ImageGenerationMobile";
+import { attempts } from "$/entity/attempts";
 
 interface IProps {
   id: string;

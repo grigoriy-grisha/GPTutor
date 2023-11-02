@@ -16,6 +16,7 @@ import { ImageGenerationPrompt } from "$/entity/image/ImageGenerationPrompt";
 
 import { ChipOption } from "@vkontakte/vkui/dist/components/Chip/Chip";
 import { StopWatch } from "$/entity/stopWatch";
+import { attempts } from "$/entity/attempts";
 
 class ImageGeneration {
   requestParameters = false;
@@ -68,7 +69,8 @@ class ImageGeneration {
   };
 
   setSamples(value: string) {
-    this.samples$.set(Number(value));
+    const numberValue = Number(value);
+    this.samples$.set(numberValue > 4 ? 4 : numberValue);
     this.setResults();
   }
 
@@ -117,10 +119,6 @@ class ImageGeneration {
   };
 
   setModel(model: string) {
-    if (model !== "sd") {
-      this.samples$.set(1);
-      this.setResults();
-    }
     this.model$.set(model);
   }
 
@@ -197,13 +195,13 @@ class ImageGeneration {
   }
 
   generateImage = async () => {
-    this.loading$.set(true);
-
     this.error$.set("");
     if (this.prompt$.get().trim() === "") {
       this.error$.set("Ввод промпта обязателен!");
       return;
     }
+
+    this.loading$.set(true);
 
     this.timer.run();
 
@@ -234,6 +232,12 @@ class ImageGeneration {
         .map(({ label }) => label)
         .join(","),
     });
+
+    const requests = await attempts.getAttempts();
+
+    if (requests < this.samples$.get()) {
+      this.setSamples(requests);
+    }
 
     if (result.error) {
       this.setResults();

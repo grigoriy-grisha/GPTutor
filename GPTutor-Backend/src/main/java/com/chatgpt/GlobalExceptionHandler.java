@@ -2,6 +2,7 @@ package com.chatgpt;
 
 import com.chatgpt.Exceptions.BadRequestException;
 import com.chatgpt.Exceptions.NotAFoundException;
+import com.chatgpt.Exceptions.TooManyRequestsExceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,5 +35,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotAFoundException.class)
     public ResponseEntity<?> handleNotAFoundException(BadRequestException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+
+    @ExceptionHandler(TooManyRequestsExceptions.class)
+    public ResponseEntity<?> handleTooManyRequestsExceptions(TooManyRequestsExceptions ex) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS, ex.getMessage()));
     }
 }

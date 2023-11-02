@@ -27,7 +27,7 @@ export const styles = [
   {
     value: "lowpoly-diffusion",
     imageName: "lowpoly.png",
-    label: "Низкополигональный",
+    label: "Low poly",
   },
   {
     value: "pixel-sprite",

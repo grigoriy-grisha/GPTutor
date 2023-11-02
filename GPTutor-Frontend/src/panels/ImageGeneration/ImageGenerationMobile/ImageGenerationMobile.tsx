@@ -22,6 +22,9 @@ import { AdvancedSettings } from "$/panels/ImageGeneration/AdvancedSettings";
 import { MainControls } from "$/panels/ImageGeneration/ImageGenerationMobile/MainControls";
 
 import classes from "./ImageGenerationMobile.module.css";
+import { ImageStyles } from "$/panels/ImageGeneration/ImageStyles";
+import bridge from "@vkontakte/vk-bridge";
+import { NotEnoughAttempts } from "$/panels/ImageGeneration/NotEnoughAttempts";
 
 function ImageGenerationMobile() {
   const { goToGenerationImagesResult, goToGenerationImagesExamples } =
@@ -37,11 +40,6 @@ function ImageGenerationMobile() {
     <AppContainer
       headerChildren={
         <AppPanelHeader
-          before={
-            <IconButton>
-              <Icon28ServicesOutline />
-            </IconButton>
-          }
           after={
             <IconButton onClick={goToGenerationImagesExamples}>
               <Icon32StarsOutline width={28} height={28} />
@@ -72,10 +70,10 @@ function ImageGenerationMobile() {
     >
       <Div className={classes.container}>
         <Attempts />
-
         <Spacing size={8} />
         <MainControls />
-
+        <Spacing size={8} />
+        <ImageStyles />
         <Spacing size={8} />
         <RequestParameters />
         <Spacing size={8} />

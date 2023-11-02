@@ -17,10 +17,11 @@ export class TranslationService {
     if (this.attempts === 0) {
       this.runCleanAttempts();
     }
+
     const result = (await bridge.send(
       <AnyRequestMethodName>"VKWebAppTranslate",
       {
-        texts: [text],
+        texts: [text.replaceAll(",", "$")],
         translation_language: "ru-en",
       } as any
     )) as any;
@@ -29,7 +30,7 @@ export class TranslationService {
       return result.texts.join("");
     }
 
-    return result.result.texts.join("");
+    return result.result.texts.join("").replaceAll("$", ",");
   }
 
   isEnglishOver50Percent(text: string) {

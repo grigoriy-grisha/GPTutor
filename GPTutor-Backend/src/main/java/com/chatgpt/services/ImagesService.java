@@ -19,6 +19,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
@@ -45,61 +46,22 @@ public class ImagesService {
     UserService userService;
 
     @Autowired
-    S3Service s3Service;
+    AttemptsService attemptsService;
 
-    public Image saveImage(UUID imageId) {
-        File tempFile = null;
-
-        try {
-
-            var imageOptional = imageRepository.findById(imageId);
-            if (imageOptional.isEmpty()) {
-                throw new NotAFoundException("Изображение не найдено");
-            }
-
-            var image = imageOptional.get();
-
-            try {
-                ResponseEntity<byte[]> response = restTemplate.getForEntity(image.getUrl(), byte[].class);
-                if (response.getStatusCode() == HttpStatus.OK) {
-                    byte[] imageBytes = response.getBody();
-                    if (imageBytes != null) {
-                        tempFile = File.createTempFile("image-", ".png");
-                        Files.write(tempFile.toPath(), imageBytes);
-                    }
-                }
-            } catch (IOException e) {
-                System.out.println("Ошибка при сохранении картинки: " + e.getMessage());
-                if (tempFile != null) {
-                    tempFile.delete();
-                }
-            }
-
-            var uuid = UUID.randomUUID().toString();
-            s3Service.uploadObject(uuid, tempFile);
-
-            image.setUrl(s3Service.getBucketUrl(uuid));
-            image.setExpire(null);
-
-            imageRepository.save(image);
-
-            return image;
-        } finally {
-            if (tempFile != null) {
-                tempFile.delete();
-            }
+    @Transactional
+    public List<Image> generateImage(String vkUserId, GenerateImageRequest generateImageRequest) {
+        if (attemptsService.hasRequests(vkUserId)) {
+            throw new BadRequestException("Не хватает запросов");
         }
 
-    }
-
-    public List<Image> generateImage(String vkUserId, GenerateImageRequest generateImageRequest) {
         if (badListService.checkText(generateImageRequest.getPrompt())) {
             throw new BadRequestException("Запрос содержит неприемлемое содержимое");
         }
 
         try {
-
             var pair = generateImage(generateImageRequest);
+            attemptsService.incrementAttempts(vkUserId, generateImageRequest.getSamples());
+
             return Arrays
                     .stream(pair.getFirst())
                     .map((image) -> createImage(image, vkUserId, pair.getSecond(), generateImageRequest))
@@ -125,7 +87,7 @@ public class ImagesService {
     }
 
     Pair<String[], String> generateImage(GenerateImageRequest generateImageRequest) throws JsonProcessingException {
-        String urlGenerate = "http://models:1337/image";
+        String urlGenerate = "http://localhost:1338/image";
         HttpEntity<GenerateImageRequest> requestImage = new HttpEntity<>(generateImageRequest);
         var responseImage = restTemplate.postForEntity(urlGenerate, requestImage, String.class);
 

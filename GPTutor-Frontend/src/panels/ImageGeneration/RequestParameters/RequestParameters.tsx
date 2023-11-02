@@ -19,6 +19,7 @@ import { AppDiv } from "$/components/AppDiv";
 import { ImageAspectRatio } from "$/entity/image/types";
 import { getImageSize } from "$/panels/ImageGeneration/utils";
 import { Icon20Verified } from "@vkontakte/icons";
+import { attempts } from "$/entity/attempts";
 
 function RequestParameters() {
   return (
@@ -107,12 +108,14 @@ function RequestParameters() {
             <Spacing size={8} />
             <FormItem top="Количество изображений">
               <Select
-                options={["1", "2", "3", "4"].map((item) => ({
-                  label: item,
-                  value: item,
-                  disabled:
-                    item != "1" && imageGeneration.model$.get() !== "sd",
-                }))}
+                options={["1", "2", "3", "4"]
+                  .map((item) => ({
+                    label: item,
+                    value: item,
+                    disabled:
+                      item != "1" && imageGeneration.model$.get() !== "sd",
+                  }))
+                  .slice(0, attempts.$requests.get())}
                 onChange={(event) => {
                   imageGeneration.setSamples(event.target.value);
                 }}

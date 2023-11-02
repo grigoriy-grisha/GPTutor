@@ -4,10 +4,7 @@ import time
 
 import requests
 
-negative_prompt_default = (
-    "woman,(((vaginal))),(((childish))),(((nsfw))),(((orgasm))),(((pussy out))),(((cum))),(((pussy))),(((sexy))),"
-    "(((horny))), (((topless))),(((erotic))),(((milf))),((breasts)),(((nude woman))),(((nude woman))),((nude)),"
-    "(((nudity))),(((boobs))),(((nudity))),(((tits))),((nipples)),((sex)),((vigina)),((genitals)),((penis))")
+negative_prompt_default = "(((nsfw)))"
 
 
 def textToImage(
@@ -31,7 +28,7 @@ def textToImage(
 
     payload = json.dumps({
         "key": "YtbAxupBBktr6Mlmyc2m6yUYXex7y1bBrESTDFhuovoS4wRaOPJ0U7Lv9SQI",
-        "prompt": prompt,
+        "prompt": prompt + ",beatiful",
         "negative_prompt": negative_prompt_default + negative_prompt,
         "model_id": model_id,
         "width": str(width),
@@ -42,6 +39,7 @@ def textToImage(
         "upscale": "no",
         "safety_checker": "yes",
         "multi_lingual": "yes",
+        "clip_skip": "6",
         "enhance_prompt": "no",
         "panorama": "no",
         "safety_checker_type": "blur",
