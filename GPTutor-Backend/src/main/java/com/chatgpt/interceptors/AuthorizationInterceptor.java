@@ -31,8 +31,22 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
         String authorizationHeader = request.getHeader("Authorization");
 
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = request.getHeader(headerName);
+            System.out.println(headerName);
+            System.out.println(headerValue);
+        }
+
+        System.out.println(request.getHeaderNames());
+        System.out.println("__________________________хуй");
+        System.out.println(authorizationHeader);
+        System.out.println("__________________________1");
         if (authorizationHeader == null) {
             var params = getQueryParams(request);
+            System.out.println(params);
+            System.out.println("__________________________2");
             var isSignSuccess = authCheckerService.checkAuthorizationHeaderByParams(params);
 
             if (isSignSuccess) {

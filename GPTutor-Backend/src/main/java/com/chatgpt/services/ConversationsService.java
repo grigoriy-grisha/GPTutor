@@ -55,7 +55,7 @@ public class ConversationsService {
         System.out.println(apiKey.getFirst().getKey());
 
         HttpRequest requestFreeGPT = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:1338/gpt"))
+                .uri(URI.create("http://models:1337/gpt"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(input))
                 .build();

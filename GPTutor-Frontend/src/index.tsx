@@ -1,5 +1,6 @@
 import "./env-config.js";
 import "dignals-react/jsxPatch17";
+import "./env.js";
 
 import React from "react";
 import ReactDOM from "react-dom";
@@ -18,8 +19,6 @@ import { adService } from "$/services/AdService";
 import { authService } from "$/services/AuthService";
 import { groupsService } from "$/services/GroupsService";
 import { appService } from "$/services/AppService";
-import { attempts } from "$/entity/attempts";
-import { imageGeneration } from "$/entity/image";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
@@ -46,9 +45,6 @@ bridge
     if (!isDon) {
       adService.showBannerAd();
     }
-
-    const samples = await attempts.getAttempts();
-    imageGeneration.setSamples(String(samples));
 
     appService.toggleLoading();
   })

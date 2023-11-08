@@ -8,7 +8,7 @@ export enum AppInstanceType {
 class AppService {
   loading = sig(true);
 
-  appInstance = AppInstanceType.StableArt;
+  appInstance = (window as any).env.REACT_APP;
 
   toggleLoading() {
     this.loading.set(!this.loading.get());

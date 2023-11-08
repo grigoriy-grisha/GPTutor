@@ -1,0 +1,80 @@
+version: '3.9'
+
+services:
+  frontend-gptutor-prod:
+    env_file:
+      - .env-infra
+    build:
+      context: GPTutor-Frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP: 'GPTutor'
+    container_name: frontend-gptutor-prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend-prod.rule=Host(`prod.${HOST}`)"
+      - "traefik.http.routers.frontend-prod.entrypoints=websecure"
+      - "traefik.http.routers.frontend-prod.tls.certresolver=myresolver"
+    networks:
+      - trfk
+
+  frontend-stable-art-prod:
+    env_file:
+      - .env-infra
+    build:
+      context: GPTutor-Frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP: 'Stable Art'
+    container_name: frontend-stable-art-prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend-prod.rule=Host(`prod.${HOST}`)"
+      - "traefik.http.routers.frontend-prod.entrypoints=websecure"
+      - "traefik.http.routers.frontend-prod.tls.certresolver=myresolver"
+    networks:
+      - trfk
+
+  backend-prod:
+    env_file:
+      - .env-infra
+      - .env-prod
+    build: ./GPTutor-Backend
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url": "jdbc:postgresql://postgresql:5432/postgres",
+        "spring.datasource.username": "${POSTGRES_USER}",
+        "spring.datasource.password": "${POSTGRES_PASSWORD}",
+        "cors.allowed.origins": "${CORS_ORIGIN}",
+        "auth.skip": ${SKIP_AUTH},
+        "api.keys.120dollars":  "${API_KEYS_120}",
+        "api.keys.5dollars": "${API_KEYS_5}"
+      }'
+    container_name: backend-prod
+    depends_on:
+      - postgresql-prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend-prod.rule=Host(`prod.${HOST}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend-prod.entrypoints=websecure"
+      - "traefik.http.routers.backend-prod.tls.certresolver=myresolver"
+    networks:
+      - trfk
+
+  postgresql-prod:
+    image: 'postgres:13.1-alpine'
+    container_name: postgresql-prod
+    env_file:
+      - .env-prod
+    volumes:
+      - db-data-prod:/var/lib/postgresql/data
+    networks:
+      - trfk
+
+volumes:
+  db-data-prod:
+
+networks:
+  trfk:
+    driver: overlay
+    external: true

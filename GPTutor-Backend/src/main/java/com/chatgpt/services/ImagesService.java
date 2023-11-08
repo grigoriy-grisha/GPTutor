@@ -45,22 +45,15 @@ public class ImagesService {
     @Autowired
     UserService userService;
 
-    @Autowired
-    AttemptsService attemptsService;
 
     @Transactional
     public List<Image> generateImage(String vkUserId, GenerateImageRequest generateImageRequest) {
-        if (attemptsService.hasRequests(vkUserId)) {
-            throw new BadRequestException("Не хватает запросов");
-        }
-
         if (badListService.checkText(generateImageRequest.getPrompt())) {
             throw new BadRequestException("Запрос содержит неприемлемое содержимое");
         }
 
         try {
             var pair = generateImage(generateImageRequest);
-            attemptsService.incrementAttempts(vkUserId, generateImageRequest.getSamples());
 
             return Arrays
                     .stream(pair.getFirst())
@@ -87,7 +80,7 @@ public class ImagesService {
     }
 
     Pair<String[], String> generateImage(GenerateImageRequest generateImageRequest) throws JsonProcessingException {
-        String urlGenerate = "http://localhost:1338/image";
+        String urlGenerate = "http://models:1337/image";
         HttpEntity<GenerateImageRequest> requestImage = new HttpEntity<>(generateImageRequest);
         var responseImage = restTemplate.postForEntity(urlGenerate, requestImage, String.class);
 
