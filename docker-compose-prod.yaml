@@ -20,7 +20,7 @@ services:
 
   frontend-stable-art-prod:
     env_file:
-      - .env-infra
+      - .env
     build:
       context: GPTutor-Frontend
       dockerfile: Dockerfile
