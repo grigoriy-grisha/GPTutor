@@ -9,6 +9,8 @@ services:
       dockerfile: Dockerfile
       args:
         REACT_APP: 'GPTutor'
+        REACT_APP_BACKEND_HOST: 'https://prod.${HOST}/'
+        REACT_APP_BACKEND_HOST_WS: "wss://prod.${HOST}/websocket/"
     container_name: frontend-gptutor-prod
     labels:
       - "traefik.enable=true"

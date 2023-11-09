@@ -1,6 +1,6 @@
 import { Attempts } from "$/entity/attempts/interface";
 
-const BACKEND_HOST = _env_.REACT_APP_BACKEND_HOST;
+const BACKEND_HOST = env.REACT_APP_BACKEND_HOST;
 
 export function sendFreeAttempts(): Promise<Attempts> {
   return fetch(`${BACKEND_HOST}attempts/free`, {

@@ -1,7 +1,7 @@
 import { GeneratedImage, GenerateImageRequest } from "$/entity/image/types";
 import { ErrorResponseType, Pageable } from "$/entity/common";
 
-const BACKEND_HOST = _env_.REACT_APP_BACKEND_HOST;
+const BACKEND_HOST = env.REACT_APP_BACKEND_HOST;
 
 export function generateImage(
   params: GenerateImageRequest
