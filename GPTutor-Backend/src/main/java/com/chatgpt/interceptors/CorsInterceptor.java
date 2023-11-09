@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @Component
 public class CorsInterceptor implements HandlerInterceptor {
-    private static final String ALLOWED_METHODS = "GET, POST, PUT, DELETE";
+    private static final String ALLOWED_METHODS = "GET, POST, PUT, DELETE, OPTIONS";
     private static final String ALLOWED_HEADERS = "*";
 
     @Value("${cors.allowed.origins}")
