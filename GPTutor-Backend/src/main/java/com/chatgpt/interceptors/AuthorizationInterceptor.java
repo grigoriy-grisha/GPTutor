@@ -26,8 +26,12 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
         System.out.println(skipAuth);
         System.out.println("skipAuth");
-        System.out.println(skipAuth == true);
-        System.out.println("skipAuth == true");
+        if (skipAuth == true) {
+            System.out.println("Значение равно true");
+        } else if (skipAuth == false) {
+            System.out.println("Значение равно false");
+        }
+
         if (skipAuth) {
             request.setAttribute("vkUserId", "0");
             return true;
