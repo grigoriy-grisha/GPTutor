@@ -6,12 +6,14 @@ RUN npm install --force && mkdir /app && mv ./node_modules ./app
 
 WORKDIR /app
 
-COPY . .
-
 ARG REACT_APP
 ENV REACT_APP $REACT_APP
 
-RUN node ./createEnvFile.js && npm run build
+RUN node ./createEnvFile.js
+
+COPY . .
+
+RUN npm run build
 
 FROM nginx:latest
 
