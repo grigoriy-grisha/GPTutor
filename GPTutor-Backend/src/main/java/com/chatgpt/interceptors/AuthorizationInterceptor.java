@@ -24,14 +24,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
-        System.out.println(skipAuth);
-        System.out.println("skipAuth");
-        if (skipAuth == true) {
-            System.out.println("Значение равно true");
-        } else if (skipAuth == false) {
-            System.out.println("Значение равно false");
-        }
-
         if (skipAuth) {
             request.setAttribute("vkUserId", "0");
             return true;
@@ -39,22 +31,11 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
         String authorizationHeader = request.getHeader("Authorization");
 
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            String headerValue = request.getHeader(headerName);
-            System.out.println(headerName);
-            System.out.println(headerValue);
-        }
-
-        System.out.println(request.getHeaderNames());
-        System.out.println("__________________________хуй");
         System.out.println(authorizationHeader);
-        System.out.println("__________________________1");
+        System.out.println("check 1");
+
         if (authorizationHeader == null) {
             var params = getQueryParams(request);
-            System.out.println(params);
-            System.out.println("__________________________2");
             var isSignSuccess = authCheckerService.checkAuthorizationHeaderByParams(params);
 
             if (isSignSuccess) {
@@ -66,6 +47,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
+
+        System.out.println("check 2");
 
         if (authorizationHeader != null) {
             boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(
@@ -84,6 +67,10 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             }
         }
 
+        System.out.println("check 3");
+
+        System.out.println(authorizationHeader);
+        System.out.println(HttpStatus.UNAUTHORIZED.value());
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
