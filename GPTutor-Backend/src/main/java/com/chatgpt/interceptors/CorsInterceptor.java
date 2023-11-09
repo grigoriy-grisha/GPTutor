@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Component
 public class CorsInterceptor implements HandlerInterceptor {
-    private static final String ALLOWED_METHODS = "GET, POST, PUT, DELETE, OPTIONS";
+    private static final String ALLOWED_METHODS = "GET, POST, PUT, DELETE";
     private static final String ALLOWED_HEADERS = "*";
 
     @Value("${cors.allowed.origins}")
@@ -20,8 +20,7 @@ public class CorsInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, HttpServletResponse response, @NonNull Object handler) {
-        System.out.println(allowOrigins);
-        System.out.println(Objects.equals(allowOrigins, "https://*.prod.b-44.team"));
+
         response.setHeader("Access-Control-Allow-Origin", allowOrigins);
         response.setHeader("Access-Control-Allow-Methods", ALLOWED_METHODS);
         response.setHeader("Access-Control-Allow-Headers", ALLOWED_HEADERS);
