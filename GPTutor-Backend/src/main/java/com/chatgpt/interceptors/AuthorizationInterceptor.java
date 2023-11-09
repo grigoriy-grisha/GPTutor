@@ -25,10 +25,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
-        if (Objects.equals(request.getMethod(), "OPTIONS")) {
-            return true;
-        }
-
         System.out.println(request.getMethod());
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
@@ -36,6 +32,10 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             String headerValue = request.getHeader(headerName);
             System.out.println(headerName);
             System.out.println(headerValue);
+        }
+
+        if (Objects.equals(request.getMethod(), "OPTIONS")) {
+            return true;
         }
 
         if (skipAuth) {
