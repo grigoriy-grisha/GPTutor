@@ -12,7 +12,7 @@ services:
     container_name: frontend-gptutor-prod
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-gptutor-prod.rule=Host(`prod.${HOST}`) && PathPrefix(`/gptutor`)"
+      - "traefik.http.routers.frontend-gptutor-prod.rule=Host(`gptutor.prod.${HOST}`)"
       - "traefik.http.routers.frontend-gptutor-prod.entrypoints=websecure"
       - "traefik.http.routers.frontend-gptutor-prod.tls.certresolver=myresolver"
     networks:
@@ -29,7 +29,7 @@ services:
     container_name: frontend-stable-art-prod
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-stable-art-prod.rule=Host(`prod.${HOST}`) && PathPrefix(`/stable-art`)"
+      - "traefik.http.routers.frontend-stable-art-prod.rule=Host(`stable-art.prod.${HOST}`)"
       - "traefik.http.routers.frontend-stable-art-prod.entrypoints=websecure"
       - "traefik.http.routers.frontend-stable-art-prod.tls.certresolver=myresolver"
     networks:
@@ -47,7 +47,7 @@ services:
       - postgresql-prod
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend-prod.rule=Host(`prod.${HOST}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend-prod.rule=Host(`prod.${HOST}`)"
       - "traefik.http.routers.backend-prod.entrypoints=websecure"
       - "traefik.http.routers.backend-prod.tls.certresolver=myresolver"
     networks:

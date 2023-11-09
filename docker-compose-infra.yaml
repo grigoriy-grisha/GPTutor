@@ -46,10 +46,10 @@ services:
       - "traefik.http.routers.desktop.middlewares=desktop-https-redirect"
       - "traefik.http.routers.desktop-secure.entrypoints=websecure"
       - "traefik.http.routers.desktop-secure.rule=Host(`desktop.${HOST}`)"
+      - "traefik.http.routers.desktop-secure.entrypoints=websecure"
       - "traefik.http.routers.desktop-secure.tls=true"
       - "traefik.http.routers.desktop-secure.tls.certresolver=myresolver"
       - "traefik.http.routers.desktop-secure.service=desktop"
-      - "traefik.http.routers.desktop-secure.middlewares=auth"
       - "traefik.http.services.desktop.loadbalancer.server.port=9000"
     volumes:
       - "desktop_volume:/data"
