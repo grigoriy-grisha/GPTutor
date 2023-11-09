@@ -28,6 +28,8 @@ services:
       dockerfile: Dockerfile
       args:
         REACT_APP: 'Stable Art'
+        REACT_APP_BACKEND_HOST: 'https://stage.${HOST}/'
+        REACT_APP_BACKEND_HOST_WS: "wss://stage.${HOST}/websocket/"
     container_name: frontend-stable-art-stage
     labels:
       - "traefik.enable=true"
