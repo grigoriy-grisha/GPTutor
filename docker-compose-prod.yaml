@@ -12,9 +12,9 @@ services:
     container_name: frontend-gptutor-prod
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-prod.rule=Host(`prod.${HOST}`) && PathPrefix(`/gptutor`)"
-      - "traefik.http.routers.frontend-prod.entrypoints=websecure"
-      - "traefik.http.routers.frontend-prod.tls.certresolver=myresolver"
+      - "traefik.http.routers.frontend-gptutor-prod.rule=Host(`prod.${HOST}`) && PathPrefix(`/gptutor`)"
+      - "traefik.http.routers.frontend-gptutor-prod.entrypoints=websecure"
+      - "traefik.http.routers.frontend-gptutor-prod.tls.certresolver=myresolver"
     networks:
       - trfk
 
@@ -29,9 +29,9 @@ services:
     container_name: frontend-stable-art-prod
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-prod.rule=Host(`prod.${HOST}`) && PathPrefix(`/stable-art`)"
-      - "traefik.http.routers.frontend-prod.entrypoints=websecure"
-      - "traefik.http.routers.frontend-prod.tls.certresolver=myresolver"
+      - "traefik.http.routers.frontend-stable-art-prod.rule=Host(`prod.${HOST}`) && PathPrefix(`/stable-art`)"
+      - "traefik.http.routers.frontend-stable-art-prod.entrypoints=websecure"
+      - "traefik.http.routers.frontend-stable-art-prod.tls.certresolver=myresolver"
     networks:
       - trfk
 
