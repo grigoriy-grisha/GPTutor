@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Enumeration;
 import java.util.Objects;
 
 @Component
@@ -20,6 +21,16 @@ public class CorsInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, HttpServletResponse response, @NonNull Object handler) {
+
+        System.out.println(request.getMethod());
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = request.getHeader(headerName);
+            System.out.println(headerName);
+            System.out.println(headerValue);
+        }
+
 
         response.setHeader("Access-Control-Allow-Origin", allowOrigins);
         response.setHeader("Access-Control-Allow-Methods", ALLOWED_METHODS);
