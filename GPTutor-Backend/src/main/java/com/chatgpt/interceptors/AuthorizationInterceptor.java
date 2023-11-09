@@ -13,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
@@ -24,31 +25,17 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
+        if (Objects.equals(request.getMethod(), "OPTIONS")) {
+            return true;
+        }
+
         if (skipAuth) {
             request.setAttribute("vkUserId", "0");
             return true;
         }
 
         String authorizationHeader = request.getHeader("Authorization");
-
         System.out.println(authorizationHeader);
-        System.out.println("check 1");
-
-        if (authorizationHeader == null) {
-            var params = getQueryParams(request);
-            var isSignSuccess = authCheckerService.checkAuthorizationHeaderByParams(params);
-
-            if (isSignSuccess) {
-                request.setAttribute(
-                        "vkUserId",
-                        authCheckerService.getVkUserIdFromParams(params)
-                );
-
-                return true;
-            }
-        }
-
-        System.out.println("check 2");
 
         if (authorizationHeader != null) {
             boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(
@@ -66,11 +53,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-
-        System.out.println("check 3");
-
-        System.out.println(authorizationHeader);
-        System.out.println(HttpStatus.UNAUTHORIZED.value());
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
