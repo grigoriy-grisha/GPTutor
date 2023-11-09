@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service()
 public class UserService {
-    @Value("${auth.skip}")
-    boolean skipAuth;
-
     @Autowired
     VkUsersRepository vkUsersRepository;
 

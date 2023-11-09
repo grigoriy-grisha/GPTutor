@@ -17,11 +17,6 @@ import java.util.TreeMap;
 
 @Service
 public class PurchaseService {
-    @Value("${auth.client.secret}")
-    String clientSecret;
-
-    @Autowired
-    AttemptsService attemptsService;
 
     Map<String, PurchaseItem> items = new HashMap<>();
 
@@ -42,7 +37,7 @@ public class PurchaseService {
         if (foundItem == null) throw new BadRequestException("Товар не найден");
 
 
-        attemptsService.updateAttemptsUser(vkId, foundItem.getPrice());
+//        attemptsService.updateAttemptsUser(vkId, foundItem.getPrice());
     }
 
     public void isAccessSig(Map<String, String> params) {
@@ -64,7 +59,9 @@ public class PurchaseService {
                         .append(value);
             }
         }
-        sb.append(clientSecret);
+
+        //todo
+        sb.append("");
 
         return calculateMD5(sb.toString());
     }

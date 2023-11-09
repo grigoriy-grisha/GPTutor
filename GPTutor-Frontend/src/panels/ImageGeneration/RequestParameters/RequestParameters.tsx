@@ -3,6 +3,7 @@ import React from "react";
 import {
   Accordion,
   Banner,
+  Button,
   Card,
   classNames,
   Div,
@@ -18,13 +19,36 @@ import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { AppDiv } from "$/components/AppDiv";
 import { ImageAspectRatio } from "$/entity/image/types";
 import { getImageSize } from "$/panels/ImageGeneration/utils";
-import { Icon20Verified } from "@vkontakte/icons";
+import {
+  Icon20Verified,
+  Icon24Lock,
+  Icon24LockOpenOutline,
+} from "@vkontakte/icons";
 import { attempts } from "$/entity/attempts";
 
 function RequestParameters() {
   return (
-    <Card mode="shadow">
+    <Card
+      mode="shadow"
+      style={{
+        border: "2px solid #FF8C00",
+      }}
+    >
       <Div>
+        <Button
+          size="l"
+          before={<Icon24LockOpenOutline />}
+          style={{
+            width: "100%",
+            background: "var(--vkui--color_accent_orange--active)",
+            color: "#FF8C00 !important",
+          }}
+        >
+          Разблокировать функционал
+        </Button>
+        <Spacing size={6} />
+        {/*<Text>С</Text>*/}
+        <Spacing size={6} />
         <Accordion
           open={imageGeneration.requestParameters}
           className={classes.accordion}

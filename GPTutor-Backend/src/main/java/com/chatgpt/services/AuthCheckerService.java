@@ -1,5 +1,6 @@
 package com.chatgpt.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,10 @@ import java.util.stream.Collectors;
 @Service
 public class AuthCheckerService {
 
-    private static final String ENCODING = "UTF-8";
+    @Autowired
+    VkSecretesService vkSecretesService;
 
-    @Value("${auth.client.secret}")
-    String clientSecret;
+    private static final String ENCODING = "UTF-8";
 
     public String splitBearer(String header) {
         return header.substring(7);
@@ -47,7 +48,7 @@ public class AuthCheckerService {
                 .map(entry -> encode(entry.getKey()) + "=" + (entry.getValue() == null ? encode("") : encode(entry.getValue())))
                 .collect(Collectors.joining("&"));
 
-        String sign = getHashCode(checkString, clientSecret);
+        String sign = getHashCode(checkString, vkSecretesService.getSecretKey(queryParams.get("vk_app_id")));
 
         return sign.equals(queryParams.getOrDefault("sign", ""));
     }

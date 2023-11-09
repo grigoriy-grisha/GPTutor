@@ -24,9 +24,8 @@ public class VkService {
     @Autowired
     FileService fileService;
 
-    @Value("${vk.key}")
-    String authToken;
 
+    //todo вынести этот метод на фронт
     public Boolean groupIsMember(String groupId, String userId) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.vk.com/method/groups.isMember"
@@ -35,7 +34,7 @@ public class VkService {
         Map<String, String> params = new HashMap<>();
         params.put("groupId", groupId);
         params.put("userId", userId);
-        params.put("accessToken", authToken);
+        params.put("accessToken", "");
         params.put("v", "5.131");
 
         String result = restTemplate.getForObject(url, String.class, params);

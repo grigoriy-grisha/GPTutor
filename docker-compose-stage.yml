@@ -1,0 +1,81 @@
+version: '3.9'
+
+services:
+  frontend-gptutor-stage:
+    env_file:
+      - .env
+    build:
+      context: GPTutor-Frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP: 'GPTutor'
+    container_name: frontend-gptutor-stage
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend-stage.rule=Host(`stage.${HOST}`)"
+      - "traefik.http.routers.frontend-stage.entrypoints=websecure"
+      - "traefik.http.routers.frontend-stage.tls.certresolver=myresolver"
+    networks:
+      - trfk
+
+  frontend-stable-art-stage:
+    env_file:
+      - .env-infra
+    build:
+      context: GPTutor-Frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP: 'Stable Art'
+    container_name: frontend-stable-art-stage
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend-stage.rule=Host(`stage.${HOST}`)"
+      - "traefik.http.routers.frontend-stage.entrypoints=websecure"
+      - "traefik.http.routers.frontend-stage.tls.certresolver=myresolver"
+    networks:
+      - trfk
+
+  backend-stage:
+    env_file:
+      - .env
+      - .env-stage
+    build: ./GPTutor-Backend
+    container_name: backend-stage
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresql-stage
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend-stage.rule=Host(`stage.${HOST}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend-stage.entrypoints=websecure"
+      - "traefik.http.routers.backend-stage.tls.certresolver=myresolver"
+    networks:
+      - trfk
+  models-stage:
+    env_file:
+      - .env-stage
+    container_name: models-stage
+    build:
+      context: GPTutor-Models
+      dockerfile: Dockerfile
+    networks:
+      - trfk
+
+  postgresql-stage:
+    image: 'postgres:13.1-alpine'
+    container_name: postgresql-stage
+    env_file:
+      - .env-stage
+    volumes:
+      - db-data-stage:/var/lib/postgresql/data
+    networks:
+      - trfk
+
+volumes:
+  db-data-stage:
+
+networks:
+  trfk:
+    driver: overlay
+    external: true

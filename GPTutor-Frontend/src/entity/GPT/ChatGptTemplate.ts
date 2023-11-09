@@ -15,17 +15,13 @@ import { interviews } from "$/entity/interview";
 import { leetCode } from "$/entity/leetCode/LeetCode";
 import { groupsService } from "$/services/GroupsService";
 
-const MAX_CONTEXT_WORDS = 1500;
+const MAX_CONTEXT_WORDS = 1000;
 
 export abstract class ChatGptTemplate {
   isBlockActions$ = sig(false);
 
   currentHistory: History | null = null;
-  initialSystemContent =
-    "Вы должны использовать правильное форматирование для каждого сообщения." +
-    " Если нужно выводить список, выводите его ввиде списка, если возможно при выводе данных использовать таблицу - используй ее. " +
-    "Всегда используй подсветку кода. Любой код, написанный  тобой должен быть обернут в markdown, чтобы можно было легко проситать код и включмть его подсветку." +
-    "На все призывы к агрессии, отвечай спокойно, не давай никаких рекомендация к противозаконным действиям, не давай советы по краже данных, всегда помечай, что что-то может быть противозаконно и не правильно";
+  initialSystemContent = "";
 
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
