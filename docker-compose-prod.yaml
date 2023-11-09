@@ -54,6 +54,9 @@ services:
       - "traefik.http.routers.backend-prod.rule=Host(`prod.${HOST}`)"
       - "traefik.http.routers.backend-prod.entrypoints=websecure"
       - "traefik.http.routers.backend-prod.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.backend-prod.headers.accessControlAllowOrigin=*"
+      - "traefik.http.middlewares.backend-prod.headers.accessControlAllowMethods=GET,POST,PUT,DELETE"
+      - "traefik.http.middlewares.backend-prod.headers.accessControlAllowHeaders=*"
     networks:
       - trfk
   models-prod:
