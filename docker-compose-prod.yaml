@@ -45,8 +45,6 @@ services:
       - .env-prod
     build: ./GPTutor-Backend
     container_name: backend-prod
-    ports:
-      - "8080:8080"
     depends_on:
       - postgresql-prod
     labels:
@@ -54,11 +52,9 @@ services:
       - "traefik.http.routers.backend-prod.rule=Host(`prod.${HOST}`)"
       - "traefik.http.routers.backend-prod.entrypoints=websecure"
       - "traefik.http.routers.backend-prod.tls.certresolver=myresolver"
-      - "traefik.http.middlewares.backend-prod.headers.accessControlAllowOrigin=*"
-      - "traefik.http.middlewares.backend-prod.headers.accessControlAllowMethods=GET,POST,PUT,DELETE,OPTIONS"
-      - "traefik.http.middlewares.backend-prod.headers.accessControlAllowHeaders=*"
     networks:
       - trfk
+
   models-prod:
     env_file:
       - .env-prod
