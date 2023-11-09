@@ -12,7 +12,7 @@ services:
     container_name: frontend-gptutor-stage
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-stage.rule=Host(`stage.${HOST}`)"
+      - "traefik.http.routers.frontend-stage.rule=Host(`stage.${HOST}`) && PathPrefix(`/gptutor`)"
       - "traefik.http.routers.frontend-stage.entrypoints=websecure"
       - "traefik.http.routers.frontend-stage.tls.certresolver=myresolver"
     networks:
@@ -29,7 +29,7 @@ services:
     container_name: frontend-stable-art-stage
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-stage.rule=Host(`stage.${HOST}`)"
+      - "traefik.http.routers.frontend-stage.rule=Host(`stage.${HOST}`) && PathPrefix(`/stable-art`)"
       - "traefik.http.routers.frontend-stage.entrypoints=websecure"
       - "traefik.http.routers.frontend-stage.tls.certresolver=myresolver"
     networks:
