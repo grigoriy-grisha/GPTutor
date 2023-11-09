@@ -6,6 +6,8 @@ RUN npm install --force && mkdir /app && mv ./node_modules ./app
 
 WORKDIR /app
 
+COPY . .
+
 ARG REACT_APP
 ENV REACT_APP $REACT_APP
 
@@ -15,11 +17,7 @@ ENV REACT_APP_BACKEND_HOST $REACT_APP_BACKEND_HOST
 ARG REACT_APP_BACKEND_HOST_WS
 ENV REACT_APP_BACKEND_HOST_WS $REACT_APP_BACKEND_HOST_WS
 
-RUN node ./createEnvFile.js
-
-COPY . .
-
-RUN npm run build
+RUN node ./createEnvFile.js && npm run build
 
 FROM nginx:latest
 
