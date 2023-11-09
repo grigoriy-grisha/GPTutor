@@ -29,6 +29,15 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        System.out.println(request.getMethod());
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = request.getHeader(headerName);
+            System.out.println(headerName);
+            System.out.println(headerValue);
+        }
+
         if (skipAuth) {
             request.setAttribute("vkUserId", "0");
             return true;
