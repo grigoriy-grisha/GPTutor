@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,9 @@ import java.util.UUID;
 
 @Service
 public class ImagesService {
+
+    @Value("${models.url}")
+    String modelsUrl;
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -80,7 +84,7 @@ public class ImagesService {
     }
 
     Pair<String[], String> generateImage(GenerateImageRequest generateImageRequest) throws JsonProcessingException {
-        String urlGenerate = "http://models:1337/image";
+        String urlGenerate = modelsUrl + "/image";
         HttpEntity<GenerateImageRequest> requestImage = new HttpEntity<>(generateImageRequest);
         var responseImage = restTemplate.postForEntity(urlGenerate, requestImage, String.class);
 

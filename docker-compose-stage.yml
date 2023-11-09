@@ -3,7 +3,7 @@ version: '3.9'
 services:
   frontend-gptutor-stage:
     env_file:
-      - .env-infra
+      - .env
     build:
       context: GPTutor-Frontend
       dockerfile: Dockerfile
@@ -37,20 +37,12 @@ services:
 
   backend-stage:
     env_file:
-      - .env-infra
+      - .env
       - .env-stage
     build: ./GPTutor-Backend
-    environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url": "jdbc:postgresql://postgresql:5432/postgres",
-        "spring.datasource.username": "${POSTGRES_USER}",
-        "spring.datasource.password": "${POSTGRES_PASSWORD}",
-        "cors.allowed.origins": "${CORS_ORIGIN}",
-        "auth.skip": ${SKIP_AUTH},
-        "api.keys.120dollars":  "${API_KEYS_120}",
-        "api.keys.5dollars": "${API_KEYS_5}"
-      }'
     container_name: backend-stage
+    ports:
+      - "8080:8080"
     depends_on:
       - postgresql-stage
     labels:
@@ -58,6 +50,15 @@ services:
       - "traefik.http.routers.backend-stage.rule=Host(`stage.${HOST}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend-stage.entrypoints=websecure"
       - "traefik.http.routers.backend-stage.tls.certresolver=myresolver"
+    networks:
+      - trfk
+  models-stage:
+    env_file:
+      - .env-stage
+    container_name: models-stage
+    build:
+      context: GPTutor-Models
+      dockerfile: Dockerfile
     networks:
       - trfk
 
