@@ -55,7 +55,7 @@ services:
       - "traefik.http.routers.backend-stage.entrypoints=websecure"
       - "traefik.http.routers.backend-stage.tls.certresolver=myresolver"
       - "traefik.http.middlewares.backend-stage.headers.accessControlAllowOrigin=*"
-      - "traefik.http.middlewares.backend-stage.headers.accessControlAllowMethods=GET,POST,PUT,DELETE"
+      - "traefik.http.middlewares.backend-stage.headers.accessControlAllowMethods=GET,POST,PUT,DELETE,OPTIONS"
       - "traefik.http.middlewares.backend-stage.headers.accessControlAllowHeaders=*"
     networks:
       - trfk
