@@ -1,4 +1,3 @@
-import "./env-config.js";
 import "dignals-react/jsxPatch17";
 import "./env.js";
 
