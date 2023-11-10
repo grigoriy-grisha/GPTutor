@@ -2,6 +2,8 @@ import React, { memo } from "react";
 
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
+import { SubscriptionBlock } from "$/components/Messenger/MessengerWriteBar/SubscriptionBlock";
+
 import classes from "./MessengerWriteBar.module.css";
 import { WriteBarMessage } from "./WriteBarMessage";
 import { SelectedMessagesBar } from "./SelectedMessagesBar";
@@ -38,6 +40,7 @@ function MessengerWriteBar({
           <SelectedMessagesBar chatGpt={chatGpt} />
         </div>
         <div style={{ display: !hasSelectedMessages ? "block" : "none" }}>
+          <SubscriptionBlock chatGpt={chatGpt} />
           {additionalRequest(handleSend, scrollToBottom)}
         </div>
         <WriteBarMessage

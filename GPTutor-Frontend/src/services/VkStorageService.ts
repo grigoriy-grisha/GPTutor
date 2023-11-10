@@ -6,6 +6,7 @@ export class VkStorageService {
       const data = await bridge.send("VKWebAppStorageGet", { keys: [key] });
       return data.keys ? data.keys[0].value : null;
     } catch (error) {
+      console.log(error);
       return null;
     }
   }
@@ -19,7 +20,7 @@ export class VkStorageService {
 
       return data.result;
     } catch (error) {
-      console.log(error, "asdkasld;as;ldl;askld;asdasdasdasdsk");
+      console.log(error);
       return false;
     }
   }

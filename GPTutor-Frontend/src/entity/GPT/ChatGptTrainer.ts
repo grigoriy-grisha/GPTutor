@@ -4,6 +4,8 @@ import { GPTRoles } from "$/entity/GPT/types";
 
 export class ChatGptTrainer extends ChatGptTemplate {
   send = async (content: string) => {
+    if (!this.subscriptionGPT.$isAllowSendMessage.get()) return;
+
     try {
       this.sendCompletions$.loading.set(true);
       const message = new GptMessage(content, GPTRoles.user);

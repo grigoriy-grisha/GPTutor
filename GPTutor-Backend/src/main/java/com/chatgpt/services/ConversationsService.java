@@ -38,7 +38,7 @@ public class ConversationsService {
         Pair<ApiKey, String> apiKey = apiKeysService.getKey();
 
         ChatGptRequest chatGptRequest = new ChatGptRequest(
-                "gpt-3.5-turbo",
+                "gpt-3.5-turbo-1106",
                 conversationRequest.getMessages(),
                 true
         );
@@ -46,7 +46,7 @@ public class ConversationsService {
         System.out.println(apiKey.getFirst().getKey());
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.openai.com/v1/chat/completions"))
+                .uri(URI.create("https://api.aiguoguo199.com/v1/chat/completions"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + apiKey.getFirst().getKey())
                 .POST(HttpRequest.BodyPublishers.ofString(input))

@@ -1,9 +1,10 @@
+import { sig } from "dignals";
+
 import { ChatGptFree } from "$/entity/GPT/ChatGptFree";
 import { ChatGptLesson } from "$/entity/GPT/ChatGptLesson";
 import { GptHistoryDialogs } from "$/entity/GPT/GptHistoryDialogs";
 import { LessonItem, lessonsController, ModeType } from "$/entity/lessons";
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
-import { sig } from "dignals";
 import { ChatGptInterview } from "$/entity/GPT/ChatGptInterview";
 import { ChatGptLeetCode } from "$/entity/GPT/ChatGptLeetCode";
 import { interviews } from "$/entity/interview";

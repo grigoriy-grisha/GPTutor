@@ -38,6 +38,8 @@ export class ChatGptInterview extends ChatGptTemplate {
   }
 
   send = async (content: string) => {
+    if (!this.subscriptionGPT.$isAllowSendMessage.get()) return;
+
     const currentQuestion = interviews
       .getCurrentInterview()
       .getCurrentQuestion();
