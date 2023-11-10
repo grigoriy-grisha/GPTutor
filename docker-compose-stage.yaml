@@ -45,8 +45,6 @@ services:
       - .env-stage
     build: ./GPTutor-Backend
     container_name: backend-stage
-    ports:
-      - "8080:8080"
     depends_on:
       - postgresql-stage
     labels:
