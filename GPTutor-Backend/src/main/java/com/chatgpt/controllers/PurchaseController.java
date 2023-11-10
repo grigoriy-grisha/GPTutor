@@ -24,7 +24,6 @@ public class PurchaseController {
             System.out.println(name + " : " + value);
         }
 
-        System.out.println(allRequestParams);
         purchaseService.isAccessSig(allRequestParams);
 
         return purchaseService.getItem(allRequestParams.get("item"));
