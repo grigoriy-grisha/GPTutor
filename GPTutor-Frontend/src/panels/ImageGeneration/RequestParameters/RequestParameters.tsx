@@ -45,6 +45,7 @@ function RequestParameters() {
             color: "#FF8C00 !important",
           }}
           onClick={() => {
+            console.log("hello");
             bridge
               .send("VKWebAppShowSubscriptionBox", {
                 action: "create",
