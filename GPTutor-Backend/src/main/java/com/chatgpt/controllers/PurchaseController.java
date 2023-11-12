@@ -16,7 +16,7 @@ public class PurchaseController {
     @Autowired
     PurchaseService purchaseService;
 
-    @PostMapping(path = "/purchase/get_subscription")
+    @GetMapping(path = "/purchase/get_subscription")
     public PurchaseItem getItem(@RequestParam Map<String, String> allRequestParams) {
         System.out.println("purchase____________________purchase");
         for (String name: allRequestParams.keySet()) {
