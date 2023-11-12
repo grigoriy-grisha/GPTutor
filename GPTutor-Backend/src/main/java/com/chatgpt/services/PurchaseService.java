@@ -21,9 +21,7 @@ public class PurchaseService {
     Map<String, PurchaseItem> items = new HashMap<>();
 
     PurchaseService() {
-        items.put("firstItem", new PurchaseItem("200 Генераций", 10));
-        items.put("secondItem", new PurchaseItem("500 Генераций", 20));
-        items.put("thirdItem", new PurchaseItem("1200 Генераций", 50));
+        items.put("subscription_1", new PurchaseItem("Подписка на месяц", 21));
     }
 
     public PurchaseItem getItem(String itemName) {
@@ -41,6 +39,8 @@ public class PurchaseService {
     }
 
     public void isAccessSig(Map<String, String> params) {
+        System.out.println(calcSignature(params));
+        System.out.println(params.get("sig"));
         if (Objects.equals(params.get("sig"), calcSignature(params))) {
             throw new BadRequestException("Подпись не прошла проверку");
         }

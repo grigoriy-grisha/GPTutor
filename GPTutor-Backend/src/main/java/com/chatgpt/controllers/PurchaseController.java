@@ -16,7 +16,7 @@ public class PurchaseController {
     @Autowired
     PurchaseService purchaseService;
 
-    @PostMapping(path = "/purchase/get_item")
+    @PostMapping(path = "/purchase/get_subscription")
     public PurchaseItem getItem(@RequestParam Map<String, String> allRequestParams) {
 
         for (String name: allRequestParams.keySet()) {
@@ -24,12 +24,13 @@ public class PurchaseController {
             System.out.println(name + " : " + value);
         }
 
+
         purchaseService.isAccessSig(allRequestParams);
 
         return purchaseService.getItem(allRequestParams.get("item"));
     }
 
-    @GetMapping(path = "/purchase/order_status_change")
+    @GetMapping(path = "/purchase/subscription_status_change")
     public String orderStatusChange(@RequestParam Map<String, String> allRequestParams) {
 
         for (String name: allRequestParams.keySet()) {

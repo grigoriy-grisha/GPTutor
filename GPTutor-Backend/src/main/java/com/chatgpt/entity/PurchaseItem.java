@@ -1,15 +1,15 @@
 package com.chatgpt.entity;
 
-import org.springframework.beans.factory.annotation.Value;
-
 public class PurchaseItem {
     String title;
     int price;
 
+    int period;
+
     public PurchaseItem(String title, int price) {
         this.title = title;
         this.price = price;
-
+        this.period = 30;
     }
 
     public String getTitle() {
@@ -26,5 +26,13 @@ public class PurchaseItem {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
     }
 }

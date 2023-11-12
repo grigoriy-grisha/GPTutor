@@ -29,6 +29,13 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        String url = request.getRequestURI();
+        System.out.println(url);
+        System.out.println(url + "__________________");
+        if (url.startsWith("/purchase")) {
+            return true;
+        }
+
         if (skipAuth) {
             request.setAttribute("vkUserId", "0");
             return true;

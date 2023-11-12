@@ -25,6 +25,7 @@ import {
   Icon24LockOpenOutline,
 } from "@vkontakte/icons";
 import { attempts } from "$/entity/attempts";
+import bridge from "@vkontakte/vk-bridge";
 
 function RequestParameters() {
   return (
@@ -42,6 +43,26 @@ function RequestParameters() {
             width: "100%",
             background: "var(--vkui--color_accent_orange--active)",
             color: "#FF8C00 !important",
+          }}
+          onClick={() => {
+            bridge
+              .send("VKWebAppShowSubscriptionBox", {
+                action: "cancel",
+                subscription_id: "25", // Идентификатор подписки, полученный от ВКонтакте
+              })
+              .then((data) => {
+                console.log(
+                  data,
+                  "________________________ success VKWebAppShowSubscriptionBox"
+                );
+              })
+
+              .catch((error) => {
+                console.log(
+                  error,
+                  "________________________error VKWebAppShowSubscriptionBox"
+                );
+              });
           }}
         >
           Разблокировать функционал
