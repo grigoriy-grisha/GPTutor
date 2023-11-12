@@ -47,8 +47,8 @@ function RequestParameters() {
           onClick={() => {
             bridge
               .send("VKWebAppShowSubscriptionBox", {
-                action: "cancel",
-                subscription_id: "25", // Идентификатор подписки, полученный от ВКонтакте
+                action: "create",
+                item: "subscription_1",
               })
               .then((data) => {
                 console.log(
