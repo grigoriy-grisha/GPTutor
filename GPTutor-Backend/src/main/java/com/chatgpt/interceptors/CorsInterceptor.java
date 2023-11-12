@@ -39,10 +39,7 @@ public class CorsInterceptor implements HandlerInterceptor {
         System.out.println(request.getQueryString());
 
 
-        if (allowOrigins.contains(origin)) {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-        }
-
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", ALLOWED_METHODS);
         response.setHeader("Access-Control-Allow-Headers", ALLOWED_HEADERS);
 
