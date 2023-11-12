@@ -18,7 +18,7 @@ public class PurchaseController {
 
     @PostMapping(path = "/purchase/get_subscription")
     public PurchaseItem getItem(@RequestParam Map<String, String> allRequestParams) {
-
+        System.out.println("purchase____________________purchase");
         for (String name: allRequestParams.keySet()) {
             String value = allRequestParams.get(name);
             System.out.println(name + " : " + value);

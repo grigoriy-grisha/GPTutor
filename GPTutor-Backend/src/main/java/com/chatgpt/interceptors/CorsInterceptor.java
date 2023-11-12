@@ -21,23 +21,7 @@ public class CorsInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, HttpServletResponse response, @NonNull Object handler) {
-        String origin = request.getHeader("Origin");
-        System.out.println(origin);
-        System.out.println("_____origin");
-        System.out.println(allowOrigins);
-        System.out.println("_____allowOrigins");
-
-        System.out.println(request.getMethod());
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            String headerValue = request.getHeader(headerName);
-            System.out.println(headerName);
-            System.out.println(headerValue);
-        }
-
         System.out.println(request.getQueryString());
-
 
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", ALLOWED_METHODS);

@@ -4,6 +4,6 @@ CREATE TABLE subscription_images
     vk_user_id      UUID NOT NULL,
     is_active       BOOLEAN,
     last_updated    TIMESTAMP,
-    subscription_id varchar,
+    subscription_id VARCHAR,
     PRIMARY KEY (id)
 );
