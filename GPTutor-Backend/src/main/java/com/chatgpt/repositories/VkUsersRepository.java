@@ -9,8 +9,4 @@ import java.util.UUID;
 
 public interface VkUsersRepository extends CrudRepository<VkUser, UUID> {
     VkUser findByVkId(String vkId);
-
-    @Modifying
-    @Query(value = "UPDATE VkUser SET freeAttempts = 10")
-    void refreshFreeAttempts();
 }
