@@ -20,13 +20,13 @@ public class PurchaseController {
     @PostMapping(path = "/purchase")
     public PurchaseItem getItem(@RequestParam Map<String, String> allRequestParams) {
 
+        for (String name : allRequestParams.keySet()) {
+            String value = allRequestParams.get(name);
+            System.out.println(name + " : " + value);
+        }
+
         if (Objects.equals(allRequestParams.get("notification_type"), "get_subscription")) {
             System.out.println("purchase____________________get_subscription");
-            for (String name : allRequestParams.keySet()) {
-                String value = allRequestParams.get(name);
-                System.out.println(name + " : " + value);
-            }
-
 
             purchaseService.isAccessSig(allRequestParams);
 
@@ -35,11 +35,6 @@ public class PurchaseController {
 
         if (Objects.equals(allRequestParams.get("notification_type"), "subscription_status_change")) {
             System.out.println("purchase____________________subscription_status_change");
-            for (String name : allRequestParams.keySet()) {
-                String value = allRequestParams.get(name);
-                System.out.println(name + " : " + value);
-            }
-
 
             purchaseService.isAccessSig(allRequestParams);
 
