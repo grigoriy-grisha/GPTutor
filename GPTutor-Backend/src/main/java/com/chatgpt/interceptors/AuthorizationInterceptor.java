@@ -32,7 +32,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         String url = request.getRequestURI();
         System.out.println(url);
         System.out.println(url + "__________________");
-        if (url.startsWith("/purchase")) {
+
+        if (Objects.equals(url, "/purchase")) {
             return true;
         }
 
