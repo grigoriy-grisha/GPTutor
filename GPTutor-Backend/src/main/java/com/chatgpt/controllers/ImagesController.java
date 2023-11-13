@@ -19,7 +19,7 @@ public class ImagesController {
     ImagesService imagesService;
 
     @PostMapping(path = "/image")
-//    @RateLimiter(name = "imagesLimitCreate", fallbackMethod = "fallbackMethodGenerateImage")
+    @RateLimiter(name = "imagesLimitCreate", fallbackMethod = "fallbackMethodGenerateImage")
     List<Image> generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) {
         return imagesService.generateImage((String) request.getAttribute("vkUserId"), prompt);
     }

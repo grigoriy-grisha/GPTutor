@@ -2,7 +2,11 @@ package com.chatgpt.controllers;
 
 import com.chatgpt.entity.responses.PurchaseResponse;
 import com.chatgpt.services.PurchaseService;
+import com.chatgpt.services.SubscriptionsImagesService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +16,9 @@ import java.util.Objects;
 
 @RestController
 public class PurchaseController {
+
+    @Autowired
+    SubscriptionsImagesService subscriptionsImagesService;
 
     @Autowired
     PurchaseService purchaseService;
@@ -42,11 +49,18 @@ public class PurchaseController {
 
             purchaseService.isAccessSig(allRequestParams);
 
-            return new PurchaseResponse<>(purchaseService.getItem(allRequestParams.get("item")));
+            return new PurchaseResponse<>(subscriptionsImagesService.subscriptionStatusChange(allRequestParams));
         }
 
         return null;
+    }
 
+    @GetMapping(path = "/purchase/subscription")
+    public ResponseEntity<?> getSubscription(HttpServletRequest request) {
+        return ResponseEntity.ok(subscriptionsImagesService.getOrCreateSubscriptions(
+                        (String) request.getAttribute("vkUserId")
+                )
+        );
     }
 
 }

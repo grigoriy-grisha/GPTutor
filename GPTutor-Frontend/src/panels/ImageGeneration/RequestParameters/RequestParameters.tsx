@@ -26,6 +26,7 @@ import {
 } from "@vkontakte/icons";
 import { attempts } from "$/entity/attempts";
 import bridge from "@vkontakte/vk-bridge";
+import { getSubscription } from "$/api/subscriptions";
 
 function RequestParameters() {
   return (
@@ -53,6 +54,10 @@ function RequestParameters() {
                 item: "subscription_1",
               })
               .then((data) => {
+                getSubscription().then((s) => {
+                  console.log(s, "_____________");
+                });
+
                 console.log(
                   data,
                   "________________________ success VKWebAppShowSubscriptionBox"
