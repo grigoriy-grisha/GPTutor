@@ -17,6 +17,8 @@ import java.util.TreeMap;
 
 @Service
 public class PurchaseService {
+    @Autowired
+    VkSecretesService vkSecretesService;
 
     Map<String, PurchaseItem> items = new HashMap<>();
 
@@ -60,8 +62,7 @@ public class PurchaseService {
             }
         }
 
-        //todo
-        sb.append("");
+        sb.append(vkSecretesService.getSecretKey(params.get("app_id")));
 
         return calculateMD5(sb.toString());
     }
