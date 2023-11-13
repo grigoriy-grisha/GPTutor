@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-public class SubscriptionsImages {
+public class SubscriptionImages {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,7 +21,7 @@ public class SubscriptionsImages {
 
     String subscriptionId;
 
-    public SubscriptionsImages(
+    public SubscriptionImages(
             VkUser vkUser,
             boolean isActive,
             Instant lastUpdated,
@@ -34,7 +34,7 @@ public class SubscriptionsImages {
 
     }
 
-    public SubscriptionsImages() {
+    public SubscriptionImages() {
 
     }
 

@@ -1,6 +1,6 @@
 package com.chatgpt.services;
 
-import com.chatgpt.entity.SubscriptionsImages;
+import com.chatgpt.entity.SubscriptionImages;
 import com.chatgpt.entity.responses.SubscriptionsChangeResponse;
 import com.chatgpt.repositories.SubscriptionsImagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +32,12 @@ public class SubscriptionsImagesService {
 
     }
 
-    public SubscriptionsImages getOrCreateSubscriptions(String vkUser) {
+    public SubscriptionImages getOrCreateSubscriptions(String vkUser) {
         var user = userService.getOrCreateVkUser(vkUser);
         var foundSubscriptions = subscriptionsImagesRepository.findByVkUserId(user.getId());
         if (foundSubscriptions != null) return foundSubscriptions;
 
-        var subscriptionsImages = new SubscriptionsImages(user, false, null, null);
+        var subscriptionsImages = new SubscriptionImages(user, false, null, null);
         subscriptionsImagesRepository.save(subscriptionsImages);
 
         return subscriptionsImages;
@@ -53,7 +53,7 @@ public class SubscriptionsImagesService {
         subscriptionsImagesRepository.save(subscription);
     }
 
-    SubscriptionsImages cancelSubscription(String vkUser, String subscriptionId) {
+    SubscriptionImages cancelSubscription(String vkUser, String subscriptionId) {
         var subscription = getOrCreateSubscriptions(vkUser);
 
         subscription.setActive(false);
