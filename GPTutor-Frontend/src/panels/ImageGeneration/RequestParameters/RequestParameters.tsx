@@ -25,11 +25,7 @@ import bridge from "@vkontakte/vk-bridge";
 import { getSubscription } from "$/api/subscriptions";
 
 function RequestParameters() {
-  useEffect(() => {
-    getSubscription().then((s) => {
-      console.log(s, "_____________");
-    });
-  }, []);
+  useEffect(() => {}, []);
   return (
     <Card
       mode="shadow"
@@ -48,7 +44,10 @@ function RequestParameters() {
             color: "#FF8C00 !important",
           }}
           onClick={() => {
-            console.log("hello");
+            getSubscription().then((s) => {
+              console.log(s, "_____________");
+            });
+
             bridge
               .send("VKWebAppShowSubscriptionBox", {
                 action: "create",
