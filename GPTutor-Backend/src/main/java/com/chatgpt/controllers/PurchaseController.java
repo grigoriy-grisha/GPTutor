@@ -25,15 +25,20 @@ public class PurchaseController {
             System.out.println(name + " : " + value);
         }
 
-        if (Objects.equals(allRequestParams.get("notification_type"), "get_subscription")) {
+        if (
+                Objects.equals(allRequestParams.get("notification_type"), "get_subscription") ||
+                        Objects.equals(allRequestParams.get("notification_type"), "get_subscription_test")
+        ) {
             System.out.println("purchase____________________get_subscription");
-
             purchaseService.isAccessSig(allRequestParams);
 
             return purchaseService.getItem(allRequestParams.get("item"));
         }
 
-        if (Objects.equals(allRequestParams.get("notification_type"), "subscription_status_change")) {
+        if (
+                Objects.equals(allRequestParams.get("notification_type"), "subscription_status_change") ||
+                        Objects.equals(allRequestParams.get("notification_type"), "subscription_status_change_test")
+        ) {
             System.out.println("purchase____________________subscription_status_change");
 
             purchaseService.isAccessSig(allRequestParams);
