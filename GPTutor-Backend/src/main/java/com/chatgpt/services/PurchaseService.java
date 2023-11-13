@@ -41,9 +41,7 @@ public class PurchaseService {
     }
 
     public void isAccessSig(Map<String, String> params) {
-        System.out.println(calcSignature(params));
-        System.out.println(params.get("sig"));
-        if (Objects.equals(params.get("sig"), calcSignature(params))) {
+        if (!Objects.equals(params.get("sig"), calcSignature(params))) {
             throw new BadRequestException("Подпись не прошла проверку");
         }
     }
