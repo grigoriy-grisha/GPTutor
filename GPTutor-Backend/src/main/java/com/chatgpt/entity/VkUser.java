@@ -14,13 +14,10 @@ public class VkUser {
     private UUID id;
     private String vkId;
 
-    private int requests;
-
     public VkUser() {
     }
     public VkUser(String vkId) {
         this.vkId = vkId;
-        this.requests = 10;
     }
     public void setVkId(String vkId) {
         this.vkId = vkId;
@@ -33,13 +30,5 @@ public class VkUser {
     }
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public int getRequests() {
-        return requests;
-    }
-
-    public void setRequests(int requests) {
-        this.requests = requests;
     }
 }
