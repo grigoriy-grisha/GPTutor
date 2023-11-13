@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Accordion,
@@ -19,16 +19,17 @@ import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { AppDiv } from "$/components/AppDiv";
 import { ImageAspectRatio } from "$/entity/image/types";
 import { getImageSize } from "$/panels/ImageGeneration/utils";
-import {
-  Icon20Verified,
-  Icon24Lock,
-  Icon24LockOpenOutline,
-} from "@vkontakte/icons";
+import { Icon20Verified, Icon24LockOpenOutline } from "@vkontakte/icons";
 import { attempts } from "$/entity/attempts";
 import bridge from "@vkontakte/vk-bridge";
 import { getSubscription } from "$/api/subscriptions";
 
 function RequestParameters() {
+  useEffect(() => {
+    getSubscription().then((s) => {
+      console.log(s, "_____________");
+    });
+  }, []);
   return (
     <Card
       mode="shadow"
