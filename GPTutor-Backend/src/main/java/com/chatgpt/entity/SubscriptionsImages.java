@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
 
-@Table(name = "subscription_images")
+@Entity
 public class SubscriptionsImages {
 
     @Id
@@ -31,6 +31,10 @@ public class SubscriptionsImages {
         this.isActive = isActive;
         this.lastUpdated = lastUpdated;
         this.subscriptionId = subscriptionId;
+
+    }
+
+    public SubscriptionsImages() {
 
     }
 
