@@ -14,7 +14,11 @@ function SubscriptionAction() {
         style={{ width: "100%" }}
         size="m"
         appearance="positive"
-        onClick={() => subscriptionService.resume()}
+        onClick={() =>
+          subscriptionService.resume(
+            subscriptionsController.subscription$.get()!.subscriptionId!
+          )
+        }
       >
         Возообновить подписку
       </Button>
@@ -23,7 +27,11 @@ function SubscriptionAction() {
         size="m"
         mode="outline"
         appearance="negative"
-        onClick={() => subscriptionService.cancel()}
+        onClick={() =>
+          subscriptionService.cancel(
+            subscriptionsController.subscription$.get()!.subscriptionId!
+          )
+        }
       >
         Приостановить подписку
       </Button>

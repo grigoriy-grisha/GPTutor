@@ -16,14 +16,23 @@ class SubscriptionService {
       });
   }
   create() {
-    return this.subscription("create");
+    return bridge.send("VKWebAppShowSubscriptionBox", {
+      action: "create",
+      item: "subscription_1",
+    });
   }
-  cancel() {
-    return this.subscription("cancel");
+  cancel(subscription_id: string) {
+    return bridge.send("VKWebAppShowSubscriptionBox", {
+      action: "cancel",
+      subscription_id,
+    });
   }
 
-  resume() {
-    return this.subscription("resume");
+  resume(subscription_id: string) {
+    return bridge.send("VKWebAppShowSubscriptionBox", {
+      action: "resume",
+      subscription_id,
+    });
   }
 }
 
