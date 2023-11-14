@@ -27,6 +27,7 @@ export type ImageExample = {
 };
 
 export type GeneratedImage = {
+  originalPrompt: string;
   aspectRatio: string;
   guidanceScale: number;
   createdAt: string;
@@ -53,6 +54,7 @@ export enum ImageAspectRatio {
 }
 
 export const emptyImageGenerated: GeneratedImage = {
+  originalPrompt: "",
   expire: "",
   id: String(Math.random()),
   url: "",

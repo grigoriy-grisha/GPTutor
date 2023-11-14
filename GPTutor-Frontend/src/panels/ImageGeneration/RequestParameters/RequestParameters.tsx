@@ -23,6 +23,7 @@ import { Icon20Verified, Icon24LockOpenOutline } from "@vkontakte/icons";
 import { attempts } from "$/entity/attempts";
 import bridge from "@vkontakte/vk-bridge";
 import { getSubscription } from "$/api/subscriptions";
+import { subscriptionsController } from "$/entity/subscriptions";
 
 function RequestParameters() {
   useEffect(() => {}, []);
@@ -34,7 +35,6 @@ function RequestParameters() {
       }}
     >
       <Div>
-        hello
         <Button
           size="l"
           before={<Icon24LockOpenOutline />}
@@ -75,8 +75,6 @@ function RequestParameters() {
           Разблокировать функционал
         </Button>
         <Spacing size={6} />
-        {/*<Text>С</Text>*/}
-        <Spacing size={6} />
         <Accordion
           open={imageGeneration.requestParameters}
           className={classes.accordion}
@@ -90,7 +88,9 @@ function RequestParameters() {
           <Separator wide className={classes.separator} />
           <AppDiv
             className={classNames(classes.imageSettings, {
-              [classes.sizeDisable]: imageGeneration.loading$.get(),
+              [classes.sizeDisable]:
+                imageGeneration.loading$.get() ||
+                subscriptionsController.isDisable(),
             })}
           >
             <Spacing size={6} />

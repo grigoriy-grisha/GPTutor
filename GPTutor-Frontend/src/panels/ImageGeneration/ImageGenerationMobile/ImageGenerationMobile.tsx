@@ -6,25 +6,18 @@ import {
   Spacing,
   useConfigProvider,
 } from "@vkontakte/vkui";
-import {
-  Icon20SunOutline,
-  Icon28ServicesOutline,
-  Icon32StarsOutline,
-} from "@vkontakte/icons";
+import { Icon32StarsOutline } from "@vkontakte/icons";
 
 import { imageGeneration } from "$/entity/image";
 import { AppContainer } from "$/components/AppContainer";
 import { useNavigationContext } from "$/NavigationContext";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
-import { Attempts } from "$/panels/ImageGeneration/Attempts";
 import { RequestParameters } from "$/panels/ImageGeneration/RequestParameters";
 import { AdvancedSettings } from "$/panels/ImageGeneration/AdvancedSettings";
 import { MainControls } from "$/panels/ImageGeneration/ImageGenerationMobile/MainControls";
 
 import classes from "./ImageGenerationMobile.module.css";
 import { ImageStyles } from "$/panels/ImageGeneration/ImageStyles";
-import bridge from "@vkontakte/vk-bridge";
-import { NotEnoughAttempts } from "$/panels/ImageGeneration/NotEnoughAttempts";
 
 function ImageGenerationMobile() {
   const { goToGenerationImagesResult, goToGenerationImagesExamples } =
@@ -50,27 +43,22 @@ function ImageGenerationMobile() {
         </AppPanelHeader>
       }
       fixedBottomContent={
-        <Div>
-          <Button
-            disabled={imageGeneration.prompt$.get().trim() === ""}
-            style={{ width: "100%" }}
-            loading={generateImage.loading.get()}
-            size="m"
-            align="center"
-            mode="primary"
-            onClick={() => {
-              imageGeneration.generate();
-              goToGenerationImagesResult();
-            }}
-          >
-            Сгенерировать
-          </Button>
-        </Div>
+        !imageGeneration.resultIsEmpty$.get() ? (
+          <Div>
+            <Button
+              style={{ width: "100%" }}
+              size="m"
+              align="center"
+              mode="primary"
+              onClick={goToGenerationImagesResult}
+            >
+              Вернуться к результату
+            </Button>
+          </Div>
+        ) : null
       }
     >
       <Div className={classes.container}>
-        <Attempts />
-        <Spacing size={8} />
         <MainControls />
         <Spacing size={8} />
         <ImageStyles />

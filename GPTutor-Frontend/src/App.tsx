@@ -47,7 +47,6 @@ import { ImageGeneration } from "$/panels/ImageGeneration";
 import { ImageGenerationExamples } from "$/panels/ImageGenerationExamples";
 import Gallery from "$/panels/Gallery";
 import ImageCreatePrompts from "$/panels/ImageCreatePrompts";
-import { ImageDonut } from "$/modals/ImageDonut";
 
 const App = () => {
   const location = useLocation();
@@ -82,7 +81,6 @@ const App = () => {
           <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
             <ApplicationInfo id={Modals.applicationInfo} />
             <InterviewQuestions id={Modals.interviewQuestions} />
-            <ImageDonut id={Modals.imageDonut} />
           </ModalRoot>
         }
       >
@@ -90,6 +88,7 @@ const App = () => {
           <LoadingPanel />
         ) : (
           <View
+            style={{ maxWidth: "100vw" }}
             id={Views.viewMain}
             activePanel={location.getViewActivePanel(Views.viewMain)!}
             onSwipeBack={goBack}

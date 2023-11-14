@@ -37,7 +37,14 @@ function TabbarApp({ setRef }: IProps) {
         >
           <TabbarItem
             className={classes.tabItem}
-            text="Моя коллекция"
+            text="Профиль"
+            onClick={goToGallery}
+          >
+            <Icon20PictureStack width={28} height={28} />
+          </TabbarItem>
+          <TabbarItem
+            className={classes.tabItem}
+            text="Коллекция"
             onClick={goToGallery}
           >
             <Icon20PictureStack width={28} height={28} />

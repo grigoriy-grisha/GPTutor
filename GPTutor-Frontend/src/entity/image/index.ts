@@ -17,6 +17,7 @@ import { ImageGenerationPrompt } from "$/entity/image/ImageGenerationPrompt";
 import { ChipOption } from "@vkontakte/vkui/dist/components/Chip/Chip";
 import { StopWatch } from "$/entity/stopWatch";
 import { attempts } from "$/entity/attempts";
+import { subscriptionsController } from "$/entity/subscriptions";
 
 class ImageGeneration {
   requestParameters = false;
@@ -58,6 +59,12 @@ class ImageGeneration {
 
   constructor() {
     this.setResults();
+  }
+
+  init() {
+    if (subscriptionsController.isDisable()) {
+      this.setSamples("1");
+    }
   }
 
   toggleAdvancedSettingOpen = () => {
@@ -232,12 +239,6 @@ class ImageGeneration {
         .map(({ label }) => label)
         .join(","),
     });
-
-    const requests = await attempts.getAttempts();
-
-    if (requests < this.samples$.get()) {
-      this.setSamples(requests);
-    }
 
     if (result.error) {
       this.setResults();

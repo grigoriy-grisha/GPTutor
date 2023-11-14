@@ -18,6 +18,8 @@ import { adService } from "$/services/AdService";
 import { authService } from "$/services/AuthService";
 import { groupsService } from "$/services/GroupsService";
 import { appService } from "$/services/AppService";
+import { subscriptionsController } from "$/entity/subscriptions";
+import { imageGeneration } from "$/entity/image";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
@@ -44,6 +46,9 @@ bridge
     if (!isDon) {
       adService.showBannerAd();
     }
+
+    await subscriptionsController.getSubscription();
+    imageGeneration.init();
 
     appService.toggleLoading();
   })

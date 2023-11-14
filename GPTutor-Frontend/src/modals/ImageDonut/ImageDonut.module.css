@@ -1,7 +1,0 @@
-.container :global(.vkuiSimpleCell__children) {
- white-space: normal;
-}
-
-.subtitle {
-    color: var(--vkui--color_text_secondary);
-}

@@ -9,8 +9,6 @@ import {
   Textarea,
 } from "@vkontakte/vkui";
 import { Icon24MagicWandOutline } from "@vkontakte/icons";
-
-import { Attempts } from "$/panels/ImageGeneration/Attempts";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { imageGeneration } from "$/entity/image";
 import { PromptStyles } from "$/panels/ImageGeneration/PromptStyles";

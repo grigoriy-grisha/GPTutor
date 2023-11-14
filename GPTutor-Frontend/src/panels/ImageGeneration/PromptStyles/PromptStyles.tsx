@@ -4,6 +4,8 @@ import { imageGeneration } from "$/entity/image";
 import { Icon16CopyOutline } from "@vkontakte/icons";
 
 import classes from "./PromptStyles.module.css";
+import { copyService } from "$/services/CopyService";
+import { snackbarNotify } from "$/entity/notify";
 
 function PromptStyles() {
   const imageGenerationPrompt = imageGeneration.imageGenerationPrompt;
@@ -28,7 +30,25 @@ function PromptStyles() {
       </div>
       <div>
         <IconButton>
-          <Icon16CopyOutline className={classes.copy} />
+          <Icon16CopyOutline
+            className={classes.copy}
+            onClick={() => {
+              copyService.copyToClickBoard$
+                .run(imageGenerationPrompt.selectedStyles$.get().join(", "))
+                .then(() => {
+                  snackbarNotify.notify({
+                    type: "success",
+                    message: "Скопировано",
+                  });
+                })
+                .catch(() =>
+                  snackbarNotify.notify({
+                    type: "error",
+                    message: "Не удалось скопировать",
+                  })
+                );
+            }}
+          />
         </IconButton>
       </div>
     </Card>

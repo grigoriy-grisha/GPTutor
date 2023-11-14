@@ -1,36 +1,17 @@
 import React, { useEffect } from "react";
 
-import {
-  Accordion,
-  Caption,
-  classNames,
-  Div,
-  IconButton,
-  Separator,
-  Spacing,
-  Title,
-  Image,
-  HorizontalScroll,
-  HorizontalCell,
-} from "@vkontakte/vkui";
+import { Div, IconButton, Spacing, Title } from "@vkontakte/vkui";
 import { AppContainer } from "$/components/AppContainer";
 
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { imageGeneration } from "$/entity/image";
-import {
-  Icon28CheckCircleOn,
-  Icon28ServicesOutline,
-  Icon32StarsOutline,
-} from "@vkontakte/icons";
+import { Icon32StarsOutline } from "@vkontakte/icons";
 import { useNavigationContext } from "$/NavigationContext";
 import { ImageGenerationDesktopResult } from "$/panels/ImageGeneration/ImageGenerationDesktopResult";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
-import { Attempts } from "$/panels/ImageGeneration/Attempts";
 import { RequestParameters } from "$/panels/ImageGeneration/RequestParameters";
 import { AdvancedSettings } from "$/panels/ImageGeneration/AdvancedSettings";
 import { MainControls } from "$/panels/ImageGeneration/ImageGenerationDesktop/MainControls";
-import { AppDiv } from "$/components/AppDiv";
-import { styles } from "$/entity/image/styles";
 import { ImageStyles } from "$/panels/ImageGeneration/ImageStyles";
 
 function ImageGenerationDesktop() {
@@ -63,9 +44,6 @@ function ImageGenerationDesktop() {
     >
       <Div className={classes.container}>
         <div>
-          <Attempts />
-
-          <Spacing size={8} />
           <MainControls />
           <Spacing size={8} />
           <ImageStyles />
