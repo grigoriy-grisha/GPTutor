@@ -21,6 +21,8 @@ public class SubscriptionsImagesService {
 
 
     public SubscriptionsChangeResponse subscriptionStatusChange(Map<String, String> allRequestParams) {
+        System.out.println(allRequestParams.get("cancel_reason") != null);
+        System.out.println(allRequestParams.get("cancel_reason"));
         if (Objects.equals(allRequestParams.get("status"), "chargeable")
                 && allRequestParams.get("cancel_reason") != null) {
             cancelSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"));
