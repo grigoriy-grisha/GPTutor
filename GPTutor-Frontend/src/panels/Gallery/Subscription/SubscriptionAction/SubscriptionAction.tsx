@@ -8,33 +8,35 @@ function SubscriptionAction() {
   const subscription = subscriptionsController.subscription$.get();
   if (!subscription) return null;
 
-  const isActive = subscription.isActive;
+  const isActive = subscription.active;
 
-  if (isActive && !subscriptionsController.isDisable()) {
-    return (
-      <Button
-        style={{ width: "100%" }}
-        size="m"
-        appearance="positive"
-        onClick={() => subscriptionsController.resume()}
-      >
-        Возообновить подписку
-      </Button>
-    );
-  }
+  if (!subscriptionsController.isDisable()) {
+    if (!isActive) {
+      return (
+        <Button
+          style={{ width: "100%" }}
+          size="m"
+          appearance="positive"
+          onClick={() => subscriptionsController.resume()}
+        >
+          Возообновить подписку
+        </Button>
+      );
+    }
 
-  if (!isActive && !subscriptionsController.isDisable()) {
-    return (
-      <Button
-        style={{ width: "100%" }}
-        size="m"
-        mode="outline"
-        appearance="negative"
-        onClick={() => subscriptionsController.cancel()}
-      >
-        Приостановить подписку
-      </Button>
-    );
+    if (isActive) {
+      return (
+        <Button
+          style={{ width: "100%" }}
+          size="m"
+          mode="outline"
+          appearance="negative"
+          onClick={() => subscriptionsController.cancel()}
+        >
+          Приостановить подписку
+        </Button>
+      );
+    }
   }
 
   if (subscriptionsController.isDisable()) {

@@ -1,5 +1,5 @@
 export type Subscription = {
-  isActive: boolean;
+  active: boolean;
   lastUpdated: string;
   subscriptionId: string;
   error: string;
