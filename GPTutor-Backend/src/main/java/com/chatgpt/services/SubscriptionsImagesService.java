@@ -53,7 +53,7 @@ public class SubscriptionsImagesService {
 
         subscription.setActive(true);
 
-        if (isAvailableSubscription(vkUser)) {
+        if (isAvailableUpdate(vkUser)) {
             subscription.setLastUpdated(Instant.now());
         }
 
@@ -71,7 +71,7 @@ public class SubscriptionsImagesService {
         subscriptionsImagesRepository.save(subscription);
     }
 
-    boolean isAvailableSubscription(String vkUser) {
+    boolean isAvailableUpdate(String vkUser) {
         var subscription = getOrCreateSubscriptions(vkUser);
         if (subscription.getLastUpdated() == null) {
             return true;
@@ -79,6 +79,6 @@ public class SubscriptionsImagesService {
 
         Instant compareInstant = subscription.getLastUpdated().plusSeconds(30 * 24 * 60 * 60);
 
-        return Instant.now().isBefore(compareInstant);
+        return Instant.now().isAfter(compareInstant);
     }
 }
