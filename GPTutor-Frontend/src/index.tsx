@@ -90,6 +90,7 @@ const routes = {
     Views.viewMain
   ),
   [RoutingPages.gallery]: new Page(Panels.gallery, Views.viewMain),
+  [RoutingPages.profile]: new Page(Panels.profile, Views.viewMain),
 };
 
 const router = new Router(routes);

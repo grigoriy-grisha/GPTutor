@@ -40,6 +40,7 @@ export type NavigationContextType = {
   goToGenerationImagesExamples: () => void;
   goToGenerationImagesPrompts: () => void;
   goToImageDonutModal: () => void;
+  goToOpenProfile: () => void;
   goToGallery: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
@@ -106,6 +107,8 @@ export function NavigationContextProvider({
   const goToOpenSource = () => push(RoutingPages.openSource);
 
   const goToHistory = () => push(RoutingPages.history, "replace");
+
+  const goToOpenProfile = () => push(RoutingPages.profile);
 
   const goToModes = () => push(RoutingPages.modes, "replace");
 
@@ -191,6 +194,7 @@ export function NavigationContextProvider({
         goToGenerationImagesResult,
         goToGenerationImagesPrompts,
         goToImageDonutModal,
+        goToOpenProfile,
         alert,
         isForbidden,
       }}

@@ -24,6 +24,7 @@ import { attempts } from "$/entity/attempts";
 import bridge from "@vkontakte/vk-bridge";
 import { getSubscription } from "$/api/subscriptions";
 import { subscriptionsController } from "$/entity/subscriptions";
+import { subscriptionService } from "$/services/SubscriptionService";
 
 function RequestParameters() {
   useEffect(() => {}, []);
@@ -43,34 +44,7 @@ function RequestParameters() {
             background: "var(--vkui--color_accent_orange--active)",
             color: "#FF8C00 !important",
           }}
-          onClick={() => {
-            getSubscription().then((s) => {
-              console.log(s, "_____________");
-            });
-
-            bridge
-              .send("VKWebAppShowSubscriptionBox", {
-                action: "create",
-                item: "subscription_1",
-              })
-              .then((data) => {
-                getSubscription().then((s) => {
-                  console.log(s, "_____________");
-                });
-
-                console.log(
-                  data,
-                  "________________________ success VKWebAppShowSubscriptionBox"
-                );
-              })
-
-              .catch((error) => {
-                console.log(
-                  error,
-                  "________________________error VKWebAppShowSubscriptionBox"
-                );
-              });
-          }}
+          onClick={() => subscriptionService.create()}
         >
           Разблокировать функционал
         </Button>

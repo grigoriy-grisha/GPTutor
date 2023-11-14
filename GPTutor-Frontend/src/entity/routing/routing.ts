@@ -21,6 +21,8 @@ export enum RoutingPages {
 
   chatTrainer = "/chat-trainer",
   chatSettings = "/chat-settings",
+
+  profile = "/profile",
 }
 
 export enum Views {
@@ -50,6 +52,8 @@ export enum Panels {
 
   chatTrainer = "chat-trainer",
   chatSettings = "chat-settings",
+
+  profile = "profile",
 }
 
 export enum Modals {
