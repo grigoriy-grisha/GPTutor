@@ -21,8 +21,12 @@ public class SubscriptionsImagesService {
 
 
     public SubscriptionsChangeResponse subscriptionStatusChange(Map<String, String> allRequestParams) {
-        if (Objects.equals(allRequestParams.get("status"), "chargeable")) {
+        if (Objects.equals(allRequestParams.get("status"), "chargeable")
+                && allRequestParams.get("cancel_reason") != null) {
+            cancelSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"));
+        } else {
             activeSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"));
+
         }
 
         return new SubscriptionsChangeResponse(
@@ -57,7 +61,6 @@ public class SubscriptionsImagesService {
         var subscription = getOrCreateSubscriptions(vkUser);
 
         subscription.setActive(false);
-        subscription.setLastUpdated(null);
         subscription.setSubscriptionId(subscriptionId);
 
         subscriptionsImagesRepository.save(subscription);

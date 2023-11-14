@@ -44,7 +44,7 @@ function RequestParameters() {
             background: "var(--vkui--color_accent_orange--active)",
             color: "#FF8C00 !important",
           }}
-          onClick={() => subscriptionService.create()}
+          onClick={() => subscriptionsController.create()}
         >
           Разблокировать функционал
         </Button>

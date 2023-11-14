@@ -2,6 +2,7 @@ import { sig } from "dignals";
 
 import { getSubscription } from "$/api/subscriptions";
 import { Subscription } from "$/entity/subscriptions/types";
+import { subscriptionService } from "$/services/SubscriptionService";
 
 class SubscriptionsController {
   subscription$ = sig<Subscription | null>(null);
@@ -36,6 +37,21 @@ class SubscriptionsController {
     futureDate.setDate(futureDate.getDate() + 30);
 
     return futureDate;
+  }
+
+  async create() {
+    await subscriptionService.create();
+    await getSubscription();
+  }
+
+  async cancel() {
+    await subscriptionService.cancel(this.subscription$.get()!.subscriptionId);
+    await getSubscription();
+  }
+
+  async resume() {
+    await subscriptionService.resume(this.subscription$.get()!.subscriptionId);
+    await getSubscription();
   }
 }
 
