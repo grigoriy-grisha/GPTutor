@@ -1,10 +1,11 @@
 import React from "react";
 
-import { Banner, Image, Panel, PanelHeaderBack } from "@vkontakte/vkui";
+import { Panel, PanelHeaderBack } from "@vkontakte/vkui";
 import { AppContainer } from "$/components/AppContainer";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
 import { useNavigationContext } from "$/NavigationContext";
-import { vkUser } from "$/entity/user";
+
+import Subscription from "$/panels/Profile/Subscription/Subscription";
 
 interface IProps {
   id: string;
@@ -22,10 +23,7 @@ function Profile({ id }: IProps) {
           </AppPanelHeader>
         }
       >
-        <Banner
-          before={<Image src={vkUser.photo_200} />}
-          title={`${vkUser.first_name} ${vkUser.last_name}`}
-        ></Banner>
+        <Subscription />
       </AppContainer>
     </Panel>
   );

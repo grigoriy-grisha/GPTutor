@@ -74,7 +74,7 @@ public class SubscriptionsImagesService {
     boolean isAvailableSubscription(String vkUser) {
         var subscription = getOrCreateSubscriptions(vkUser);
         if (subscription.getLastUpdated() == null) {
-            return false;
+            return true;
         }
 
         Instant compareInstant = subscription.getLastUpdated().plusSeconds(30 * 24 * 60 * 60);

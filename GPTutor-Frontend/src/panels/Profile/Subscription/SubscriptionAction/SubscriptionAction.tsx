@@ -1,5 +1,4 @@
 import React from "react";
-
 import { subscriptionsController } from "$/entity/subscriptions";
 import { Button } from "@vkontakte/vkui";
 import { Icon24LockOpenOutline } from "@vkontakte/icons";
@@ -49,7 +48,7 @@ function SubscriptionAction() {
           background: "var(--vkui--color_accent_orange--active)",
           color: "#FF8C00 !important",
         }}
-        onClick={() => subscriptionsController.create()}
+        onClick={() => subscriptionsController.resume()}
       >
         Получить подпику
       </Button>
