@@ -41,17 +41,17 @@ class SubscriptionsController {
 
   async create() {
     await subscriptionService.create();
-    await getSubscription();
+    setTimeout(() => getSubscription(), 500);
   }
 
   async cancel() {
     await subscriptionService.cancel(this.subscription$.get()!.subscriptionId);
-    await getSubscription();
+    setTimeout(() => getSubscription(), 500);
   }
 
   async resume() {
     await subscriptionService.resume(this.subscription$.get()!.subscriptionId);
-    await getSubscription();
+    setTimeout(() => getSubscription(), 500);
   }
 }
 

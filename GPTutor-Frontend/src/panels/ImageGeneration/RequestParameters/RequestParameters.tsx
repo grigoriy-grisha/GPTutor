@@ -31,23 +31,27 @@ function RequestParameters() {
   return (
     <Card
       mode="shadow"
-      style={{
-        border: "2px solid #FF8C00",
-      }}
+      style={
+        subscriptionsController.isDisable()
+          ? { border: "2px solid #FF8C00" }
+          : {}
+      }
     >
       <Div>
-        <Button
-          size="l"
-          before={<Icon24LockOpenOutline />}
-          style={{
-            width: "100%",
-            background: "var(--vkui--color_accent_orange--active)",
-            color: "#FF8C00 !important",
-          }}
-          onClick={() => subscriptionsController.create()}
-        >
-          Разблокировать функционал
-        </Button>
+        {subscriptionsController.isDisable() && (
+          <Button
+            size="l"
+            before={<Icon24LockOpenOutline />}
+            style={{
+              width: "100%",
+              background: "var(--vkui--color_accent_orange--active)",
+              color: "#FF8C00 !important",
+            }}
+            onClick={() => subscriptionsController.create()}
+          >
+            Разблокировать функционал
+          </Button>
+        )}
         <Spacing size={6} />
         <Accordion
           open={imageGeneration.requestParameters}
