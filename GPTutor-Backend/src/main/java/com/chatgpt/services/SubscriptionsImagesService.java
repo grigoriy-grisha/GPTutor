@@ -21,9 +21,8 @@ public class SubscriptionsImagesService {
 
 
     public SubscriptionsChangeResponse subscriptionStatusChange(Map<String, String> allRequestParams) {
-        System.out.println(allRequestParams.get("cancel_reason") != null);
-        System.out.println(allRequestParams.get("cancel_reason"));
-        if (Objects.equals(allRequestParams.get("status"), "chargeable")
+
+        if (Objects.equals(allRequestParams.get("status"), "active")
                 && allRequestParams.get("cancel_reason") != null) {
             cancelSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"));
         } else {
@@ -53,21 +52,33 @@ public class SubscriptionsImagesService {
         var subscription = getOrCreateSubscriptions(vkUser);
 
         subscription.setActive(true);
-        subscription.setLastUpdated(Instant.now());
+
+        if (isAvailableSubscription(vkUser)) {
+            subscription.setLastUpdated(Instant.now());
+        }
+
         subscription.setSubscriptionId(subscriptionId);
 
         subscriptionsImagesRepository.save(subscription);
     }
 
-    SubscriptionImages cancelSubscription(String vkUser, String subscriptionId) {
+    void cancelSubscription(String vkUser, String subscriptionId) {
         var subscription = getOrCreateSubscriptions(vkUser);
 
         subscription.setActive(false);
         subscription.setSubscriptionId(subscriptionId);
 
         subscriptionsImagesRepository.save(subscription);
-
-        return subscription;
     }
 
+    boolean isAvailableSubscription(String vkUser) {
+        var subscription = getOrCreateSubscriptions(vkUser);
+        if (subscription.getLastUpdated() == null) {
+            return false;
+        }
+
+        Instant compareInstant = subscription.getLastUpdated().plusSeconds(30 * 24 * 60 * 60);
+
+        return Instant.now().isBefore(compareInstant);
+    }
 }
