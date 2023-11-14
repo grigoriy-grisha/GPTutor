@@ -23,22 +23,13 @@ public class PurchaseService {
     Map<String, PurchaseItem> items = new HashMap<>();
 
     PurchaseService() {
-        items.put("subscription_1", new PurchaseItem("Подписка на месяц", 21));
+        items.put("subscription_1", new PurchaseItem("Расширение функционала на месяц", 12));
     }
 
     public PurchaseItem getItem(String itemName) {
         return items.get(itemName);
     }
 
-    public void buyAttempts(String item, String vkId, String status) {
-        if (!Objects.equals(status, "сhargeable")) throw new BadRequestException("Платеж не был совершен");
-
-        var foundItem = getItem(item);
-        if (foundItem == null) throw new BadRequestException("Товар не найден");
-
-
-//        attemptsService.updateAttemptsUser(vkId, foundItem.getPrice());
-    }
 
     public void isAccessSig(Map<String, String> params) {
         if (!Objects.equals(params.get("sig"), calcSignature(params))) {

@@ -16,7 +16,9 @@ function SubscriptionAction() {
           style={{ width: "100%" }}
           size="m"
           appearance="positive"
-          onClick={() => subscriptionsController.resume()}
+          onClick={async () => {
+            await subscriptionsController.resume();
+          }}
         >
           Возообновить подписку
         </Button>
@@ -30,7 +32,9 @@ function SubscriptionAction() {
           size="m"
           mode="outline"
           appearance="negative"
-          onClick={() => subscriptionsController.cancel()}
+          onClick={async () => {
+            await subscriptionsController.cancel();
+          }}
         >
           Приостановить подписку
         </Button>
@@ -48,7 +52,9 @@ function SubscriptionAction() {
           background: "var(--vkui--color_accent_orange--active)",
           color: "#FF8C00 !important",
         }}
-        onClick={() => subscriptionsController.create()}
+        onClick={async () => {
+          await subscriptionsController.create();
+        }}
       >
         Получить подпику
       </Button>

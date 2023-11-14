@@ -43,11 +43,14 @@ bridge
     await authService.setupToken();
     const isDon = await groupsService.checkIsDon();
 
-    if (!isDon) {
-      adService.showBannerAd();
+    await subscriptionsController.getSubscription();
+
+    if (isDon || !subscriptionsController.isDisable()) {
+      await adService.hideBannerAd();
+    } else {
+      await adService.showBannerAd();
     }
 
-    await subscriptionsController.getSubscription();
     imageGeneration.init();
 
     appService.toggleLoading();
