@@ -5,9 +5,10 @@ import { Button } from "@vkontakte/vkui";
 import { Icon24LockOpenOutline } from "@vkontakte/icons";
 
 function SubscriptionAction() {
-  const subscriptionId =
-    subscriptionsController.subscription$.get()!.subscriptionId!;
-  const isActive = !!subscriptionsController.subscription$.get()?.isActive;
+  const subscription = subscriptionsController.subscription$.get();
+  if (!subscription) return null;
+
+  const isActive = subscription.isActive;
 
   if (isActive && !subscriptionsController.isDisable()) {
     return (
