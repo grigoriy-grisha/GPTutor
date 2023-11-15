@@ -33,8 +33,13 @@ import java.util.UUID;
 @Service
 public class ImagesService {
 
+
     @Value("${models.url}")
     String modelsUrl;
+
+    @Autowired
+    SubscriptionsImagesService subscriptionsImagesService;
+
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -52,16 +57,19 @@ public class ImagesService {
 
     @Transactional
     public List<Image> generateImage(String vkUserId, GenerateImageRequest generateImageRequest) {
-        if (badListService.checkText(generateImageRequest.getPrompt())) {
+
+        var normalisedGenerate = normaliseGenerateRequest(vkUserId, generateImageRequest);
+
+        if (badListService.checkText(normalisedGenerate.getPrompt())) {
             throw new BadRequestException("Запрос содержит неприемлемое содержимое");
         }
 
         try {
-            var pair = generateImage(generateImageRequest);
+            var pair = generateImage(normalisedGenerate);
 
             return Arrays
                     .stream(pair.getFirst())
-                    .map((image) -> createImage(image, vkUserId, pair.getSecond(), generateImageRequest))
+                    .map((image) -> createImage(image, vkUserId, pair.getSecond(), normalisedGenerate))
                     .toList();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -97,5 +105,17 @@ public class ImagesService {
         JsonNode seed = meta != null ? meta.get("seed") : null;
 
         return Pair.of(imageResponse.getOutput(), seed != null ? seed.asText() : "-1");
+    }
+
+    public GenerateImageRequest normaliseGenerateRequest(String vkUserId, GenerateImageRequest generateImageRequest) {
+        if (subscriptionsImagesService.isAvailableSubscription(vkUserId)) {
+            return generateImageRequest;
+        }
+
+        generateImageRequest.setHeight(524);
+        generateImageRequest.setWidth(524);
+        generateImageRequest.setSamples(1);
+
+        return generateImageRequest;
     }
 }

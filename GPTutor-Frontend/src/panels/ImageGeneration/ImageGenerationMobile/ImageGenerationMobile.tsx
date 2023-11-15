@@ -22,12 +22,13 @@ import { ImageStyles } from "$/panels/ImageGeneration/ImageStyles";
 function ImageGenerationMobile() {
   const { goToGenerationImagesResult, goToGenerationImagesExamples } =
     useNavigationContext();
-  const { appearance } = useConfigProvider();
-  const generateImage = imageGeneration.generateImage$;
 
   useEffect(() => {
     imageGeneration.imageSize.set(imageGeneration.aspectRatio$.get());
   }, [imageGeneration.result$.get()]);
+
+  const showReturnToResult =
+    !imageGeneration.resultIsEmpty$.get() || imageGeneration.loading$.get();
 
   return (
     <AppContainer
@@ -43,7 +44,7 @@ function ImageGenerationMobile() {
         </AppPanelHeader>
       }
       fixedBottomContent={
-        !imageGeneration.resultIsEmpty$.get() ? (
+        showReturnToResult ? (
           <Div>
             <Button
               style={{ width: "100%" }}

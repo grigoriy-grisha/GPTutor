@@ -81,4 +81,15 @@ public class SubscriptionsImagesService {
 
         return Instant.now().isAfter(compareInstant);
     }
+
+    public boolean isAvailableSubscription(String vkUser) {
+        var subscription = getOrCreateSubscriptions(vkUser);
+        if (subscription.getLastUpdated() == null) {
+            return false;
+        }
+
+        Instant compareInstant = subscription.getLastUpdated().plusSeconds(30 * 24 * 60 * 60);
+
+        return Instant.now().isBefore(compareInstant);
+    }
 }

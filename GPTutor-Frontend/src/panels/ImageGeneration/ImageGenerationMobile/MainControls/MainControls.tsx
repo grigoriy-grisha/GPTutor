@@ -17,7 +17,9 @@ import { useNavigationContext } from "$/NavigationContext";
 import { attempts } from "$/entity/attempts";
 
 function MainControls() {
-  const { goToGenerationImagesPrompts } = useNavigationContext();
+  const { goToGenerationImagesPrompts, goToGenerationImagesResult } =
+    useNavigationContext();
+
   const generateImage = imageGeneration.generateImage$;
   const generationIsDisable = attempts.$requests.get() === 0;
 
@@ -63,7 +65,10 @@ function MainControls() {
           size="l"
           align="center"
           mode="primary"
-          onClick={imageGeneration.generate}
+          onClick={() => {
+            imageGeneration.generate();
+            goToGenerationImagesResult();
+          }}
         >
           Сгенерировать
         </Button>
