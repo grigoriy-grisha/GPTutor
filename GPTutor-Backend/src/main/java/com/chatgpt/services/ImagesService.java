@@ -100,6 +100,7 @@ public class ImagesService {
 
         GenerateImageResponse imageResponse = objectMapper.readValue(responseImage.getBody(), GenerateImageResponse.class);
 
+        System.out.println(responseImage.getBody());
         JsonNode response = objectMapper.readTree(responseImage.getBody());
         JsonNode meta = response.get("meta");
         JsonNode seed = meta != null ? meta.get("seed") : null;
@@ -112,8 +113,8 @@ public class ImagesService {
             return generateImageRequest;
         }
 
-        generateImageRequest.setHeight(524);
-        generateImageRequest.setWidth(524);
+        generateImageRequest.setHeight(512);
+        generateImageRequest.setWidth(512);
         generateImageRequest.setSamples(1);
 
         return generateImageRequest;
