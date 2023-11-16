@@ -16,7 +16,6 @@ import { ImageGenerationPrompt } from "$/entity/image/ImageGenerationPrompt";
 
 import { ChipOption } from "@vkontakte/vkui/dist/components/Chip/Chip";
 import { StopWatch } from "$/entity/stopWatch";
-import { attempts } from "$/entity/attempts";
 import { subscriptionsController } from "$/entity/subscriptions";
 
 class ImageGeneration {
@@ -202,61 +201,66 @@ class ImageGeneration {
   }
 
   generateImage = async () => {
-    this.error$.set("");
-    if (this.prompt$.get().trim() === "") {
-      this.error$.set("Ввод промпта обязателен!");
-      return;
-    }
-
-    this.loading$.set(true);
-
-    this.timer.run();
-
-    const translatedPrompt = await translationService.translate(
-      `${this.prompt$.get()}, ${this.imageGenerationPrompt.selectedStyles$
-        .get()
-        .join(", ")}`
-    );
-
-    const seed = this.seed$.get();
-
-    const result = await generateImage({
-      modelId: this.model$.get(),
-      prompt: translatedPrompt,
-      createdAt: new Date(),
-      guidanceScale: this.CFGScale$.get(),
-      seed: !seed ? "-1" : seed,
-      expireTimestamp: datePlus30Days(),
-      samples: this.samples$.get(),
-      originalPrompt: this.prompt$.get(),
-      scheduler: this.sampler$.get(),
-      width: this.width$.get(),
-      height: this.height$.get(),
-      upscale: this.upscale$.get(),
-      numInferenceSteps: this.step$.get(),
-      negativePrompt: this.negativePrompts$
-        .get()
-        .map(({ label }) => label)
-        .join(","),
-    });
-
-    if (result.error) {
-      this.setResults();
-      this.timer.stop();
-      this.loading$.set(false);
-
-      if (result.status === 400) {
-        this.error$.set(result.error);
+    try {
+      this.error$.set("");
+      if (this.prompt$.get().trim() === "") {
+        this.error$.set("Ввод промпта обязателен!");
         return;
       }
 
-      this.error$.set("Что-то пошло не так, попробуйте позже");
-      return;
-    }
+      this.loading$.set(true);
 
-    this.timer.stop();
-    this.loading$.set(false);
-    this.result$.set(result);
+      this.timer.run();
+
+      const translatedPrompt = await translationService.translate(
+        `${this.prompt$.get()}, ${this.imageGenerationPrompt.selectedStyles$
+          .get()
+          .join(", ")}`
+      );
+
+      const seed = this.seed$.get();
+
+      const result = await generateImage({
+        modelId: this.model$.get(),
+        prompt: translatedPrompt,
+        createdAt: new Date(),
+        guidanceScale: this.CFGScale$.get(),
+        seed: !seed ? "-1" : seed,
+        expireTimestamp: datePlus30Days(),
+        samples: this.samples$.get(),
+        originalPrompt: this.prompt$.get(),
+        scheduler: this.sampler$.get(),
+        width: this.width$.get(),
+        height: this.height$.get(),
+        upscale: this.upscale$.get(),
+        numInferenceSteps: this.step$.get(),
+        negativePrompt: this.negativePrompts$
+          .get()
+          .map(({ label }) => label)
+          .join(","),
+      });
+
+      if (result.error) {
+        this.setResults();
+        this.timer.stop();
+        this.loading$.set(false);
+
+        if (result.status === 400) {
+          this.error$.set(result.error);
+          return;
+        }
+
+        this.error$.set("Что-то пошло не так, попробуйте позже");
+        return;
+      }
+
+      this.timer.stop();
+      this.loading$.set(false);
+      this.result$.set(result);
+    } catch (e) {
+      this.loading$.set(false);
+      this.error$.set("Что-то пошло не так, попробуйте позже");
+    }
   };
 
   selectedModel$ = memo(() =>
