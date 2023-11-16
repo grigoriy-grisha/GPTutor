@@ -56,9 +56,8 @@ function RequestParameters() {
         <Accordion
           open={imageGeneration.requestParameters}
           className={classes.accordion}
-          onClick={imageGeneration.toggleRequestParameters}
         >
-          <Accordion.Summary>
+          <Accordion.Summary onClick={imageGeneration.toggleRequestParameters}>
             <Title level="3" weight="3" className={classes.accordionTitle}>
               Параметры результата
             </Title>
