@@ -75,10 +75,7 @@ function ImageItem({ image }: IProps) {
       }
       actions={
         <div className={classes.buttons}>
-          <ButtonGroup
-            style={{ alignItems: "center" }}
-            mode={platform === Platform.VKCOM ? "horizontal" : "vertical"}
-          >
+          <ButtonGroup style={{ alignItems: "center" }} mode="horizontal">
             <Button
               size="m"
               after={<Icon24RepeatOutline />}

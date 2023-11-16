@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import {
   Accordion,
@@ -8,11 +8,13 @@ import {
   classNames,
   Div,
   FormItem,
+  Platform,
   Select,
   Separator,
   Slider,
   Spacing,
   Title,
+  usePlatform,
 } from "@vkontakte/vkui";
 import { imageGeneration } from "$/entity/image";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
@@ -21,13 +23,11 @@ import { ImageAspectRatio } from "$/entity/image/types";
 import { getImageSize } from "$/panels/ImageGeneration/utils";
 import { Icon20Verified, Icon24LockOpenOutline } from "@vkontakte/icons";
 import { attempts } from "$/entity/attempts";
-import bridge from "@vkontakte/vk-bridge";
-import { getSubscription } from "$/api/subscriptions";
 import { subscriptionsController } from "$/entity/subscriptions";
-import { subscriptionService } from "$/services/SubscriptionService";
 
 function RequestParameters() {
-  useEffect(() => {}, []);
+  const platform = usePlatform();
+
   return (
     <Card
       mode="shadow"
@@ -49,7 +49,9 @@ function RequestParameters() {
             }}
             onClick={() => subscriptionsController.create()}
           >
-            Разблокировать функционал
+            {platform === Platform.VKCOM
+              ? " Разблокировать функционал"
+              : "Разблокировать"}
           </Button>
         )}
         <Spacing size={6} />

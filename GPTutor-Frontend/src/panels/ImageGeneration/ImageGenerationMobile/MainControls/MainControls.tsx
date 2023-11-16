@@ -3,6 +3,7 @@ import React from "react";
 import {
   Button,
   Card,
+  ConfigProvider,
   Div,
   FormItem,
   Spacing,
@@ -67,6 +68,10 @@ function MainControls() {
           mode="primary"
           onClick={() => {
             imageGeneration.generate();
+            if (imageGeneration.error$.get()) {
+              return;
+            }
+
             goToGenerationImagesResult();
           }}
         >

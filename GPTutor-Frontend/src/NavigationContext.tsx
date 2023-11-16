@@ -108,7 +108,7 @@ export function NavigationContextProvider({
 
   const goToHistory = () => push(RoutingPages.history, "replace");
 
-  const goToOpenProfile = () => push(RoutingPages.profile);
+  const goToOpenProfile = () => push(RoutingPages.profile, "replace");
 
   const goToModes = () => push(RoutingPages.modes, "replace");
 
@@ -118,14 +118,14 @@ export function NavigationContextProvider({
 
   const goToGenerationImages = () => push(RoutingPages.generationImages);
   const goToGenerationImagesResult = () =>
-    push(RoutingPages.generationImagesResult);
+    push(RoutingPages.generationImagesResult, "replace");
   const goToGenerationImagesExamples = () =>
-    push(RoutingPages.generationImagesExamples);
+    push(RoutingPages.generationImagesExamples, "replace");
 
   const goToGenerationImagesPrompts = () =>
-    push(RoutingPages.generationImagesPrompts);
+    push(RoutingPages.generationImagesPrompts, "replace");
 
-  const goToGallery = () => push(RoutingPages.gallery);
+  const goToGallery = () => push(RoutingPages.gallery, "replace");
 
   const goToChatLeetCode = () => {
     const problemPages = location

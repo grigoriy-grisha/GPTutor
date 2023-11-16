@@ -22,10 +22,9 @@ import { Icon24HelpOutline } from "@vkontakte/icons";
 import { ChipsSelect } from "@vkontakte/vkui/dist/components/ChipsSelect/ChipsSelect";
 import { negativePrompts } from "$/entity/image/prompts";
 import { models, samplers } from "$/entity/image/styles";
+import { AppTextTooltip } from "$/components/AppTextTooltip";
 
 function AdvancedSettings() {
-  const { appearance } = useConfigProvider();
-
   return (
     <Card mode="shadow">
       <Div>
@@ -47,14 +46,9 @@ function AdvancedSettings() {
               top={
                 <div className={classes.formItemTitle}>
                   Негативные подсказки
-                  <TextTooltip
-                    text="Негативные подсказки, то, чего не должно быть на изображении. Значения вписываются через запятую. Например: уродство, деформированные конечности, усы"
-                    appearance={appearance === "light" ? "accent" : "white"}
-                    style={{ maxWidth: 350 }}
-                    placement="top-end"
-                  >
+                  <AppTextTooltip text="Негативные подсказки, то, чего не должно быть на изображении. Значения вписываются через запятую на английском. Например: уродство, деформированные конечности, усы">
                     <Icon24HelpOutline width={20} height={20} />
-                  </TextTooltip>
+                  </AppTextTooltip>
                 </div>
               }
             >
@@ -73,15 +67,9 @@ function AdvancedSettings() {
                 top={
                   <div className={classes.formItemTitle}>
                     Модель
-                    <TextTooltip
-                      id="model"
-                      appearance={appearance === "light" ? "accent" : "white"}
-                      style={{ maxWidth: 350 }}
-                      placement="top-end"
-                      text="Модель - это то, с помощью чего будет нарисовано изображение. Она определяет стиль и характеристики изображения."
-                    >
+                    <AppTextTooltip text="Модель - это то, с помощью чего будет нарисовано изображение. Она определяет стиль и характеристики изображения.">
                       <Icon24HelpOutline width={20} height={20} />
-                    </TextTooltip>
+                    </AppTextTooltip>
                   </div>
                 }
               >
@@ -98,15 +86,9 @@ function AdvancedSettings() {
                 top={
                   <div className={classes.formItemTitle}>
                     Сэмплер
-                    <TextTooltip
-                      id="sampler"
-                      appearance={appearance === "light" ? "accent" : "white"}
-                      style={{ maxWidth: 350 }}
-                      placement="top-end"
-                      text="Сэмплер — процессы, влияющие на результат генерации. С помощью правильно настроенного сэмплера можно получить разнообразные и интересные результаты при каждой генерации."
-                    >
+                    <AppTextTooltip text="Сэмплер — процессы, влияющие на результат генерации. С помощью правильно настроенного сэмплера можно получить разнообразные результаты при каждой генерации или совсем испортить изображение.">
                       <Icon24HelpOutline width={20} height={20} />
-                    </TextTooltip>
+                    </AppTextTooltip>
                   </div>
                 }
               >
@@ -123,14 +105,9 @@ function AdvancedSettings() {
                 top={
                   <div className={classes.formItemTitle}>
                     CFG Scale
-                    <TextTooltip
-                      appearance={appearance === "light" ? "accent" : "white"}
-                      style={{ maxWidth: 350 }}
-                      placement="top-end"
-                      text="CFG Scale — креативность нейросети. Чем ниже значение, тем сильнее нейросеть будет игнорировать ваш запрос. Чем выше, тем сильнее нейросеть придерживается вашего запроса."
-                    >
+                    <AppTextTooltip text="CFG Scale — креативность нейросети. Чем ниже значение, тем сильнее нейросеть будет игнорировать ваш запрос. Чем выше, тем сильнее нейросеть придерживается вашего запроса. При высоких значеняих могут возникать артефакты. Рекомендуемое значение  - 7.">
                       <Icon24HelpOutline width={20} height={20} />
-                    </TextTooltip>
+                    </AppTextTooltip>
                   </div>
                 }
               >
@@ -152,14 +129,9 @@ function AdvancedSettings() {
                 top={
                   <div className={classes.formItemTitle}>
                     Шаги
-                    <TextTooltip
-                      appearance={appearance === "light" ? "accent" : "white"}
-                      style={{ maxWidth: 350 }}
-                      placement="top-end"
-                      text="Шаги — сколько шагов нейросеть сделает, пока генерирует изображение. Чем больше шагов, тем качественнее должен быть результат, а значит, тем больше времени уйдет на обработку запроса."
-                    >
+                    <AppTextTooltip text="Шаги — сколько шагов нейросеть сделает, пока генерирует изображение. Чем больше шагов, тем качественнее должен быть результат, а значит, тем больше времени уйдет на обработку запроса.">
                       <Icon24HelpOutline width={20} height={20} />
-                    </TextTooltip>
+                    </AppTextTooltip>
                   </div>
                 }
               >
@@ -181,15 +153,9 @@ function AdvancedSettings() {
                 top={
                   <div className={classes.formItemTitle}>
                     Сид
-                    <TextTooltip
-                      id="step"
-                      text="Cид — стартовая точка, число, из которого нейросеть затем формирует изображение. По умолчанию стоит «случайный» параметр — это помогает достигать разных результатов при одном и том же запросе. А если вы используете конкретное номерное значение сида, то потом даже при смене запроса композиция картинки останется схожей. Всего сидов около 16 миллиардов."
-                      appearance={appearance === "light" ? "accent" : "white"}
-                      style={{ maxWidth: 350 }}
-                      placement="top-end"
-                    >
+                    <AppTextTooltip text="Cид — стартовая точка, число, из которого нейросеть затем формирует изображение. По умолчанию стоит «случайный» параметр — это помогает достигать разных результатов при одном и том же запросе. А если вы используете конкретное номерное значение сида, то потом даже при смене запроса композиция картинки останется схожей.">
                       <Icon24HelpOutline width={20} height={20} />
-                    </TextTooltip>
+                    </AppTextTooltip>
                   </div>
                 }
               >

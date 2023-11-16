@@ -50,7 +50,7 @@ function ImageGenerationMobile() {
               style={{ width: "100%" }}
               size="m"
               align="center"
-              mode="primary"
+              mode="outline"
               onClick={goToGenerationImagesResult}
             >
               Вернуться к результату
