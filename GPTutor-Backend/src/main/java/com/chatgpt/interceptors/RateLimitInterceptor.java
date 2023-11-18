@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RateLimitInterceptor implements HandlerInterceptor {
 
     private final Map<String, Map<String, Bucket>> urlBuckets = new ConcurrentHashMap<>();
+    private final Map<String, Instant> userLastRequestTime = new ConcurrentHashMap<>();
 
     @Override
     public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
@@ -35,6 +37,8 @@ public class RateLimitInterceptor implements HandlerInterceptor {
                 return false;
             }
         }
+
+
 
         return true;
     }

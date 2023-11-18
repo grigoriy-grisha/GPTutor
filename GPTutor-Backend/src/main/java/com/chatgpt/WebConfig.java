@@ -2,6 +2,7 @@ package com.chatgpt;
 
 import com.chatgpt.interceptors.AuthorizationInterceptor;
 import com.chatgpt.interceptors.CorsInterceptor;
+import com.chatgpt.interceptors.DurationLimitInterceptor;
 import com.chatgpt.interceptors.RateLimitInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,12 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(corsInterceptor);
         registry.addInterceptor(authorizationInterceptor);
         registry.addInterceptor(rateLimitInterceptor);
+
+
+        DurationLimitInterceptor durationLimitInterceptor = new DurationLimitInterceptor();
+        durationLimitInterceptor.addRateLimitForUrl("/images", 1, 5);
+
+        registry.addInterceptor(durationLimitInterceptor);
     }
 }
 
