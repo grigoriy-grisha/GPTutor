@@ -2,10 +2,10 @@ package com.chatgpt;
 
 import com.chatgpt.interceptors.AuthorizationInterceptor;
 import com.chatgpt.interceptors.CorsInterceptor;
+import com.chatgpt.interceptors.RateLimitInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -22,10 +22,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private CorsInterceptor corsInterceptor;
 
+    @Autowired RateLimitInterceptor rateLimitInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(corsInterceptor);
         registry.addInterceptor(authorizationInterceptor);
+        registry.addInterceptor(rateLimitInterceptor);
     }
 }
 
