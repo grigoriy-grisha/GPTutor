@@ -52,7 +52,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
     private int getCapacityForUrl(String uri) {
 
-        if (uri.startsWith("/images")) {
+        if (uri.startsWith("/image")) {
             return 10;
         }
 

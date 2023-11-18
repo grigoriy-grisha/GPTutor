@@ -45,6 +45,7 @@ public class DurationLimitInterceptor  implements HandlerInterceptor  {
                 if (timeSinceLastRequest.getSeconds() < durationInSeconds) {
                     if (urlLastRequestTime.size() >= requestsPerDuration) {
                         response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+                        response.getWriter().write("Rate limit exceeded");
                         return false;
                     }
                 }
