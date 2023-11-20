@@ -193,10 +193,12 @@ class ImageGeneration {
     this.sampler$.set(example.scheduler);
     this.aspectRatio$.set(ImageAspectRatio.square);
 
+    const negativePrompts = example.negativePrompt.trim().split(",");
+
+    if (negativePrompts.length === 0) this.negativePrompts$.set([]);
+
     this.negativePrompts$.set(
-      example.negativePrompt
-        .split(",")
-        .map((value) => ({ value, label: value }))
+      negativePrompts.map((value) => ({ value, label: value }))
     );
   }
 
