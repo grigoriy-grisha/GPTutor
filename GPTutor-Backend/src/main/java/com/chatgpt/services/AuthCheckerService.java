@@ -37,7 +37,6 @@ public class AuthCheckerService {
 
     public boolean checkAuthorizationHeader(String url) throws Exception {
         Map<String, String> queryParams = getQueryParams(new URL(url));
-        System.out.println(queryParams);
         return checkAuthorizationHeaderByParams(queryParams);
     }
 

@@ -25,8 +25,6 @@ public class RateLimitInterceptor implements HandlerInterceptor {
         String uri = request.getRequestURI();
         String userId = (String) request.getAttribute("vkUserId");
 
-        System.out.println(userId);
-
         if (userId != null) {
             Bucket bucket = getBucket(userId, uri);
             if (bucket.tryConsume(1)) {

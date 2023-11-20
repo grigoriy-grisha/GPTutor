@@ -26,8 +26,9 @@ public class DurationLimitInterceptor  implements HandlerInterceptor  {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String userId = (String) request.getAttribute("vkUserId");
         String requestUrl = request.getRequestURI();
+        String method = request.getMethod();
 
-        if (userId != null && urlToRateAndDuration.containsKey(requestUrl)) {
+        if (userId != null && urlToRateAndDuration.containsKey(requestUrl + " | " + method)) {
             Map<String, Integer> rateAndDuration = urlToRateAndDuration.get(requestUrl);
             int requestsPerDuration = rateAndDuration.get("requests");
             int durationInSeconds = rateAndDuration.get("duration");

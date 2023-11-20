@@ -14,9 +14,6 @@ public class UserService {
 
     VkUser getOrCreateVkUser(String vkId) {
 
-        System.out.println(vkId);
-        System.out.println("vkId_________");
-
         var foundFoundUser = vkUsersRepository.findByVkId(vkId);
         if (foundFoundUser != null) return foundFoundUser;
 

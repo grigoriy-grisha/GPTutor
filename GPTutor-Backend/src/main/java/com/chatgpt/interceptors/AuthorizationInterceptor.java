@@ -30,8 +30,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         String url = request.getRequestURI();
-        System.out.println(url);
-        System.out.println(url + "__________________");
 
         if (Objects.equals(url, "/purchase")) {
             return true;
@@ -48,8 +46,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         String authorizationHeader = request.getHeader("Authorization");
-
-        System.out.println(authorizationHeader);
 
         if (authorizationHeader != null) {
             boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(

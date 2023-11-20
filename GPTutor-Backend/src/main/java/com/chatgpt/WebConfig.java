@@ -33,7 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 
         DurationLimitInterceptor durationLimitInterceptor = new DurationLimitInterceptor();
-        durationLimitInterceptor.addRateLimitForUrl("/image", 1, 5);
+        durationLimitInterceptor.addRateLimitForUrl("/image | POST", 1, 5);
 
         registry.addInterceptor(durationLimitInterceptor);
     }

@@ -43,7 +43,6 @@ public class ConversationsService {
                 true
         );
 
-        System.out.println(apiKey.getFirst().getKey());
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.aiguoguo199.com/v1/chat/completions"))
@@ -55,8 +54,6 @@ public class ConversationsService {
         HttpClient.newHttpClient().sendAsync(request, respInfo ->
         {
             apiRequestsService.addApiRequest("OfficialGPT", respInfo.statusCode());
-
-            System.out.println(respInfo.statusCode());
 
             if (respInfo.statusCode() == 200) {
                 return new SseSubscriber((data) -> {
