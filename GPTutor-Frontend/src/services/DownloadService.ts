@@ -41,7 +41,15 @@ class DownloadService {
       );
 
   appDownloadLink(platform: string, url: string, filename?: string) {
-    this.downloadLink(url, filename);
+    if (platform === Platform.VKCOM) {
+      this.downloadLink(url, filename);
+      return;
+    }
+
+    bridge.send("VKWebAppDownloadFile", {
+      url: url,
+      filename: filename || url.substring(url.lastIndexOf("/") + 1),
+    });
   }
 
   downloadTxt(text: string, filename: string) {

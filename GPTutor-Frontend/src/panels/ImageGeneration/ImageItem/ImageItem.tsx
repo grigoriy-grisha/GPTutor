@@ -5,6 +5,7 @@ import {
   Platform,
   Spacing,
   Tappable,
+  useConfigProvider,
   usePlatform,
 } from "@vkontakte/vkui";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
@@ -27,7 +28,7 @@ interface IProps {
 }
 
 function ImageItem({ resultImage }: IProps) {
-  const platform = usePlatform();
+  const { isWebView, platform } = useConfigProvider();
 
   const isEmpty = !resultImage.modelId;
 
@@ -84,7 +85,10 @@ function ImageItem({ resultImage }: IProps) {
           mode="outline"
           after={<Icon28ArrowDownToSquareOutline />}
           onClick={() => {
-            downloadService.appDownloadLink(platform, resultImage.url);
+            downloadService.appDownloadLink(
+              isWebView ? platform : Platform.VKCOM,
+              resultImage.url
+            );
           }}
           disabled={isEmpty}
         >

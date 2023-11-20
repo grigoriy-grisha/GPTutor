@@ -7,6 +7,7 @@ import {
   Platform,
   Tappable,
   usePlatform,
+  useConfigProvider,
 } from "@vkontakte/vkui";
 import React from "react";
 
@@ -32,7 +33,7 @@ interface IProps {
 }
 
 function ImageItem({ image }: IProps) {
-  const platform = usePlatform();
+  const { isWebView, platform } = useConfigProvider();
   const { goBack, goToGenerationImagesResult } = useNavigationContext();
 
   return (
@@ -98,7 +99,10 @@ function ImageItem({ image }: IProps) {
           <div className={classes.additionButtons}>
             <IconButton
               onClick={() => {
-                downloadService.appDownloadLink(platform, image.item.url);
+                downloadService.appDownloadLink(
+                  isWebView ? platform : Platform.VKCOM,
+                  image.item.url
+                );
               }}
             >
               <Icon28ArrowDownToSquareOutline />
