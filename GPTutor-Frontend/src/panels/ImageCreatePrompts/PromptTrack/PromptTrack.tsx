@@ -54,7 +54,10 @@ function PromptTrack({ prompts, type, title }: PromptTrackProps) {
           </Text>
           {type === "style" && (
             <IconButton
-              style={{ marginLeft: 8 }}
+              style={{
+                marginLeft: 8,
+                color: "var(--vkui--color_text_accent_themed)",
+              }}
               disabled={!imageGenerationPrompt.isHasSelected(prompts)}
               onClick={() => imageGenerationPrompt.$removeStyles(prompts)}
             >
