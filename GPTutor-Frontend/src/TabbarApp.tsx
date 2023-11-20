@@ -25,7 +25,7 @@ interface IProps {
 }
 
 function TabbarApp({ setRef }: IProps) {
-  const { goToModes, goToHistory, goToGallery, goToOpenProfile } =
+  const { goToModes, goToHistory, goToGallery, goToOpenProfile, goBack } =
     useNavigationContext();
 
   const platform = usePlatform();
@@ -46,6 +46,18 @@ function TabbarApp({ setRef }: IProps) {
           ref={setRef}
           style={{ display: "flex", justifyContent: "space-between" }}
         >
+          {" "}
+          <TabbarItem
+            selected={
+              location.getViewActivePanel(Views.viewMain) ===
+              Panels.generationImages
+            }
+            className={classes.tabItem}
+            text="Генератор"
+            onClick={goBack}
+          >
+            <Icon24MagicWandOutline width={28} height={28} />
+          </TabbarItem>
           <TabbarItem
             selected={activePanel === Panels.profile}
             className={classes.tabItem}
