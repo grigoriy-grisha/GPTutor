@@ -153,7 +153,7 @@ function AdvancedSettings() {
                 top={
                   <div className={classes.formItemTitle}>
                     Сид
-                    <AppTextTooltip text="Cид — стартовая точка, число, из которого нейросеть затем формирует изображение. По умолчанию стоит «случайный» параметр — это помогает достигать разных результатов при одном и том же запросе. А если вы используете конкретное номерное значение сида, то потом даже при смене запроса композиция картинки останется схожей.">
+                    <AppTextTooltip text="Cид — стартовая точка, из которого нейросеть затем формирует изображение. По умолчанию стоит «случайный» параметр — это помогает достигать разных результатов при одном и том же запросе. А если вы используете конкретное номерное значение сида, то потом даже при смене запроса композиция картинки останется схожей.">
                       <Icon24HelpOutline width={20} height={20} />
                     </AppTextTooltip>
                   </div>
@@ -165,9 +165,7 @@ function AdvancedSettings() {
                   type="text"
                   value={imageGeneration.seed$.get()}
                   onChange={(event) =>
-                    imageGeneration.setSeed(
-                      event.target.value as unknown as number
-                    )
+                    imageGeneration.setSeed(event.target.value)
                   }
                 />
               </FormItem>

@@ -128,11 +128,7 @@ class ImageGeneration {
     this.model$.set(model);
   }
 
-  setSeed(seed: any) {
-    if (isNaN(Number(seed))) {
-      return;
-    }
-
+  setSeed(seed: string) {
     this.seed$.set(seed);
   }
 
@@ -226,6 +222,22 @@ class ImageGeneration {
     return [prompt, negativePrompts || ""];
   }
 
+  getSeed() {
+    const seed = this.seed$.get();
+
+    if (seed === "-1" || !seed) return "-1";
+
+    if (isNaN(Number(seed)))
+      return String(
+        seed
+          .split("")
+          .map((_, index) => seed.charCodeAt(index))
+          .reduce((acc, item) => acc + item)
+      );
+
+    return seed;
+  }
+
   generateImage = async () => {
     try {
       this.error$.set("");
@@ -250,14 +262,12 @@ class ImageGeneration {
 
       const [prompt, negativePrompt] = this.splitPrompt(translatedPrompt);
 
-      const seed = this.seed$.get();
-
       const result = await generateImage({
         modelId: this.model$.get(),
         prompt: prompt.trim(),
         createdAt: new Date(),
         guidanceScale: this.CFGScale$.get(),
-        seed: !seed ? "-1" : seed,
+        seed: this.getSeed(),
         expireTimestamp: datePlus30Days(),
         samples: this.samples$.get(),
         originalPrompt: this.prompt$.get(),
