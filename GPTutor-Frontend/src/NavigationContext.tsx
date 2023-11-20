@@ -108,8 +108,6 @@ export function NavigationContextProvider({
 
   const goToHistory = () => push(RoutingPages.history, "replace");
 
-  const goToOpenProfile = () => push(RoutingPages.profile, "replace");
-
   const goToModes = () => push(RoutingPages.modes, "replace");
 
   const goToForbidden = () => push(RoutingPages.forbidden);
@@ -117,13 +115,15 @@ export function NavigationContextProvider({
   const goToLeetcodeProblems = () => push(RoutingPages.leetcodeProblems);
 
   const goToGenerationImages = () => push(RoutingPages.generationImages);
+  const goToOpenProfile = () => push(RoutingPages.profile, "replace");
+
   const goToGenerationImagesResult = () =>
     push(RoutingPages.generationImagesResult, "replace");
   const goToGenerationImagesExamples = () =>
     push(RoutingPages.generationImagesExamples, "replace");
 
   const goToGenerationImagesPrompts = () =>
-    push(RoutingPages.generationImagesPrompts, "replace");
+    push(RoutingPages.generationImagesPrompts);
 
   const goToGallery = () => push(RoutingPages.gallery, "replace");
 

@@ -32,6 +32,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt:
+      "lineart| vibrant| comprehensive cinematic| Carne Griffiths| Conrad Roset",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/a668d790-6aa3-48f6-adca-f024d82c870f",
@@ -43,6 +45,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt:
+      "an astronaut riding a horse on mars artstation, hd, dramatic lighting, detailed",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/6fced89a-118f-42f3-b60f-a00d79a72a5e",
@@ -53,6 +57,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt:
+      "analog style portrait of a cute young woman with blonde hair",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/d74a8846-87c0-4582-897d-e4ddac1fcb05",
@@ -63,6 +69,7 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt: "analog style Santa as a 1960s",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/8f6124b2-80f5-470f-9327-917272349eeb",
@@ -74,6 +81,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "anything-v4",
     negativePrompt: "",
+    originalPrompt:
+      "1girl, brown hair, green eyes, colorful, autumn, cumulonimbus clouds",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/c11972ef-ec94-47fa-a0df-04ca5d7502f5",
@@ -84,6 +93,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt:
+      "70s progressive rock artwork, funky, vibrant, acid-culture",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/fdbfaec8-b817-4b70-8413-cca5525a8182",
@@ -95,6 +106,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "((beard:1.4,)) red hair, frame, canvas frame",
+    originalPrompt:
+      "portrait of superman, style of (van gogh), short hair, highly detailed, beautiful art,",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/ab983418-8f55-4542-8195-559a1ddff09f",
@@ -106,6 +119,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "nsfw:1.3",
+    originalPrompt:
+      "vintage blonde pin-up girl, style of (picasso), very abstract, surrealism, cubism",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/3e449318-5c73-4ab6-b201-e335ccb6392f",
@@ -117,6 +132,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt:
+      "style of (Albert Bierstadt), beautiful valley with mountains on each side, morning yellow sun, vast and luminous, luminism, realism, romanticism, insane detail, highly detailed, warm colors, warm lighting",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/bf109934-d282-4136-a8fe-800c81ddb935",
@@ -127,6 +144,7 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt: "style of (Tim Burton), woman ",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/c1219d6c-549a-4c8b-972e-7af7affe8856",
@@ -138,6 +156,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt:
+      "tiny isometric scientific lab, little scientist, smooth lighting, 100mm lens",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/a2c85b4a-f540-4c83-993c-13f6262b0b13",
@@ -149,8 +169,9 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt:
+      "kawaii low poly beluga whale, 3d isometric render, blue background, unity engine, ambient occlusion",
   },
-
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/9c8d831d-fbbd-4fc2-ba0c-1d887c1d9272",
     seed: "-1",
@@ -161,6 +182,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt:
+      "Retro comic style artwork, highly detailed michael j fox, comic book cover, symmetrical, vintage",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/fc7d0108-abd1-4763-8150-cbdf0873ce76",
@@ -171,6 +194,7 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt: "Man outside saloon, wild west",
   },
   {
     url: "https://storage.yandexcloud.net/gptutor-bucket/eea52f4b-655f-4460-99b8-a05373432561",
@@ -182,6 +206,8 @@ const examples: ImageExample[] = [
     scheduler: "DDPMScheduler",
     modelId: "sd",
     negativePrompt: "",
+    originalPrompt:
+      "extreme close-up of old man outdoors, telephoto, ambient lighting, monochrome",
   },
 ];
 
