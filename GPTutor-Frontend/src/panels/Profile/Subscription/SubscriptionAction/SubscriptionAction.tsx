@@ -56,7 +56,7 @@ function SubscriptionAction() {
           await subscriptionsController.create();
         }}
       >
-        Получить подпику
+        Получить подписку
       </Button>
     );
   }

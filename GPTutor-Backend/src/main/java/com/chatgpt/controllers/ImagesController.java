@@ -19,14 +19,12 @@ public class ImagesController {
     ImagesService imagesService;
 
     @PostMapping(path = "/image")
-    @RateLimiter(name = "imagesLimitCreate", fallbackMethod = "fallbackMethodGenerateImage")
     List<Image> generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) {
         return imagesService.generateImage((String) request.getAttribute("vkUserId"), prompt);
     }
 
 
     @GetMapping(path = "/image")
-    @RateLimiter(name = "historyLimit", fallbackMethod = "fallbackMethodGetImages")
     Page<Image> getImages(HttpServletRequest request,
                           @RequestParam(defaultValue = "0") int pageNumber,
                           @RequestParam(defaultValue = "10") int pageSize) {
@@ -35,13 +33,5 @@ public class ImagesController {
                 pageNumber,
                 pageSize
         );
-    }
-
-    public Page<Image> fallbackMethodGetImages(HttpServletRequest request, int pageNumber, int pageSize, Exception e) {
-        throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Too many requests");
-    }
-
-    public List<Image> fallbackMethodGenerateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request, Exception e) {
-        throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Too many requests");
     }
 }

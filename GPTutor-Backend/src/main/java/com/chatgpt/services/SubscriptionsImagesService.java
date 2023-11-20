@@ -39,6 +39,7 @@ public class SubscriptionsImagesService {
 
     public SubscriptionImages getOrCreateSubscriptions(String vkUser) {
         var user = userService.getOrCreateVkUser(vkUser);
+
         var foundSubscriptions = subscriptionsImagesRepository.findByVkUserId(user.getId());
         if (foundSubscriptions != null) return foundSubscriptions;
 

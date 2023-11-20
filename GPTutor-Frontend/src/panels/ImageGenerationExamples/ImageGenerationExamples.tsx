@@ -166,7 +166,7 @@ const examples: ImageExample[] = [
     url: "https://storage.yandexcloud.net/gptutor-bucket/fc7d0108-abd1-4763-8150-cbdf0873ce76",
     seed: "-1",
     numInferenceSteps: 25,
-    prompt: "Vaporwave space station",
+    prompt: "Man outside saloon, wild west",
     guidanceScale: 10,
     scheduler: "DDPMScheduler",
     modelId: "sd",
@@ -217,17 +217,13 @@ function ImageGenerationExamples({ id }: IProps) {
               alt={example.prompt}
               subtitle={example.modelId}
               header={
-                platform !== Platform.VKCOM ? (
-                  <div className={classes.title}>
-                    {example.prompt}
-                    <Spacing size={12} />
-                    <Button style={{ width: "100%" }} mode="secondary">
-                      Опробовать
-                    </Button>
-                  </div>
-                ) : (
-                  example.prompt
-                )
+                <div className={classes.title}>
+                  {example.prompt}
+                  <Spacing size={12} />
+                  <Button style={{ width: "100%" }} mode="secondary">
+                    Опробовать
+                  </Button>
+                </div>
               }
               maxHeight={250}
             />

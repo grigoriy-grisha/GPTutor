@@ -79,7 +79,8 @@ def image():
         height=request.json["height"],
         num_inference_steps=request.json["numInferenceSteps"],
         upscale=request.json["upscale"],
-        samples=request.json["samples"]
+        samples=request.json["samples"],
+        lora_model=request.json["loraModel"]
     )
 
 

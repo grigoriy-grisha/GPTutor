@@ -19,7 +19,8 @@ def textToImage(
         seed=None,
         guidance_scale=7,
         upscale='no',
-        attempts=1
+        attempts=1,
+        lora_model=None
 ):
     if attempts == 11:
         return {
@@ -36,17 +37,18 @@ def textToImage(
         "samples": str(samples),
         "num_inference_steps": str(num_inference_steps),
         "guidance_scale": guidance_scale,
-        "upscale": "no",
+        "upscale": upscale,
         "safety_checker": "yes",
         "multi_lingual": "yes",
         "clip_skip": "6",
         "enhance_prompt": "no",
-        "panorama": "no",
+        "panorama": "yes",
         "safety_checker_type": "blur",
         "self_attention": "no",
         "embeddings_model": None,
         "webhook": None,
         "track_id": None,
+        "lora_model": lora_model,
         **getScheduler(scheduler),
         **getSeed(seed)
     })

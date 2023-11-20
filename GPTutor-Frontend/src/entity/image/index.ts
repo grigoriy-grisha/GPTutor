@@ -185,7 +185,7 @@ class ImageGeneration {
   }
 
   applyExample(example: ImageExample) {
-    this.prompt$.set(example.prompt);
+    this.prompt$.set(example.originalPrompt!);
     this.model$.set(example.modelId);
     this.seed$.set(example.seed ? String(example.seed) : "");
     this.step$.set(example.numInferenceSteps);
@@ -200,62 +200,95 @@ class ImageGeneration {
     );
   }
 
+  getPromptWithStyles() {
+    const styles = this.imageGenerationPrompt.selectedStyles$.get();
+
+    if (styles.length === 0) return this.prompt$.get();
+
+    return `${this.prompt$.get()},${styles.join(", ")}`;
+  }
+
+  getTextWithNegativePrompts(prompt: string) {
+    const negativePrompts = this.negativePrompts$.get();
+
+    if (negativePrompts.length === 0) return prompt;
+
+    return `${prompt} || ${negativePrompts
+      .map(({ label }) => label)
+      .join(",")}`;
+  }
+
+  splitPrompt(text: string) {
+    const [prompt, negativePrompts] = text.split("||");
+
+    return [prompt, negativePrompts || ""];
+  }
+
   generateImage = async () => {
-    this.error$.set("");
-    if (this.prompt$.get().trim() === "") {
-      this.error$.set("Ввод промпта обязателен!");
-      return;
-    }
-
-    this.loading$.set(true);
-
-    this.timer.run();
-
-    const translatedPrompt = await translationService.translate(
-      `${this.prompt$.get()}, ${this.imageGenerationPrompt.selectedStyles$
-        .get()
-        .join(", ")}`
-    );
-
-    const seed = this.seed$.get();
-
-    const result = await generateImage({
-      modelId: this.model$.get(),
-      prompt: translatedPrompt,
-      createdAt: new Date(),
-      guidanceScale: this.CFGScale$.get(),
-      seed: !seed ? "-1" : seed,
-      expireTimestamp: datePlus30Days(),
-      samples: this.samples$.get(),
-      originalPrompt: this.prompt$.get(),
-      scheduler: this.sampler$.get(),
-      width: this.width$.get(),
-      height: this.height$.get(),
-      upscale: this.upscale$.get(),
-      numInferenceSteps: this.step$.get(),
-      negativePrompt: this.negativePrompts$
-        .get()
-        .map(({ label }) => label)
-        .join(","),
-    });
-
-    if (result.error) {
-      this.setResults();
-      this.timer.stop();
-      this.loading$.set(false);
-
-      if (result.status === 400) {
-        this.error$.set(result.error);
+    try {
+      this.error$.set("");
+      if (this.prompt$.get().trim() === "") {
+        this.error$.set("Ввод промпта обязателен!");
         return;
       }
 
-      this.error$.set("Что-то пошло не так, попробуйте позже");
-      return;
-    }
+      this.loading$.set(true);
 
-    this.timer.stop();
-    this.loading$.set(false);
-    this.result$.set(result);
+      this.timer.run();
+
+      console.log(
+        `${this.prompt$.get()}, ${this.imageGenerationPrompt.selectedStyles$
+          .get()
+          .join(", ")}`
+      );
+
+      const translatedPrompt = await translationService.translate(
+        this.getTextWithNegativePrompts(this.getPromptWithStyles())
+      );
+
+      const [prompt, negativePrompt] = this.splitPrompt(translatedPrompt);
+
+      const seed = this.seed$.get();
+
+      const result = await generateImage({
+        modelId: this.model$.get(),
+        prompt: prompt.trim(),
+        createdAt: new Date(),
+        guidanceScale: this.CFGScale$.get(),
+        seed: !seed ? "-1" : seed,
+        expireTimestamp: datePlus30Days(),
+        samples: this.samples$.get(),
+        originalPrompt: prompt,
+        scheduler: this.sampler$.get(),
+        width: this.width$.get(),
+        height: this.height$.get(),
+        upscale: this.upscale$.get(),
+        numInferenceSteps: this.step$.get(),
+        loraModel: "",
+        negativePrompt: negativePrompt.trim(),
+      });
+
+      if (result.error) {
+        this.setResults();
+        this.timer.stop();
+        this.loading$.set(false);
+
+        if (result.status === 400) {
+          this.error$.set(result.error);
+          return;
+        }
+
+        this.error$.set("Что-то пошло не так, попробуйте позже");
+        return;
+      }
+
+      this.timer.stop();
+      this.loading$.set(false);
+      this.result$.set(result);
+    } catch (e) {
+      this.loading$.set(false);
+      this.error$.set("Что-то пошло не так, попробуйте позже");
+    }
   };
 
   selectedModel$ = memo(() =>

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Caption, Card, Div, Spacing } from "@vkontakte/vkui";
+import { Caption, Card, Div, Spacing, Text } from "@vkontakte/vkui";
 import { Icon24ClockOutline } from "@vkontakte/icons";
 
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
@@ -15,7 +15,7 @@ function TimeGenerationInfo() {
         <div>
           <Caption>Среднее время ожидания 15 секунд</Caption>
           <Spacing size={4} />
-          <Caption>Максимальное время ожидания 1 минута</Caption>
+          <Caption>Максимальное время минута</Caption>
         </div>
       </Div>
     </Card>

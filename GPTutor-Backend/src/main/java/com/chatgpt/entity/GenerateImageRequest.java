@@ -3,6 +3,7 @@ package com.chatgpt.entity;
 import java.sql.Timestamp;
 
 public class GenerateImageRequest {
+    String loraModel;
 
     Timestamp createdAt;
     Timestamp expireTimestamp;
@@ -132,5 +133,13 @@ public class GenerateImageRequest {
 
     public void setOriginalPrompt(String originalPrompt) {
         this.originalPrompt = originalPrompt;
+    }
+
+    public String getLoraModel() {
+        return loraModel;
+    }
+
+    public void setLoraModel(String loraModel) {
+        this.loraModel = loraModel;
     }
 }

@@ -13,9 +13,11 @@ export type GenerateImageRequest = {
   seed: null | string;
   numInferenceSteps: number;
   upscale: "no" | "yes";
+  loraModel: string;
 };
 
 export type ImageExample = {
+  originalPrompt?: string;
   url: string;
   seed: string | null;
   numInferenceSteps: number;

@@ -18,6 +18,8 @@ public class Image {
     String originalPrompt;
     String scheduler;
     String negativePrompt;
+
+    String loraModel;
     int guidanceScale;
     String generatedSeed;
     String seed;
@@ -50,6 +52,7 @@ public class Image {
         this.upscale = generateImageRequest.getUpscale();
         this.numInferenceSteps = generateImageRequest.getNumInferenceSteps();
         this.originalPrompt = generateImageRequest.getOriginalPrompt();
+        this.loraModel = generateImageRequest.getLoraModel();
     }
 
 
@@ -187,5 +190,13 @@ public class Image {
 
     public void setGeneratedSeed(String generatedSeed) {
         this.generatedSeed = generatedSeed;
+    }
+
+    public String getLoraModel() {
+        return loraModel;
+    }
+
+    public void setLoraModel(String loraModel) {
+        this.loraModel = loraModel;
     }
 }

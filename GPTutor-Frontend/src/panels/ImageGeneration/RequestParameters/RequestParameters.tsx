@@ -143,8 +143,6 @@ function RequestParameters() {
                   .map((item) => ({
                     label: item,
                     value: item,
-                    disabled:
-                      item != "1" && imageGeneration.model$.get() !== "sd",
                   }))
                   .slice(0, attempts.$requests.get())}
                 onChange={(event) => {

@@ -38,11 +38,17 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         if (skipAuth) {
-            request.setAttribute("vkUserId", "0");
+            var userId = authCheckerService.getVkUserId(
+                    authCheckerService.splitBearer(request.getHeader("Authorization"))
+            );
+
+            request.setAttribute("vkUserId", Objects.requireNonNullElse(userId, "0"));
+
             return true;
         }
 
         String authorizationHeader = request.getHeader("Authorization");
+
         System.out.println(authorizationHeader);
 
         if (authorizationHeader != null) {
