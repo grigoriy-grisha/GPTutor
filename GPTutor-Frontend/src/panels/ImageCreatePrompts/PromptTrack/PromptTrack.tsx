@@ -4,11 +4,16 @@ import {
   Button,
   HorizontalCell,
   HorizontalScroll,
+  IconButton,
   Spacing,
   Text,
   Title,
 } from "@vkontakte/vkui";
-import { Icon24AddOutline, Icon24DoneOutline } from "@vkontakte/icons";
+import {
+  Icon24AddOutline,
+  Icon24DoneOutline,
+  Icon20Clear,
+} from "@vkontakte/icons";
 
 import { imageGeneration } from "$/entity/image";
 import { AppDiv } from "$/components/AppDiv";
@@ -43,10 +48,19 @@ function PromptTrack({ prompts, type, title }: PromptTrackProps) {
   return (
     <>
       {title && (
-        <AppDiv>
+        <AppDiv style={{ display: "flex", alignItems: "center" }}>
           <Text weight="1" className={classes.title}>
             {title}
           </Text>
+          {type === "style" && (
+            <IconButton
+              style={{ marginLeft: 8 }}
+              disabled={!imageGenerationPrompt.isHasSelected(prompts)}
+              onClick={() => imageGenerationPrompt.$removeStyles(prompts)}
+            >
+              <Icon20Clear />
+            </IconButton>
+          )}
         </AppDiv>
       )}
       <Spacing size={4} />

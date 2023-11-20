@@ -22,6 +22,22 @@ export class ImageGenerationPrompt {
     this.selectedStyles$.set([style, ...this.selectedStyles$.get()]);
   }
 
+  $removeStyles(styles: string[]) {
+    const selectedStyles = this.selectedStyles$.get();
+
+    styles.forEach((style) => {
+      if (selectedStyles.includes(style)) {
+        this.$selectStyles(style);
+      }
+    });
+  }
+
+  isHasSelected(styles: string[]) {
+    const selectedStyles = this.selectedStyles$.get();
+
+    return !!styles.find((style) => selectedStyles.includes(style));
+  }
+
   isSelectedPrompt(prompt: string) {
     return prompt === this.selectedPrompt$.get();
   }

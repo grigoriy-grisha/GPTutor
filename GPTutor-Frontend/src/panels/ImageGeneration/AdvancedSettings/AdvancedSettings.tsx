@@ -54,7 +54,7 @@ function AdvancedSettings() {
             >
               <ChipsSelect
                 id="negative"
-                placeholder="Чего не должно быть на изображении"
+                placeholder="Чего не должно быть"
                 onChange={(value) => imageGeneration.setNegativePrompts(value)}
                 options={negativePrompts}
                 creatable
@@ -160,7 +160,7 @@ function AdvancedSettings() {
                 }
               >
                 <Input
-                  placeholder="Стартовая точка для генерации изображения"
+                  placeholder="Начальная точка генерации"
                   id="seed"
                   type="text"
                   value={imageGeneration.seed$.get()}
