@@ -31,8 +31,6 @@ function TabbarApp({ setRef }: IProps) {
   const platform = usePlatform();
   const location = useLocation();
 
-  console.log(location.state.history);
-
   const activePanel = location.getViewActivePanel(Views.viewMain);
 
   if (appService.isStableArt()) {

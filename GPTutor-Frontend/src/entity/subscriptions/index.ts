@@ -29,7 +29,6 @@ class SubscriptionsController {
 
   isDisable() {
     const subscription = this.subscription$.get();
-    console.log(subscription);
     if (!subscription?.lastUpdated) return true;
 
     const originalDate = new Date(subscription?.lastUpdated);

@@ -28,8 +28,6 @@ function AppTextTooltip({ text, children }: IProps) {
     );
   }
 
-  console.log(platform);
-
   return (
     <OutsideAlerter handleOutside={() => setShown(false)}>
       {() => (
@@ -41,7 +39,6 @@ function AppTextTooltip({ text, children }: IProps) {
         >
           <div
             onClick={() => {
-              console.log("asd");
               setShown(!shown);
             }}
           >
