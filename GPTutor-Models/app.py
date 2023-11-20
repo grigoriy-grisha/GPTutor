@@ -68,6 +68,8 @@ def gpt():
 
 @app.post("/image")
 def image():
+
+    print(request.json["loraModel"])
     return textToImage(
         prompt=request.json["prompt"],
         model_id=request.json["modelId"],

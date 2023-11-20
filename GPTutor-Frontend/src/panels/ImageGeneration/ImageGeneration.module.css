@@ -293,12 +293,6 @@
 }
 
 @media screen and (max-width: 480px) {
-
-    .accordionImage {
-        height: 250px !important;
-    }
-
-
     .sizes {
         grid-template-columns: 1fr;
     }

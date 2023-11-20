@@ -28,8 +28,10 @@ public class DurationLimitInterceptor  implements HandlerInterceptor  {
         String requestUrl = request.getRequestURI();
         String method = request.getMethod();
 
-        if (userId != null && urlToRateAndDuration.containsKey(requestUrl + " | " + method)) {
-            Map<String, Integer> rateAndDuration = urlToRateAndDuration.get(requestUrl);
+        var key = requestUrl + " | " + method;
+
+        if (userId != null && urlToRateAndDuration.containsKey(key)) {
+            Map<String, Integer> rateAndDuration = urlToRateAndDuration.get(key);
             int requestsPerDuration = rateAndDuration.get("requests");
             int durationInSeconds = rateAndDuration.get("duration");
 

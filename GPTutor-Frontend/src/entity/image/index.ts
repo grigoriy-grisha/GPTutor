@@ -43,6 +43,7 @@ class ImageGeneration {
   heightView$ = sig(512);
   imageSize = sig<ImageAspectRatio>(ImageAspectRatio.square);
   upscale$ = sig<"no" | "yes">("no");
+  loraModel$ = sig("");
 
   loading$ = sig(false);
 
@@ -126,6 +127,11 @@ class ImageGeneration {
 
   setModel(model: string) {
     this.model$.set(model);
+    this.loraModel$.set("");
+  }
+
+  setLoraModel(value: string) {
+    this.loraModel$.set(value);
   }
 
   setSeed(seed: string) {
@@ -276,7 +282,7 @@ class ImageGeneration {
         height: this.height$.get(),
         upscale: this.upscale$.get(),
         numInferenceSteps: this.step$.get(),
-        loraModel: "",
+        loraModel: this.loraModel$.get(),
         negativePrompt: negativePrompt.trim(),
       });
 
@@ -302,10 +308,6 @@ class ImageGeneration {
       this.error$.set("Что-то пошло не так, попробуйте позже");
     }
   };
-
-  selectedModel$ = memo(() =>
-    styles.find((model) => this.model$.get() === model.value)
-  );
 
   generate = () => {
     this.setEmptyResults();

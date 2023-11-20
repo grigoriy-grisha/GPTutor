@@ -19,6 +19,23 @@ import { imageGeneration } from "$/entity/image";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 
 function ImageStyles() {
+  function isSelected(model: any) {
+    const loraModel = imageGeneration.loraModel$.get();
+
+    if (loraModel) {
+      if (!model.loraModel) return false;
+
+      return (
+        loraModel === model.loraModel &&
+        imageGeneration.model$.get() === model.value
+      );
+    }
+
+    if (model.loraModel) return false;
+
+    return imageGeneration.model$.get() === model.value;
+  }
+
   return (
     <Card mode="shadow">
       <Div>
@@ -39,16 +56,20 @@ function ImageStyles() {
                 }}
               >
                 {styles.map((model) => (
-                  <HorizontalCell key={model.value} size="l">
+                  <HorizontalCell key={model.value + model.loraModel} size="l">
                     <div
-                      onClick={() => imageGeneration.setModel(model.value)}
+                      onClick={() => {
+                        imageGeneration.setModel(model.value);
+                        model.loraModel &&
+                          imageGeneration.setLoraModel(model.loraModel);
+                      }}
                       className={classes.accordionItem}
                     >
                       <Image
                         className={classes.accordionImage}
                         src={`https://storage.yandexcloud.net/gptutor-bucket/${model.imageName}`}
                       >
-                        {imageGeneration.model$.get() === model.value && (
+                        {isSelected(model) && (
                           <Image.Badge>
                             <Icon28CheckCircleOn
                               className={classes.badge}

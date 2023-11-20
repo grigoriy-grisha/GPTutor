@@ -23,7 +23,14 @@ export const styles = [
     value: "food-crit",
     imageName: "creepy.png",
     label: "Чудовища",
+    loraModel: "",
   },
+  // {
+  //   value: "anything-v3",
+  //   imageName: "maf.jpg",
+  //   loraModel: "maf",
+  //   label: "Maf",
+  // },
   {
     value: "lowpoly-diffusion",
     imageName: "lowpoly.png",
