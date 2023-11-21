@@ -15,7 +15,7 @@ function TimeGenerationInfo() {
         <div>
           <Caption>Среднее время ожидания 15 секунд</Caption>
           <Spacing size={4} />
-          <Caption>Максимальное время минута</Caption>
+          <Caption>Максимальное время 100 секунд</Caption>
         </div>
       </Div>
     </Card>

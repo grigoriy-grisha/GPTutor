@@ -46,7 +46,7 @@ class SubscriptionsController {
     const subscription = this.subscription$.get();
     if (!subscription) return null;
 
-    return new Date(subscription?.expire_time);
+    return new Date(subscription?.expire_time * 1000);
   }
 
   async create() {
