@@ -9,3 +9,13 @@ export async function getSubscription(): Promise<Subscription> {
   });
   return response.json();
 }
+
+export async function updateSubscription(): Promise<Subscription> {
+  const response = await fetch(`${BACKEND_HOST}purchase/update-subscriptions`, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + location.href,
+    },
+  });
+  return response.json();
+}

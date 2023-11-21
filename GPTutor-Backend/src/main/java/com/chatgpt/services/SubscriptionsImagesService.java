@@ -95,16 +95,15 @@ public class SubscriptionsImagesService {
         return new Date(subscription.getExpire() * 1000L).after(new Date());
     }
 
-    public OrderSubscription getLastSubscription(OrderSubscriptionResponse data) {
-        OrderSubscription lastSubscription = null;
-        for (OrderSubscription item : data.response.items) {
-            if (item.app_id == 51692825) {
-                if (lastSubscription == null || item.id > lastSubscription.id) {
-                    lastSubscription = item;
-                }
-            }
-        }
+    public SubscriptionImages updateSubscription(String vkUser) throws Exception {
+        var subscription = getOrCreateSubscriptions(vkUser);
+        var order = vkService.getUserSubscriptionById(vkUser, subscription.getSubscriptionId());
 
-        return lastSubscription;
+        subscription.setActive(!order.getResponse().isPending_cancel());
+        subscription.setExpire(order.getResponse().getExpire_time());
+
+        subscriptionsImagesRepository.save(subscription);
+
+        return subscription;
     }
 }

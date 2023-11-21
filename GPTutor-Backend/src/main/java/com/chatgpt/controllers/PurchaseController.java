@@ -66,4 +66,12 @@ public class PurchaseController {
         );
     }
 
+    @PostMapping(path = "/purchase/update-subscriptions")
+    public ResponseEntity<?> updateSubscription(HttpServletRequest request) throws Exception {
+        return ResponseEntity.ok(subscriptionsImagesService.updateSubscription(
+                        (String) request.getAttribute("vkUserId")
+                )
+        );
+    }
+
 }

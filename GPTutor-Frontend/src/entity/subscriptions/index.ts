@@ -2,7 +2,7 @@ import { sig } from "dignals";
 import { Subscription } from "$/entity/subscriptions/types";
 import { subscriptionService } from "$/services/SubscriptionService";
 import { adService } from "$/services/AdService";
-import { getSubscription } from "$/api/subscriptions";
+import { getSubscription, updateSubscription } from "$/api/subscriptions";
 
 const wait = () => new Promise((r) => setTimeout(r, 2000));
 
@@ -11,6 +11,18 @@ class SubscriptionsController {
   async getSubscription() {
     try {
       const result = await getSubscription();
+      if (result.error) return;
+
+      this.subscription$.set(result);
+      await this.hideAd();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async updateSubscription() {
+    try {
+      const result = await updateSubscription();
       if (result.error) return;
 
       this.subscription$.set(result);
@@ -41,7 +53,7 @@ class SubscriptionsController {
     if (attempt === 4) return;
 
     await wait();
-    await this.getSubscription();
+    await this.updateSubscription();
 
     if (!this.isDisable() && this.subscription$.get()?.active) return;
 
@@ -52,7 +64,7 @@ class SubscriptionsController {
     if (attempt === 4) return;
 
     await wait();
-    await this.getSubscription();
+    await this.updateSubscription();
 
     if (!this.isDisable() && !this.subscription$.get()?.active) return;
 

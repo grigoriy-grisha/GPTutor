@@ -2,6 +2,7 @@ package com.chatgpt.services;
 
 import com.chatgpt.entity.OrderSubscription;
 import com.chatgpt.entity.requests.UploadPhotoRequest;
+import com.chatgpt.entity.responses.OrderSubscriptionByIdResponse;
 import com.chatgpt.entity.responses.OrderSubscriptionResponse;
 import com.chatgpt.entity.responses.UploadFileResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -76,7 +77,7 @@ public class VkService {
 
         Map<String, String> params = new HashMap<>();
         params.put("userId", userId);
-        params.put("accessToken", "2eedef0f2eedef0f2eedef0f9c2df92a1622eed2eedef0f4a733f0a1f4c650722ebf2ab");
+        params.put("accessToken", vkSecretesService.getAuthKey());
         params.put("v", "5.131");
 
         String response = restTemplate.getForObject(url, String.class, params);
@@ -84,5 +85,24 @@ public class VkService {
         System.out.println(response);
 
         return new ObjectMapper().readValue(response, OrderSubscriptionResponse.class);
+    }
+
+    public OrderSubscriptionByIdResponse getUserSubscriptionById(String userId, String subscriptionId) throws Exception {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "https://api.vk.com/method/orders.getUserSubscriptionById"
+                + "?user_id={userId}&subscription_id={subscriptionId}&access_token={accessToken}&v={v}";
+
+
+        Map<String, String> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("subscriptionId", subscriptionId);
+        params.put("accessToken", vkSecretesService.getAuthKey());
+        params.put("v", "5.131");
+
+        String response = restTemplate.getForObject(url, String.class, params);
+
+        System.out.println(response);
+
+        return new ObjectMapper().readValue(response, OrderSubscriptionByIdResponse.class);
     }
 }

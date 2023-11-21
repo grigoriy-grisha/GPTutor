@@ -1,21 +1,21 @@
 package com.chatgpt.entity;
 
 public class OrderSubscription {
-    public long create_time;
+    public int create_time;
 
     public boolean pending_cancel;
 
-    public long id;
+    public int id;
     public String item_id;
     public int period;
-    public long period_start_time;
+    public int period_start_time;
     public double price;
     public String status;
-    public long update_time;
-    public long next_bill_time;
-    public long expire_time;
+    public int update_time;
+    public int next_bill_time;
+    public int expire_time;
     public String title;
-    public long app_id;
+    public int app_id;
     public String application_name;
     public String photo_url;
     public boolean test_mode;
@@ -23,19 +23,27 @@ public class OrderSubscription {
 
     public String cancel_reason;
 
-    public long getCreate_time() {
+    public int getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(long create_time) {
+    public void setCreate_time(int create_time) {
         this.create_time = create_time;
     }
 
-    public long getId() {
+    public boolean isPending_cancel() {
+        return pending_cancel;
+    }
+
+    public void setPending_cancel(boolean pending_cancel) {
+        this.pending_cancel = pending_cancel;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -55,11 +63,11 @@ public class OrderSubscription {
         this.period = period;
     }
 
-    public long getPeriod_start_time() {
+    public int getPeriod_start_time() {
         return period_start_time;
     }
 
-    public void setPeriod_start_time(long period_start_time) {
+    public void setPeriod_start_time(int period_start_time) {
         this.period_start_time = period_start_time;
     }
 
@@ -79,27 +87,27 @@ public class OrderSubscription {
         this.status = status;
     }
 
-    public long getUpdate_time() {
+    public int getUpdate_time() {
         return update_time;
     }
 
-    public void setUpdate_time(long update_time) {
+    public void setUpdate_time(int update_time) {
         this.update_time = update_time;
     }
 
-    public long getNext_bill_time() {
+    public int getNext_bill_time() {
         return next_bill_time;
     }
 
-    public void setNext_bill_time(long next_bill_time) {
+    public void setNext_bill_time(int next_bill_time) {
         this.next_bill_time = next_bill_time;
     }
 
-    public long getExpire_time() {
+    public int getExpire_time() {
         return expire_time;
     }
 
-    public void setExpire_time(long expire_time) {
+    public void setExpire_time(int expire_time) {
         this.expire_time = expire_time;
     }
 
@@ -111,11 +119,11 @@ public class OrderSubscription {
         this.title = title;
     }
 
-    public long getApp_id() {
+    public int getApp_id() {
         return app_id;
     }
 
-    public void setApp_id(long app_id) {
+    public void setApp_id(int app_id) {
         this.app_id = app_id;
     }
 
@@ -157,14 +165,6 @@ public class OrderSubscription {
 
     public void setCancel_reason(String cancel_reason) {
         this.cancel_reason = cancel_reason;
-    }
-
-    public boolean isPending_cancel() {
-        return pending_cancel;
-    }
-
-    public void setPending_cancel(boolean pending_cancel) {
-        this.pending_cancel = pending_cancel;
     }
 }
 
