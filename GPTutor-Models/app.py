@@ -2,7 +2,6 @@ import json
 import uuid
 from random import randint
 
-import g4f
 from flask import Flask, Response, request
 from g4f import ChatCompletion, Provider
 from werkzeug.exceptions import BadRequest
