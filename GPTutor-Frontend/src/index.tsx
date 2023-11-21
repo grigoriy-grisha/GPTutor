@@ -40,8 +40,11 @@ bridge
       storageService.set(isFirstVisitFlagName, true);
     });
 
-    await authService.setupToken();
-    const isDon = await groupsService.checkIsDon();
+    let isDon = false;
+    if (appService.isGPTutor()) {
+      await authService.setupToken("groups");
+      isDon = !!(await groupsService.checkIsDon());
+    }
 
     await subscriptionsController.getSubscription();
 

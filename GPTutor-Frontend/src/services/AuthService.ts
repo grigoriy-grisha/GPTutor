@@ -2,13 +2,16 @@ import bridge from "@vkontakte/vk-bridge";
 import { appService } from "$/services/AppService";
 
 class AuthService {
+  scope: string[] = [];
   token = "";
 
-  async setupToken() {
+  async setupToken(scopeElem: string) {
+    this.scope.push(scopeElem);
+
     await bridge
       .send("VKWebAppGetAuthToken", {
         app_id: appService.isStableArt() ? 51692825 : 51602327,
-        scope: "wall,groups,photos",
+        scope: this.scope.join(","),
       })
       .then((data) => {
         console.log(data, "data");
