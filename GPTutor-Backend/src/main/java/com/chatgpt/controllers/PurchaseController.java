@@ -24,7 +24,7 @@ public class PurchaseController {
     PurchaseService purchaseService;
 
     @PostMapping(path = "/purchase")
-    public PurchaseResponse<?> getItem(@RequestParam Map<String, String> allRequestParams) throws Exception {
+    public PurchaseResponse<?> getItem(HttpServletRequest request, @RequestParam Map<String, String> allRequestParams) throws Exception {
 
         for (String name : allRequestParams.keySet()) {
             String value = allRequestParams.get(name);
@@ -46,6 +46,10 @@ public class PurchaseController {
                         Objects.equals(allRequestParams.get("notification_type"), "subscription_status_change_test")
         ) {
             purchaseService.isAccessSig(allRequestParams);
+
+            request.setAttribute("vkAppId", allRequestParams.get("app_id"));
+
+            System.out.println(allRequestParams.get("app_id"));
             System.out.println("subscription_status_change");
 
             return new PurchaseResponse<>(subscriptionsImagesService.subscriptionStatusChange(allRequestParams));
