@@ -19,13 +19,8 @@ def textToImage(
         seed=None,
         guidance_scale=7,
         upscale='no',
-        attempts=1,
         lora_model=None
 ):
-    if attempts == 11:
-        return {
-            "status": "failed"
-        }
 
     payload = json.dumps({
         "key": os.environ.get('IMAGES_API_KEY'),
