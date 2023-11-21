@@ -34,7 +34,7 @@ public class SubscriptionsImagesService {
             activeSubscription(
                     allRequestParams.get("user_id"),
                     allRequestParams.get("subscription_id"),
-                    allRequestParams.get("next_bill_time") == null
+                    allRequestParams.get("next_bill_time") != null
                             ? Integer.parseInt(allRequestParams.get("next_bill_time"))
                             : 0
             );
