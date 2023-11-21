@@ -81,6 +81,8 @@ public class VkService {
 
         String response = restTemplate.getForObject(url, String.class, params);
 
+        System.out.println(response);
+
         return new ObjectMapper().readValue(response, OrderSubscriptionResponse.class);
     }
 }
