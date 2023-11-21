@@ -66,6 +66,8 @@ def textToImage(
                                     data=payload)
 
     result = response.json()
+    print("___________result__________")
+    print(result)
 
     if result['status'] == "processing":
         time.sleep(10)
