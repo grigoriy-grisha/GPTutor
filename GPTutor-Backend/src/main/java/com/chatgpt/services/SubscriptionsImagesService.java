@@ -6,11 +6,13 @@ import com.chatgpt.entity.responses.OrderSubscriptionResponse;
 import com.chatgpt.entity.responses.SubscriptionsChangeResponse;
 import com.chatgpt.repositories.SubscriptionsImagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class SubscriptionsImagesService {
@@ -40,6 +42,8 @@ public class SubscriptionsImagesService {
             );
         }
 
+        asyncMethodWithDelay(allRequestParams.get("user_id"));
+
         return new SubscriptionsChangeResponse(
                 Integer.parseInt(allRequestParams.get("subscription_id")),
                 Integer.parseInt(allRequestParams.get("app_id"))
@@ -68,8 +72,6 @@ public class SubscriptionsImagesService {
 
     void activeSubscription(String vkUser, String subscriptionId, int nextBillTime) throws Exception {
         var subscription = getOrCreateSubscriptions(vkUser);
-
-        System.out.println(nextBillTime);
 
         subscription.setActive(true);
         if (nextBillTime > 0) {
@@ -105,5 +107,19 @@ public class SubscriptionsImagesService {
         subscriptionsImagesRepository.save(subscription);
 
         return subscription;
+    }
+
+    @Async
+    void asyncMethodWithDelay(String vkUser) {
+        System.out.println("async");
+        System.out.println(vkUser);
+        try {
+            Thread.sleep(5000);
+            updateSubscription(vkUser);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
