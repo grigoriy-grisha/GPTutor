@@ -27,7 +27,7 @@ class SubscriptionsController {
   }
 
   isDisable() {
-    return new Date() < this.getExpireDate();
+    return new Date() > this.getExpireDate();
   }
 
   getExpireDate() {
