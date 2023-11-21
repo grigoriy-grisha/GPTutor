@@ -47,6 +47,8 @@ public class VkService {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = mapper.readTree(result);
 
+        System.out.println(result);
+
         return node.get("response").asBoolean();
     }
 
