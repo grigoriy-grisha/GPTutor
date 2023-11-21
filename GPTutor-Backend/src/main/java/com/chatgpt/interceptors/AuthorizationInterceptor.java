@@ -35,9 +35,10 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        var authorization = authCheckerService.splitBearer(request.getHeader("Authorization"));
 
         if (skipAuth) {
+            var authorization = authCheckerService.splitBearer(request.getHeader("Authorization"));
+
             var userId = authCheckerService.getVkUserId(authorization);
 
             request.setAttribute("vkUserId", Objects.requireNonNullElse(userId, "0"));
@@ -49,9 +50,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader != null) {
-            boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(
-                    authCheckerService.splitBearer(authorizationHeader)
-            );
+            var authorization = authCheckerService.splitBearer(authorizationHeader);
+
+            boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(authorization);
 
             if (isSignSuccess) {
                 request.setAttribute(

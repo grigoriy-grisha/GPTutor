@@ -67,6 +67,9 @@ public class SubscriptionsImagesService {
         var subscription = getOrCreateSubscriptions(vkUser);
         var vkSubscription = getLastSubscription(vkService.getUserSubscriptions(vkUser));
 
+        System.out.println(vkSubscription.expire_time);
+        System.out.println(vkSubscription.create_time);
+
         subscription.setActive(true);
         subscription.setLastUpdated(Instant.now());
         subscription.setExpire(new Date(vkSubscription.expire_time * 1000).toInstant());

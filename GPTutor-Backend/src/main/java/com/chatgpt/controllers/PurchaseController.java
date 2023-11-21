@@ -35,6 +35,7 @@ public class PurchaseController {
                 Objects.equals(allRequestParams.get("notification_type"), "get_subscription") ||
                         Objects.equals(allRequestParams.get("notification_type"), "get_subscription_test")
         ) {
+            System.out.println("get_subscription");
             purchaseService.isAccessSig(allRequestParams);
 
             return new PurchaseResponse<>(purchaseService.getItem(allRequestParams.get("item")));
@@ -45,6 +46,7 @@ public class PurchaseController {
                         Objects.equals(allRequestParams.get("notification_type"), "subscription_status_change_test")
         ) {
             purchaseService.isAccessSig(allRequestParams);
+            System.out.println("subscription_status_change");
 
             return new PurchaseResponse<>(subscriptionsImagesService.subscriptionStatusChange(allRequestParams));
         }
