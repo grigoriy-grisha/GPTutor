@@ -5,11 +5,9 @@ import com.chatgpt.entity.SubscriptionImages;
 import com.chatgpt.entity.responses.OrderSubscriptionResponse;
 import com.chatgpt.entity.responses.SubscriptionsChangeResponse;
 import com.chatgpt.repositories.SubscriptionsImagesRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -43,7 +41,7 @@ public class SubscriptionsImagesService {
 
     }
 
-    public SubscriptionImages getOrCreateSubscriptions(String vkUser) throws Exception {
+    public SubscriptionImages getOrCreateSubscriptions(String vkUser) {
         var user = userService.getOrCreateVkUser(vkUser);
 
         var foundSubscriptions = subscriptionsImagesRepository.findByVkUserId(user.getId());
@@ -54,8 +52,7 @@ public class SubscriptionsImagesService {
                 user,
                 false,
                 null,
-                null,
-                null
+                0
         );
 
         subscriptionsImagesRepository.save(subscriptionsImages);
@@ -69,8 +66,7 @@ public class SubscriptionsImagesService {
         System.out.println(nextBillTime);
 
         subscription.setActive(true);
-        subscription.setLastUpdated(Instant.now());
-        subscription.setExpire(new Date(nextBillTime * 1000L).toInstant());
+        subscription.setExpire(nextBillTime);
         subscription.setSubscriptionId(subscriptionId);
 
         subscriptionsImagesRepository.save(subscription);
@@ -87,11 +83,8 @@ public class SubscriptionsImagesService {
 
     boolean isAvailableSubscription(String vkUser) throws Exception {
         var subscription = getOrCreateSubscriptions(vkUser);
-        if (subscription.getExpire() == null) {
-            return false;
-        }
 
-        return subscription.getExpire().isAfter(Instant.now());
+        return new Date(subscription.getExpire() * 1000L).after(new Date());
     }
 
     public OrderSubscription getLastSubscription(OrderSubscriptionResponse data) {

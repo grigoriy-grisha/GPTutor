@@ -17,22 +17,19 @@ public class SubscriptionImages {
 
     boolean isActive;
 
-    Instant lastUpdated;
 
     String subscriptionId;
 
-    Instant expire;
+    int expire;
 
     public SubscriptionImages(
             VkUser vkUser,
             boolean isActive,
-            Instant lastUpdated,
             String subscriptionId,
-            Instant expire
+            int expire
     ) {
         this.vkUser = vkUser;
         this.isActive = isActive;
-        this.lastUpdated = lastUpdated;
         this.subscriptionId = subscriptionId;
         this.expire = expire;
 
@@ -66,13 +63,6 @@ public class SubscriptionImages {
         isActive = active;
     }
 
-    public Instant  getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(Instant  lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
 
     public String getSubscriptionId() {
         return subscriptionId;
@@ -82,11 +72,11 @@ public class SubscriptionImages {
         this.subscriptionId = subscriptionId;
     }
 
-    public Instant getExpire() {
+    public int getExpire() {
         return expire;
     }
 
-    public void setExpire(Instant expire) {
+    public void setExpire(int expire) {
         this.expire = expire;
     }
 }

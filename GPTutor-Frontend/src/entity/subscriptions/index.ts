@@ -27,19 +27,14 @@ class SubscriptionsController {
   }
 
   isDisable() {
-    const subscription = this.subscription$.get();
-    if (!subscription?.lastUpdated) return true;
-
-    const originalDate = new Date(subscription?.lastUpdated);
-
-    return !(originalDate < this.getExpireDate());
+    return new Date() < this.getExpireDate();
   }
 
   getExpireDate() {
     const subscription = this.subscription$.get();
     if (!subscription) return new Date();
 
-    return new Date(subscription.expire);
+    return new Date(subscription.expire * 1000);
   }
 
   async create() {

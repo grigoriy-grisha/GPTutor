@@ -1,9 +1,8 @@
 export type Subscription = {
   active: boolean;
-  lastUpdated: string;
   subscriptionId: string;
   error: string;
-  expire: string;
+  expire: number;
 };
 
 export interface OrderSubscriptionItem {
