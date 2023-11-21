@@ -37,22 +37,42 @@ class SubscriptionsController {
     return new Date(subscription.expire * 1000);
   }
 
-  async create() {
-    await subscriptionService.create();
+  async createTryGetSubscription(attempt: number) {
+    if (attempt === 4) return;
+
     await wait();
     await this.getSubscription();
+
+    if (!this.isDisable() && this.subscription$.get()?.active) return;
+
+    await this.createTryGetSubscription(attempt + 1);
+  }
+
+  async cancelTryGetSubscription(attempt: number) {
+    if (attempt === 4) return;
+
+    await wait();
+    await this.getSubscription();
+
+    if (!this.isDisable() && !this.subscription$.get()?.active) return;
+
+    await this.createTryGetSubscription(attempt + 1);
+  }
+
+  async create() {
+    await subscriptionService.create();
+    await this.createTryGetSubscription(1);
   }
 
   async cancel() {
     await subscriptionService.cancel(this.subscription$.get()!.subscriptionId);
-    await wait();
-    await this.getSubscription();
+    await this.cancelTryGetSubscription(1);
   }
 
   async resume() {
     await subscriptionService.resume(this.subscription$.get()!.subscriptionId);
     await wait();
-    await this.getSubscription();
+    await this.createTryGetSubscription(1);
   }
 }
 

@@ -31,7 +31,13 @@ public class SubscriptionsImagesService {
                 && allRequestParams.get("cancel_reason") != null) {
             cancelSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"));
         } else {
-            activeSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"), Integer.parseInt(allRequestParams.get("next_bill_time")));
+            activeSubscription(
+                    allRequestParams.get("user_id"),
+                    allRequestParams.get("subscription_id"),
+                    allRequestParams.get("next_bill_time") == null
+                            ? Integer.parseInt(allRequestParams.get("next_bill_time"))
+                            : 0
+            );
         }
 
         return new SubscriptionsChangeResponse(
@@ -66,7 +72,9 @@ public class SubscriptionsImagesService {
         System.out.println(nextBillTime);
 
         subscription.setActive(true);
-        subscription.setExpire(nextBillTime);
+        if (nextBillTime > 0) {
+            subscription.setExpire(nextBillTime);
+        }
         subscription.setSubscriptionId(subscriptionId);
 
         subscriptionsImagesRepository.save(subscription);
