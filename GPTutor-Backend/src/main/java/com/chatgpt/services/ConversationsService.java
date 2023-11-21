@@ -45,7 +45,7 @@ public class ConversationsService {
 
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.aiguoguo199.com/v1/chat/completions"))
+                .uri(URI.create("http://localhost:1337/gpt-4"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + apiKey.getFirst().getKey())
                 .POST(HttpRequest.BodyPublishers.ofString(input))

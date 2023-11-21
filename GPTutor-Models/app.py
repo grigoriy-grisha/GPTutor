@@ -2,6 +2,7 @@ import json
 import uuid
 from random import randint
 
+import g4f
 from flask import Flask, Response, request
 from g4f import ChatCompletion, Provider
 from werkzeug.exceptions import BadRequest
@@ -15,7 +16,7 @@ def get_event_message(chunk):
     return json.dumps({
         "id": str(randint(0, 10000000)),
         "object": "chat.completion.chunk",
-        "nsfw_detector": "gpt-3.5-turbo",
+        "model": "gpt-4",
         "choices": [
             {
                 "index": 0,
@@ -27,14 +28,13 @@ def get_event_message(chunk):
 
 
 def generate_stream(stream, except_func):
-    except_func()
     count = 0
     for chunk in stream:
         count += 1
         yield 'data:' + get_event_message(chunk) + '\n\n'
 
     if count == 0:
-        except_func()
+        generate_stream(stream, except_func)
     else:
         print("DONE")
         yield "data: [DONE]\n\n"
@@ -49,8 +49,8 @@ def default_model():
     return Response(
         generate_stream(
             ChatCompletion.create(
-                model=request.json["nsfw_detector"],
-                provider=Provider.DeepAi,
+                model="gpt-4",
+                provider=Provider.Bing,
                 messages=messages,
                 chatId=uuid.uuid4(),
                 stream=True
@@ -61,14 +61,13 @@ def default_model():
     )
 
 
-@app.post('/gpt')
+@app.post('/gpt-4')
 def gpt():
     return default_model()
 
 
 @app.post("/image")
 def image():
-
     print(request.json["loraModel"])
     return textToImage(
         prompt=request.json["prompt"],

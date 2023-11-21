@@ -3,6 +3,7 @@ package com.chatgpt.controllers;
 import com.chatgpt.entity.GenerateImageRequest;
 import com.chatgpt.entity.Image;
 import com.chatgpt.services.ImagesService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ImagesController {
     ImagesService imagesService;
 
     @PostMapping(path = "/image")
-    List<Image> generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) {
+    List<Image> generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) throws JsonProcessingException {
         return imagesService.generateImage((String) request.getAttribute("vkUserId"), prompt);
     }
 

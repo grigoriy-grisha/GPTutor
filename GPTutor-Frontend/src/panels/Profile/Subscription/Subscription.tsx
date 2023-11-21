@@ -21,6 +21,9 @@ import { Icon32DonutCircleFillYellow } from "@vkontakte/icons";
 import { SubscriptionText } from "$/panels/Profile/Subscription/SubscriptionText";
 
 function Subscription() {
+  const expireDate = subscriptionsController.getExpireDate();
+  const pendingCancel =
+    subscriptionsController.subscription$.get()?.pending_cancel;
   return (
     <Div style={{ width: "100vw" }}>
       <Card mode="shadow">
@@ -37,14 +40,18 @@ function Subscription() {
                     : "Активна"}
                 </Headline>
               </div>
-
               {!subscriptionsController.isDisable() && (
                 <div>
                   Срок подписки до:{" "}
                   <Headline style={{ display: "inline" }} level="2" weight="1">
-                    {subscriptionsController
-                      .getExpireDate()
-                      .toLocaleDateString()}
+                    {expireDate?.toLocaleDateString()}
+                  </Headline>
+                </div>
+              )}
+              {!!pendingCancel && (
+                <div>
+                  <Headline style={{ display: "inline" }} level="2" weight="1">
+                    Подписка ожидает отмены
                   </Headline>
                 </div>
               )}
