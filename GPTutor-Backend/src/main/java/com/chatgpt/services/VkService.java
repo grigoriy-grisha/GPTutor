@@ -76,7 +76,7 @@ public class VkService {
 
         Map<String, String> params = new HashMap<>();
         params.put("userId", userId);
-        params.put("accessToken", vkSecretesService.getAuthKey());
+        params.put("accessToken", "2eedef0f2eedef0f2eedef0f9c2df92a1622eed2eedef0f4a733f0a1f4c650722ebf2ab");
         params.put("v", "5.131");
 
         String response = restTemplate.getForObject(url, String.class, params);
