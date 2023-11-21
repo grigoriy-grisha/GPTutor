@@ -33,7 +33,7 @@ public class SubscriptionsImagesService {
                 && allRequestParams.get("cancel_reason") != null) {
             cancelSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"));
         } else {
-            activeSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"));
+            activeSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"), Integer.parseInt(allRequestParams.get("next_bill_time")));
         }
 
         return new SubscriptionsChangeResponse(
@@ -55,7 +55,7 @@ public class SubscriptionsImagesService {
                 false,
                 null,
                 null,
-               null
+                null
         );
 
         subscriptionsImagesRepository.save(subscriptionsImages);
@@ -63,16 +63,14 @@ public class SubscriptionsImagesService {
         return subscriptionsImages;
     }
 
-    void activeSubscription(String vkUser, String subscriptionId) throws Exception {
+    void activeSubscription(String vkUser, String subscriptionId, int nextBillTime) throws Exception {
         var subscription = getOrCreateSubscriptions(vkUser);
-        var vkSubscription = getLastSubscription(vkService.getUserSubscriptions(vkUser));
 
-        System.out.println(vkSubscription.expire_time);
-        System.out.println(vkSubscription.create_time);
+        System.out.println(nextBillTime);
 
         subscription.setActive(true);
         subscription.setLastUpdated(Instant.now());
-        subscription.setExpire(new Date(vkSubscription.expire_time * 1000).toInstant());
+        subscription.setExpire(new Date(nextBillTime * 1000L).toInstant());
         subscription.setSubscriptionId(subscriptionId);
 
         subscriptionsImagesRepository.save(subscription);
