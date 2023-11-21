@@ -1,22 +1,17 @@
 import { sig } from "dignals";
-import {
-  OrderSubscriptionItem,
-  OrderSubscriptionResponseData,
-} from "$/entity/subscriptions/types";
+import { Subscription } from "$/entity/subscriptions/types";
 import { subscriptionService } from "$/services/SubscriptionService";
 import { adService } from "$/services/AdService";
-import { getUserSubscriptions } from "$/api/vk";
-import { generateImage } from "$/api/images";
-import { imageGeneration } from "$/entity/image";
+import { getSubscription } from "$/api/subscriptions";
 
 const wait = () => new Promise((r) => setTimeout(r, 2000));
 
 class SubscriptionsController {
-  subscription$ = sig<OrderSubscriptionItem | null>(null);
+  subscription$ = sig<Subscription | null>(null);
   async getSubscription() {
     try {
-      const result = await this.getOrderSubscription();
-      if (!result) return;
+      const result = await getSubscription();
+      if (result.error) return;
 
       this.subscription$.set(result);
       await this.hideAd();
@@ -28,25 +23,23 @@ class SubscriptionsController {
   async hideAd() {
     if (!this.isDisable()) {
       await adService.hideBannerAd();
-      imageGeneration.samples$.set(4);
-      return;
     }
-
-    imageGeneration.samples$.set(1);
   }
 
   isDisable() {
     const subscription = this.subscription$.get();
-    if (!subscription?.expire_time) return true;
+    if (!subscription?.lastUpdated) return true;
 
-    return new Date(subscription?.expire_time * 1000) < new Date();
+    const originalDate = new Date(subscription?.lastUpdated);
+
+    return !(originalDate < this.getExpireDate());
   }
 
   getExpireDate() {
     const subscription = this.subscription$.get();
-    if (!subscription) return null;
+    if (!subscription) return new Date();
 
-    return new Date(subscription?.expire_time * 1000);
+    return new Date(subscription.expire);
   }
 
   async create() {
@@ -56,28 +49,15 @@ class SubscriptionsController {
   }
 
   async cancel() {
-    await subscriptionService.cancel(String(this.subscription$.get()!.id));
+    await subscriptionService.cancel(this.subscription$.get()!.subscriptionId);
     await wait();
     await this.getSubscription();
   }
 
   async resume() {
-    await subscriptionService.resume(String(this.subscription$.get()!.id));
+    await subscriptionService.resume(this.subscription$.get()!.subscriptionId);
     await wait();
     await this.getSubscription();
-  }
-
-  async getOrderSubscription() {
-    const data = await getUserSubscriptions();
-    return this.getLastSubscription(data);
-  }
-
-  getLastSubscription(data: OrderSubscriptionResponseData) {
-    if (data.response.items.length === 0) return null;
-
-    return data.response.items
-      .filter(({ app_id }) => app_id === 51692825)
-      .reduce((prev, current) => (prev.id > current.id ? prev : current));
   }
 }
 

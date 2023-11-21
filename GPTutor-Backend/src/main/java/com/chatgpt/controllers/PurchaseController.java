@@ -24,7 +24,7 @@ public class PurchaseController {
     PurchaseService purchaseService;
 
     @PostMapping(path = "/purchase")
-    public PurchaseResponse<?> getItem(@RequestParam Map<String, String> allRequestParams) {
+    public PurchaseResponse<?> getItem(@RequestParam Map<String, String> allRequestParams) throws Exception {
 
         for (String name : allRequestParams.keySet()) {
             String value = allRequestParams.get(name);
@@ -53,7 +53,7 @@ public class PurchaseController {
     }
 
     @GetMapping(path = "/purchase/subscription")
-    public ResponseEntity<?> getSubscription(HttpServletRequest request) {
+    public ResponseEntity<?> getSubscription(HttpServletRequest request) throws Exception {
         return ResponseEntity.ok(subscriptionsImagesService.getOrCreateSubscriptions(
                         (String) request.getAttribute("vkUserId")
                 )

@@ -27,14 +27,13 @@ public class SubscriptionsImagesService {
     VkService vkService;
 
 
-    public SubscriptionsChangeResponse subscriptionStatusChange(Map<String, String> allRequestParams) {
+    public SubscriptionsChangeResponse subscriptionStatusChange(Map<String, String> allRequestParams) throws Exception {
 
         if (Objects.equals(allRequestParams.get("status"), "active")
                 && allRequestParams.get("cancel_reason") != null) {
             cancelSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"));
         } else {
             activeSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"));
-
         }
 
         return new SubscriptionsChangeResponse(
@@ -44,33 +43,39 @@ public class SubscriptionsImagesService {
 
     }
 
-    public SubscriptionImages getOrCreateSubscriptions(String vkUser) {
+    public SubscriptionImages getOrCreateSubscriptions(String vkUser) throws Exception {
         var user = userService.getOrCreateVkUser(vkUser);
 
         var foundSubscriptions = subscriptionsImagesRepository.findByVkUserId(user.getId());
         if (foundSubscriptions != null) return foundSubscriptions;
 
-        var subscriptionsImages = new SubscriptionImages(user, false, null, null);
+
+        var subscriptionsImages = new SubscriptionImages(
+                user,
+                false,
+                null,
+                null,
+               null
+        );
+
         subscriptionsImagesRepository.save(subscriptionsImages);
 
         return subscriptionsImages;
     }
 
-    void activeSubscription(String vkUser, String subscriptionId) {
+    void activeSubscription(String vkUser, String subscriptionId) throws Exception {
         var subscription = getOrCreateSubscriptions(vkUser);
+        var vkSubscription = getLastSubscription(vkService.getUserSubscriptions(vkUser));
 
         subscription.setActive(true);
-
-        if (isAvailableUpdate(vkUser)) {
-            subscription.setLastUpdated(Instant.now());
-        }
-
+        subscription.setLastUpdated(Instant.now());
+        subscription.setExpire(new Date(vkSubscription.expire_time * 1000).toInstant());
         subscription.setSubscriptionId(subscriptionId);
 
         subscriptionsImagesRepository.save(subscription);
     }
 
-    void cancelSubscription(String vkUser, String subscriptionId) {
+    void cancelSubscription(String vkUser, String subscriptionId) throws Exception {
         var subscription = getOrCreateSubscriptions(vkUser);
 
         subscription.setActive(false);
@@ -79,33 +84,13 @@ public class SubscriptionsImagesService {
         subscriptionsImagesRepository.save(subscription);
     }
 
-    boolean isAvailableUpdate(String vkUser) {
+    boolean isAvailableSubscription(String vkUser) throws Exception {
         var subscription = getOrCreateSubscriptions(vkUser);
-        if (subscription.getLastUpdated() == null) {
-            return true;
+        if (subscription.getExpire() == null) {
+            return false;
         }
 
-        Instant compareInstant = subscription.getLastUpdated().plusSeconds(30 * 24 * 60 * 60);
-
-        return Instant.now().isAfter(compareInstant);
-    }
-
-    public boolean isAvailableSubscription(String vkUser) throws Exception {
-        var vkSubscription = getLastSubscription(vkService.getUserSubscriptions(vkUser));
-        if (vkSubscription == null) return false;
-
-        return subscriptionIsExpired(vkSubscription);
-    }
-
-    public boolean subscriptionIsExpired(OrderSubscription subscription) {
-        if (subscription == null) {
-            return true;
-        }
-
-        System.out.println(new Date(subscription.expire_time * 1000));
-        System.out.println(new Date());
-        System.out.println(new Date(subscription.expire_time * 1000).before(new Date()));
-        return new Date(subscription.expire_time * 1000).after(new Date());
+        return subscription.getExpire().isAfter(Instant.now());
     }
 
     public OrderSubscription getLastSubscription(OrderSubscriptionResponse data) {

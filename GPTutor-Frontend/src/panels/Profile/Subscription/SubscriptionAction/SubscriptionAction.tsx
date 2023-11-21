@@ -9,7 +9,7 @@ function SubscriptionAction() {
   if (!subscriptionsController.isDisable()) {
     if (!subscription) return null;
 
-    const isActive = !subscription.cancel_reason;
+    const isActive = !subscription.active;
 
     if (!isActive) {
       return (

@@ -1,0 +1,1 @@
+ALTER TABLE subscription_images ADD COLUMN expire timestamptz;

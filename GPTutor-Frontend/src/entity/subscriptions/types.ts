@@ -3,6 +3,7 @@ export type Subscription = {
   lastUpdated: string;
   subscriptionId: string;
   error: string;
+  expire: string;
 };
 
 export interface OrderSubscriptionItem {

@@ -21,16 +21,20 @@ public class SubscriptionImages {
 
     String subscriptionId;
 
+    Instant expire;
+
     public SubscriptionImages(
             VkUser vkUser,
             boolean isActive,
             Instant lastUpdated,
-            String subscriptionId
+            String subscriptionId,
+            Instant expire
     ) {
         this.vkUser = vkUser;
         this.isActive = isActive;
         this.lastUpdated = lastUpdated;
         this.subscriptionId = subscriptionId;
+        this.expire = expire;
 
     }
 
@@ -76,5 +80,13 @@ public class SubscriptionImages {
 
     public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
+    }
+
+    public Instant getExpire() {
+        return expire;
+    }
+
+    public void setExpire(Instant expire) {
+        this.expire = expire;
     }
 }

@@ -1,4 +1,3 @@
-import { getSubscription } from "$/api/subscriptions";
 import bridge from "@vkontakte/vk-bridge";
 
 class SubscriptionService {
