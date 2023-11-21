@@ -56,7 +56,7 @@ public class ImagesService {
 
 
     @Transactional
-    public List<Image> generateImage(String vkUserId, GenerateImageRequest generateImageRequest) throws JsonProcessingException {
+    public List<Image> generateImage(String vkUserId, GenerateImageRequest generateImageRequest) throws Exception {
 
         var normalisedGenerate = normaliseGenerateRequest(vkUserId, generateImageRequest);
 
@@ -108,7 +108,7 @@ public class ImagesService {
         return Pair.of(imageResponse.getOutput(), seed != null ? seed.asText() : "-1");
     }
 
-    public GenerateImageRequest normaliseGenerateRequest(String vkUserId, GenerateImageRequest generateImageRequest) throws JsonProcessingException {
+    public GenerateImageRequest normaliseGenerateRequest(String vkUserId, GenerateImageRequest generateImageRequest) throws Exception {
         if (subscriptionsImagesService.isAvailableSubscription(vkUserId)) {
             return generateImageRequest;
         }

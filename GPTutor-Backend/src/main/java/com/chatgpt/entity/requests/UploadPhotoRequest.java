@@ -2,7 +2,7 @@ package com.chatgpt.entity.requests;
 
 public class UploadPhotoRequest {
     String uploadUrl;
-    String imageUrl;
+    String imageBase64;
 
     public String getUploadUrl() {
         return uploadUrl;
@@ -12,11 +12,11 @@ public class UploadPhotoRequest {
         this.uploadUrl = uploadUrl;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageBase64() {
+        return imageBase64;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
     }
 }

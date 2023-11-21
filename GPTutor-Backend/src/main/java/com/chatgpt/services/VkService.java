@@ -25,9 +25,12 @@ public class VkService {
     @Autowired
     FileService fileService;
 
+    @Autowired
+    VkSecretesService vkSecretesService;
+
 
     //todo вынести этот метод на фронт
-    public Boolean groupIsMember(String groupId, String userId) throws JsonProcessingException {
+    public Boolean groupIsMember(String groupId, String userId) throws Exception {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.vk.com/method/groups.isMember"
                 + "?group_id={groupId}&user_id={userId}&access_token={accessToken}&v={v}";
@@ -35,7 +38,7 @@ public class VkService {
         Map<String, String> params = new HashMap<>();
         params.put("groupId", groupId);
         params.put("userId", userId);
-        params.put("accessToken", "");
+        params.put("accessToken", vkSecretesService.getAuthKey());
         params.put("v", "5.131");
 
         String result = restTemplate.getForObject(url, String.class, params);
@@ -47,7 +50,7 @@ public class VkService {
     }
 
     public UploadFileResponse uploadVkPhoto(UploadPhotoRequest uploadPhotoRequest) throws JsonProcessingException {
-        var file = fileService.downloadImage(uploadPhotoRequest.getImageUrl());
+        var file = fileService.downloadImage(uploadPhotoRequest.getImageBase64());
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -65,14 +68,15 @@ public class VkService {
 
     }
 
-    public OrderSubscriptionResponse getUserSubscriptions(String userId) throws JsonProcessingException {
+    public OrderSubscriptionResponse getUserSubscriptions(String userId) throws Exception {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.vk.com/method/orders.getUserSubscriptions"
                 + "?user_id={userId}&access_token={accessToken}&v={v}";
 
+
         Map<String, String> params = new HashMap<>();
         params.put("userId", userId);
-        params.put("accessToken", "2eedef0f2eedef0f2eedef0f9c2df92a1622eed2eedef0f4a733f0a1f4c650722ebf2ab");
+        params.put("accessToken", vkSecretesService.getAuthKey());
         params.put("v", "5.131");
 
         String response = restTemplate.getForObject(url, String.class, params);

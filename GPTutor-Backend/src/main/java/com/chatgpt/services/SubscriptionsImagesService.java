@@ -90,7 +90,7 @@ public class SubscriptionsImagesService {
         return Instant.now().isAfter(compareInstant);
     }
 
-    public boolean isAvailableSubscription(String vkUser) throws JsonProcessingException {
+    public boolean isAvailableSubscription(String vkUser) throws Exception {
         var vkSubscription = getLastSubscription(vkService.getUserSubscriptions(vkUser));
         if (vkSubscription == null) return false;
 

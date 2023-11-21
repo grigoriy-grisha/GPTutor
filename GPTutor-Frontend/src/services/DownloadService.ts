@@ -72,6 +72,20 @@ class DownloadService {
   async downloadByLink(link: string, filename: string) {
     this.downloadLink(link, filename);
   }
+
+  async downloadAndConvertToBase64(
+    url: string
+  ): Promise<string | ArrayBuffer | null> {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+
+      reader.readAsDataURL(blob);
+    });
+  }
 }
 
 export const downloadService = new DownloadService();

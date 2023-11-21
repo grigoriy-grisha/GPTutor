@@ -20,7 +20,7 @@ public class ImagesController {
     ImagesService imagesService;
 
     @PostMapping(path = "/image")
-    List<Image> generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) throws JsonProcessingException {
+    List<Image> generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) throws Exception {
         return imagesService.generateImage((String) request.getAttribute("vkUserId"), prompt);
     }
 

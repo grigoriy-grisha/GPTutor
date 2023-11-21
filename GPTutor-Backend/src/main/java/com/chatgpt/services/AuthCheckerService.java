@@ -31,6 +31,10 @@ public class AuthCheckerService {
         return getVkUserIdFromParams(getQueryParams(new URL(url)));
     }
 
+    public String getVkAppId(String url) throws Exception {
+        return getQueryParams(new URL(url)).get("vk_app_id");
+    }
+
     public String getVkUserIdFromParams( Map<String, String> params) {
         return params.getOrDefault("vk_user_id", "0");
     }

@@ -18,7 +18,7 @@ public class VkController {
     VkService vkService;
 
     @GetMapping(path = "/vk/groups-is-member")
-    ResponseEntity<Boolean> groupsIsMember(@RequestParam String groupId, @RequestParam String userId) throws JsonProcessingException {
+    ResponseEntity<Boolean> groupsIsMember(@RequestParam String groupId, @RequestParam String userId) throws Exception {
         return ResponseEntity.ok().body(vkService.groupIsMember(groupId, userId));
     }
 
@@ -29,7 +29,7 @@ public class VkController {
     }
 
     @GetMapping(path = "/vk/user-subscriptions")
-    ResponseEntity<OrderSubscriptionResponse> getUserSubscriptions(HttpServletRequest request) throws JsonProcessingException {
+    ResponseEntity<OrderSubscriptionResponse> getUserSubscriptions(HttpServletRequest request) throws Exception {
         return ResponseEntity.ok().body(vkService.getUserSubscriptions((String) request.getAttribute("vkUserId")));
     }
 }

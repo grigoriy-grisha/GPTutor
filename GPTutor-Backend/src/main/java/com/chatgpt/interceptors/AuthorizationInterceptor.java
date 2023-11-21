@@ -35,12 +35,13 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        var authorization = authCheckerService.splitBearer(request.getHeader("Authorization"));
+
         if (skipAuth) {
-            var userId = authCheckerService.getVkUserId(
-                    authCheckerService.splitBearer(request.getHeader("Authorization"))
-            );
+            var userId = authCheckerService.getVkUserId(authorization);
 
             request.setAttribute("vkUserId", Objects.requireNonNullElse(userId, "0"));
+            request.setAttribute("vkAppId", authCheckerService.getVkAppId(authorization));
 
             return true;
         }
@@ -55,9 +56,12 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             if (isSignSuccess) {
                 request.setAttribute(
                         "vkUserId",
-                        authCheckerService.getVkUserId(
-                                authCheckerService.splitBearer(request.getHeader("Authorization"))
-                        )
+                        authCheckerService.getVkUserId(authorization)
+                );
+
+                request.setAttribute(
+                        "vkAppId",
+                        authCheckerService.getVkAppId(authorization)
                 );
 
                 return true;
@@ -67,18 +71,5 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
         return false;
-    }
-
-    Map<String, String> getQueryParams(@NonNull HttpServletRequest request) {
-        Map<String, String> queryParams = new HashMap<>();
-
-        Enumeration<String> paramNames = request.getParameterNames();
-        while (paramNames.hasMoreElements()) {
-            String paramName = paramNames.nextElement();
-            String paramValue = request.getParameter(paramName);
-            queryParams.put(paramName, paramValue);
-        }
-
-        return queryParams;
     }
 }
