@@ -29,7 +29,7 @@ def textToImage(
 
     payload = json.dumps({
         "key": os.environ.get('IMAGES_API_KEY'),
-        "prompt": prompt + ",beatiful",
+        "prompt": prompt,
         "negative_prompt": negative_prompt_default + negative_prompt,
         "model_id": model_id,
         "width": str(width),
@@ -67,20 +67,28 @@ def textToImage(
 
     result = response.json()
 
-    if result['status'] == "failed" or result['status'] == "processing" or result['status'] == "error":
-        time.sleep(1.5)
-        return textToImage(model_id=model_id,
-                           prompt=prompt,
-                           negative_prompt=negative_prompt,
-                           scheduler=scheduler,
-                           width=width,
-                           height=height,
-                           samples=samples,
-                           num_inference_steps=num_inference_steps,
-                           seed=seed,
-                           guidance_scale=guidance_scale,
-                           upscale=upscale, attempts=attempts + 1
-                           )
+    if result['status'] == "processing":
+        time.sleep(10)
+        status = True
+        while status is True:
+            result_job = requests.request(
+                "POST",
+                result["fetch_result"],
+                headers=headers,
+                data=json.dumps({"key": os.environ.get('IMAGES_API_KEY')})
+            ).json()
+
+            print(result_job)
+
+            process_status = result_job["status"]
+            if process_status == "success":
+                time.sleep(2)
+                return result_job
+            elif process_status == "processing":
+                time.sleep(10)
+            else:
+                print(f"ERROR: Something went wrong! Please try later, error: {status}")
+                return result_job
 
     time.sleep(2)
 
