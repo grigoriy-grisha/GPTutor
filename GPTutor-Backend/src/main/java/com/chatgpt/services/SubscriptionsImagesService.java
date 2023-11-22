@@ -70,6 +70,20 @@ public class SubscriptionsImagesService {
         return subscriptionsImages;
     }
 
+    public SubscriptionImages getSubscription(String vkUser) {
+        if (isAvailableSubscription(vkUser) || subscriptionIsEmpty(vkUser)) {
+            return getOrCreateSubscriptions(vkUser);
+        }
+
+        return updateSubscription(vkUser);
+    }
+
+    boolean subscriptionIsEmpty(String vkUser) {
+        var subscription = getOrCreateSubscriptions(vkUser);
+
+        return subscription.getSubscriptionId() == null && subscription.getExpire() == 0;
+    }
+
     void activeSubscription(String vkUser, String subscriptionId, int nextBillTime) throws Exception {
         var subscription = getOrCreateSubscriptions(vkUser);
 
