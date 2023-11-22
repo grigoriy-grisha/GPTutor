@@ -16,7 +16,6 @@ CREATE TABLE image
     height              INT       NOT NULL,
     url                 VARCHAR   NOT NULL,
     upscale             VARCHAR   NOT NULL,
-    lora_model          VARCHAR   NOT NULL,
     expire              TIMESTAMP,
     PRIMARY KEY (id)
 );
