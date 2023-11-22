@@ -21,15 +21,7 @@ public class ConversationController {
     ConversationsService conversationsService;
 
     @PostMapping(path = "/conversation", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RateLimiter(name = "conversationLimit", fallbackMethod = "fallbackMethod")
     public <T> T getConversation(@RequestBody ConversationRequest conversationRequest) throws IOException {
         return (T) conversationsService.getConversation(conversationRequest);
     }
-
-    public ResponseEntity<Object> fallbackMethod(Exception e) throws Exception {
-        if (e != null) throw e;
-
-        throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Too many requests");
-    }
-
 }
