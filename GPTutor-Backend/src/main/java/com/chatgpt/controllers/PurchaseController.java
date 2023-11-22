@@ -59,15 +59,15 @@ public class PurchaseController {
     }
 
     @GetMapping(path = "/purchase/subscription")
-    public ResponseEntity<?> getSubscription(HttpServletRequest request) throws Exception {
-        return ResponseEntity.ok(subscriptionsImagesService.getOrCreateSubscriptions(
+    public ResponseEntity<?> getSubscription(HttpServletRequest request){
+        return ResponseEntity.ok(subscriptionsImagesService.updateSubscription(
                         (String) request.getAttribute("vkUserId")
                 )
         );
     }
 
     @PostMapping(path = "/purchase/update-subscriptions")
-    public ResponseEntity<?> updateSubscription(HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> updateSubscription(HttpServletRequest request) {
         return ResponseEntity.ok(subscriptionsImagesService.updateSubscription(
                         (String) request.getAttribute("vkUserId")
                 )

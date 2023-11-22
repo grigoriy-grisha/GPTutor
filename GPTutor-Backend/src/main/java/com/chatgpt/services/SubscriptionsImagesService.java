@@ -91,22 +91,29 @@ public class SubscriptionsImagesService {
         subscriptionsImagesRepository.save(subscription);
     }
 
-    boolean isAvailableSubscription(String vkUser) throws Exception {
+    boolean isAvailableSubscription(String vkUser) {
         var subscription = getOrCreateSubscriptions(vkUser);
 
         return new Date(subscription.getExpire() * 1000L).after(new Date());
     }
 
-    public SubscriptionImages updateSubscription(String vkUser) throws Exception {
+    public SubscriptionImages updateSubscription(String vkUser) {
         var subscription = getOrCreateSubscriptions(vkUser);
-        var order = vkService.getUserSubscriptionById(vkUser, subscription.getSubscriptionId());
 
-        subscription.setActive(!order.getResponse().isPending_cancel());
-        subscription.setExpire(order.getResponse().getExpire_time());
+        try {
+            var order = vkService.getUserSubscriptionById(vkUser, subscription.getSubscriptionId());
 
-        subscriptionsImagesRepository.save(subscription);
+            subscription.setActive(!order.getResponse().isPending_cancel());
+            subscription.setExpire(order.getResponse().getExpire_time());
 
-        return subscription;
+            subscriptionsImagesRepository.save(subscription);
+
+            return subscription;
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return subscription;
+        }
     }
 
     @Async
