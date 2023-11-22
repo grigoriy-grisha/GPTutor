@@ -71,7 +71,7 @@ public class SubscriptionsImagesService {
     }
 
     public SubscriptionImages getSubscription(String vkUser) {
-        if (isAvailableSubscription(vkUser) || subscriptionIsEmpty(vkUser)) {
+        if (subscriptionIsEmpty(vkUser)) {
             return getOrCreateSubscriptions(vkUser);
         }
 
