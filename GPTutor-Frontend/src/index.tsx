@@ -20,10 +20,11 @@ import { groupsService } from "$/services/GroupsService";
 import { appService } from "$/services/AppService";
 import { subscriptionsController } from "$/entity/subscriptions";
 import { imageGeneration } from "$/entity/image";
+import { VkStorageService } from "$/services/VkStorageService";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
-const storageService = new StorageService();
+const storageService = new VkStorageService();
 
 bridge
   .send("VKWebAppInit")
@@ -37,7 +38,7 @@ bridge
 
       const onboardingService = new OnboardingService();
       onboardingService.runOnBoarding();
-      storageService.set(isFirstVisitFlagName, true);
+      storageService.set(isFirstVisitFlagName, String(true));
     });
 
     let isDon = false;

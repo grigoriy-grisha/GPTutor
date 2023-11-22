@@ -19,3 +19,4 @@ export * from "./CssIcon";
 export * from "./ReactIcon";
 export * from "./TypeScriptIcon";
 export * from "./ChatGptIcon";
+export * from "./StableArtLogo";

@@ -256,12 +256,6 @@ class ImageGeneration {
 
       this.timer.run();
 
-      console.log(
-        `${this.prompt$.get()}, ${this.imageGenerationPrompt.selectedStyles$
-          .get()
-          .join(", ")}`
-      );
-
       const translatedPrompt = await translationService.translate(
         this.getTextWithNegativePrompts(this.getPromptWithStyles())
       );
@@ -276,7 +270,7 @@ class ImageGeneration {
         seed: this.getSeed(),
         expireTimestamp: datePlus30Days(),
         samples: this.samples$.get(),
-        originalPrompt: this.prompt$.get(),
+        originalPrompt: this.getPromptWithStyles(),
         scheduler: this.sampler$.get(),
         width: this.width$.get(),
         height: this.height$.get(),

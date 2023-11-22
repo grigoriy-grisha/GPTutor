@@ -85,7 +85,7 @@ const App = () => {
           </ModalRoot>
         }
       >
-        {appService.loading.get() ? (
+        {true ? (
           <LoadingPanel />
         ) : (
           <View
