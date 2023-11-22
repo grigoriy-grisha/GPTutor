@@ -1,0 +1,2 @@
+ALTER TABLE image DROP COLUMN lora_model;
+ALTER TABLE image ADD COLUMN lora_model VARCHAR;
