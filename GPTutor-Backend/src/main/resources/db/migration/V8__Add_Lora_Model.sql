@@ -1,1 +1,0 @@
-ALTER TABLE image ADD COLUMN lora_model VARCHAR;
