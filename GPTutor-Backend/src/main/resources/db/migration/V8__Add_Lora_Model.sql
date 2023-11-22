@@ -1,1 +1,1 @@
-ALTER TABLE image ADD COLUMN lora_model BOOLEAN;
+ALTER TABLE image ADD COLUMN lora_model VARCHAR;
