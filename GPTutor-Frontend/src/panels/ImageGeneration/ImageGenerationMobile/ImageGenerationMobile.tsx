@@ -17,7 +17,6 @@ import { AdvancedSettings } from "$/panels/ImageGeneration/AdvancedSettings";
 import { MainControls } from "$/panels/ImageGeneration/ImageGenerationMobile/MainControls";
 
 import classes from "./ImageGenerationMobile.module.css";
-import { ImageStyles } from "$/panels/ImageGeneration/ImageStyles";
 
 function ImageGenerationMobile() {
   const { goToGenerationImagesResult, goToGenerationImagesExamples } =
@@ -61,8 +60,6 @@ function ImageGenerationMobile() {
     >
       <Div className={classes.container}>
         <MainControls />
-        <Spacing size={8} />
-        <ImageStyles />
         <Spacing size={8} />
         <RequestParameters />
         <Spacing size={8} />
