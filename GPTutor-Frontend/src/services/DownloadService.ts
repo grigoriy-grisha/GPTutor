@@ -55,30 +55,6 @@ class DownloadService {
     this.downloadLink(link, filename);
   }
 
-  getBase64ByImage(elem: HTMLImageElement) {
-    const canvas = document.createElement("canvas");
-    canvas.width = elem.width;
-    canvas.height = elem.height;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return "";
-
-    ctx.drawImage(elem, 0, 0);
-
-    return canvas.toDataURL("image/png");
-  }
-
-  downloadByImg(elem: HTMLImageElement, filename: string) {
-    const element = document.createElement("a");
-
-    console.log(this.getBase64ByImage(elem));
-    element.href = this.getBase64ByImage(elem);
-    element.download = filename;
-    element.target = "_blank";
-    element.click();
-    element.remove();
-  }
-
   async downloadAndConvertToBase64(
     url: string
   ): Promise<string | ArrayBuffer | null> {

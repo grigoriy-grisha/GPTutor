@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 
 import {
   Button,
@@ -33,7 +33,6 @@ interface IProps {
 }
 
 function ImageItem({ image }: IProps) {
-  const refImage = useRef<HTMLImageElement>(null);
   const { isWebView, platform } = useConfigProvider();
   const { goBack, goToGenerationImagesResult } = useNavigationContext();
 
@@ -46,7 +45,6 @@ function ImageItem({ image }: IProps) {
           onClick={() => imageService.openImages([image.item.url])}
         >
           <img
-            ref={refImage}
             className={classNames(classes.image, {
               [classes.imageMobile]: platform !== Platform.VKCOM,
             })}
@@ -94,24 +92,17 @@ function ImageItem({ image }: IProps) {
             >
               Повторить
             </Button>
-            <IconButton
-              onClick={() => wallService.createPost(refImage.current!)}
-            >
+            <IconButton onClick={() => wallService.createPost(image.item.url)}>
               <Icon28ShareOutline />
             </IconButton>
           </ButtonGroup>
           <div className={classes.additionButtons}>
             <IconButton
               onClick={() => {
-                if (!isWebView) {
-                  downloadService.downloadByImg(
-                    refImage.current!,
-                    `${image.item.id}.png`
-                  );
-                  return;
-                }
-
-                downloadService.appDownloadLink(platform, image.item.url);
+                downloadService.appDownloadLink(
+                  isWebView ? platform : Platform.VKCOM,
+                  image.item.url
+                );
               }}
             >
               <Icon28ArrowDownToSquareOutline />
