@@ -48,6 +48,7 @@ import { ImageGenerationExamples } from "$/panels/ImageGenerationExamples";
 import Gallery from "$/panels/Gallery";
 import ImageCreatePrompts from "$/panels/ImageCreatePrompts";
 import Profile from "$/panels/Profile";
+import ApplicationInfoStableArt from "./modals/ApplicationInfoStableArt/ApplicationInfoStableArt";
 
 const App = () => {
   const location = useLocation();
@@ -81,6 +82,7 @@ const App = () => {
         modal={
           <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
             <ApplicationInfo id={Modals.applicationInfo} />
+            <ApplicationInfoStableArt id={Modals.applicationInfoStableArt} />
             <InterviewQuestions id={Modals.interviewQuestions} />
           </ModalRoot>
         }

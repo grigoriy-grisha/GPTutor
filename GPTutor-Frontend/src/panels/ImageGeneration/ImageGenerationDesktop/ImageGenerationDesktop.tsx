@@ -5,7 +5,7 @@ import { AppContainer } from "$/components/AppContainer";
 
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { imageGeneration } from "$/entity/image";
-import { Icon32StarsOutline } from "@vkontakte/icons";
+import { Icon28ServicesOutline, Icon32StarsOutline } from "@vkontakte/icons";
 import { useNavigationContext } from "$/NavigationContext";
 import { ImageGenerationDesktopResult } from "$/panels/ImageGeneration/ImageGenerationDesktopResult";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
@@ -14,7 +14,7 @@ import { AdvancedSettings } from "$/panels/ImageGeneration/AdvancedSettings";
 import { MainControls } from "$/panels/ImageGeneration/ImageGenerationDesktop/MainControls";
 
 function ImageGenerationDesktop() {
-  const { goToGenerationImagesExamples, goToGenerationImagesPrompts } =
+  const { goToGenerationImagesExamples, openApplicationInfoStableArt } =
     useNavigationContext();
 
   useEffect(() => {
@@ -29,13 +29,21 @@ function ImageGenerationDesktop() {
     <AppContainer
       headerChildren={
         <AppPanelHeader
+          before={
+            <IconButton
+              onClick={openApplicationInfoStableArt}
+              className={classes.buttonService}
+            >
+              <Icon28ServicesOutline className={classes.iconService} />
+            </IconButton>
+          }
           after={
             <IconButton onClick={goToGenerationImagesExamples}>
               <Icon32StarsOutline width={28} height={28} />
             </IconButton>
           }
         >
-          <Title style={{ marginLeft: 12 }} level="2">
+          <Title level="2" className={classes.title}>
             Stable Art
           </Title>
         </AppPanelHeader>

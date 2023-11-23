@@ -6,7 +6,7 @@ import {
   Spacing,
   useConfigProvider,
 } from "@vkontakte/vkui";
-import { Icon32StarsOutline } from "@vkontakte/icons";
+import { Icon28ServicesOutline, Icon32StarsOutline } from "@vkontakte/icons";
 
 import { imageGeneration } from "$/entity/image";
 import { AppContainer } from "$/components/AppContainer";
@@ -19,8 +19,11 @@ import { MainControls } from "$/panels/ImageGeneration/ImageGenerationMobile/Mai
 import classes from "./ImageGenerationMobile.module.css";
 
 function ImageGenerationMobile() {
-  const { goToGenerationImagesResult, goToGenerationImagesExamples } =
-    useNavigationContext();
+  const {
+    goToGenerationImagesResult,
+    goToGenerationImagesExamples,
+    openApplicationInfoStableArt,
+  } = useNavigationContext();
 
   useEffect(() => {
     imageGeneration.imageSize.set(imageGeneration.aspectRatio$.get());
@@ -33,6 +36,14 @@ function ImageGenerationMobile() {
     <AppContainer
       headerChildren={
         <AppPanelHeader
+          before={
+            <IconButton
+              onClick={openApplicationInfoStableArt}
+              className={classes.buttonService}
+            >
+              <Icon28ServicesOutline className={classes.iconService} />
+            </IconButton>
+          }
           after={
             <IconButton onClick={goToGenerationImagesExamples}>
               <Icon32StarsOutline width={28} height={28} />

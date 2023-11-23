@@ -42,6 +42,7 @@ export type NavigationContextType = {
   goToImageDonutModal: () => void;
   goToOpenProfile: () => void;
   goToGallery: () => void;
+  openApplicationInfoStableArt: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -159,6 +160,9 @@ export function NavigationContextProvider({
   const goToImageDonutModal = () => router.pushModal(Modals.imageDonut);
   const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
 
+  const openApplicationInfoStableArt = () =>
+    router.pushModal(Modals.applicationInfoStableArt);
+
   const openAlert = (data: AlertType) => {
     setAlert(data);
     router.pushPopup(Modals.alert);
@@ -183,6 +187,7 @@ export function NavigationContextProvider({
         goToChatSettingsModal,
         openApplicationInfo,
         goToChatInterview,
+        openApplicationInfoStableArt,
         openInterviewQuestions,
         goToLeetcodeProblems,
         goToEditor,

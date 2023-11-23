@@ -1,5 +1,6 @@
 import bridge from "@vkontakte/vk-bridge";
 import { communicationService } from "$/services/CommunicationService";
+import { appService } from "$/services/AppService";
 
 export function useApplicationInfo() {
   const subscribe = () => {
@@ -13,12 +14,20 @@ export function useApplicationInfo() {
   const share = () => {
     bridge
       .send("VKWebAppShare", {
-        link: "https://vk.com/app51602327_206526970",
+        link: appService.isGPTutor()
+          ? "https://vk.com/app51602327"
+          : "https://vk.com/app51692825",
       })
       .then((data) => {
         console.log(data);
       });
   };
 
-  return { subscribe, favourites, share };
+  const getAppLink = () => {
+    return !appService.isGPTutor()
+      ? "https://vk.com/app51602327"
+      : "https://vk.com/app51692825";
+  };
+
+  return { subscribe, favourites, share, getAppLink };
 }

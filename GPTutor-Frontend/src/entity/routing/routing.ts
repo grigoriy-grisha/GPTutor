@@ -58,6 +58,7 @@ export enum Panels {
 
 export enum Modals {
   applicationInfo = "application-info",
+  applicationInfoStableArt = "application-info-stable-art",
 
   interviewQuestions = "interview-questions",
 

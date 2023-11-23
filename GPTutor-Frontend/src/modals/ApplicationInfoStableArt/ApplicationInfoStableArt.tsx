@@ -1,5 +1,4 @@
-import React from "react";
-
+import { useNavigationContext } from "$/NavigationContext";
 import {
   Group,
   ModalPage,
@@ -8,30 +7,29 @@ import {
   Separator,
   SimpleCell,
   Text,
-  useAdaptivityConditionalRender,
   Title,
+  useAdaptivityConditionalRender,
 } from "@vkontakte/vkui";
+import { useApplicationInfo } from "$/modals/ApplicationInfo/hooks/useApplicationInfo";
+import { AppDiv } from "$/components/AppDiv";
 import {
+  Icon20DonutCircleFillYellow,
   Icon24Share,
   Icon28ChevronRightOutline,
   Icon28Favorite,
   Icon28LogoVk,
   Icon28MessageHeart,
   Icon28Users,
-  Icon20DonutCircleFillYellow,
 } from "@vkontakte/icons";
-
-import { useNavigationContext } from "$/NavigationContext";
-import { GithubIcon, StableArtLogo } from "$/icons";
-import { AppDiv } from "$/components/AppDiv";
-import { useApplicationInfo } from "./hooks/useApplicationInfo";
-import { appService } from "$/services/AppService";
+import { ChatGPTLogo, GithubIcon } from "$/icons";
+import React from "react";
+import { subscriptionsController } from "$/entity/subscriptions";
 
 interface IProps {
   id: string;
 }
 
-function ApplicationInfo({ id }: IProps) {
+function ApplicationInfoStableArt({ id }: IProps) {
   const { goBack, goToOpenSource } = useNavigationContext();
   const { sizeX } = useAdaptivityConditionalRender();
   const { subscribe, favourites, share, getAppLink } = useApplicationInfo();
@@ -57,22 +55,24 @@ function ApplicationInfo({ id }: IProps) {
         <AppDiv>
           <Text weight="3">
             <Title style={{ display: "inline" }} level="3" as="span">
-              GPTutor{" — "}
+              Stable Art{" — "}
             </Title>
-            это образовательное приложение, которое предлагает уникальный подход
-            к обучению вместе с чат-помощником ChatGPT.
+            это развлекательное приложение-инструмент, которое дает возможность
+            генерировать любые нейро-картинки с помощью технологии Stable
+            Diffusion.
           </Text>
         </AppDiv>
       </Group>
-      <Group style={{ marginTop: 0, padding: 0 }}>
-        <SimpleCell
-          before={<Icon20DonutCircleFillYellow width={28} height={24} />}
-          href="https://vk.com/gptutor?source=description&w=donut_payment-220371433"
-          target="_blank"
-        >
-          <Text weight="2">Снять ограничения</Text>
-        </SimpleCell>
-      </Group>
+      {subscriptionsController.isDisable() && (
+        <Group style={{ marginTop: 0, padding: 0 }}>
+          <SimpleCell
+            onClick={() => subscriptionsController.create()}
+            before={<Icon20DonutCircleFillYellow width={28} height={24} />}
+          >
+            <Text weight="2">Получить подписку</Text>
+          </SimpleCell>
+        </Group>
+      )}
       <Group style={{ padding: 0 }}>
         <SimpleCell
           before={<Icon28LogoVk />}
@@ -107,15 +107,15 @@ function ApplicationInfo({ id }: IProps) {
           target="_blank"
           before={
             <span style={{ paddingRight: 16 }}>
-              <StableArtLogo borderRadius="25%" />
+              <ChatGPTLogo borderRadius="25" />
             </span>
           }
           after={
             <Icon28ChevronRightOutline fill="var(--vkui--color_text_secondary)" />
           }
-          subtitle="Бесплатный генератор нейро-картинок ВКонтакте!"
+          subtitle="Бесплатный ChatGPT ВКонтакте!"
         >
-          <Text weight="2">Stable Art</Text>
+          <Text weight="2">GPTutor</Text>
         </SimpleCell>
       </Group>
       <Group style={{ paddingTop: 0 }}>
@@ -133,4 +133,4 @@ function ApplicationInfo({ id }: IProps) {
   );
 }
 
-export default ApplicationInfo;
+export default ApplicationInfoStableArt;

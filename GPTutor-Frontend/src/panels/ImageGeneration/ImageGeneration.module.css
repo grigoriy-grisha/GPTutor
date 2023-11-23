@@ -307,3 +307,11 @@
 .timer {
     color: var(--vkui--color_text_contrast_themed);
 }
+
+.title {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
