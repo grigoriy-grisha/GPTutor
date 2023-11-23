@@ -6,7 +6,6 @@ import {
   Spacing,
   Tappable,
   useConfigProvider,
-  usePlatform,
 } from "@vkontakte/vkui";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import TimeLoading from "../../../components/TimeLoading/TimeLoading";
@@ -19,7 +18,7 @@ import {
 import { imageService } from "$/services/ImageService";
 import { ImageSeed } from "$/panels/ImageGeneration/ImageSeed";
 import { downloadService } from "$/services/DownloadService";
-import React from "react";
+import React, { useRef } from "react";
 import { GeneratedImage } from "$/entity/image/types";
 import { wallService } from "$/services/WallService";
 
@@ -28,6 +27,8 @@ interface IProps {
 }
 
 function ImageItem({ resultImage }: IProps) {
+  const refImage = useRef<HTMLImageElement>(null);
+
   const { isWebView, platform } = useConfigProvider();
 
   const isEmpty = !resultImage.modelId;
@@ -64,6 +65,7 @@ function ImageItem({ resultImage }: IProps) {
             className={classNames(classes.image)}
           >
             <img
+              ref={refImage}
               className={classNames(classes.image, classes.generatedImage)}
               src={resultImage.url}
               alt="Картинка"
@@ -96,7 +98,7 @@ function ImageItem({ resultImage }: IProps) {
         </Button>
         <IconButton
           disabled={isEmpty}
-          onClick={() => wallService.createPost(resultImage.url)}
+          onClick={() => wallService.createPost(refImage.current!)}
         >
           <Icon28ShareOutline />
         </IconButton>

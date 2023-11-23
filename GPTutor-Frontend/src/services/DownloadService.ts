@@ -55,21 +55,23 @@ class DownloadService {
     this.downloadLink(link, filename);
   }
 
-  downloadByImg(elem: HTMLImageElement, filename: string) {
+  getBase64ByImage(elem: HTMLImageElement) {
     const canvas = document.createElement("canvas");
     canvas.width = elem.width;
     canvas.height = elem.height;
 
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) return "";
 
     ctx.drawImage(elem, 0, 0);
 
-    const base64Data = canvas.toDataURL("image/png");
+    return canvas.toDataURL("image/png");
+  }
 
+  downloadByImg(elem: HTMLImageElement, filename: string) {
     const element = document.createElement("a");
 
-    element.href = base64Data;
+    element.href = this.getBase64ByImage(elem);
     element.download = filename;
     element.target = "_blank";
     element.click();

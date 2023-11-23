@@ -94,7 +94,9 @@ function ImageItem({ image }: IProps) {
             >
               Повторить
             </Button>
-            <IconButton onClick={() => wallService.createPost(image.item.url)}>
+            <IconButton
+              onClick={() => wallService.createPost(refImage.current!)}
+            >
               <Icon28ShareOutline />
             </IconButton>
           </ButtonGroup>
