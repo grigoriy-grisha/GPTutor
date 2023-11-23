@@ -61,7 +61,6 @@ function MainControls() {
         <Spacing size={8} />
         <Button
           disabled={generationIsDisable}
-          loading={generateImage.loading.get()}
           className={classes.button}
           size="l"
           align="center"

@@ -4,7 +4,8 @@ import { ErrorResponseType, Pageable } from "$/entity/common";
 const BACKEND_HOST = env.REACT_APP_BACKEND_HOST;
 
 export function generateImage(
-  params: GenerateImageRequest
+  params: GenerateImageRequest,
+  controller: AbortController
 ): Promise<GeneratedImage[] & ErrorResponseType> {
   return fetch(`${BACKEND_HOST}image`, {
     method: "POST",
@@ -12,6 +13,7 @@ export function generateImage(
       Authorization: "Bearer " + location.href,
       "Content-Type": "application/json",
     },
+    signal: controller.signal,
     body: JSON.stringify(params),
   }).then((res) => res.json());
 }

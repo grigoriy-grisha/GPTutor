@@ -1,5 +1,6 @@
 package com.chatgpt.interceptors;
 
+import com.chatgpt.Exceptions.TooManyRequestsExceptions;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DurationLimitInterceptor  implements HandlerInterceptor  {
+public class DurationLimitInterceptor implements HandlerInterceptor {
 
     private final Map<String, Map<String, Instant>> userLastRequestTime = new ConcurrentHashMap<>();
     private final Map<String, Map<String, Integer>> urlToRateAndDuration = new HashMap<>();
@@ -47,9 +48,7 @@ public class DurationLimitInterceptor  implements HandlerInterceptor  {
                 Duration timeSinceLastRequest = Duration.between(lastRequestTime, now);
                 if (timeSinceLastRequest.getSeconds() < durationInSeconds) {
                     if (urlLastRequestTime.size() >= requestsPerDuration) {
-                        response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
-                        response.getWriter().write("Rate limit exceeded");
-                        return false;
+                        throw new TooManyRequestsExceptions("Вы делаете запросы слишком часто попробуйте через пару секунд!");
                     }
                 }
             }

@@ -22,6 +22,8 @@ class ImageGeneration {
   requestParameters = false;
   advancedSettingOpen = false;
 
+  abortController: AbortController | null = null;
+
   timer = new StopWatch();
   imageGenerationPrompt = new ImageGenerationPrompt();
   chatGpt = new ChatGptImages();
@@ -262,30 +264,41 @@ class ImageGeneration {
 
       const [prompt, negativePrompt] = this.splitPrompt(translatedPrompt);
 
-      const result = await generateImage({
-        modelId: this.model$.get(),
-        prompt: prompt.trim(),
-        createdAt: new Date(),
-        guidanceScale: this.CFGScale$.get(),
-        seed: this.getSeed(),
-        expireTimestamp: datePlus30Days(),
-        samples: this.samples$.get(),
-        originalPrompt: this.getPromptWithStyles(),
-        scheduler: this.sampler$.get(),
-        width: this.width$.get(),
-        height: this.height$.get(),
-        upscale: this.upscale$.get(),
-        numInferenceSteps: this.step$.get(),
-        loraModel: this.loraModel$.get(),
-        negativePrompt: negativePrompt.trim(),
-      });
+      this.abortController = new AbortController();
+
+      const result = await generateImage(
+        {
+          modelId: this.model$.get(),
+          prompt: prompt.trim(),
+          createdAt: new Date(),
+          guidanceScale: this.CFGScale$.get(),
+          seed: this.getSeed(),
+          expireTimestamp: datePlus30Days(),
+          samples: this.samples$.get(),
+          originalPrompt: this.getPromptWithStyles(),
+          scheduler: this.sampler$.get(),
+          width: this.width$.get(),
+          height: this.height$.get(),
+          upscale: this.upscale$.get(),
+          numInferenceSteps: this.step$.get(),
+          loraModel: this.loraModel$.get(),
+          negativePrompt: negativePrompt.trim(),
+        },
+        this.abortController!
+      );
 
       if (result.error) {
+        console.log(result);
         this.setResults();
         this.timer.stop();
         this.loading$.set(false);
 
         if (result.status === 400) {
+          this.error$.set(result.error);
+          return;
+        }
+
+        if (result.status === 429) {
           this.error$.set(result.error);
           return;
         }
@@ -297,10 +310,24 @@ class ImageGeneration {
       this.timer.stop();
       this.loading$.set(false);
       this.result$.set(result);
-    } catch (e) {
+    } catch (e: any) {
+      console.log(e);
+      if (e.name === "AbortError") {
+        this.setResults();
+        this.timer.stop();
+        this.loading$.set(false);
+        return;
+      }
+
+      console.dir(e);
+
       this.loading$.set(false);
       this.error$.set("Что-то пошло не так, попробуйте позже");
     }
+  };
+
+  abortGenerate = () => {
+    this.abortController?.abort();
   };
 
   generate = () => {

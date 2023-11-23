@@ -7,7 +7,7 @@
 .container {
     width: 100%;
     display: grid;
-    grid-template-columns: 64.5% 32%;
+    grid-template-columns: 64.5% 34.5%;
     gap: 8px;
 }
 

@@ -55,17 +55,30 @@ function MainControls() {
           Собрать запрос
         </Button>
         <Spacing size={8} />
-        <Button
-          disabled={generationIsDisable}
-          loading={generateImage.loading.get()}
-          className={classes.button}
-          size="l"
-          align="center"
-          mode="primary"
-          onClick={imageGeneration.generate}
-        >
-          Сгенерировать
-        </Button>
+        {imageGeneration.loading$.get() ? (
+          <Button
+            disabled={generationIsDisable}
+            className={classes.button}
+            size="l"
+            align="center"
+            mode="secondary"
+            appearance="negative"
+            onClick={imageGeneration.abortGenerate}
+          >
+            Отменить
+          </Button>
+        ) : (
+          <Button
+            disabled={generationIsDisable}
+            className={classes.button}
+            size="l"
+            align="center"
+            mode="primary"
+            onClick={imageGeneration.generate}
+          >
+            Сгенерировать
+          </Button>
+        )}
       </Div>
     </Card>
   );

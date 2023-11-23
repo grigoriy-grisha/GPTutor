@@ -1,5 +1,6 @@
 package com.chatgpt.interceptors;
 
+import com.chatgpt.Exceptions.TooManyRequestsExceptions;
 import io.github.bucket4j.Bucket;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,12 +31,9 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             if (bucket.tryConsume(1)) {
                 return true;
             } else {
-                response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
-                response.getWriter().write("Rate limit exceeded");
-                return false;
+                throw new TooManyRequestsExceptions("Превышено количество запросов в минуту, попробуйте позже");
             }
         }
-
 
 
         return true;

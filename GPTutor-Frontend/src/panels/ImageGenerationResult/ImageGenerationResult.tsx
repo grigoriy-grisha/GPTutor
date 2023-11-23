@@ -46,17 +46,29 @@ function ImageGenerationResult({ id }: IProps) {
         }
         fixedBottomContent={
           <Div>
-            <Button
-              disabled={imageGeneration.loading$.get()}
-              onClick={imageGeneration.generate}
-              after={<Icon24RepeatOutline />}
-              style={{ width: "100%" }}
-              size="m"
-              align="center"
-              mode="primary"
-            >
-              Повторить
-            </Button>
+            {imageGeneration.loading$.get() ? (
+              <Button
+                style={{ width: "100%" }}
+                size="m"
+                align="center"
+                mode="secondary"
+                appearance="negative"
+                onClick={imageGeneration.abortGenerate}
+              >
+                Отменить
+              </Button>
+            ) : (
+              <Button
+                onClick={imageGeneration.generate}
+                after={<Icon24RepeatOutline />}
+                style={{ width: "100%" }}
+                size="m"
+                align="center"
+                mode="primary"
+              >
+                Повторить
+              </Button>
+            )}
           </Div>
         }
       >
