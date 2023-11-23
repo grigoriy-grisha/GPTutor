@@ -9,7 +9,7 @@ import {
   Spacing,
   Textarea,
 } from "@vkontakte/vkui";
-import { Icon24MagicWandOutline } from "@vkontakte/icons";
+import { Icon24MagicWandOutline, Icon24RepeatOutline } from "@vkontakte/icons";
 
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { imageGeneration } from "$/entity/image";
@@ -59,23 +59,37 @@ function MainControls() {
           Собрать запрос
         </Button>
         <Spacing size={8} />
-        <Button
-          disabled={generationIsDisable}
-          className={classes.button}
-          size="l"
-          align="center"
-          mode="primary"
-          onClick={() => {
-            imageGeneration.generate();
-            if (imageGeneration.error$.get()) {
-              return;
-            }
 
-            goToGenerationImagesResult();
-          }}
-        >
-          Сгенерировать
-        </Button>
+        {imageGeneration.loading$.get() ? (
+          <Button
+            style={{ width: "100%" }}
+            size="l"
+            align="center"
+            mode="secondary"
+            appearance="negative"
+            onClick={imageGeneration.abortGenerate}
+          >
+            Отменить
+          </Button>
+        ) : (
+          <Button
+            disabled={generationIsDisable}
+            className={classes.button}
+            size="l"
+            align="center"
+            mode="primary"
+            onClick={() => {
+              imageGeneration.generate();
+              if (imageGeneration.error$.get()) {
+                return;
+              }
+
+              goToGenerationImagesResult();
+            }}
+          >
+            Сгенерировать
+          </Button>
+        )}
       </Div>
     </Card>
   );
