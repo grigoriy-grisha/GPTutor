@@ -39,7 +39,7 @@ function MainControls() {
             onChange={(event) => imageGeneration.setPrompt(event.target.value)}
             id="prompt"
             className={classes.textArea}
-            placeholder="Напишите запрос для изображения"
+            placeholder="космонавт верхном на лошади, hd, Космическое сияние, высокое качество, профессиональное фото"
           />
         </FormItem>
         <Spacing size={6} />

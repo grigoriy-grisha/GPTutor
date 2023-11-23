@@ -18,6 +18,11 @@ import { ChipOption } from "@vkontakte/vkui/dist/components/Chip/Chip";
 import { StopWatch } from "$/entity/stopWatch";
 import { subscriptionsController } from "$/entity/subscriptions";
 
+const emptyPrompt = {
+  ru: "Космонавт верхном на лошади, hd, Космическое сияние, высокое качество, профессиональное фото",
+  en: "Astronaut riding a horse, hd, cosmic radiance, high quality, professional photo",
+};
+
 class ImageGeneration {
   requestParameters = false;
   advancedSettingOpen = false;
@@ -206,12 +211,12 @@ class ImageGeneration {
     );
   }
 
-  getPromptWithStyles() {
+  getPromptWithStyles(prompt: string) {
     const styles = this.imageGenerationPrompt.selectedStyles$.get();
 
-    if (styles.length === 0) return this.prompt$.get();
+    if (styles.length === 0) return prompt;
 
-    return `${this.prompt$.get()},${styles.join(", ")}`;
+    return `${prompt},${styles.join(", ")}`;
   }
 
   getTextWithNegativePrompts(prompt: string) {
@@ -246,20 +251,25 @@ class ImageGeneration {
     return seed;
   }
 
+  getPrompt() {
+    return this.prompt$.get().trim() === ""
+      ? emptyPrompt.ru
+      : this.prompt$.get();
+  }
+
   generateImage = async () => {
     try {
       this.error$.set("");
-      if (this.prompt$.get().trim() === "") {
-        this.error$.set("Ввод промпта обязателен!");
-        return;
-      }
+      const originalPrompt = this.getPrompt();
 
       this.loading$.set(true);
 
       this.timer.run();
 
       const translatedPrompt = await translationService.translate(
-        this.getTextWithNegativePrompts(this.getPromptWithStyles())
+        this.getTextWithNegativePrompts(
+          this.getPromptWithStyles(originalPrompt)
+        )
       );
 
       const [prompt, negativePrompt] = this.splitPrompt(translatedPrompt);
@@ -275,7 +285,7 @@ class ImageGeneration {
           seed: this.getSeed(),
           expireTimestamp: datePlus30Days(),
           samples: this.samples$.get(),
-          originalPrompt: this.getPromptWithStyles(),
+          originalPrompt: this.getPromptWithStyles(originalPrompt),
           scheduler: this.sampler$.get(),
           width: this.width$.get(),
           height: this.height$.get(),
