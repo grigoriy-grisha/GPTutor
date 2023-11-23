@@ -51,26 +51,29 @@ class DownloadService {
       filename: filename || url.substring(url.lastIndexOf("/") + 1),
     });
   }
-
-  downloadTxt(text: string, filename: string) {
-    const BOM = new Uint8Array([0xef, 0xbb, 0xbf]);
-    const blob = new Blob([BOM, text]);
-
-    this.download(blob, filename);
-    return;
-  }
-
-  downloadJSON(json: Record<any, any>, filename: string) {
-    const str = JSON.stringify(json, null, 4);
-    const BOM = new Uint8Array([0xef, 0xbb, 0xbf]);
-    const blob = new Blob([BOM, str]);
-
-    this.download(blob, `${filename}.json`);
-    return;
-  }
-
   async downloadByLink(link: string, filename: string) {
     this.downloadLink(link, filename);
+  }
+
+  downloadByImg(elem: HTMLImageElement, filename: string) {
+    const canvas = document.createElement("canvas");
+    canvas.width = elem.width;
+    canvas.height = elem.height;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.drawImage(elem, 0, 0);
+
+    const base64Data = canvas.toDataURL("image/png");
+
+    const element = document.createElement("a");
+
+    element.href = base64Data;
+    element.download = filename;
+    element.target = "_blank";
+    element.click();
+    element.remove();
   }
 
   async downloadAndConvertToBase64(

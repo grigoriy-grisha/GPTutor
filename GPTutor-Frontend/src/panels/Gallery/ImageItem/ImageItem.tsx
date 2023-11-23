@@ -1,3 +1,5 @@
+import React, { useRef } from "react";
+
 import {
   Button,
   ButtonGroup,
@@ -6,10 +8,8 @@ import {
   IconButton,
   Platform,
   Tappable,
-  usePlatform,
   useConfigProvider,
 } from "@vkontakte/vkui";
-import React from "react";
 
 import { imageService } from "$/services/ImageService";
 import classes from "$/panels/Gallery/Gallery.module.css";
@@ -33,6 +33,7 @@ interface IProps {
 }
 
 function ImageItem({ image }: IProps) {
+  const refImage = useRef<HTMLImageElement>(null);
   const { isWebView, platform } = useConfigProvider();
   const { goBack, goToGenerationImagesResult } = useNavigationContext();
 
@@ -45,6 +46,7 @@ function ImageItem({ image }: IProps) {
           onClick={() => imageService.openImages([image.item.url])}
         >
           <img
+            ref={refImage}
             className={classNames(classes.image, {
               [classes.imageMobile]: platform !== Platform.VKCOM,
             })}
@@ -99,10 +101,15 @@ function ImageItem({ image }: IProps) {
           <div className={classes.additionButtons}>
             <IconButton
               onClick={() => {
-                downloadService.appDownloadLink(
-                  isWebView ? platform : Platform.VKCOM,
-                  image.item.url
-                );
+                if (!isWebView) {
+                  downloadService.downloadByImg(
+                    refImage.current!,
+                    image.item.id
+                  );
+                  return;
+                }
+
+                downloadService.appDownloadLink(platform, image.item.url);
               }}
             >
               <Icon28ArrowDownToSquareOutline />
