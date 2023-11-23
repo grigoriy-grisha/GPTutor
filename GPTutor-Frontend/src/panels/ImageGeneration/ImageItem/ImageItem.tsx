@@ -87,10 +87,15 @@ function ImageItem({ resultImage }: IProps) {
           mode="outline"
           after={<Icon28ArrowDownToSquareOutline />}
           onClick={() => {
-            downloadService.appDownloadLink(
-              isWebView ? platform : Platform.VKCOM,
-              resultImage.url
-            );
+            if (!isWebView) {
+              downloadService.downloadByImg(
+                refImage.current!,
+                `${resultImage.id}.png`
+              );
+              return;
+            }
+
+            downloadService.appDownloadLink(platform, resultImage.url);
           }}
           disabled={isEmpty}
         >

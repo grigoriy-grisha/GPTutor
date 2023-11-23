@@ -8,6 +8,7 @@ class WallService {
     const resultWallUploadServer = await wallService.getWallUploadServer();
 
     const base64Image = downloadService.getBase64ByImage(image);
+    console.log(base64Image);
 
     if (!base64Image) return;
 

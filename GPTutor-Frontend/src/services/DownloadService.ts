@@ -71,6 +71,7 @@ class DownloadService {
   downloadByImg(elem: HTMLImageElement, filename: string) {
     const element = document.createElement("a");
 
+    console.log(this.getBase64ByImage(elem));
     element.href = this.getBase64ByImage(elem);
     element.download = filename;
     element.target = "_blank";

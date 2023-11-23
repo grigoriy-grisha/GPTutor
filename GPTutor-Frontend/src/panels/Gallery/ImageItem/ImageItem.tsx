@@ -106,7 +106,7 @@ function ImageItem({ image }: IProps) {
                 if (!isWebView) {
                   downloadService.downloadByImg(
                     refImage.current!,
-                    image.item.id
+                    `${image.item.id}.png`
                   );
                   return;
                 }
