@@ -315,3 +315,9 @@
     align-items: center;
     justify-content: center;
 }
+
+.promptButtons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}

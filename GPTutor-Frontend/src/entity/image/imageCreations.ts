@@ -2779,20 +2779,3 @@ export function getRandomStyle() {
     cameraSettings: getRandomElementByIndex(cameraSettings),
   };
 }
-
-export function getRandomPromptImage() {
-  const {
-    image,
-    cameraSettings,
-    cameraLens,
-    cameraType,
-    filmType,
-    timeOfDay,
-    photoStyle,
-    keywords,
-  } = getRandomStyle();
-
-  return `${image}, ${keywords.join(
-    ","
-  )}, ${timeOfDay}, ${photoStyle} ${cameraLens}, ${cameraType}, ${filmType}, ${cameraSettings}`;
-}

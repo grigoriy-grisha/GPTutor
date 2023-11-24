@@ -3,6 +3,7 @@ import React from "react";
 import {
   Button,
   Card,
+  Checkbox,
   Div,
   FormItem,
   Spacing,
@@ -18,7 +19,6 @@ import { attempts } from "$/entity/attempts";
 function MainControls() {
   const { goToGenerationImagesPrompts } = useNavigationContext();
 
-  const generateImage = imageGeneration.generateImage$;
   const generationIsDisable = attempts.$requests.get() === 0;
 
   return (
@@ -45,15 +45,31 @@ function MainControls() {
         <Spacing size={6} />
         <PromptStyles />
         <Spacing size={6} />
-        <Button
-          className={classes.button}
-          onClick={() => goToGenerationImagesPrompts()}
-          size="l"
-          mode="outline"
-          after={<Icon24MagicWandOutline />}
-        >
-          Собрать запрос
-        </Button>
+        <div className={classes.promptButtons}>
+          <Card
+            mode="outline"
+            style={{
+              boxShadow:
+                "inset 0 0 0 1px var(--vkui--color_stroke_accent_themed)",
+            }}
+          >
+            <Checkbox
+              checked={imageGeneration.enhancePrompt$.get()}
+              onChange={imageGeneration.toggleEnhancePrompt}
+            >
+              Улучшить запрос{" "}
+            </Checkbox>
+          </Card>
+          <Button
+            className={classes.button}
+            onClick={() => goToGenerationImagesPrompts()}
+            size="l"
+            mode="outline"
+          >
+            Собрать запрос ✨
+          </Button>
+        </div>
+
         <Spacing size={8} />
         {imageGeneration.loading$.get() ? (
           <Button
@@ -75,6 +91,7 @@ function MainControls() {
             align="center"
             mode="primary"
             onClick={imageGeneration.generate}
+            after={<Icon24MagicWandOutline />}
           >
             Сгенерировать
           </Button>

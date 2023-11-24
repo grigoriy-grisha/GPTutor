@@ -19,6 +19,7 @@ import { imageGeneration } from "$/entity/image";
 import { AppDiv } from "$/components/AppDiv";
 
 import classes from "./PromptTrack.module.css";
+import { SelectButton } from "$/components/SelectButton";
 
 interface PromptTrackProps {
   title?: string;
@@ -76,19 +77,9 @@ function PromptTrack({ prompts, type, title }: PromptTrackProps) {
                 key={prompt}
                 onClick={() => selectPrompt(prompt)}
               >
-                <Button
-                  mode={isSelect(prompt) ? "primary" : "outline"}
-                  size="m"
-                  after={
-                    isSelect(prompt) ? (
-                      <Icon24DoneOutline width={20} height={20} />
-                    ) : (
-                      <Icon24AddOutline width={20} height={20} />
-                    )
-                  }
-                >
+                <SelectButton selected={isSelect(prompt)}>
                   {prompt}
-                </Button>
+                </SelectButton>
               </HorizontalCell>
             );
           })}

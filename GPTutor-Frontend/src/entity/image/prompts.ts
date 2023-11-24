@@ -1,3 +1,5 @@
+import { getRandomStyle } from "$/entity/image/imageCreations";
+
 export const prompts = [
   "Рыжий галактический кактус",
   "Фиолетовое море из шоколада",
@@ -559,3 +561,32 @@ export const randomPromptsLighting = getRandomElementsByIndex(
   promptsLighting,
   10
 );
+
+export function getRandomStylesImage() {
+  const randomPromptsModifiersStyles = getRandomElementsByIndex(
+    promptsModifiersStyles,
+    3
+  );
+
+  const randomPromptsModifiersQuality = getRandomElementsByIndex(
+    promptsModifiersQuality,
+    3
+  );
+
+  const randomPromptsCameraSettings = getRandomElementsByIndex(
+    promptsCameraSettings,
+    3
+  );
+
+  const randomPromptsStyles = getRandomElementsByIndex(promptsStyles, 3);
+
+  const randomPromptsLighting = getRandomElementsByIndex(promptsLighting, 3);
+
+  return [
+    ...randomPromptsModifiersStyles,
+    ...randomPromptsCameraSettings,
+    ...randomPromptsStyles,
+    ...randomPromptsLighting,
+    ...randomPromptsModifiersQuality,
+  ];
+}

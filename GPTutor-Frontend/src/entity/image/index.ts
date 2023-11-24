@@ -17,6 +17,7 @@ import { ImageGenerationPrompt } from "$/entity/image/ImageGenerationPrompt";
 import { ChipOption } from "@vkontakte/vkui/dist/components/Chip/Chip";
 import { StopWatch } from "$/entity/stopWatch";
 import { subscriptionsController } from "$/entity/subscriptions";
+import { getRandomStylesImage } from "$/entity/image/prompts";
 
 const emptyPrompt = {
   ru: "Космонавт верхном на лошади, hd, Космическое сияние, высокое качество, профессиональное фото",
@@ -32,6 +33,8 @@ class ImageGeneration {
   timer = new StopWatch();
   imageGenerationPrompt = new ImageGenerationPrompt();
   chatGpt = new ChatGptImages();
+
+  enhancePrompt$ = sig(true);
 
   prompt$ = sig("");
   model$ = sig(defaultModel);
@@ -73,6 +76,10 @@ class ImageGeneration {
       this.setSamples("1");
     }
   }
+
+  toggleEnhancePrompt = () => {
+    this.enhancePrompt$.set(!this.enhancePrompt$.get());
+  };
 
   toggleAdvancedSettingOpen = () => {
     this.advancedSettingOpen = !this.advancedSettingOpen;
@@ -212,11 +219,27 @@ class ImageGeneration {
   }
 
   getPromptWithStyles(prompt: string) {
+    return `${prompt},${this.getStyles()}`;
+  }
+
+  getStyles() {
     const styles = this.imageGenerationPrompt.selectedStyles$.get();
 
-    if (styles.length === 0) return prompt;
+    if (styles.length === 0) {
+      if (this.enhancePrompt$.get()) {
+        return `,${getRandomStylesImage().join(",")}`;
+      }
+    }
 
-    return `${prompt},${styles.join(", ")}`;
+    return `,${styles.concat(this.getEnhanceStyles()).join(", ")}`;
+  }
+
+  getEnhanceStyles() {
+    if (this.enhancePrompt$.get()) {
+      return getRandomStylesImage();
+    }
+
+    return [];
   }
 
   getTextWithNegativePrompts(prompt: string) {
