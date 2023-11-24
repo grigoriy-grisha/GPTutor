@@ -227,7 +227,7 @@ class ImageGeneration {
 
     if (styles.length === 0) {
       if (this.enhancePrompt$.get()) {
-        return `,${getRandomStylesImage().join(",")}`;
+        return `,${getRandomStylesImage().join(", ")}`;
       }
 
       return "";
