@@ -23,7 +23,7 @@ def textToImage(
         attempts=0
 ):
     payload = json.dumps({
-        "key": os.environ.get('IMAGES_API_KEY'),
+        "key": "DMKZlOvyk6OHRRfedRJDqlW9gqVzUfeVvzLxjGH47hU8RAiStWzZxPrYCVuV",
         "prompt": prompt,
         "negative_prompt": negative_prompt_default + negative_prompt,
         "model_id": model_id,

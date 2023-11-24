@@ -92,13 +92,26 @@ function ImageItem({ image }: IProps) {
             >
               Повторить
             </Button>
-            <IconButton onClick={() => wallService.createPost(image.item.url)}>
+            <IconButton onClick={() => wallService.createPost(image.item.id)}>
               <Icon28ShareOutline />
             </IconButton>
           </ButtonGroup>
           <div className={classes.additionButtons}>
             <IconButton
-              onClick={() => {
+              onClick={async () => {
+                if (!isWebView) {
+                  const base64 = await imageGeneration.getImageBase64(
+                    image.item.id
+                  );
+
+                  console.log(base64);
+
+                  downloadService.downloadBase64(
+                    base64,
+                    `${image.item.id}.png`
+                  );
+                  return;
+                }
                 downloadService.appDownloadLink(
                   isWebView ? platform : Platform.VKCOM,
                   image.item.url

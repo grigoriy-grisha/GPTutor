@@ -1,8 +1,10 @@
 package com.chatgpt.entity.requests;
 
+import java.util.UUID;
+
 public class UploadPhotoRequest {
     String uploadUrl;
-    String imageBase64;
+    UUID imageId;
 
     public String getUploadUrl() {
         return uploadUrl;
@@ -12,11 +14,11 @@ public class UploadPhotoRequest {
         this.uploadUrl = uploadUrl;
     }
 
-    public String getImageBase64() {
-        return imageBase64;
+    public UUID getImageId() {
+        return imageId;
     }
 
-    public void setImageBase64(String imageBase64) {
-        this.imageBase64 = imageBase64;
+    public void setImageId(UUID imageId) {
+        this.imageId = imageId;
     }
 }

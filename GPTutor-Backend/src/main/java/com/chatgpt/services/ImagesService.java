@@ -43,6 +43,9 @@ public class ImagesService {
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
+    FileService fileService;
+
+    @Autowired
     BadListService badListService;
 
     @Autowired
@@ -118,5 +121,14 @@ public class ImagesService {
         generateImageRequest.setSamples(1);
 
         return generateImageRequest;
+    }
+
+    public String getImageBase64(UUID id) {
+        var image = imageRepository.findById(id);
+        if (image.isEmpty()) {
+            throw new NotAFoundException("Изображение не найдено");
+        }
+
+        return fileService.downloadImageAsBase64(image.get().getUrl());
     }
 }

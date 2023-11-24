@@ -36,3 +36,8 @@ export type ErrorResponseType = {
   error: string;
   status: number;
 };
+
+export interface ResponseData<T> {
+  status: number;
+  body: T;
+}

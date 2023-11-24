@@ -1,6 +1,7 @@
 package com.chatgpt.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,11 +10,11 @@ import java.util.Base64;
 
 @Service
 public class FileService {
-    File downloadImage(String base64Data) {
+    public File downloadImage(String base64Data) {
         File tempFile = null;
 
         try {
-            byte[] imageBytes = Base64.getDecoder().decode(base64Data.split(",")[1]);
+            byte[] imageBytes = Base64.getDecoder().decode(base64Data);
             if (imageBytes != null) {
                 tempFile = File.createTempFile("image-", ".png");
                 Files.write(tempFile.toPath(), imageBytes);
@@ -27,5 +28,13 @@ public class FileService {
         }
 
         return tempFile;
+    }
+
+    public  String downloadImageAsBase64(String imageUrl) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        byte[] imageBytes = restTemplate.getForObject(imageUrl, byte[].class);
+
+        return Base64.getEncoder().encodeToString(imageBytes);
     }
 }

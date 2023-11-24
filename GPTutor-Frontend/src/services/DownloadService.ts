@@ -27,6 +27,15 @@ class DownloadService {
     });
   }
 
+  downloadBase64(dataUrl: string, filename: string) {
+    const element = document.createElement("a");
+    element.href = dataUrl;
+    element.download = filename;
+    element.target = "_blank";
+    element.click();
+    element.remove();
+  }
+
   toDataURL = (url: string) =>
     fetch(url)
       .then((response) => response.blob())
@@ -51,6 +60,7 @@ class DownloadService {
       filename: filename || url.substring(url.lastIndexOf("/") + 1),
     });
   }
+
   async downloadByLink(link: string, filename: string) {
     this.downloadLink(link, filename);
   }

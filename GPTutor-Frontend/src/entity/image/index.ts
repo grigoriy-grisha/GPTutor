@@ -1,8 +1,8 @@
 import { memo, sig } from "dignals";
 
-import { defaultModel, defaultSampler, styles } from "./styles";
+import { defaultModel, defaultSampler } from "./styles";
 import ReactivePromise from "$/services/ReactivePromise";
-import { generateImage, saveImage } from "$/api/images";
+import { generateImage, getImageBase64 } from "$/api/images";
 import {
   emptyImageGenerated,
   GeneratedImage,
@@ -345,20 +345,11 @@ class ImageGeneration {
     this.generateImage$.run();
   };
 
-  saveImage = async (imageId: string) => {
-    const result = await saveImage(imageId);
-    this.result$.set(
-      this.result$
-        .get()
-        .map((image) => (image.id === result.id ? result : image))
-    );
-    return result;
+  getImageBase64 = async (imageId: string) => {
+    return "data:image/png;base64," + (await getImageBase64(imageId));
   };
 
-  save = (imageId: string) => this.saveImage$.run(imageId);
-
   generateImage$ = ReactivePromise.create(this.generateImage);
-  saveImage$ = ReactivePromise.create(this.saveImage);
 }
 
 export const imageGeneration = new ImageGeneration();

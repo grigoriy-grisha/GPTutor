@@ -4,18 +4,12 @@ import { uploadPhoto } from "$/api/vk";
 import { downloadService } from "$/services/DownloadService";
 
 class WallService {
-  async createPost(imageUrl: string) {
+  async createPost(imageId: string) {
     const resultWallUploadServer = await wallService.getWallUploadServer();
-
-    const base64Image = await downloadService.downloadAndConvertToBase64(
-      imageUrl
-    );
-
-    if (!base64Image) return;
 
     const result = await uploadPhoto(
       resultWallUploadServer.response.upload_url,
-      String(base64Image)
+      imageId
     );
 
     const resultSavePhoto = await wallService.saveWallPhoto(

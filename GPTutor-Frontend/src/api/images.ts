@@ -1,5 +1,5 @@
 import { GeneratedImage, GenerateImageRequest } from "$/entity/image/types";
-import { ErrorResponseType, Pageable } from "$/entity/common";
+import { ErrorResponseType, Pageable, ResponseData } from "$/entity/common";
 
 const BACKEND_HOST = env.REACT_APP_BACKEND_HOST;
 
@@ -18,16 +18,15 @@ export function generateImage(
   }).then((res) => res.json());
 }
 
-export function saveImage(
-  imageId: string
-): Promise<GeneratedImage & ErrorResponseType> {
-  return fetch(`${BACKEND_HOST}image/${imageId}`, {
-    method: "POST",
+export async function getImageBase64(imageId: string): Promise<string> {
+  const res = await fetch(`${BACKEND_HOST}image/${imageId}/base64`, {
     headers: {
       Authorization: "Bearer " + location.href,
       "Content-Type": "application/json",
     },
-  }).then((res) => res.json());
+  });
+
+  return await res.text();
 }
 
 export function getImages(

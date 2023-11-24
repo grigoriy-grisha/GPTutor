@@ -84,7 +84,17 @@ function ImageItem({ resultImage }: IProps) {
           size={platform !== Platform.VKCOM ? "m" : "l"}
           mode="outline"
           after={<Icon28ArrowDownToSquareOutline />}
-          onClick={() => {
+          onClick={async () => {
+            if (!isWebView) {
+              const base64 = await imageGeneration.getImageBase64(
+                resultImage.id
+              );
+
+              console.log(base64);
+
+              downloadService.downloadBase64(base64, `${resultImage.id}.png`);
+              return;
+            }
             downloadService.appDownloadLink(
               isWebView ? platform : Platform.VKCOM,
               resultImage.url
@@ -96,7 +106,7 @@ function ImageItem({ resultImage }: IProps) {
         </Button>
         <IconButton
           disabled={isEmpty}
-          onClick={() => wallService.createPost(resultImage.url)}
+          onClick={() => wallService.createPost(resultImage.id)}
         >
           <Icon28ShareOutline />
         </IconButton>

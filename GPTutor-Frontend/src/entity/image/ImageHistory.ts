@@ -1,12 +1,11 @@
 import ReactivePromise from "$/services/ReactivePromise";
 import { memo, sig } from "dignals";
 import { chatGpt } from "$/entity/GPT";
-import { getImages, saveImage } from "$/api/images";
+import { getImages } from "$/api/images";
 import { ImageHistoryItem } from "$/entity/image/ImageHistoryItem";
 
 export class ImageHistory {
   getImages$ = ReactivePromise.create(getImages);
-  saveImage$ = ReactivePromise.create(saveImage);
 
   images = sig<ImageHistoryItem[]>([]);
 
@@ -33,22 +32,6 @@ export class ImageHistory {
     this.images.set([
       ...this.images.get(),
       ...history.content.map((image) => new ImageHistoryItem(image)),
-    ]);
-  }
-
-  async saveImage(image: ImageHistoryItem) {
-    image.loading$.set(true);
-    await this.saveImage$.run(image.item.id);
-    image.loading$.set(false);
-
-    this.images.set([
-      ...this.images.get().map((imageModel) => {
-        if (imageModel.item.id === image.item.id) {
-          imageModel.item.expire = null;
-        }
-
-        return imageModel;
-      }),
     ]);
   }
 }

@@ -1,10 +1,11 @@
 package com.chatgpt.services;
 
-import com.chatgpt.entity.OrderSubscription;
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.chatgpt.entity.requests.UploadPhotoRequest;
 import com.chatgpt.entity.responses.OrderSubscriptionByIdResponse;
 import com.chatgpt.entity.responses.OrderSubscriptionResponse;
 import com.chatgpt.entity.responses.UploadFileResponse;
+import com.chatgpt.repositories.ImageRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +24,9 @@ import java.util.Map;
 
 @Service
 public class VkService {
+    @Autowired
+    ImageRepository imageRepository;
+
     @Autowired
     FileService fileService;
 
@@ -53,7 +57,13 @@ public class VkService {
     }
 
     public UploadFileResponse uploadVkPhoto(UploadPhotoRequest uploadPhotoRequest) throws JsonProcessingException {
-        var file = fileService.downloadImage(uploadPhotoRequest.getImageBase64());
+        var image = imageRepository.findById(uploadPhotoRequest.getImageId());
+
+        if (image.isEmpty()) {
+            throw new NotFoundException("Изображение не найдено");
+        }
+
+        var file = fileService.downloadImage(fileService.downloadImageAsBase64(image.get().getUrl()));
 
         RestTemplate restTemplate = new RestTemplate();
 

@@ -29,14 +29,14 @@ export async function getUserSubscriptions(): Promise<OrderSubscriptionResponseD
   return await response.json();
 }
 
-export async function uploadPhoto(uploadUrl: string, imageBase64: string) {
+export async function uploadPhoto(uploadUrl: string, imageId: string) {
   const response = await fetch(`${BACKEND_HOST}vk/upload-photo`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + location.href,
     },
-    body: JSON.stringify({ uploadUrl, imageBase64 }),
+    body: JSON.stringify({ uploadUrl, imageId }),
   });
 
   return await response.json();
