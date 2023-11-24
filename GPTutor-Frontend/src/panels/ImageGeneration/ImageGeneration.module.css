@@ -320,4 +320,5 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
+    color: var(--vkui--color_text_accent_themed) !important;
 }

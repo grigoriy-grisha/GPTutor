@@ -8,6 +8,7 @@ import {
   FormItem,
   Spacing,
   Textarea,
+  Text,
 } from "@vkontakte/vkui";
 import { Icon24MagicWandOutline } from "@vkontakte/icons";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
@@ -46,20 +47,20 @@ function MainControls() {
         <PromptStyles />
         <Spacing size={6} />
         <div className={classes.promptButtons}>
-          <Card
-            mode="outline"
-            style={{
-              boxShadow:
-                "inset 0 0 0 1px var(--vkui--color_stroke_accent_themed)",
-            }}
-          >
+          <Button mode="outline" onClick={imageGeneration.toggleEnhancePrompt}>
             <Checkbox
+              tabIndex={-1}
               checked={imageGeneration.enhancePrompt$.get()}
               onChange={imageGeneration.toggleEnhancePrompt}
             >
-              Улучшить запрос{" "}
+              <Text
+                weight="2"
+                style={{ color: "var(--vkui--color_text_accent_themed)" }}
+              >
+                Улучшить запрос
+              </Text>
             </Checkbox>
-          </Card>
+          </Button>
           <Button
             className={classes.button}
             onClick={() => goToGenerationImagesPrompts()}

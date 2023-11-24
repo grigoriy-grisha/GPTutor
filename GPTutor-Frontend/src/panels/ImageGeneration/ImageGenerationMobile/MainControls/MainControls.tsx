@@ -3,10 +3,12 @@ import React from "react";
 import {
   Button,
   Card,
+  Checkbox,
   ConfigProvider,
   Div,
   FormItem,
   Spacing,
+  Text,
   Textarea,
 } from "@vkontakte/vkui";
 import { Icon24MagicWandOutline, Icon24RepeatOutline } from "@vkontakte/icons";
@@ -47,7 +49,24 @@ function MainControls() {
         </FormItem>
         <Spacing size={6} />
         <PromptStyles />
-
+        <Spacing size={6} />
+        <Button
+          className={classes.button}
+          mode="outline"
+          onClick={imageGeneration.toggleEnhancePrompt}
+        >
+          <Checkbox
+            checked={imageGeneration.enhancePrompt$.get()}
+            onChange={imageGeneration.toggleEnhancePrompt}
+          >
+            <Text
+              weight="2"
+              style={{ color: "var(--vkui--color_text_accent_themed)" }}
+            >
+              Улучшить запрос
+            </Text>
+          </Checkbox>
+        </Button>
         <Spacing size={6} />
         <Button
           className={classes.button}
