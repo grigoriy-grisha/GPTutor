@@ -27,7 +27,7 @@ export class TranslationService {
     )) as any;
 
     if (result.texts) {
-      return result.texts.join("");
+      return result.texts.join("").replaceAll("$", ",");
     }
 
     return result.result.texts.join("").replaceAll("$", ",");
