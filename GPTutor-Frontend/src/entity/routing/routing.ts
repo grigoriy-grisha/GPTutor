@@ -9,6 +9,11 @@ export enum RoutingPages {
   modes = "/modes",
   forbidden = "/forbidden",
   leetcodeProblems = "/leetcode-problems",
+  generationImages = "/generation-images",
+  generationImagesResult = "/generation-images-result",
+  generationImagesExamples = "/generation-images-examples",
+  gallery = "/gallery",
+  generationImagesPrompts = "/generation-images-prompts",
 
   chatLeetCode = "/chat-leetcode",
   problemDetail = "/problem-detail",
@@ -16,6 +21,8 @@ export enum RoutingPages {
 
   chatTrainer = "/chat-trainer",
   chatSettings = "/chat-settings",
+
+  profile = "/profile",
 }
 
 export enum Views {
@@ -35,17 +42,26 @@ export enum Panels {
   leetcodeProblems = "leetcode-problems",
   chatLeetCode = "chat-leetcode",
   problemDetail = "problem-detail",
+  generationImages = "generation-images",
+  generationImagesResult = "generation-images-result",
+  generationImagesExamples = "generation-images-examples",
+  generationImagesPrompts = "generation-images-prompts",
+  gallery = "gallery",
 
   editor = "editor",
 
   chatTrainer = "chat-trainer",
   chatSettings = "chat-settings",
+
+  profile = "profile",
 }
 
 export enum Modals {
   applicationInfo = "application-info",
+  applicationInfoStableArt = "application-info-stable-art",
 
   interviewQuestions = "interview-questions",
 
   alert = "alert",
+  imageDonut = "image-donut",
 }

@@ -23,7 +23,7 @@ function Cards({ chapters, title, isTop, isBottom, onClickChapter }: IProps) {
   return (
     <CardBlock isTop={isTop} isBottom={isBottom}>
       <TertiaryTitle>{title}</TertiaryTitle>
-      <div style={{ paddingBottom: 8 }}>
+      <div style={{ paddingBottom: 8, maxWidth: "100vw" }}>
         <HorizontalScroll>
           <div style={{ display: "flex" }}>
             {chapters.map((chapter, index) => (

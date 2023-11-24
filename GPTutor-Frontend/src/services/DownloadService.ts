@@ -1,4 +1,5 @@
 import bridge from "@vkontakte/vk-bridge";
+import { Platform } from "@vkontakte/vkui";
 
 class DownloadService {
   constructor() {
@@ -15,34 +16,67 @@ class DownloadService {
     this.downloadLink(url, filename);
   }
 
-  downloadLink(url: string, filename: string) {
+  downloadLink(url: string, filename?: string) {
+    this.toDataURL(url).then((dataUrl: string) => {
+      const element = document.createElement("a");
+      element.href = dataUrl;
+      element.download = filename || url.substring(url.lastIndexOf("/") + 1);
+      element.target = "_blank";
+      element.click();
+      element.remove();
+    });
+  }
+
+  downloadBase64(dataUrl: string, filename: string) {
     const element = document.createElement("a");
-    element.href = url;
+    element.href = dataUrl;
     element.download = filename;
     element.target = "_blank";
     element.click();
     element.remove();
   }
 
-  downloadTxt(text: string, filename: string) {
-    const BOM = new Uint8Array([0xef, 0xbb, 0xbf]);
-    const blob = new Blob([BOM, text]);
+  toDataURL = (url: string) =>
+    fetch(url)
+      .then((response) => response.blob())
+      .then(
+        (blob): Promise<string> =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+      );
 
-    this.download(blob, filename);
-    return;
-  }
+  appDownloadLink(platform: string, url: string, filename?: string) {
+    if (platform === Platform.VKCOM) {
+      this.downloadLink(url, filename);
+      return;
+    }
 
-  downloadJSON(json: Record<any, any>, filename: string) {
-    const str = JSON.stringify(json, null, 4);
-    const BOM = new Uint8Array([0xef, 0xbb, 0xbf]);
-    const blob = new Blob([BOM, str]);
-
-    this.download(blob, `${filename}.json`);
-    return;
+    bridge.send("VKWebAppDownloadFile", {
+      url: url,
+      filename: filename || url.substring(url.lastIndexOf("/") + 1),
+    });
   }
 
   async downloadByLink(link: string, filename: string) {
     this.downloadLink(link, filename);
+  }
+
+  async downloadAndConvertToBase64(
+    url: string
+  ): Promise<string | ArrayBuffer | null> {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+
+      reader.readAsDataURL(blob);
+    });
   }
 }
 

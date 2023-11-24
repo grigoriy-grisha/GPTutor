@@ -3,6 +3,7 @@ import { snackbarNotify } from "$/entity/notify";
 import { groupsIsMember } from "$/api/vk";
 
 class CommunicationService {
+  private isRequested = false;
   private isMember = false;
   async addToSubscribe() {
     try {
@@ -47,9 +48,12 @@ class CommunicationService {
   }
 
   async userIsMember(): Promise<boolean> {
+    if (this.isRequested) return false;
+
     const urlParams = this.getSearchParams();
     const userId = urlParams.get("vk_user_id")!;
     const groupId = "220371433"; // ID группы
+    this.isRequested = true;
 
     return await groupsIsMember({ groupId, userId });
   }

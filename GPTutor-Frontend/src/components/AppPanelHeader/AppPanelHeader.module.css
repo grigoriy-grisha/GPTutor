@@ -8,6 +8,7 @@
 
 .panelHeader :global(.vkuiPanelHeader__after) {
     flex: none;
+
 }
 
 .panelHeaderVkApps :global(.vkuiPanelHeader__after) {
@@ -19,4 +20,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.after {
+    color: var(--vkui--color_icon_accent_themed) ;
 }

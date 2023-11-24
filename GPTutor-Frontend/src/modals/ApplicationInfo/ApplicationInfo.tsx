@@ -22,9 +22,10 @@ import {
 } from "@vkontakte/icons";
 
 import { useNavigationContext } from "$/NavigationContext";
-import { GithubIcon } from "$/icons";
+import { GithubIcon, StableArtLogo } from "$/icons";
 import { AppDiv } from "$/components/AppDiv";
 import { useApplicationInfo } from "./hooks/useApplicationInfo";
+import { appService } from "$/services/AppService";
 
 interface IProps {
   id: string;
@@ -33,7 +34,7 @@ interface IProps {
 function ApplicationInfo({ id }: IProps) {
   const { goBack, goToOpenSource } = useNavigationContext();
   const { sizeX } = useAdaptivityConditionalRender();
-  const { subscribe, favourites, share } = useApplicationInfo();
+  const { subscribe, favourites, share, getAppLink } = useApplicationInfo();
 
   return (
     <ModalPage settlingHeight={100} id={id}>
@@ -98,6 +99,23 @@ function ApplicationInfo({ id }: IProps) {
           before={<Icon24Share width={28} height={28} />}
         >
           <Text weight="2">Поделиться</Text>
+        </SimpleCell>
+      </Group>
+      <Group style={{ paddingTop: 0, paddingBottom: 0 }}>
+        <SimpleCell
+          href={getAppLink()}
+          target="_blank"
+          before={
+            <span style={{ paddingRight: 16 }}>
+              <StableArtLogo borderRadius="25%" />
+            </span>
+          }
+          after={
+            <Icon28ChevronRightOutline fill="var(--vkui--color_text_secondary)" />
+          }
+          subtitle="Бесплатный генератор нейро-картинок ВКонтакте!"
+        >
+          <Text weight="2">Stable Art</Text>
         </SimpleCell>
       </Group>
       <Group style={{ paddingTop: 0 }}>

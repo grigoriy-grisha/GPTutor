@@ -243,6 +243,12 @@ export abstract class ChatGptTemplate {
       .find((message) => message.role === GPTRoles.user);
   }
 
+  getLastAssistantMessage() {
+    return [...this.messages$.get()]
+      .reverse()
+      .find((message) => message.role === GPTRoles.assistant);
+  }
+
   getLastMessage() {
     const messages = this.messages$.get();
     return messages[messages.length - 1];

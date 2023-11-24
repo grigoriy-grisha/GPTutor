@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
-  Button,
-  Input,
   ModalRoot,
   SplitLayout,
   useConfigProvider,
@@ -40,10 +38,17 @@ import { ProblemDetail } from "./panels/ProblemDetail";
 import { AppAlert } from "./modals/AppAlert";
 import { CodeEditor } from "./panels/CodeEditor";
 import { ChatTrainer } from "./panels/ChatTrainer";
+import { ImageGenerationResult } from "./panels/ImageGenerationResult";
 import UtilBlock from "./UtilBlock";
 
 import { appService } from "$/services/AppService";
 import { LoadingPanel } from "$/panels/LoadingPanel";
+import { ImageGeneration } from "$/panels/ImageGeneration";
+import { ImageGenerationExamples } from "$/panels/ImageGenerationExamples";
+import Gallery from "$/panels/Gallery";
+import ImageCreatePrompts from "$/panels/ImageCreatePrompts";
+import Profile from "$/panels/Profile";
+import ApplicationInfoStableArt from "./modals/ApplicationInfoStableArt/ApplicationInfoStableArt";
 
 const App = () => {
   const location = useLocation();
@@ -65,7 +70,6 @@ const App = () => {
     ? []
     : location.getViewHistory(Views.viewMain);
 
-  console.log(appService.loading.get());
   return (
     <>
       {appearance === "dark" ? <OneDark /> : <OneLight />}
@@ -78,6 +82,7 @@ const App = () => {
         modal={
           <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
             <ApplicationInfo id={Modals.applicationInfo} />
+            <ApplicationInfoStableArt id={Modals.applicationInfoStableArt} />
             <InterviewQuestions id={Modals.interviewQuestions} />
           </ModalRoot>
         }
@@ -86,6 +91,7 @@ const App = () => {
           <LoadingPanel />
         ) : (
           <View
+            style={{ maxWidth: "100vw" }}
             id={Views.viewMain}
             activePanel={location.getViewActivePanel(Views.viewMain)!}
             onSwipeBack={goBack}
@@ -105,6 +111,12 @@ const App = () => {
             <LeetcodeProblems id={Panels.leetcodeProblems} />
             <ChatLeetCode id={Panels.chatLeetCode} />
             <ProblemDetail id={Panels.problemDetail} />
+            <ImageGeneration id={Panels.generationImages} />
+            <ImageGenerationResult id={Panels.generationImagesResult} />
+            <ImageGenerationExamples id={Panels.generationImagesExamples} />
+            <Gallery id={Panels.gallery} />
+            <ImageCreatePrompts id={Panels.generationImagesPrompts} />
+            <Profile id={Panels.profile} />
           </View>
         )}
       </SplitLayout>

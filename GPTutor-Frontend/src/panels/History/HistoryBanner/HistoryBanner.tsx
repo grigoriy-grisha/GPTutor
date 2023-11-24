@@ -37,6 +37,7 @@ import { ErrorBlock } from "$/components/ErrorBlock";
 import { DownloadDialog } from "./DownloadDialog";
 import { PythonTraining } from "$/icons/LessonIcons/PythonTraining";
 import { GoTraining } from "$/icons/LessonIcons/GoTraining";
+import AppBanner from "$/components/AppBanner";
 
 const BannerIcon: Record<string, React.FC> = {
   [ModeType.JS]: JSLesson,
@@ -113,10 +114,7 @@ function HistoryBanner({ dialog }: IProps) {
   }
 
   return (
-    <Banner
-      className={classNames(classes.banner, {
-        [classes.compactBanner]: isCompact,
-      })}
+    <AppBanner
       before={
         <div
           className={classNames(classes.bannerIcon, {
@@ -132,7 +130,7 @@ function HistoryBanner({ dialog }: IProps) {
           </div>
         </div>
       }
-      header={<Title level="3">{getBannerName()}</Title>}
+      header={getBannerName()}
       subheader={
         <>
           <span className={classes.lineClamp}>

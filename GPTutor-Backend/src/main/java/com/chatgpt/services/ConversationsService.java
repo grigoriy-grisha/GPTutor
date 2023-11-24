@@ -6,6 +6,7 @@ import com.chatgpt.entity.ConversationRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -37,13 +38,11 @@ public class ConversationsService {
         Pair<ApiKey, String> apiKey = apiKeysService.getKey();
 
         ChatGptRequest chatGptRequest = new ChatGptRequest(
-                "gpt-3.5-turbo",
+                "gpt-3.5-turbo-1106",
                 conversationRequest.getMessages(),
                 true
         );
 
-
-        System.out.println(apiKey.getFirst().getKey());
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.aiguoguo199.com/v1/chat/completions"))
@@ -52,15 +51,9 @@ public class ConversationsService {
                 .POST(HttpRequest.BodyPublishers.ofString(input))
                 .build();
 
-        System.out.println(apiKey.getFirst().getKey());
-
         HttpClient.newHttpClient().sendAsync(request, respInfo ->
         {
             apiRequestsService.addApiRequest("OfficialGPT", respInfo.statusCode());
-
-            System.out.println(respInfo.statusCode());
-            System.out.println(respInfo.headers());
-            System.out.println(respInfo);
 
             if (respInfo.statusCode() == 200) {
                 return new SseSubscriber((data) -> {
@@ -77,13 +70,13 @@ public class ConversationsService {
             }
 
             try {
-                if (attempt == 50) {
+                if (attempt == 100) {
                     emitter.send("[Error]:[" + respInfo.statusCode() + "]");
                     emitter.complete();
                     return null;
                 }
 
-                Thread.sleep(1000);
+                Thread.sleep(200);
                 fetchCompletion(emitter, conversationRequest, attempt + 1);
             } catch (IOException | InterruptedException e) {
                 emitter.completeWithError(e);

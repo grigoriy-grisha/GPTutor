@@ -11,7 +11,9 @@ export class Timer {
   constructor(
     private start: number,
     private finish: number,
-    private timerStrategy: TimerStrategy
+    private timerStrategy: TimerStrategy,
+    private timeout: number = 1000,
+    private value: number = 1
   ) {
     this.time$ = sig(start);
   }
@@ -30,7 +32,7 @@ export class Timer {
     this.intervalId = setInterval(() => {
       this.processTime();
       this.check();
-    }, 1000);
+    }, this.timeout);
   }
 
   stop() {
@@ -46,9 +48,9 @@ export class Timer {
 
   private processTime() {
     if (this.timerStrategy === "increment") {
-      this.time$.set(this.time$.get() + 1);
+      this.time$.set(this.time$.get() + this.value);
     } else {
-      this.time$.set(this.time$.get() - 1);
+      this.time$.set(this.time$.get() - this.value);
     }
   }
 }

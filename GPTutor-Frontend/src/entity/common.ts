@@ -31,3 +31,13 @@ export type Pageable<T> = {
   numberOfElements: number;
   empty: boolean;
 };
+
+export type ErrorResponseType = {
+  error: string;
+  status: number;
+};
+
+export interface ResponseData<T> {
+  status: number;
+  body: T;
+}

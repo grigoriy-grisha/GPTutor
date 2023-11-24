@@ -8,6 +8,7 @@ import React, {
 import { useLocation, useRouter } from "@happysanta/router";
 
 import { Modals, Panels, RoutingPages, Views } from "$/entity/routing";
+import { appService } from "$/services/AppService";
 
 export type AlertType = {
   onAction: () => void;
@@ -32,8 +33,16 @@ export type NavigationContextType = {
   goToLeetcodeProblems: () => void;
   goToChatLeetCode: () => void;
   goToProblemDetail: () => void;
+  goToGenerationImages: () => void;
   goToChatTrainer: () => void;
   goToEditor: () => void;
+  goToGenerationImagesResult: () => void;
+  goToGenerationImagesExamples: () => void;
+  goToGenerationImagesPrompts: () => void;
+  goToImageDonutModal: () => void;
+  goToOpenProfile: () => void;
+  goToGallery: () => void;
+  openApplicationInfoStableArt: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -58,7 +67,14 @@ export function NavigationContextProvider({
   const location = useLocation();
   const router = useRouter();
 
-  useEffect(() => router.replacePage(RoutingPages.home), []);
+  useEffect(() => {
+    if (appService.isStableArt()) {
+      router.replacePage(RoutingPages.generationImages);
+      return;
+    }
+
+    router.replacePage(RoutingPages.home);
+  }, []);
 
   const activePanel = location.getViewActivePanel(Views.viewMain)!;
 
@@ -99,6 +115,19 @@ export function NavigationContextProvider({
 
   const goToLeetcodeProblems = () => push(RoutingPages.leetcodeProblems);
 
+  const goToGenerationImages = () => push(RoutingPages.generationImages);
+  const goToOpenProfile = () => push(RoutingPages.profile, "replace");
+
+  const goToGenerationImagesResult = () =>
+    push(RoutingPages.generationImagesResult, "replace");
+  const goToGenerationImagesExamples = () =>
+    push(RoutingPages.generationImagesExamples, "replace");
+
+  const goToGenerationImagesPrompts = () =>
+    push(RoutingPages.generationImagesPrompts);
+
+  const goToGallery = () => push(RoutingPages.gallery, "replace");
+
   const goToChatLeetCode = () => {
     const problemPages = location
       .getViewHistory(Views.viewMain)
@@ -127,7 +156,12 @@ export function NavigationContextProvider({
   };
 
   const goToChatSettingsModal = () => push(RoutingPages.chatSettings);
+
+  const goToImageDonutModal = () => router.pushModal(Modals.imageDonut);
   const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
+
+  const openApplicationInfoStableArt = () =>
+    router.pushModal(Modals.applicationInfoStableArt);
 
   const openAlert = (data: AlertType) => {
     setAlert(data);
@@ -140,6 +174,8 @@ export function NavigationContextProvider({
   return (
     <NavigationContext.Provider
       value={{
+        goToGallery,
+        goToGenerationImagesExamples,
         goBack,
         goToHistory,
         goToChapters,
@@ -151,6 +187,7 @@ export function NavigationContextProvider({
         goToChatSettingsModal,
         openApplicationInfo,
         goToChatInterview,
+        openApplicationInfoStableArt,
         openInterviewQuestions,
         goToLeetcodeProblems,
         goToEditor,
@@ -158,6 +195,11 @@ export function NavigationContextProvider({
         goToProblemDetail,
         openAlert,
         goToChatTrainer,
+        goToGenerationImages,
+        goToGenerationImagesResult,
+        goToGenerationImagesPrompts,
+        goToImageDonutModal,
+        goToOpenProfile,
         alert,
         isForbidden,
       }}

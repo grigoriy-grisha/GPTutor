@@ -1,5 +1,6 @@
 package com.chatgpt.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,10 @@ import java.util.stream.Collectors;
 @Service
 public class AuthCheckerService {
 
-    private static final String ENCODING = "UTF-8";
+    @Autowired
+    VkSecretesService vkSecretesService;
 
-    @Value("${auth.client.secret}")
-    String clientSecret;
+    private static final String ENCODING = "UTF-8";
 
     public String splitBearer(String header) {
         return header.substring(7);
@@ -30,13 +31,16 @@ public class AuthCheckerService {
         return getVkUserIdFromParams(getQueryParams(new URL(url)));
     }
 
+    public String getVkAppId(String url) throws Exception {
+        return getQueryParams(new URL(url)).get("vk_app_id");
+    }
+
     public String getVkUserIdFromParams( Map<String, String> params) {
         return params.getOrDefault("vk_user_id", "0");
     }
 
     public boolean checkAuthorizationHeader(String url) throws Exception {
         Map<String, String> queryParams = getQueryParams(new URL(url));
-
         return checkAuthorizationHeaderByParams(queryParams);
     }
 
@@ -47,7 +51,7 @@ public class AuthCheckerService {
                 .map(entry -> encode(entry.getKey()) + "=" + (entry.getValue() == null ? encode("") : encode(entry.getValue())))
                 .collect(Collectors.joining("&"));
 
-        String sign = getHashCode(checkString, clientSecret);
+        String sign = getHashCode(checkString, vkSecretesService.getSecretKey(queryParams.get("vk_app_id")));
 
         return sign.equals(queryParams.getOrDefault("sign", ""));
     }

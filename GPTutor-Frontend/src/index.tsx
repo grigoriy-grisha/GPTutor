@@ -1,5 +1,5 @@
-import "./env-config.js";
 import "dignals-react/jsxPatch17";
+import "./env.js";
 
 import React from "react";
 import ReactDOM from "react-dom";
@@ -18,10 +18,13 @@ import { adService } from "$/services/AdService";
 import { authService } from "$/services/AuthService";
 import { groupsService } from "$/services/GroupsService";
 import { appService } from "$/services/AppService";
+import { subscriptionsController } from "$/entity/subscriptions";
+import { imageGeneration } from "$/entity/image";
+import { VkStorageService } from "$/services/VkStorageService";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
-const storageService = new StorageService();
+const storageService = new VkStorageService();
 
 bridge
   .send("VKWebAppInit")
@@ -35,15 +38,24 @@ bridge
 
       const onboardingService = new OnboardingService();
       onboardingService.runOnBoarding();
-      storageService.set(isFirstVisitFlagName, true);
+      storageService.set(isFirstVisitFlagName, String(true));
     });
 
-    await authService.setupToken();
-    const isDon = await groupsService.checkIsDon();
-
-    if (!isDon) {
-      adService.showBannerAd();
+    let isDon = false;
+    if (appService.isGPTutor()) {
+      await authService.setupToken("groups");
+      isDon = !!(await groupsService.checkIsDon());
     }
+
+    await subscriptionsController.getSubscription();
+
+    if (isDon || !subscriptionsController.isDisable()) {
+      await adService.hideBannerAd();
+    } else {
+      await adService.showBannerAd();
+    }
+
+    imageGeneration.init();
 
     appService.toggleLoading();
   })
@@ -64,10 +76,28 @@ const routes = {
   [RoutingPages.editor]: new Page(Panels.editor, Views.viewMain),
   [RoutingPages.chatTrainer]: new Page(Panels.chatTrainer, Views.viewMain),
   [RoutingPages.chatSettings]: new Page(Panels.chatSettings, Views.viewMain),
+  [RoutingPages.generationImages]: new Page(
+    Panels.generationImages,
+    Views.viewMain
+  ),
+  [RoutingPages.generationImagesResult]: new Page(
+    Panels.generationImagesResult,
+    Views.viewMain
+  ),
   [RoutingPages.leetcodeProblems]: new Page(
     Panels.leetcodeProblems,
     Views.viewMain
   ),
+  [RoutingPages.generationImagesExamples]: new Page(
+    Panels.generationImagesExamples,
+    Views.viewMain
+  ),
+  [RoutingPages.generationImagesPrompts]: new Page(
+    Panels.generationImagesPrompts,
+    Views.viewMain
+  ),
+  [RoutingPages.gallery]: new Page(Panels.gallery, Views.viewMain),
+  [RoutingPages.profile]: new Page(Panels.profile, Views.viewMain),
 };
 
 const router = new Router(routes);

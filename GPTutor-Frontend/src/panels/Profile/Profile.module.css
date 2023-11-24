@@ -1,0 +1,11 @@
+.cardContainer {
+    display: flex;
+}
+
+.cardText {
+    margin-left: 12px;
+}
+
+.subtitleText {
+    color: var(--vkui--color_text_secondary)
+}

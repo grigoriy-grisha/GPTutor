@@ -1,10 +1,13 @@
 import React from "react";
-import { Title } from "@vkontakte/vkui";
+import { classNames, Title } from "@vkontakte/vkui";
 
 import classes from "./Time.module.css";
 
 interface IProps {
-  seconds: number;
+  level?: "1" | "2" | "3";
+  seconds?: number;
+  milliseconds?: number;
+  className?: string;
 }
 
 function format(value: number) {
@@ -19,12 +22,29 @@ function getSeconds(seconds: number) {
   return seconds % 60;
 }
 
-function Time({ seconds }: IProps) {
-  return (
-    <Title level="3" className={classes.time}>
-      {getMinute(seconds)}:{format(getSeconds(seconds))}
-    </Title>
-  );
+function getSecond(milliseconds: number) {
+  return Math.floor(milliseconds / 1000);
+}
+
+function Time({ level = "3", seconds, milliseconds, className }: IProps) {
+  if (milliseconds) {
+    return (
+      <Title level={level} className={classNames(className, classes.time)}>
+        {format(getSecond(milliseconds))}:
+        {format(Math.floor((milliseconds % 1000) / 10))}
+      </Title>
+    );
+  }
+
+  if (seconds) {
+    return (
+      <Title level={level} className={classNames(className, classes.time)}>
+        {getMinute(seconds)}:{format(getSeconds(seconds))}
+      </Title>
+    );
+  }
+
+  return null;
 }
 
 export default Time;

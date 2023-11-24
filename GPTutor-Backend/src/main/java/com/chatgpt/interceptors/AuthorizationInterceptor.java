@@ -13,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
@@ -24,60 +25,52 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
+        if (Objects.equals(request.getMethod(), "OPTIONS")) {
+            return true;
+        }
+
+        String url = request.getRequestURI();
+
+        if (Objects.equals(url, "/purchase")) {
+            return true;
+        }
+
+
         if (skipAuth) {
-            request.setAttribute("vkUserId", "0");
+            var authorization = authCheckerService.splitBearer(request.getHeader("Authorization"));
+
+            var userId = authCheckerService.getVkUserId(authorization);
+
+            request.setAttribute("vkUserId", Objects.requireNonNullElse(userId, "0"));
+            request.setAttribute("vkAppId", authCheckerService.getVkAppId(authorization));
+
             return true;
         }
 
         String authorizationHeader = request.getHeader("Authorization");
 
-        if (authorizationHeader == null) {
-            var params = getQueryParams(request);
-            var isSignSuccess = authCheckerService.checkAuthorizationHeaderByParams(params);
-
-            if (isSignSuccess) {
-                request.setAttribute(
-                        "vkUserId",
-                        authCheckerService.getVkUserIdFromParams(params)
-                );
-
-                return true;
-            }
-        }
-
         if (authorizationHeader != null) {
-            boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(
-                    authCheckerService.splitBearer(authorizationHeader)
-            );
+            var authorization = authCheckerService.splitBearer(authorizationHeader);
+
+            boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(authorization);
 
             if (isSignSuccess) {
                 request.setAttribute(
                         "vkUserId",
-                        authCheckerService.getVkUserId(
-                                authCheckerService.splitBearer(request.getHeader("Authorization"))
-                        )
+                        authCheckerService.getVkUserId(authorization)
+                );
+
+                request.setAttribute(
+                        "vkAppId",
+                        authCheckerService.getVkAppId(authorization)
                 );
 
                 return true;
             }
         }
-
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
         return false;
-    }
-
-    Map<String, String> getQueryParams(@NonNull HttpServletRequest request) {
-        Map<String, String> queryParams = new HashMap<>();
-
-        Enumeration<String> paramNames = request.getParameterNames();
-        while (paramNames.hasMoreElements()) {
-            String paramName = paramNames.nextElement();
-            String paramValue = request.getParameter(paramName);
-            queryParams.put(paramName, paramValue);
-        }
-
-        return queryParams;
     }
 }

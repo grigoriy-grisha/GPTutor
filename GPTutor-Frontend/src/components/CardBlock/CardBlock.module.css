@@ -1,8 +1,8 @@
 .container {
-    border-radius: 16px;
+    border-radius: var(--vkui--size_card_border_radius--regular);
     background-color: var(--vkui--color_background_content);
+    box-shadow: 0 0 0 var(--vkui_internal--thin_border) var(--vkui--color_field_border_alpha) inset;
     padding-top: 8px;
-    width: 100vw;
 }
 
 .containerTop {

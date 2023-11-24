@@ -1,0 +1,13 @@
+.text {
+    display: grid;
+    grid-template-columns: max-content 90%;
+    gap: 8px;
+}
+
+.icon {
+    margin-top: 2px;
+}
+
+.button {
+    width: 100%;
+}

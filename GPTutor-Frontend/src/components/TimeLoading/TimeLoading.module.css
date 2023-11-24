@@ -1,0 +1,22 @@
+.container {
+    flex-direction: column;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    color: var(--vkui--color_icon_accent_themed) !important;
+
+}
+
+.timer {
+    animation: spin 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(-45deg);
+    }
+    to {
+        transform: rotate(45deg);
+    }
+}

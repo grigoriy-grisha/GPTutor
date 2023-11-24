@@ -17,6 +17,7 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
     @Autowired
     AuthCheckerService authCheckerService;
 
+
     @Value("${auth.skip}")
     boolean skipAuth;
 
@@ -27,12 +28,12 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
             return true;
         }
 
+
         String authorizationHeader = String.valueOf(request.getURI());
 
         if (authorizationHeader != null) {
             boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(authorizationHeader);
 
-            System.out.println(isSignSuccess);
             if (isSignSuccess) {
                 attributes.put("vkUserId", authCheckerService.getVkUserId(authorizationHeader));
 

@@ -33,6 +33,8 @@ services:
 
   postgresql:
     image: 'postgres:13.1-alpine'
+    ports:
+      - "5432:5432"
     container_name: postgresql
     env_file: .env
     volumes:

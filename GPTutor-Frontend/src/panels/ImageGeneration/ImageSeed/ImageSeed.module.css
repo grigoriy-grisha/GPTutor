@@ -1,0 +1,11 @@
+.caption {
+    align-items: center;
+    display: grid;
+    grid-template-columns: max-content max-content;
+    gap: 4px;
+    color: var(--vkui--color_text_secondary);
+}
+
+.seed {
+    cursor: pointer;
+}

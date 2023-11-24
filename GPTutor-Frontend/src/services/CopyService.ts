@@ -19,28 +19,12 @@ function fallbackCopyTextToClipboard(text: string) {
   document.body.removeChild(textArea);
 }
 
-export function copyToClickBoard(text: string) {
-  if (!navigator.clipboard) {
-    fallbackCopyTextToClipboard(text);
-    return;
-  }
-
-  navigator.clipboard.writeText(text);
-}
-
 export class CopyService {
   copyToClickBoard$ = ReactivePromise.create((text: string) =>
     this.onCopy(text)
   );
 
   onCopy(text: string) {
-    if (process.env.NODE_ENV === "development") {
-      return new Promise((resolve) => {
-        copyToClickBoard(text);
-        resolve(undefined);
-      });
-    }
-
     return bridge.send("VKWebAppCopyText", { text });
   }
 }

@@ -1,0 +1,50 @@
+.container {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: max-content;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .container {
+        display: grid;
+        gap: 8px;
+        grid-template-columns: 1fr;
+        grid-auto-rows: max-content;
+        width: 100%;
+    }
+}
+
+.image {
+    width: 150px !important;
+    height: 150px !important;
+    object-fit: cover;
+}
+
+.card {
+    min-height: 250px;
+    height: 100%;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.card :global(.vkuiContentCard__tappable) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card :global(.vkuiTappable[aria-disabled=true]) {
+    cursor: pointer;
+}
+
+.card:hover {
+    opacity: 0.6;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
