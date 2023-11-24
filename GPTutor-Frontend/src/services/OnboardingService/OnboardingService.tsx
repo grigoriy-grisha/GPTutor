@@ -48,7 +48,7 @@ export class OnboardingService {
           },
           {
             media: { blob: slidesStableArt.secondSlide, type: "image" },
-            title: "Генерируйте совершенно любые обазы!",
+            title: "Генерируйте совершенно любые образы!",
             subtitle:
               "С помощью редактора с искусственным интеллектом, который предложит яркие образы!",
           },
