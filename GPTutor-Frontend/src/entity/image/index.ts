@@ -219,7 +219,7 @@ class ImageGeneration {
   }
 
   getPromptWithStyles(prompt: string) {
-    return `${prompt},${this.getStyles()}`;
+    return `${prompt}${this.getStyles()}`;
   }
 
   getStyles() {
@@ -229,6 +229,8 @@ class ImageGeneration {
       if (this.enhancePrompt$.get()) {
         return `,${getRandomStylesImage().join(",")}`;
       }
+
+      return "";
     }
 
     return `,${styles.concat(this.getEnhanceStyles()).join(", ")}`;
