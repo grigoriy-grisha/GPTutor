@@ -14,6 +14,7 @@ export enum RoutingPages {
   generationImagesExamples = "/generation-images-examples",
   gallery = "/gallery",
   generationImagesPrompts = "/generation-images-prompts",
+  publishingImages = "/publishing-images",
 
   chatLeetCode = "/chat-leetcode",
   problemDetail = "/problem-detail",
@@ -46,6 +47,7 @@ export enum Panels {
   generationImagesResult = "generation-images-result",
   generationImagesExamples = "generation-images-examples",
   generationImagesPrompts = "generation-images-prompts",
+  publishingImages = "publishing-images",
   gallery = "gallery",
 
   editor = "editor",

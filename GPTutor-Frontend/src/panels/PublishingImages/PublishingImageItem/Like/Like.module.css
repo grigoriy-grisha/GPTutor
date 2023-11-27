@@ -1,0 +1,14 @@
+.default {
+    border-radius: 25px;
+    padding: 5px 5px 5px 8px;
+    background: var(--vkui--color_background--active);
+    display: grid;
+    grid-template-columns: max-content max-content;
+    align-items: center;
+    gap: 4px;
+}
+
+.isActive {
+    background: #ffcfcf;
+    color: #FF3347;
+}

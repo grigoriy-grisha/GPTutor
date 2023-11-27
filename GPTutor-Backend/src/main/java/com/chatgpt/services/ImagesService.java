@@ -5,7 +5,6 @@ import com.chatgpt.Exceptions.NotAFoundException;
 import com.chatgpt.entity.GenerateImageRequest;
 import com.chatgpt.entity.GenerateImageResponse;
 import com.chatgpt.entity.Image;
-import com.chatgpt.entity.requests.NudeDetectRequest;
 import com.chatgpt.repositories.ImageRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,18 +16,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.File;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.net.URL;
+import java.util.*;
 
 @Service
 public class ImagesService {
@@ -83,10 +79,21 @@ public class ImagesService {
         var user = userService.getOrCreateVkUser(vkUserId);
         var image = new Image(url, user, generatedSeed, generateImageRequest);
 
+        var rgb = getAvgImageColor(image.getUrl());
+
+        image.setPublishing(!Objects.equals(rgb, "0, 0, 0"));
+        image.setRbg(rgb);
+
+
         imageRepository.save(image);
 
         return image;
     }
+
+    Optional<Image> getImageById(UUID id) {
+        return imageRepository.findById(id);
+    }
+
 
     public Page<Image> getImages(String vkUserId, int pageNumber, int pageSize) {
         PageRequest pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createdAt").descending());
@@ -130,5 +137,42 @@ public class ImagesService {
         }
 
         return fileService.downloadImageAsBase64(image.get().getUrl());
+    }
+
+    public Page<Image> getPublishingImages(String queryPrompt, int pageNumber, int pageSize) {
+        PageRequest pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createdAt").descending());
+        return imageRepository.findByPromptContainingAndIsPublishingIsTrueOrOriginalPromptContainingAndIsPublishingIsTrue(queryPrompt, queryPrompt, pageable);
+    }
+
+    String getAvgImageColor(String urlValue) {
+        try {
+            URL url = new URL(urlValue);
+            BufferedImage image = ImageIO.read(url);
+
+            int totalRed = 0;
+            int totalGreen = 0;
+            int totalBlue = 0;
+            int totalPixels = image.getWidth() * image.getHeight();
+
+            for (int y = 0; y < image.getHeight(); y++) {
+                for (int x = 0; x < image.getWidth(); x++) {
+                    int color = image.getRGB(x, y);
+                    totalRed += (color >> 16) & 0xFF;
+                    totalGreen += (color >> 8) & 0xFF;
+                    totalBlue += color & 0xFF;
+                }
+            }
+
+            int averageRed = totalRed / totalPixels;
+            int averageGreen = totalGreen / totalPixels;
+            int averageBlue = totalBlue / totalPixels;
+
+            return  averageRed + ", " + averageGreen + ", " + averageBlue;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 }

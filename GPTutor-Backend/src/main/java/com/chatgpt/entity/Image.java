@@ -1,8 +1,10 @@
 package com.chatgpt.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -27,9 +29,22 @@ public class Image {
     int width;
     int height;
 
+    boolean isPublishing;
+
     String upscale;
+
+    String rbg;
+
     @ManyToOne()
     private VkUser vkUser;
+
+    @OneToMany(mappedBy = "image", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<ImageComplaint> complaints;
+
+    @OneToMany(mappedBy = "image", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<ImageLike> imageLikes;
 
     public Image() {
 
@@ -198,5 +213,37 @@ public class Image {
 
     public void setLoraModel(String loraModel) {
         this.loraModel = loraModel;
+    }
+
+    public boolean isPublishing() {
+        return isPublishing;
+    }
+
+    public void setPublishing(boolean publishing) {
+        isPublishing = publishing;
+    }
+
+    public String getRbg() {
+        return rbg;
+    }
+
+    public void setRbg(String rbg) {
+        this.rbg = rbg;
+    }
+
+    public List<ImageComplaint> getComplaints() {
+        return complaints;
+    }
+
+    public void setComplaints(List<ImageComplaint> complaints) {
+        this.complaints = complaints;
+    }
+
+    public List<ImageLike> getImageLikes() {
+        return imageLikes;
+    }
+
+    public void setImageLikes(List<ImageLike> imageLikes) {
+        this.imageLikes = imageLikes;
     }
 }

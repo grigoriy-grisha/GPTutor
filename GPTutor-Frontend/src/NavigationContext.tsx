@@ -42,6 +42,7 @@ export type NavigationContextType = {
   goToImageDonutModal: () => void;
   goToOpenProfile: () => void;
   goToGallery: () => void;
+  goToPublishingImages: () => void;
   openApplicationInfoStableArt: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
@@ -128,6 +129,9 @@ export function NavigationContextProvider({
 
   const goToGallery = () => push(RoutingPages.gallery, "replace");
 
+  const goToPublishingImages = () =>
+    push(RoutingPages.publishingImages, "replace");
+
   const goToChatLeetCode = () => {
     const problemPages = location
       .getViewHistory(Views.viewMain)
@@ -199,6 +203,7 @@ export function NavigationContextProvider({
         goToGenerationImagesResult,
         goToGenerationImagesPrompts,
         goToImageDonutModal,
+        goToPublishingImages,
         goToOpenProfile,
         alert,
         isForbidden,
