@@ -60,14 +60,21 @@ function ImageItem({ resultImage }: IProps) {
           onClick={() => imageService.openImages([resultImage.url])}
         >
           <div
-            style={{ paddingBottom: `${aspectRatioPadding}%` }}
+            style={{
+              paddingBottom: `${aspectRatioPadding}%`,
+              ...(resultImage.url
+                ? { background: `rgb(${resultImage.rbg})` }
+                : {}),
+            }}
             className={classNames(classes.image)}
           >
-            <img
-              className={classNames(classes.image, classes.generatedImage)}
-              src={resultImage.url}
-              alt="Картинка"
-            />
+            {
+              <img
+                className={classNames(classes.image, classes.generatedImage)}
+                src={resultImage.url}
+                alt="Картинка"
+              />
+            }
           </div>
         </Tappable>
       )}

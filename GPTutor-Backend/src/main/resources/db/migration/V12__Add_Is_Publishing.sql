@@ -1,0 +1,1 @@
+ALTER TABLE image ADD COLUMN is_publishing BOOlEAN;

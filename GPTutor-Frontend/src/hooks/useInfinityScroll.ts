@@ -92,6 +92,7 @@ function useScrollListener({
       if (!hasNextPage.current || loading.current) return;
       const scrollToEnd = scrollRemainderDetectors[direction](event.target);
 
+      if (scrollToEnd < 0) return;
       if (scrollToEnd > threshold) return;
       onLoadMore.current();
     }, scrollCheckInterval);

@@ -2,17 +2,16 @@ package com.chatgpt.controllers;
 
 import com.chatgpt.entity.GenerateImageRequest;
 import com.chatgpt.entity.Image;
-import com.chatgpt.services.FileService;
+import com.chatgpt.entity.ImageComplaint;
+import com.chatgpt.entity.ImageLike;
+import com.chatgpt.services.ComplaintsService;
+import com.chatgpt.services.ImageLikeService;
 import com.chatgpt.services.ImagesService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +20,12 @@ import java.util.UUID;
 public class ImagesController {
     @Autowired
     ImagesService imagesService;
+
+    @Autowired
+    ComplaintsService complaintsService;
+
+    @Autowired
+    ImageLikeService imageLikeService;
 
     @PostMapping(path = "/image")
     List<Image> generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) throws Exception {
@@ -39,8 +44,33 @@ public class ImagesController {
         );
     }
 
+    @GetMapping(path = "/publishing")
+    Page<Image> getPublishingImages(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "50") int pageSize,
+            @RequestParam(defaultValue = "") String queryOriginalPrompt) {
+
+        return imagesService.getPublishingImages(
+                queryOriginalPrompt,
+                pageNumber,
+                pageSize
+        );
+    }
+
+
     @GetMapping(path = "/image/{id}/base64")
-    ResponseEntity<String> getImageBase64 (@PathVariable("id") UUID imageId) {
+    ResponseEntity<String> getImageBase64(@PathVariable("id") UUID imageId) {
         return ResponseEntity.ok().body(imagesService.getImageBase64(imageId));
     }
+
+    @PostMapping(path = "/image/{id}/complaint")
+    ResponseEntity<ImageComplaint> createComplaint(@PathVariable("id") UUID imageId, HttpServletRequest request){
+        return ResponseEntity.ok(complaintsService.createComplaint(imageId, (String) request.getAttribute("vkUserId")));
+    }
+
+    @PostMapping(path = "/image/{id}/like")
+    ResponseEntity<ImageLike> createImageLike(@PathVariable("id") UUID imageId, HttpServletRequest request){
+        return ResponseEntity.ok(imageLikeService.createImageLike(imageId, (String) request.getAttribute("vkUserId")));
+    }
+
 }

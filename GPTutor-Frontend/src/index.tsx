@@ -6,12 +6,12 @@ import ReactDOM from "react-dom";
 import bridge from "@vkontakte/vk-bridge";
 import { Page, Router, RouterContext } from "@happysanta/router";
 import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
+import "react-virtualized/styles.css";
 
 import App from "./App";
 
 import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
-import { StorageService } from "./services/StorageService";
 import { OnboardingService } from "./services/OnboardingService";
 import { NavigationContextProvider } from "$/NavigationContext";
 import { adService } from "$/services/AdService";
@@ -21,7 +21,7 @@ import { appService } from "$/services/AppService";
 import { subscriptionsController } from "$/entity/subscriptions";
 import { imageGeneration } from "$/entity/image";
 import { VkStorageService } from "$/services/VkStorageService";
-
+import "react-lazy-load-image-component/src/effects/black-and-white.css";
 const isFirstVisitFlagName = "isFirstVisit";
 
 const storageService = new VkStorageService();
@@ -97,6 +97,10 @@ const routes = {
     Views.viewMain
   ),
   [RoutingPages.gallery]: new Page(Panels.gallery, Views.viewMain),
+  [RoutingPages.publishingImages]: new Page(
+    Panels.publishingImages,
+    Views.viewMain
+  ),
   [RoutingPages.profile]: new Page(Panels.profile, Views.viewMain),
 };
 
@@ -105,18 +109,16 @@ const router = new Router(routes);
 router.start();
 
 ReactDOM.render(
-  <ErrorBoundaryApp>
-    <RouterContext.Provider value={router}>
-      <NavigationContextProvider>
-        <ConfigProvider>
-          <AdaptivityProvider>
-            <AppRoot>
-              <App />
-            </AppRoot>
-          </AdaptivityProvider>
-        </ConfigProvider>
-      </NavigationContextProvider>
-    </RouterContext.Provider>
-  </ErrorBoundaryApp>,
+  <RouterContext.Provider value={router}>
+    <NavigationContextProvider>
+      <ConfigProvider>
+        <AdaptivityProvider>
+          <AppRoot>
+            <App />
+          </AppRoot>
+        </AdaptivityProvider>
+      </ConfigProvider>
+    </NavigationContextProvider>
+  </RouterContext.Provider>,
   document.getElementById("root")
 );

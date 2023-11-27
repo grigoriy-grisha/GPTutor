@@ -132,8 +132,6 @@ public class SubscriptionsImagesService {
 
     @Async
     void asyncMethodWithDelay(String vkUser) {
-        System.out.println("async");
-        System.out.println(vkUser);
         try {
             Thread.sleep(10000);
             updateSubscription(vkUser);

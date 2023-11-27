@@ -22,11 +22,12 @@ def textToImage(
         lora_model=None,
         attempts=0
 ):
-    if attempts == 11:
+
+    if attempts == 6:
         return {
             "status": "failed"
         }
-    
+
     payload = json.dumps({
         "key": os.environ.get('IMAGES_API_KEY'),
         "prompt": prompt,

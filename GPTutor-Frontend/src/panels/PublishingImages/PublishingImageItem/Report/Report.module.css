@@ -1,0 +1,8 @@
+.default {
+    color: var(--vkui--color_background_negative);
+}
+
+.isActive {
+    z-index: 1;
+    color: var(--vkui--color_text_accent_themed);
+}

@@ -1,18 +1,12 @@
 .container {
-    display: grid;
-    gap: 8px;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-auto-rows: max-content;
-    width: 100%;
+    columns: 3;
+    column-gap: 12px;
+    word-break: break-word;
 }
 
 @media (max-width: 768px) {
     .container {
-        display: grid;
-        gap: 8px;
-        grid-template-columns: 1fr;
-        grid-auto-rows: max-content;
-        width: 100%;
+        columns: 1;
     }
 }
 
@@ -23,9 +17,10 @@
 }
 
 .card {
-    min-height: 250px;
-    height: 100%;
+    width: 100%;
+    margin-bottom: 12px;
     transition: 0.3s;
+    break-inside: avoid;
     cursor: pointer;
 }
 
