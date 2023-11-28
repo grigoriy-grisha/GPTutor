@@ -36,6 +36,8 @@ class ImageGeneration {
 
   enhancePrompt$ = sig(true);
 
+  enhanceAvailable$ = sig(true);
+
   prompt$ = sig("");
   model$ = sig(defaultModel);
   sampler$ = sig(defaultSampler);
@@ -198,6 +200,13 @@ class ImageGeneration {
 
   setPrompt(prompt: string) {
     this.prompt$.set(prompt);
+    const hasEnhance = this.prompt$.get().split(", ").length > 15;
+
+    if (hasEnhance) {
+      this.enhancePrompt$.set(false);
+    }
+
+    this.enhanceAvailable$.set(!hasEnhance);
   }
 
   applyExample(example: ImageExample) {

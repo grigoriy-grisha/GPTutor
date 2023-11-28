@@ -23,6 +23,8 @@ export enum RoutingPages {
   chatTrainer = "/chat-trainer",
   chatSettings = "/chat-settings",
 
+  detailImage = "/detail-image",
+
   profile = "/profile",
 }
 
@@ -48,6 +50,7 @@ export enum Panels {
   generationImagesExamples = "generation-images-examples",
   generationImagesPrompts = "generation-images-prompts",
   publishingImages = "publishing-images",
+  detailImage = "detail-image",
   gallery = "gallery",
 
   editor = "editor",

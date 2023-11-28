@@ -50,6 +50,7 @@ import ImageCreatePrompts from "$/panels/ImageCreatePrompts";
 import Profile from "$/panels/Profile";
 import ApplicationInfoStableArt from "./modals/ApplicationInfoStableArt/ApplicationInfoStableArt";
 import { PublishingImages } from "$/panels/PublishingImages";
+import { DetailImage } from "$/panels/DetailImage";
 
 const App = () => {
   const location = useLocation();
@@ -119,6 +120,7 @@ const App = () => {
             <ImageCreatePrompts id={Panels.generationImagesPrompts} />
             <Profile id={Panels.profile} />
             <PublishingImages id={Panels.publishingImages} />
+            <DetailImage id={Panels.detailImage} />
           </View>
         )}
       </SplitLayout>

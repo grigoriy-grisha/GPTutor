@@ -53,9 +53,11 @@ function MainControls() {
         <Button
           className={classes.button}
           mode="outline"
+          disabled={!imageGeneration.enhanceAvailable$.get()}
           onClick={imageGeneration.toggleEnhancePrompt}
         >
           <Checkbox
+            disabled={!imageGeneration.enhanceAvailable$.get()}
             checked={imageGeneration.enhancePrompt$.get()}
             onChange={imageGeneration.toggleEnhancePrompt}
           >

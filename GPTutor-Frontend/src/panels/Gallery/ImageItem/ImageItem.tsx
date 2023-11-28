@@ -25,8 +25,7 @@ import { downloadService } from "$/services/DownloadService";
 import AppBanner from "$/components/AppBanner";
 import { ImageHistoryItem } from "$/entity/image/ImageHistoryItem";
 import { useNavigationContext } from "$/NavigationContext";
-
-import ImageSeed from "../../ImageGeneration/ImageSeed/ImageSeed";
+import { CopyText } from "$/components/CopyText";
 
 interface IProps {
   image: ImageHistoryItem;
@@ -68,7 +67,7 @@ function ImageItem({ image }: IProps) {
           <div>
             <Headline style={{ display: "inline" }} level="2" weight="1">
               {image.item.generatedSeed && (
-                <ImageSeed seed={image.item.generatedSeed} />
+                <CopyText text={image.item.generatedSeed} />
               )}
             </Headline>
           </div>

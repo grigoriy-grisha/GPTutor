@@ -1,4 +1,5 @@
 .caption {
+    word-break: break-word;
     align-items: center;
     display: grid;
     grid-template-columns: max-content max-content;

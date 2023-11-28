@@ -59,7 +59,7 @@ function PublishingImages({ id }: IProps) {
             Лента
           </AppPanelHeader>
         }
-        childrenWithHeight={(height, offset) => (
+        childrenWithHeight={(_, offset) => (
           <div style={{ width: "100%" }}>
             <Search
               value={imagesFeed.searchValue$.get()}

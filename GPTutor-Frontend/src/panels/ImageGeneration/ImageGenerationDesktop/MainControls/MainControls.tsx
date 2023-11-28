@@ -47,9 +47,14 @@ function MainControls() {
         <PromptStyles />
         <Spacing size={6} />
         <div className={classes.promptButtons}>
-          <Button mode="outline" onClick={imageGeneration.toggleEnhancePrompt}>
+          <Button
+            mode="outline"
+            onClick={imageGeneration.toggleEnhancePrompt}
+            disabled={!imageGeneration.enhanceAvailable$.get()}
+          >
             <Checkbox
               tabIndex={-1}
+              disabled={!imageGeneration.enhanceAvailable$.get()}
               checked={imageGeneration.enhancePrompt$.get()}
               onChange={imageGeneration.toggleEnhancePrompt}
             >
