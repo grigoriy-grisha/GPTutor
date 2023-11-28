@@ -27,10 +27,6 @@ function PublishingImages({ id }: IProps) {
     imagesFeed.loadHistory();
   }, []);
 
-  const { goBack } = useNavigationContext();
-
-  const images = imagesFeed.images.get();
-
   const search = useCallback(
     useDebounce(() => {
       imagesFeed.onSearch();

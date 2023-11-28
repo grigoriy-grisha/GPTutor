@@ -26,6 +26,7 @@ import { imagesFeed } from "$/entity/image/imagesFeed";
 import { useNavigationContext } from "$/NavigationContext";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
 import { AppContainer } from "$/components/AppContainer";
+import { AutoSizer } from "react-virtualized";
 
 function DetailImageMobile() {
   const image = imagesFeed.currentImage$.get()?.image$.get();
@@ -34,6 +35,8 @@ function DetailImageMobile() {
     useNavigationContext();
 
   if (!image) return null;
+
+  const aspectRatioPadding = (image.height / image.width) * 100;
 
   return (
     <AppContainer
@@ -44,7 +47,6 @@ function DetailImageMobile() {
       }
       fixedBottomContent={
         <Div>
-          {" "}
           <Button
             size="m"
             style={{ width: "100%" }}
@@ -66,18 +68,25 @@ function DetailImageMobile() {
       <Div>
         <Card mode="shadow">
           <Div>
-            <Tappable
-              className={classes.tappable}
-              hoverMode="opacity"
-              activeMode="opacity"
-              onClick={() => imageService.openImages([image.url])}
-            >
-              <LazyLoadImage
-                className={classes.image}
-                effect="black-and-white"
-                src={image.url}
-              />
-            </Tappable>
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/*@ts-ignore*/}
+            <AutoSizer style={{ width: "100%", height: "100%" }}>
+              {({ width }) => (
+                <Tappable
+                  className={classes.tappable}
+                  hoverMode="opacity"
+                  activeMode="opacity"
+                  onClick={() => imageService.openImages([image.url])}
+                >
+                  <LazyLoadImage
+                    style={{ width }}
+                    className={classes.image}
+                    effect="black-and-white"
+                    src={image.url}
+                  />
+                </Tappable>
+              )}
+            </AutoSizer>
             <Spacing size={8} />
             <Button
               style={{ width: "100%" }}
