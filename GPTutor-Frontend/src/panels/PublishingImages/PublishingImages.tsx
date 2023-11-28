@@ -1,26 +1,14 @@
 import * as React from "react";
 import { useCallback, useEffect } from "react";
 
-import {
-  Div,
-  Panel,
-  PanelHeaderBack,
-  Placeholder,
-  ScreenSpinner,
-  Search,
-  Spacing,
-} from "@vkontakte/vkui";
+import { Panel, PanelHeader, Search, Spacing } from "@vkontakte/vkui";
 import { AppContainer } from "$/components/AppContainer";
-import { AppPanelHeader } from "$/components/AppPanelHeader";
 import { useNavigationContext } from "$/NavigationContext";
 
 import classes from "./PublishingImages.module.css";
 import { imagesFeed } from "$/entity/image/imagesFeed";
 import { useInfinityScroll } from "$/hooks/useInfinityScroll";
-import { Icon56GhostOutline } from "@vkontakte/icons";
 import useDebounce from "$/hooks/useDebounce";
-import { MasonryGrid } from "$/components/MasonryGrid";
-import { PublishingImageItem } from "$/panels/PublishingImages/PublishingImageItem";
 import { PublishingImagesList } from "$/panels/PublishingImages/PublishingImagesList";
 
 interface IProps {
@@ -54,11 +42,7 @@ function PublishingImages({ id }: IProps) {
     <Panel id={id}>
       <AppContainer
         containerRef={setScrollableElement}
-        headerChildren={
-          <AppPanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            Лента
-          </AppPanelHeader>
-        }
+        headerChildren={<PanelHeader>Лента</PanelHeader>}
         childrenWithHeight={(_, offset) => (
           <div style={{ width: "100%" }}>
             <Search

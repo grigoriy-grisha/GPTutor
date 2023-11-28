@@ -34,7 +34,7 @@ function TabbarApp({ setRef }: IProps) {
     goToHistory,
     goToGallery,
     goToOpenProfile,
-    goBack,
+    goToGenerationImages,
     goToPublishingImages,
   } = useNavigationContext();
 
@@ -66,7 +66,7 @@ function TabbarApp({ setRef }: IProps) {
             selected={activePanel === Panels.generationImages}
             className={classes.tabItem}
             text="Генератор"
-            onClick={goBack}
+            onClick={goToGenerationImages}
           >
             <Icon24MagicWandOutline width={28} height={28} />
           </TabbarItem>
