@@ -48,6 +48,7 @@ function DetailImageDesktop() {
         <Card mode="shadow">
           <Div>
             <Tappable
+              className={classes.tappable}
               hoverMode="opacity"
               activeMode="opacity"
               onClick={() => imageService.openImages([image.url])}
