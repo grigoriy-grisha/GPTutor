@@ -67,6 +67,7 @@ function DetailImageMobile() {
         <Card mode="shadow">
           <Div>
             <Tappable
+              className={classes.tappable}
               hoverMode="opacity"
               activeMode="opacity"
               onClick={() => imageService.openImages([image.url])}
@@ -118,15 +119,18 @@ function DetailImageMobile() {
           <Spacing size={12} />
           <Card mode="shadow">
             <Div>
-              <div className={classes.containerInfo}>
+              <div className={classes.containerInfoMobile}>
                 <InfoRow header="Модель">{image?.modelId}</InfoRow>
                 <InfoRow header="CFG Scale">{image?.guidanceScale}</InfoRow>
-                <InfoRow header="Сид">{image?.seed}</InfoRow>
               </div>
               <Spacing size={16} />
-              <div className={classes.containerInfo}>
+              <div className={classes.containerInfoMobile}>
                 <InfoRow header="Шаги">{image?.numInferenceSteps}</InfoRow>
                 <InfoRow header="Cэмлпер">{image?.scheduler}</InfoRow>
+              </div>
+              <Spacing size={16} />
+              <div className={classes.containerInfoMobile}>
+                <InfoRow header="Сид">{image?.seed}</InfoRow>
                 <InfoRow header="Ширина/Высота">{`${image?.width}/${image?.height}`}</InfoRow>
               </div>
             </Div>
