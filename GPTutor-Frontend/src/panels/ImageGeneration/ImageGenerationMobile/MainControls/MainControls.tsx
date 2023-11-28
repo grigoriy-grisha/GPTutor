@@ -23,7 +23,6 @@ function MainControls() {
   const { goToGenerationImagesPrompts, goToGenerationImagesResult } =
     useNavigationContext();
 
-  const generateImage = imageGeneration.generateImage$;
   const generationIsDisable = attempts.$requests.get() === 0;
 
   return (
