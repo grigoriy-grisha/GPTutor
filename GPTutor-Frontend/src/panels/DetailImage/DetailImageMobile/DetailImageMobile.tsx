@@ -36,8 +36,9 @@ function DetailImageMobile() {
 
   if (!image) return null;
 
-  const aspectRatioPadding = (image.height / image.width) * 100;
+  const aspectRatioPadding = image.height / image.width;
 
+  console.log(aspectRatioPadding);
   return (
     <AppContainer
       headerChildren={
@@ -79,7 +80,7 @@ function DetailImageMobile() {
                   onClick={() => imageService.openImages([image.url])}
                 >
                   <LazyLoadImage
-                    style={{ width }}
+                    style={{ width, height: width * aspectRatioPadding }}
                     className={classes.image}
                     effect="black-and-white"
                     src={image.url}
