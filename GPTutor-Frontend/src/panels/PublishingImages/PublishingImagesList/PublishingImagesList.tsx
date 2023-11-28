@@ -65,7 +65,6 @@ function PublishingImagesList({ offset }: IProps) {
     //   @ts-ignore
     <AutoSizer>
       {({ height, width }) => {
-        console.log(width - 48);
         return (
           <List
             overscanRowCount={4}
@@ -76,12 +75,12 @@ function PublishingImagesList({ offset }: IProps) {
               <CellMeasurer cache={rf} parent={parent} index={index} key={key}>
                 <PublishingImageItem
                   image={images[index]}
-                  columnWidth={width - 48}
+                  columnWidth={width}
                   style={style}
                 />
               </CellMeasurer>
             )}
-            width={width - 48}
+            width={width}
           />
         );
       }}
