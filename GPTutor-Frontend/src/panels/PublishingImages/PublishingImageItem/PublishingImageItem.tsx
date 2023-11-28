@@ -27,6 +27,8 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
 
   const { goToDetailImage } = useNavigationContext();
 
+  const { openAlert, goBack } = useNavigationContext();
+
   return (
     <div
       style={style}
@@ -64,7 +66,16 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
                 <IconButton
                   onClick={(event) => {
                     event.stopPropagation();
-                    imagesFeed.createComplaint(image.id);
+
+                    openAlert({
+                      actionText: "Подтвердить",
+                      header: "Подтвердите действие",
+                      onAction: () => {
+                        imagesFeed.createComplaint(image.id);
+                        goBack();
+                      },
+                      text: "Пожаловаться на изображение?",
+                    });
                   }}
                   style={{
                     color: imageFeed.isComplaint()
