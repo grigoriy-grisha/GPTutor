@@ -21,6 +21,28 @@ interface IProps {
   offset: number;
 }
 
+function getScrollbarWidth() {
+  // Creating invisible container
+  const outer = document.createElement("div");
+  outer.style.visibility = "hidden";
+  outer.style.overflow = "scroll"; // forcing scrollbar to appear
+  document.body.appendChild(outer);
+
+  // Creating inner element and placing it in the container
+  const inner = document.createElement("div");
+  outer.appendChild(inner);
+
+  // Calculating difference between container's full width and the child width
+  const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+
+  // Removing temporary elements from the DOM
+  outer.parentNode?.removeChild(outer);
+
+  return scrollbarWidth;
+}
+
+const scrollBarWith = getScrollbarWidth();
+
 function PublishingImagesList({ offset }: IProps) {
   const rf = useMemo(() => new CellMeasurerCache(), []);
 
@@ -65,6 +87,8 @@ function PublishingImagesList({ offset }: IProps) {
     //   @ts-ignore
     <AutoSizer>
       {({ height, width }) => {
+        console.log(width - scrollBarWith - 33);
+        console.log(scrollBarWith, "scrollBarWith");
         return (
           <List
             overscanRowCount={4}
@@ -75,12 +99,12 @@ function PublishingImagesList({ offset }: IProps) {
               <CellMeasurer cache={rf} parent={parent} index={index} key={key}>
                 <PublishingImageItem
                   image={images[index]}
-                  columnWidth={width}
+                  columnWidth={width - scrollBarWith - 33}
                   style={style}
                 />
               </CellMeasurer>
             )}
-            width={width}
+            width={width - scrollBarWith - 33}
           />
         );
       }}
