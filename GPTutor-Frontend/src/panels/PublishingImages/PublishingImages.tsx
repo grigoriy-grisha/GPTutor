@@ -68,10 +68,10 @@ function PublishingImages({ id }: IProps) {
                 search();
               }}
             />
-            <Div className={classes.container}>
-              <Spacing size={6} />
+            <Spacing size={6} />
+            <div className={classes.container}>
               <PublishingImagesList offset={offset} />
-            </Div>
+            </div>
           </div>
         )}
       />
