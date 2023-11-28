@@ -29,9 +29,9 @@ const storageService = new VkStorageService();
 bridge
   .send("VKWebAppInit")
   .then(async () => {
-    if (process.env.NODE_ENV === "development") {
-      import("./eruda");
-    }
+    // if (process.env.NODE_ENV === "development") {
+    import("./eruda");
+    // }
 
     storageService.get(isFirstVisitFlagName).then((value) => {
       if (value) return;
