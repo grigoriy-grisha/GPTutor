@@ -42,11 +42,10 @@ public class SubscriptionsImagesService {
             );
         }
 
-        asyncMethodWithDelay(allRequestParams.get("user_id"));
+
 
         return new SubscriptionsChangeResponse(
-                Integer.parseInt(allRequestParams.get("subscription_id")),
-                Integer.parseInt(allRequestParams.get("app_id"))
+                Integer.parseInt(allRequestParams.get("subscription_id"))
         );
 
     }
@@ -132,8 +131,6 @@ public class SubscriptionsImagesService {
 
     @Async
     void asyncMethodWithDelay(String vkUser) {
-        System.out.println("async");
-        System.out.println(vkUser);
         try {
             Thread.sleep(10000);
             updateSubscription(vkUser);
