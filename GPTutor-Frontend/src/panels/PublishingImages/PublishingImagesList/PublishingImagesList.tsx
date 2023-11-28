@@ -3,10 +3,10 @@ import {
   Placeholder,
   Platform,
   ScreenSpinner,
-  Spacing,
   usePlatform,
 } from "@vkontakte/vkui";
 import * as React from "react";
+import { useMemo } from "react";
 import { Icon56GhostOutline } from "@vkontakte/icons";
 import { MasonryGrid } from "$/components/MasonryGrid";
 import { PublishingImageItem } from "$/panels/PublishingImages/PublishingImageItem";
@@ -16,7 +16,6 @@ import {
   CellMeasurerCache,
   List,
 } from "react-virtualized";
-import { useMemo, useRef } from "react";
 
 interface IProps {
   offset: number;
@@ -66,12 +65,12 @@ function PublishingImagesList({ offset }: IProps) {
     //   @ts-ignore
     <AutoSizer>
       {({ height, width }) => {
-        console.log(width);
+        console.log(width - 48);
         return (
           <List
             overscanRowCount={4}
             rowCount={images.length}
-            height={height}
+            height={height - 12 - 40}
             rowHeight={462}
             rowRenderer={({ index, key, style, parent }) => (
               <CellMeasurer cache={rf} parent={parent} index={index} key={key}>
@@ -82,7 +81,7 @@ function PublishingImagesList({ offset }: IProps) {
                 />
               </CellMeasurer>
             )}
-            width={width - 36}
+            width={width - 48}
           />
         );
       }}

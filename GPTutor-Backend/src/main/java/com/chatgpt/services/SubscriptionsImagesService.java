@@ -42,11 +42,10 @@ public class SubscriptionsImagesService {
             );
         }
 
-        asyncMethodWithDelay(allRequestParams.get("user_id"));
+
 
         return new SubscriptionsChangeResponse(
-                Integer.parseInt(allRequestParams.get("subscription_id")),
-                Integer.parseInt(allRequestParams.get("app_id"))
+                Integer.parseInt(allRequestParams.get("subscription_id"))
         );
 
     }

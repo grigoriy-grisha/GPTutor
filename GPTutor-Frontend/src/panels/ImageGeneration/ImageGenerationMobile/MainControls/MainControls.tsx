@@ -23,7 +23,6 @@ function MainControls() {
   const { goToGenerationImagesPrompts, goToGenerationImagesResult } =
     useNavigationContext();
 
-  const generateImage = imageGeneration.generateImage$;
   const generationIsDisable = attempts.$requests.get() === 0;
 
   return (
@@ -53,9 +52,11 @@ function MainControls() {
         <Button
           className={classes.button}
           mode="outline"
+          disabled={!imageGeneration.enhanceAvailable$.get()}
           onClick={imageGeneration.toggleEnhancePrompt}
         >
           <Checkbox
+            disabled={!imageGeneration.enhanceAvailable$.get()}
             checked={imageGeneration.enhancePrompt$.get()}
             onChange={imageGeneration.toggleEnhancePrompt}
           >

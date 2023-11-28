@@ -1,0 +1,29 @@
+.image {
+    border-radius: var(--vkui--size_border_radius--regular);
+    width: 100%;
+    display: flex;
+
+}
+.container {
+    display: grid;
+    grid-template-columns: 1.7fr 4fr;
+    grid-template-rows: max-content;
+    gap: 8px;
+}
+
+
+.containerInfo {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+
+.header {
+    display: grid;
+    grid-template-columns: max-content min-content;
+}
+
+.headerText {
+    margin-top: 8px;
+}

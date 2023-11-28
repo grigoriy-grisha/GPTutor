@@ -12,6 +12,7 @@ import { Icon28ReportOutline } from "@vkontakte/icons";
 import * as React from "react";
 import { ImageFeed } from "$/entity/image/ImageFeed";
 import { Like } from "$/panels/PublishingImages/PublishingImageItem/Like";
+import { useNavigationContext } from "$/NavigationContext";
 
 interface IProps {
   image: ImageFeed;
@@ -23,6 +24,8 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
   const image = imageFeed.image$.get();
 
   const platform = usePlatform();
+
+  const { goToDetailImage } = useNavigationContext();
 
   return (
     <div
@@ -45,7 +48,10 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
         className={classNames(classes.item, {
           [classes.disableContent]: imageFeed.isComplaint(),
         })}
-        onClick={() => {}}
+        onClick={() => {
+          goToDetailImage();
+          imagesFeed.setCurrentImage(imageFeed);
+        }}
         key={image.url}
         src={image.url}
         alt={image.prompt}
@@ -56,8 +62,8 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
               <div className={classes.itemActions}>
                 <Like image={imageFeed} />
                 <IconButton
-                  onClick={() => {
-                    console.log(image);
+                  onClick={(event) => {
+                    event.stopPropagation();
                     imagesFeed.createComplaint(image.id);
                   }}
                   style={{
