@@ -56,11 +56,11 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
         }}
         key={image.url}
         src={image.url}
-        alt={image.prompt}
+        alt={image.originalPrompt}
         header={
           <div style={{ maxHeight: 86, minHeight: 86 }}>
             <div className={classes.itemContent}>
-              <div className={classes.itemText}>{image.prompt}</div>
+              <div className={classes.itemText}>{image.originalPrompt}</div>
               <div className={classes.itemActions}>
                 <Like image={imageFeed} />
                 <IconButton
