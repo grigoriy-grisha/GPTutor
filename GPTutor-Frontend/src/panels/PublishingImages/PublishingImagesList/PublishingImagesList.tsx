@@ -82,13 +82,15 @@ function PublishingImagesList({ offset }: IProps) {
     );
   }
 
+  const scrollBar = platform === Platform.VKCOM ? scrollBarWith : 0;
+
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //   @ts-ignore
     <AutoSizer>
       {({ height, width }) => {
-        console.log(width - scrollBarWith - 33);
-        console.log(scrollBarWith, "scrollBarWith");
+        console.log(width - scrollBar - 33);
+        console.log(scrollBar, "scrollBarWith");
         return (
           <List
             overscanRowCount={4}
@@ -99,12 +101,12 @@ function PublishingImagesList({ offset }: IProps) {
               <CellMeasurer cache={rf} parent={parent} index={index} key={key}>
                 <PublishingImageItem
                   image={images[index]}
-                  columnWidth={width - scrollBarWith - 33}
+                  columnWidth={width - scrollBar - 33}
                   style={style}
                 />
               </CellMeasurer>
             )}
-            width={width - scrollBarWith - 33}
+            width={width - scrollBar - 33}
           />
         );
       }}
