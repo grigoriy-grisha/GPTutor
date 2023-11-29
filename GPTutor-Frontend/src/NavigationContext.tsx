@@ -45,6 +45,7 @@ export type NavigationContextType = {
   goToPublishingImages: () => void;
   openApplicationInfoStableArt: () => void;
   goToDetailImage: () => void;
+  openAgreement: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -167,6 +168,8 @@ export function NavigationContextProvider({
   const goToImageDonutModal = () => router.pushModal(Modals.imageDonut);
   const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
 
+  const openAgreement = () => router.pushModal(Modals.agreement);
+
   const openApplicationInfoStableArt = () =>
     router.pushModal(Modals.applicationInfoStableArt);
 
@@ -209,6 +212,7 @@ export function NavigationContextProvider({
         goToPublishingImages,
         goToOpenProfile,
         goToDetailImage,
+        openAgreement,
         alert,
         isForbidden,
       }}

@@ -23,6 +23,7 @@ interface IProps<Item> {
   defaultWidth: number;
   list: Item[];
   height: number;
+  width: number;
   columnWidth: number;
   cellRender: (
     item: Item,
@@ -33,7 +34,6 @@ interface IProps<Item> {
 
 interface IState {
   columnWidth: number;
-  height: number;
   gutterSize: number;
   overscanByPixels: number;
 }
@@ -44,10 +44,7 @@ export default class MasonryGrid<Item> extends PureComponent<
 > {
   private columnCount = 0;
   private cache: CellMeasurerCache;
-  private width: number = 0;
-  private height: number = 0;
   private cellPositioner: Positioner = null!;
-  private masonry: Masonry = null!;
 
   constructor(props: IProps<Item>) {
     const { defaultWidth, defaultHeight, height, columnWidth, list } = props;
@@ -62,7 +59,6 @@ export default class MasonryGrid<Item> extends PureComponent<
 
     this.state = {
       columnWidth,
-      height,
       gutterSize: 10,
       overscanByPixels: 0,
     };
@@ -76,10 +72,18 @@ export default class MasonryGrid<Item> extends PureComponent<
     const { columnWidth, gutterSize } = this.state;
 
     if (this.props.list.length < 3) {
-      return this.props.list.length;
+      this.columnCount = this.props.list.length;
+      return;
     }
 
-    this.columnCount = Math.floor(this.width / (columnWidth + gutterSize));
+    if (this.props.width === 0) {
+      this.columnCount = 3;
+      return;
+    }
+
+    this.columnCount = Math.floor(
+      this.props.width / (columnWidth + gutterSize)
+    );
   };
 
   cellRenderer = ({ index, key, parent, style }: MasonryCellProps) => {
@@ -107,29 +111,16 @@ export default class MasonryGrid<Item> extends PureComponent<
     }
   };
 
-  onResize = ({ width }: Size) => {
-    this.width = width;
-
-    this.calculateColumnCount();
-    this.resetCellPositioner();
-    this.masonry.recomputeCellPositions();
-  };
-
   renderAutoSizer = () => {
-    const { overscanByPixels } = this.state;
+    const { height, width } = this.props;
 
-    return (
-      // @ts-ignore
-      <AutoSizer onResize={this.onResize} overscanByPixels={overscanByPixels}>
-        {this.renderMasonry}
-      </AutoSizer>
-    );
+    return this.renderMasonry({ height, width });
   };
 
   renderMasonry = ({ width, height }: Size): ReactNode => {
-    this.width = width - offset;
-
     this.calculateColumnCount();
+    console.log(this.columnCount, "this.columnCount");
+
     this.initCellPositioner();
 
     const { overscanByPixels } = this.state;
@@ -143,25 +134,10 @@ export default class MasonryGrid<Item> extends PureComponent<
         cellMeasurerCache={this.cache}
         cellPositioner={this.cellPositioner}
         cellRenderer={this.cellRenderer}
-        height={height - offset - 40}
+        height={height}
         overscanByPixels={overscanByPixels}
-        ref={this.setMasonryRef}
-        width={this.width}
+        width={width}
       />
     );
-  };
-
-  resetCellPositioner = () => {
-    const { columnWidth, gutterSize } = this.state;
-
-    this.cellPositioner.reset({
-      columnCount: this.columnCount,
-      columnWidth,
-      spacer: gutterSize,
-    });
-  };
-
-  setMasonryRef = (ref: Masonry) => {
-    this.masonry = ref;
   };
 }

@@ -22,6 +22,7 @@ import { subscriptionsController } from "$/entity/subscriptions";
 import { imageGeneration } from "$/entity/image";
 import { VkStorageService } from "$/services/VkStorageService";
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
+import { userAgreement } from "$/entity/user/UserAgreement";
 const isFirstVisitFlagName = "isFirstVisit";
 
 const storageService = new VkStorageService();
@@ -40,6 +41,8 @@ bridge
       onboardingService.runOnBoarding();
       storageService.set(isFirstVisitFlagName, String(true));
     });
+
+    await userAgreement.getUserImageAgreement();
 
     let isDon = false;
     if (appService.isGPTutor()) {

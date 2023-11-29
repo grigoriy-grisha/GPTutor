@@ -67,6 +67,8 @@ export enum Modals {
 
   interviewQuestions = "interview-questions",
 
+  agreement = "agreement",
+
   alert = "alert",
   imageDonut = "image-donut",
 }

@@ -16,9 +16,12 @@ import { imageGeneration } from "$/entity/image";
 import { PromptStyles } from "$/panels/ImageGeneration/PromptStyles";
 import { useNavigationContext } from "$/NavigationContext";
 import { attempts } from "$/entity/attempts";
+import { useGenerateImage } from "$/hooks/useGenerateImage";
 
 function MainControls() {
   const { goToGenerationImagesPrompts } = useNavigationContext();
+
+  const generateImage = useGenerateImage();
 
   const generationIsDisable = attempts.$requests.get() === 0;
 
@@ -96,7 +99,7 @@ function MainControls() {
             size="l"
             align="center"
             mode="primary"
-            onClick={imageGeneration.generate}
+            onClick={generateImage}
             after={<Icon24MagicWandOutline />}
           >
             Сгенерировать

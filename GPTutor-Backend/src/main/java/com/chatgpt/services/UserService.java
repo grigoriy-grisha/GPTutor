@@ -22,4 +22,20 @@ public class UserService {
 
         return vkUser;
     }
+
+    public boolean setUserImageAgreement(String vkId) {
+        var foundFoundUser = vkUsersRepository.findByVkId(vkId);
+
+        foundFoundUser.setImageAgreement(true);
+
+        vkUsersRepository.save(foundFoundUser);
+
+        return foundFoundUser.isImageAgreement();
+    }
+
+    public  boolean getUserImageAgreement(String vkId) {
+        var foundFoundUser = vkUsersRepository.findByVkId(vkId);
+
+        return foundFoundUser.isImageAgreement();
+    }
 }
