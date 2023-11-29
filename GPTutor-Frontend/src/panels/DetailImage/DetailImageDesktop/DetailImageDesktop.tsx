@@ -27,12 +27,15 @@ import { imagesFeed } from "$/entity/image/imagesFeed";
 import { useNavigationContext } from "$/NavigationContext";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
 import { AppContainer } from "$/components/AppContainer";
+import { useGenerateImage } from "$/hooks/useGenerateImage";
 
 function DetailImageDesktop() {
   const image = imagesFeed.currentImage$.get()?.image$.get();
   const { isWebView, platform } = useConfigProvider();
   const { goBack, goToGenerationImages, goToGenerationImagesResult } =
     useNavigationContext();
+
+  const generateImage = useGenerateImage();
 
   if (!image) return null;
 
@@ -119,11 +122,12 @@ function DetailImageDesktop() {
             after={<Icon24MagicWandOutline />}
             onClick={() => {
               imageGeneration.applyExample(image);
-              imageGeneration.generateImage();
 
               platform === Platform.VKCOM
                 ? goToGenerationImages()
                 : goToGenerationImagesResult();
+
+              generateImage();
             }}
           >
             Попробовать

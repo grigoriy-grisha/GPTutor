@@ -1,0 +1,12 @@
+.container {
+    display: grid;
+    gap: 8px;
+}
+
+.container * {
+    display: inline;
+}
+
+.container :global(.vkuiTitle) {
+    margin-right: 6px;
+}

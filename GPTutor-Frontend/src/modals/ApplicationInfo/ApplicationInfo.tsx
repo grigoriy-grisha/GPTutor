@@ -8,24 +8,23 @@ import {
   Separator,
   SimpleCell,
   Text,
-  useAdaptivityConditionalRender,
   Title,
+  useAdaptivityConditionalRender,
 } from "@vkontakte/vkui";
 import {
+  Icon20DonutCircleFillYellow,
   Icon24Share,
   Icon28ChevronRightOutline,
   Icon28Favorite,
   Icon28LogoVk,
   Icon28MessageHeart,
   Icon28Users,
-  Icon20DonutCircleFillYellow,
 } from "@vkontakte/icons";
 
 import { useNavigationContext } from "$/NavigationContext";
 import { GithubIcon, StableArtLogo } from "$/icons";
 import { AppDiv } from "$/components/AppDiv";
 import { useApplicationInfo } from "./hooks/useApplicationInfo";
-import { appService } from "$/services/AppService";
 
 interface IProps {
   id: string;

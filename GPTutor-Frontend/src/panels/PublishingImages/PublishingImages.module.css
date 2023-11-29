@@ -1,9 +1,11 @@
 .container {
-    width: 100vw;
-    padding-bottom: 0;
-    padding-top: 0;
-    height: 100%;
-    padding-left: var(--vkui--size_base_padding_horizontal--regular);
+    max-width: calc(100vw - var(--vkui--size_base_padding_horizontal--regular) * 2);
+    padding: 0 var(--vkui--size_base_padding_horizontal--regular);
+}
+
+.containerDesktop {
+    max-width: calc(100vw - 18px);
+    padding: 0 0 0 18px;
 }
 
 .item {

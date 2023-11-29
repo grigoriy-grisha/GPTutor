@@ -17,10 +17,6 @@ import {
   List,
 } from "react-virtualized";
 
-interface IProps {
-  offset: number;
-}
-
 function getScrollbarWidth() {
   // Creating invisible container
   const outer = document.createElement("div");
@@ -43,10 +39,9 @@ function getScrollbarWidth() {
 
 const scrollBarWith = getScrollbarWidth();
 
-function PublishingImagesList({ offset }: IProps) {
+function PublishingImagesList() {
   const rf = useMemo(() => new CellMeasurerCache(), []);
 
-  console.log(offset);
   const platform = usePlatform();
 
   const images = imagesFeed.images.get();
@@ -65,48 +60,55 @@ function PublishingImagesList({ offset }: IProps) {
     return (
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //   @ts-ignore
-      <MasonryGrid
-        list={images}
-        height={627}
-        columnWidth={284}
-        defaultHeight={400}
-        defaultWidth={280}
-        cellRender={(image, columnWidth, style) => (
-          <PublishingImageItem
-            image={image}
-            columnWidth={columnWidth}
-            style={style}
-          />
-        )}
-      />
+      <AutoSizer>
+        {({ height, width }) => {
+          return (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //   @ts-ignore
+            <MasonryGrid
+              list={images}
+              height={height}
+              width={width}
+              columnWidth={284}
+              defaultHeight={400}
+              defaultWidth={280}
+              cellRender={(image, columnWidth, style) => (
+                <PublishingImageItem
+                  image={image}
+                  columnWidth={columnWidth}
+                  style={style}
+                />
+              )}
+            />
+          );
+        }}
+      </AutoSizer>
     );
   }
-
-  const scrollBar = platform === Platform.VKCOM ? scrollBarWith : 0;
 
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //   @ts-ignore
     <AutoSizer>
       {({ height, width }) => {
-        console.log(width - scrollBar - 33);
-        console.log(scrollBar, "scrollBarWith");
+        console.log(height - 52 + 6);
+
         return (
           <List
             overscanRowCount={4}
             rowCount={images.length}
-            height={height - 12 - 40}
+            height={height}
+            width={width}
             rowHeight={462}
             rowRenderer={({ index, key, style, parent }) => (
               <CellMeasurer cache={rf} parent={parent} index={index} key={key}>
                 <PublishingImageItem
                   image={images[index]}
-                  columnWidth={width - scrollBar - 33}
+                  columnWidth={width}
                   style={style}
                 />
               </CellMeasurer>
             )}
-            width={width - scrollBar - 33}
           />
         );
       }}

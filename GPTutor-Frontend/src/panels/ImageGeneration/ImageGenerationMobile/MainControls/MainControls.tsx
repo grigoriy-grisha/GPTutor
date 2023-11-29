@@ -18,12 +18,14 @@ import { imageGeneration } from "$/entity/image";
 import { PromptStyles } from "$/panels/ImageGeneration/PromptStyles";
 import { useNavigationContext } from "$/NavigationContext";
 import { attempts } from "$/entity/attempts";
+import { useGenerateImage } from "$/hooks/useGenerateImage";
 
 function MainControls() {
   const { goToGenerationImagesPrompts, goToGenerationImagesResult } =
     useNavigationContext();
 
   const generationIsDisable = attempts.$requests.get() === 0;
+  const generateImage = useGenerateImage();
 
   return (
     <Card mode="shadow">
@@ -99,12 +101,8 @@ function MainControls() {
             align="center"
             mode="primary"
             onClick={() => {
-              imageGeneration.generate();
-              if (imageGeneration.error$.get()) {
-                return;
-              }
-
               goToGenerationImagesResult();
+              generateImage();
             }}
           >
             Сгенерировать

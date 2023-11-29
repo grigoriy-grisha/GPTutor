@@ -51,6 +51,7 @@ import Profile from "$/panels/Profile";
 import ApplicationInfoStableArt from "./modals/ApplicationInfoStableArt/ApplicationInfoStableArt";
 import { PublishingImages } from "$/panels/PublishingImages";
 import { DetailImage } from "$/panels/DetailImage";
+import { Agreement } from "$/modals/Agreement";
 
 const App = () => {
   const location = useLocation();
@@ -86,6 +87,7 @@ const App = () => {
             <ApplicationInfo id={Modals.applicationInfo} />
             <ApplicationInfoStableArt id={Modals.applicationInfoStableArt} />
             <InterviewQuestions id={Modals.interviewQuestions} />
+            <Agreement id={Modals.agreement} />
           </ModalRoot>
         }
       >

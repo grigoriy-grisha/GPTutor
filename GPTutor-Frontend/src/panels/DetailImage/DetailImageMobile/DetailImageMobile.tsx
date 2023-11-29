@@ -27,6 +27,7 @@ import { useNavigationContext } from "$/NavigationContext";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
 import { AppContainer } from "$/components/AppContainer";
 import { AutoSizer } from "react-virtualized";
+import { useGenerateImage } from "$/hooks/useGenerateImage";
 
 function DetailImageMobile() {
   const image = imagesFeed.currentImage$.get()?.image$.get();
@@ -34,11 +35,12 @@ function DetailImageMobile() {
   const { goBack, goToGenerationImages, goToGenerationImagesResult } =
     useNavigationContext();
 
+  const generateImage = useGenerateImage();
+
   if (!image) return null;
 
   const aspectRatioPadding = image.height / image.width;
 
-  console.log(aspectRatioPadding);
   return (
     <AppContainer
       headerChildren={
@@ -54,11 +56,12 @@ function DetailImageMobile() {
             after={<Icon24MagicWandOutline />}
             onClick={() => {
               imageGeneration.applyExample(image);
-              imageGeneration.generateImage();
 
               platform === Platform.VKCOM
                 ? goToGenerationImages()
                 : goToGenerationImagesResult();
+
+              generateImage();
             }}
           >
             Попробовать

@@ -18,6 +18,7 @@ import { ImageItem } from "$/panels/ImageGeneration/ImageItem";
 
 import classes from "$/panels/ImageGeneration/ImageGenerationMobile/ImageGenerationMobile.module.css";
 import { TimeGenerationInfo } from "$/components/TimeGenerationInfo";
+import { useGenerateImage } from "$/hooks/useGenerateImage";
 
 interface IProps {
   id: string;
@@ -25,6 +26,8 @@ interface IProps {
 
 function ImageGenerationResult({ id }: IProps) {
   const { goBack } = useNavigationContext();
+
+  const generateImage = useGenerateImage();
 
   const result = imageGeneration.result$;
 
@@ -59,7 +62,7 @@ function ImageGenerationResult({ id }: IProps) {
               </Button>
             ) : (
               <Button
-                onClick={imageGeneration.generate}
+                onClick={generateImage}
                 after={<Icon24RepeatOutline />}
                 style={{ width: "100%" }}
                 size="m"
