@@ -34,9 +34,9 @@ class ImageGeneration {
   imageGenerationPrompt = new ImageGenerationPrompt();
   chatGpt = new ChatGptImages();
 
-  enhancePrompt$ = sig(true);
+  enhancePrompt$ = sig(false);
 
-  enhanceAvailable$ = sig(true);
+  enhanceAvailable$ = sig(false);
 
   prompt$ = sig("");
   model$ = sig(defaultModel);
