@@ -54,7 +54,7 @@ public class Image {
         this.url = url;
         this.vkUser = vkUser;
         this.expire = generateImageRequest.getExpireTimestamp();
-        this.createdAt = generateImageRequest.getCreatedAt();
+        this.createdAt = new Timestamp(System.currentTimeMillis());
         this.prompt = generateImageRequest.getPrompt();
         this.modelId = generateImageRequest.getModelId();
         this.scheduler = generateImageRequest.getScheduler();
