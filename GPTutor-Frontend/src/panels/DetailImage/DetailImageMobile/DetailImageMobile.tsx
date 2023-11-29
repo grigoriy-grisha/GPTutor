@@ -123,7 +123,10 @@ function DetailImageMobile() {
                 <Title level="2" className={classes.headerText}>
                   Запрос
                 </Title>
-                <Copy textToClickBoard={image.originalPrompt} />
+                <Copy
+                  className={classes.copy}
+                  textToClickBoard={image.originalPrompt}
+                />
               </div>
 
               <Text weight="2">{image.originalPrompt}</Text>
