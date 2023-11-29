@@ -29,31 +29,8 @@ function RequestParameters() {
   const platform = usePlatform();
 
   return (
-    <Card
-      mode="shadow"
-      style={
-        subscriptionsController.isDisable()
-          ? { border: "2px solid #FF8C00" }
-          : {}
-      }
-    >
+    <Card mode="shadow">
       <Div>
-        {subscriptionsController.isDisable() && (
-          <Button
-            size="l"
-            before={<Icon24LockOpenOutline />}
-            style={{
-              width: "100%",
-              background: "var(--vkui--color_accent_orange--active)",
-              color: "#FF8C00 !important",
-            }}
-            onClick={() => subscriptionsController.create()}
-          >
-            {platform === Platform.VKCOM
-              ? " Разблокировать функционал"
-              : "Разблокировать"}
-          </Button>
-        )}
         <Spacing size={6} />
         <Accordion
           open={imageGeneration.requestParameters}
@@ -67,9 +44,7 @@ function RequestParameters() {
           <Separator wide className={classes.separator} />
           <AppDiv
             className={classNames(classes.imageSettings, {
-              [classes.sizeDisable]:
-                imageGeneration.loading$.get() ||
-                subscriptionsController.isDisable(),
+              [classes.sizeDisable]: imageGeneration.loading$.get(),
             })}
           >
             <Spacing size={6} />

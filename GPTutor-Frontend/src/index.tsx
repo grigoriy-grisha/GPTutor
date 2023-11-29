@@ -45,17 +45,12 @@ bridge
     await userAgreement.getUserImageAgreement();
 
     let isDon = false;
-    if (appService.isGPTutor()) {
-      await authService.setupToken("groups");
-      isDon = !!(await groupsService.checkIsDon());
-    }
 
-    await subscriptionsController.getSubscription();
+    await authService.setupToken("groups");
+    isDon = !!(await groupsService.checkIsDon());
 
-    if (isDon || !subscriptionsController.isDisable()) {
+    if (isDon) {
       await adService.hideBannerAd();
-    } else {
-      await adService.showBannerAd();
     }
 
     imageGeneration.init();

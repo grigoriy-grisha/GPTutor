@@ -73,11 +73,7 @@ class ImageGeneration {
     this.setResults();
   }
 
-  init() {
-    if (subscriptionsController.isDisable()) {
-      this.setSamples("1");
-    }
-  }
+  init() {}
 
   toggleEnhancePrompt = () => {
     this.enhancePrompt$.set(!this.enhancePrompt$.get());

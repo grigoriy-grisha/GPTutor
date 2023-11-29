@@ -55,20 +55,17 @@ public class ImagesService {
 
 
     @Transactional
-    public List<Image> generateImage(String vkUserId, GenerateImageRequest generateImageRequest) throws Exception {
-
-        var normalisedGenerate = normaliseGenerateRequest(vkUserId, generateImageRequest);
-
-        if (badListService.checkText(normalisedGenerate.getPrompt())) {
+    public List<Image> generateImage(String vkUserId, GenerateImageRequest generateImageRequest) {
+        if (badListService.checkText(generateImageRequest.getPrompt())) {
             throw new BadRequestException("Запрос содержит неприемлемое содержимое");
         }
 
         try {
-            var pair = generateImage(normalisedGenerate);
+            var pair = generateImage(generateImageRequest);
 
             return Arrays
                     .stream(pair.getFirst())
-                    .map((image) -> createImage(image, vkUserId, pair.getSecond(), normalisedGenerate))
+                    .map((image) -> createImage(image, vkUserId, pair.getSecond(), generateImageRequest))
                     .toList();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -118,17 +115,7 @@ public class ImagesService {
         return Pair.of(imageResponse.getOutput(), seed != null ? seed.asText() : "-1");
     }
 
-    public GenerateImageRequest normaliseGenerateRequest(String vkUserId, GenerateImageRequest generateImageRequest) throws Exception {
-        if (subscriptionsImagesService.isAvailableSubscription(vkUserId)) {
-            return generateImageRequest;
-        }
 
-        generateImageRequest.setHeight(512);
-        generateImageRequest.setWidth(512);
-        generateImageRequest.setSamples(1);
-
-        return generateImageRequest;
-    }
 
     public String getImageBase64(UUID id) {
         var image = imageRepository.findById(id);

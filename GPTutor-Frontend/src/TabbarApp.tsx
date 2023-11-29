@@ -33,7 +33,6 @@ function TabbarApp({ setRef }: IProps) {
     goToModes,
     goToHistory,
     goToGallery,
-    goToOpenProfile,
     goToGenerationImages,
     goToPublishingImages,
   } = useNavigationContext();
@@ -69,14 +68,6 @@ function TabbarApp({ setRef }: IProps) {
             onClick={goToGenerationImages}
           >
             <Icon24MagicWandOutline width={28} height={28} />
-          </TabbarItem>
-          <TabbarItem
-            selected={activePanel === Panels.profile}
-            className={classes.tabItem}
-            text="Профиль"
-            onClick={goToOpenProfile}
-          >
-            <Icon20User width={28} height={28} />
           </TabbarItem>
           <TabbarItem
             selected={activePanel === Panels.gallery}
