@@ -22,7 +22,7 @@ class ImagesFeed {
 
   images = sig<ImageFeed[]>([]);
 
-  pageNumber = 0;
+  pageNumber = 1;
 
   hasNextHistory$ = memo(() => {
     const result = this.getImages$.result.get();
