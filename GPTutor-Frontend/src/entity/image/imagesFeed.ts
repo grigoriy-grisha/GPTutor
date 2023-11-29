@@ -114,11 +114,9 @@ class ImagesFeed {
   }
 
   filterByReports(images: ImageFeed[]) {
-    return images
-      .filter((imageFeed) => {
-        return !imageFeed.isComplaint();
-      })
-      .filter((image) => new Date() > new Date(image.image$.get().createdAt));
+    return images.filter((imageFeed) => {
+      return !imageFeed.isComplaint();
+    });
   }
 }
 
