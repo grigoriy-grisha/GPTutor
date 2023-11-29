@@ -200,13 +200,20 @@ class ImageGeneration {
 
   setPrompt(prompt: string) {
     this.prompt$.set(prompt);
-    const hasEnhance = this.prompt$.get().split(", ").length > 15;
+    this.disableEnhance();
+  }
 
-    if (hasEnhance) {
+  disableEnhance() {
+    const prompt = this.prompt$.get().split(",");
+    const styles = this.imageGenerationPrompt.selectedStyles$.get();
+
+    const hasEnhancePrompt = prompt.concat(styles).length > 10;
+
+    if (hasEnhancePrompt) {
       this.enhancePrompt$.set(false);
     }
 
-    this.enhanceAvailable$.set(!hasEnhance);
+    this.enhanceAvailable$.set(!hasEnhancePrompt);
   }
 
   applyExample(example: ImageExample) {
