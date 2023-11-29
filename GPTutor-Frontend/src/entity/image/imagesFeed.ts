@@ -39,7 +39,6 @@ class ImagesFeed {
       this.pageNumber
     );
 
-    console.log(images.content.length);
     console.log(
       this.filterByReports(images.content.map((image) => new ImageFeed(image)))
     );
@@ -115,9 +114,11 @@ class ImagesFeed {
   }
 
   filterByReports(images: ImageFeed[]) {
-    return images.filter((imageFeed) => {
-      return !imageFeed.isComplaint();
-    });
+    return images
+      .filter((imageFeed) => {
+        return !imageFeed.isComplaint();
+      })
+      .filter((image) => new Date() > new Date(image.image$.get().createdAt));
   }
 }
 
