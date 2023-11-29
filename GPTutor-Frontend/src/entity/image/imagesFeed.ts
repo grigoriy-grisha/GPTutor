@@ -22,7 +22,7 @@ class ImagesFeed {
 
   images = sig<ImageFeed[]>([]);
 
-  pageNumber = 0;
+  pageNumber = 1;
 
   hasNextHistory$ = memo(() => {
     const result = this.getImages$.result.get();
@@ -32,14 +32,13 @@ class ImagesFeed {
 
   async loadHistory() {
     this.loading$.set(true);
-    this.pageNumber = 0;
+    this.pageNumber = 1;
     const images = await this.getImages$.run(
       this.searchValue$.get(),
       this.searchValue$.get(),
       this.pageNumber
     );
 
-    console.log(images.content.length);
     console.log(
       this.filterByReports(images.content.map((image) => new ImageFeed(image)))
     );

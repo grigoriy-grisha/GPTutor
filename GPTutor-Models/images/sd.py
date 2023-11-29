@@ -104,8 +104,19 @@ def textToImage(
                 elif process_status == "processing":
                     time.sleep(10)
                 else:
-                    print(f"ERROR: Something went wrong! Please try later, error: {status}")
-                    return result_job
+                    return textToImage(model_id=model_id,
+                                       prompt=prompt,
+                                       negative_prompt=negative_prompt,
+                                       scheduler=scheduler,
+                                       width=width,
+                                       height=height,
+                                       samples=samples,
+                                       num_inference_steps=num_inference_steps,
+                                       seed=seed,
+                                       guidance_scale=guidance_scale,
+                                       upscale=upscale,
+                                       attempts=attempts + 1
+                                       )
 
         time.sleep(2)
 

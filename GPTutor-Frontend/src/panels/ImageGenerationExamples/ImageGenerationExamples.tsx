@@ -215,7 +215,8 @@ const examples: ImageExample[] = [
 function ImageGenerationExamples({ id }: IProps) {
   const platform = usePlatform();
   const generateImage = useGenerateImage();
-  const { goBack, goToGenerationImagesResult } = useNavigationContext();
+  const { goBack, goToGenerationImagesResult, goToGenerationImages } =
+    useNavigationContext();
 
   return (
     <Panel id={id}>
@@ -233,7 +234,7 @@ function ImageGenerationExamples({ id }: IProps) {
                 imageGeneration.applyExample(example);
 
                 platform === Platform.VKCOM
-                  ? goBack()
+                  ? goToGenerationImages()
                   : goToGenerationImagesResult();
 
                 generateImage();

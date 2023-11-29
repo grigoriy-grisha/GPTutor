@@ -68,7 +68,7 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
                     event.stopPropagation();
 
                     openAlert({
-                      actionText: "Подтвердить",
+                      actionText: "Пожаловаться",
                       header: "Подтвердите действие",
                       onAction: () => {
                         imagesFeed.createComplaint(image.id);

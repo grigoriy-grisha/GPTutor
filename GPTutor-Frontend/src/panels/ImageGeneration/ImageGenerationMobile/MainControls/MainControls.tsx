@@ -52,26 +52,7 @@ function MainControls() {
         <PromptStyles />
         <Spacing size={6} />
         <Button
-          className={classes.button}
-          mode="outline"
-          disabled={!imageGeneration.enhanceAvailable$.get()}
-          onClick={imageGeneration.toggleEnhancePrompt}
-        >
-          <Checkbox
-            disabled={!imageGeneration.enhanceAvailable$.get()}
-            checked={imageGeneration.enhancePrompt$.get()}
-            onChange={imageGeneration.toggleEnhancePrompt}
-          >
-            <Text
-              weight="2"
-              style={{ color: "var(--vkui--color_text_accent_themed)" }}
-            >
-              Улучшить запрос
-            </Text>
-          </Checkbox>
-        </Button>
-        <Spacing size={6} />
-        <Button
+          style={{ width: "100%" }}
           className={classes.button}
           onClick={() => goToGenerationImagesPrompts()}
           size="m"
