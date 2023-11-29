@@ -42,7 +42,10 @@ export type NavigationContextType = {
   goToImageDonutModal: () => void;
   goToOpenProfile: () => void;
   goToGallery: () => void;
+  goToPublishingImages: () => void;
   openApplicationInfoStableArt: () => void;
+  goToDetailImage: () => void;
+  openAgreement: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -128,6 +131,11 @@ export function NavigationContextProvider({
 
   const goToGallery = () => push(RoutingPages.gallery, "replace");
 
+  const goToPublishingImages = () =>
+    push(RoutingPages.publishingImages, "replace");
+
+  const goToDetailImage = () => push(RoutingPages.detailImage);
+
   const goToChatLeetCode = () => {
     const problemPages = location
       .getViewHistory(Views.viewMain)
@@ -159,6 +167,8 @@ export function NavigationContextProvider({
 
   const goToImageDonutModal = () => router.pushModal(Modals.imageDonut);
   const openApplicationInfo = () => router.pushModal(Modals.applicationInfo);
+
+  const openAgreement = () => router.pushModal(Modals.agreement);
 
   const openApplicationInfoStableArt = () =>
     router.pushModal(Modals.applicationInfoStableArt);
@@ -199,7 +209,10 @@ export function NavigationContextProvider({
         goToGenerationImagesResult,
         goToGenerationImagesPrompts,
         goToImageDonutModal,
+        goToPublishingImages,
         goToOpenProfile,
+        goToDetailImage,
+        openAgreement,
         alert,
         isForbidden,
       }}

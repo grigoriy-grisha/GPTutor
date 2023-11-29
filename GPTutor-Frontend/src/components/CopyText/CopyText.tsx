@@ -2,20 +2,20 @@ import React from "react";
 
 import { Caption, Tappable, Text } from "@vkontakte/vkui";
 
-import classes from "./ImageSeed.module.css";
+import classes from "./CopyText.module.css";
 import { copyService } from "$/services/CopyService";
 import { snackbarNotify } from "$/entity/notify";
 
 interface IProps {
-  seed: string;
+  text: string;
 }
 
-function ImageSeed({ seed }: IProps) {
+function CopyText({ text }: IProps) {
   function copyToClickBoard() {
     copyService.copyToClickBoard$
-      .run(seed)
+      .run(text)
       .then(() => {
-        snackbarNotify.notify({ type: "success", message: "Cид скопирован" });
+        snackbarNotify.notify({ type: "success", message: "Скопировано" });
       })
       .catch(() =>
         snackbarNotify.notify({
@@ -30,11 +30,11 @@ function ImageSeed({ seed }: IProps) {
       Сид:{" "}
       <Tappable onClick={copyToClickBoard}>
         <Text weight="2" className={classes.seed}>
-          {seed}
+          {text}
         </Text>
       </Tappable>
     </Caption>
   );
 }
 
-export default ImageSeed;
+export default CopyText;

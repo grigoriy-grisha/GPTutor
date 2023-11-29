@@ -5,7 +5,6 @@ import {
   Tabbar,
   TabbarItem,
   usePlatform,
-  View,
 } from "@vkontakte/vkui";
 import {
   Icon20PictureStack,
@@ -13,20 +12,31 @@ import {
   Icon24MagicWandOutline,
   Icon28BookSpreadOutline,
   Icon28HistoryBackwardOutline,
+  Icon28NewsfeedLinesOutline,
 } from "@vkontakte/icons";
 import React from "react";
 import { useNavigationContext } from "$/NavigationContext";
 import { appService } from "$/services/AppService";
-import { useLocation, useRouter } from "@happysanta/router";
+import { useLocation } from "@happysanta/router";
 import { Panels, Views } from "$/entity/routing";
 
 interface IProps {
   setRef: (ref: HTMLDivElement) => void;
 }
 
+function Icon28Newsfeed(props: { width: number; height: number }) {
+  return null;
+}
+
 function TabbarApp({ setRef }: IProps) {
-  const { goToModes, goToHistory, goToGallery, goToOpenProfile, goBack } =
-    useNavigationContext();
+  const {
+    goToModes,
+    goToHistory,
+    goToGallery,
+    goToOpenProfile,
+    goToGenerationImages,
+    goToPublishingImages,
+  } = useNavigationContext();
 
   const platform = usePlatform();
   const location = useLocation();
@@ -44,15 +54,19 @@ function TabbarApp({ setRef }: IProps) {
           ref={setRef}
           style={{ display: "flex", justifyContent: "space-between" }}
         >
-          {" "}
           <TabbarItem
-            selected={
-              location.getViewActivePanel(Views.viewMain) ===
-              Panels.generationImages
-            }
+            selected={activePanel === Panels.publishingImages}
+            className={classes.tabItem}
+            text="Лента"
+            onClick={goToPublishingImages}
+          >
+            <Icon28NewsfeedLinesOutline width={28} height={28} />
+          </TabbarItem>
+          <TabbarItem
+            selected={activePanel === Panels.generationImages}
             className={classes.tabItem}
             text="Генератор"
-            onClick={goBack}
+            onClick={goToGenerationImages}
           >
             <Icon24MagicWandOutline width={28} height={28} />
           </TabbarItem>

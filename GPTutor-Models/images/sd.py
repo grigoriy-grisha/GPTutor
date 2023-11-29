@@ -20,74 +20,112 @@ def textToImage(
         guidance_scale=7,
         upscale='no',
         lora_model=None,
+        attempts=0,
 ):
+    if attempts == 6:
+        return {
+            "status": "failed"
+        }
 
-    payload = json.dumps({
-        "key": os.environ.get('IMAGES_API_KEY'),
-        "prompt": prompt,
-        "negative_prompt": negative_prompt_default + negative_prompt,
-        "model_id": model_id,
-        "width": str(width),
-        "height": str(height),
-        "samples": str(samples),
-        "num_inference_steps": str(num_inference_steps),
-        "guidance_scale": guidance_scale,
-        "upscale": upscale,
-        "safety_checker": "yes",
-        "multi_lingual": "yes",
-        "clip_skip": "6",
-        "enhance_prompt": "no",
-        "panorama": "yes",
-        "safety_checker_type": "blur",
-        "self_attention": "no",
-        "embeddings_model": None,
-        "webhook": None,
-        "track_id": None,
-        "lora_model": lora_model,
-        **getScheduler(scheduler),
-        **getSeed(seed)
-    })
+    try:
+        payload = json.dumps({
+            "key": os.environ.get('IMAGES_API_KEY'),
+            "prompt": prompt,
+            "negative_prompt": negative_prompt_default + negative_prompt,
+            "model_id": model_id,
+            "width": str(width),
+            "height": str(height),
+            "samples": str(samples),
+            "num_inference_steps": str(num_inference_steps),
+            "guidance_scale": guidance_scale,
+            "upscale": upscale,
+            "safety_checker": "yes",
+            "multi_lingual": "yes",
+            "clip_skip": "6",
+            "enhance_prompt": "no",
+            "panorama": "yes",
+            "safety_checker_type": "blur",
+            "self_attention": "no",
+            "embeddings_model": None,
+            "webhook": None,
+            "track_id": None,
+            "lora_model": lora_model,
+            **getScheduler(scheduler),
+            **getSeed(seed)
+        })
 
-    print(payload)
+        print(payload)
 
-    headers = {'Content-Type': 'application/json'}
+        headers = {'Content-Type': 'application/json'}
 
-    if model_id == "sd":
-        print(model_id)
-        response = requests.request("POST", "https://stablediffusionapi.com/api/v3/text2img", headers=headers,
-                                    data=payload)
-    else:
-        response = requests.request("POST", "https://stablediffusionapi.com/api/v4/dreambooth", headers=headers,
-                                    data=payload)
+        if model_id == "sd":
+            print(model_id)
+            response = requests.request("POST", "https://stablediffusionapi.com/api/v3/text2img", headers=headers,
+                                        data=payload)
+        else:
+            response = requests.request("POST", "https://stablediffusionapi.com/api/v4/dreambooth", headers=headers,
+                                        data=payload)
 
-    result = response.json()
+        result = response.json()
 
-    if result['status'] == "processing":
-        time.sleep(result['eta'])
-        status = True
-        while status is True:
-            result_job = requests.request(
-                "POST",
-                result["fetch_result"],
-                headers=headers,
-                data=json.dumps({"key": os.environ.get('IMAGES_API_KEY')})
-            ).json()
+        if result["status"] == "error" or result["status"] == "failed":
+            time.sleep(1.5)
+            return textToImage(model_id=model_id,
+                               prompt=prompt,
+                               negative_prompt=negative_prompt,
+                               scheduler=scheduler,
+                               width=width,
+                               height=height,
+                               samples=samples,
+                               num_inference_steps=num_inference_steps,
+                               seed=seed,
+                               guidance_scale=guidance_scale,
+                               upscale=upscale,
+                               attempts=attempts + 1
+                               )
 
-            print(result_job)
+        if result['status'] == "processing":
+            time.sleep(result['eta'])
+            status = True
+            while status is True:
+                result_job = requests.request(
+                    "POST",
+                    result["fetch_result"],
+                    headers=headers,
+                    data=json.dumps({"key": os.environ.get('IMAGES_API_KEY')})
+                ).json()
 
-            process_status = result_job["status"]
-            if process_status == "success":
-                time.sleep(2)
-                return result_job
-            elif process_status == "processing":
-                time.sleep(10)
-            else:
-                print(f"ERROR: Something went wrong! Please try later, error: {status}")
-                return result_job
+                print(result_job)
 
-    time.sleep(2)
+                process_status = result_job["status"]
+                if process_status == "success":
+                    time.sleep(2)
+                    return result_job
+                elif process_status == "processing":
+                    time.sleep(10)
+                else:
+                    print(f"ERROR: Something went wrong! Please try later, error: {status}")
+                    return result_job
 
-    return result
+        time.sleep(2)
+
+        return result
+
+    except Exception:
+        time.sleep(1.5)
+        return textToImage(model_id=model_id,
+                           prompt=prompt,
+                           negative_prompt=negative_prompt,
+                           scheduler=scheduler,
+                           width=width,
+                           height=height,
+                           samples=samples,
+                           num_inference_steps=num_inference_steps,
+                           seed=seed,
+                           guidance_scale=guidance_scale,
+                           upscale=upscale,
+                           attempts=attempts + 1
+                           )
 
 
 def getScheduler(scheduler) -> dict:

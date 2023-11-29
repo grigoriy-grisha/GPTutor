@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Panel, PanelHeaderBack } from "@vkontakte/vkui";
+import { Panel, PanelHeader, PanelHeaderBack } from "@vkontakte/vkui";
 
 import { AppContainer } from "$/components/AppContainer";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
@@ -16,8 +16,6 @@ function Gallery({ id }: IProps) {
   const loading = imageHistory.getImages$.loading.get();
   const hasNextPage = imageHistory.hasNextHistory$.get();
 
-  const { goBack } = useNavigationContext();
-
   const setScrollableElement = useInfinityScroll({
     onLoadMore: () => imageHistory.nextLoadHistory(),
     hasNextPage,
@@ -32,11 +30,7 @@ function Gallery({ id }: IProps) {
     <Panel id={id}>
       <AppContainer
         containerRef={setScrollableElement}
-        headerChildren={
-          <AppPanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            Коллекция
-          </AppPanelHeader>
-        }
+        headerChildren={<PanelHeader>Коллекция</PanelHeader>}
       >
         <ImagesList />
       </AppContainer>

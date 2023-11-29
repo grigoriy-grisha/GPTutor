@@ -23,7 +23,7 @@ interface IProps {
   style?: React.CSSProperties;
   maxHeight?: boolean;
   isSecondary?: boolean;
-  childrenWithHeight?: (height: string) => JSX.Element;
+  childrenWithHeight?: (height: string, offset: number) => JSX.Element;
   fixedBottomContent?: React.ReactNode;
 }
 
@@ -47,9 +47,10 @@ function AppContainer({
   const offsetHeightTabbar = tabbarElem?.offsetHeight || 0;
   const offsetHeightFixedBottom = fixedBottom?.offsetHeight || 0;
 
-  const height = `calc(100vh - ${
-    offsetHeightHeader + offsetHeightTabbar + offsetHeightFixedBottom
-  }px)`;
+  const offset =
+    offsetHeightHeader + offsetHeightTabbar + offsetHeightFixedBottom;
+
+  const height = `calc(100vh - ${offset}px)`;
 
   return (
     <>
@@ -67,7 +68,7 @@ function AppContainer({
           ...style,
         }}
       >
-        {childrenWithHeight ? childrenWithHeight(height) : children}
+        {childrenWithHeight ? childrenWithHeight(height, offset) : children}
       </div>
       {fixedBottomContent && (
         <FixedLayout

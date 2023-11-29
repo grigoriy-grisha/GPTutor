@@ -18,7 +18,7 @@ import {
   Icon48PictureOutline,
 } from "@vkontakte/icons";
 import { imageService } from "$/services/ImageService";
-import { ImageSeed } from "$/panels/ImageGeneration/ImageSeed";
+import { CopyText } from "$/components/CopyText";
 import { downloadService } from "$/services/DownloadService";
 import { GeneratedImage } from "$/entity/image/types";
 import { wallService } from "$/services/WallService";
@@ -60,14 +60,21 @@ function ImageItem({ resultImage }: IProps) {
           onClick={() => imageService.openImages([resultImage.url])}
         >
           <div
-            style={{ paddingBottom: `${aspectRatioPadding}%` }}
+            style={{
+              paddingBottom: `${aspectRatioPadding}%`,
+              ...(resultImage.url
+                ? { background: `rgb(${resultImage.rbg})` }
+                : {}),
+            }}
             className={classNames(classes.image)}
           >
-            <img
-              className={classNames(classes.image, classes.generatedImage)}
-              src={resultImage.url}
-              alt="Картинка"
-            />
+            {
+              <img
+                className={classNames(classes.image, classes.generatedImage)}
+                src={resultImage.url}
+                alt="Картинка"
+              />
+            }
           </div>
         </Tappable>
       )}
@@ -75,7 +82,8 @@ function ImageItem({ resultImage }: IProps) {
       {resultImage.generatedSeed && (
         <>
           <Spacing size={6} />
-          <ImageSeed seed={resultImage.generatedSeed} />
+
+          <CopyText text={resultImage.generatedSeed} />
         </>
       )}
       <Spacing size={8} />

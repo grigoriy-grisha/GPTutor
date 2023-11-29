@@ -44,8 +44,11 @@ export type GeneratedImage = {
   width: number;
   height: number;
   url: string;
+  rbg: string;
   scheduler: string;
   upscale: "no" | "yes";
+  complaints: ImageComplaint[];
+  imageLikes: ImageLikes[];
 };
 
 export enum ImageAspectRatio {
@@ -56,6 +59,9 @@ export enum ImageAspectRatio {
 }
 
 export const emptyImageGenerated: GeneratedImage = {
+  complaints: [],
+  imageLikes: [],
+  rbg: "",
   originalPrompt: "",
   expire: "",
   id: String(Math.random()),
@@ -73,4 +79,22 @@ export const emptyImageGenerated: GeneratedImage = {
   numInferenceSteps: 1,
   upscale: "no",
   generatedSeed: "",
+};
+
+export type ImageComplaint = {
+  id: string;
+  vkUser: {
+    id: string;
+    vkId: string;
+  };
+  createdAt: string;
+};
+
+export type ImageLikes = {
+  id: string;
+  vkUser: {
+    id: string;
+    vkId: string;
+  };
+  createdAt: string;
 };

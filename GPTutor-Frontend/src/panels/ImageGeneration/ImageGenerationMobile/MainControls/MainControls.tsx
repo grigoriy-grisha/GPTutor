@@ -3,10 +3,12 @@ import React from "react";
 import {
   Button,
   Card,
+  Checkbox,
   ConfigProvider,
   Div,
   FormItem,
   Spacing,
+  Text,
   Textarea,
 } from "@vkontakte/vkui";
 import { Icon24MagicWandOutline, Icon24RepeatOutline } from "@vkontakte/icons";
@@ -16,13 +18,14 @@ import { imageGeneration } from "$/entity/image";
 import { PromptStyles } from "$/panels/ImageGeneration/PromptStyles";
 import { useNavigationContext } from "$/NavigationContext";
 import { attempts } from "$/entity/attempts";
+import { useGenerateImage } from "$/hooks/useGenerateImage";
 
 function MainControls() {
   const { goToGenerationImagesPrompts, goToGenerationImagesResult } =
     useNavigationContext();
 
-  const generateImage = imageGeneration.generateImage$;
   const generationIsDisable = attempts.$requests.get() === 0;
+  const generateImage = useGenerateImage();
 
   return (
     <Card mode="shadow">
@@ -47,7 +50,26 @@ function MainControls() {
         </FormItem>
         <Spacing size={6} />
         <PromptStyles />
-
+        <Spacing size={6} />
+        <Button
+          className={classes.button}
+          mode="outline"
+          disabled={!imageGeneration.enhanceAvailable$.get()}
+          onClick={imageGeneration.toggleEnhancePrompt}
+        >
+          <Checkbox
+            disabled={!imageGeneration.enhanceAvailable$.get()}
+            checked={imageGeneration.enhancePrompt$.get()}
+            onChange={imageGeneration.toggleEnhancePrompt}
+          >
+            <Text
+              weight="2"
+              style={{ color: "var(--vkui--color_text_accent_themed)" }}
+            >
+              Улучшить запрос
+            </Text>
+          </Checkbox>
+        </Button>
         <Spacing size={6} />
         <Button
           className={classes.button}
@@ -79,12 +101,8 @@ function MainControls() {
             align="center"
             mode="primary"
             onClick={() => {
-              imageGeneration.generate();
-              if (imageGeneration.error$.get()) {
-                return;
-              }
-
               goToGenerationImagesResult();
+              generateImage();
             }}
           >
             Сгенерировать

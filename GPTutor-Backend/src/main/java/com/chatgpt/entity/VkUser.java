@@ -18,6 +18,8 @@ public class VkUser {
 
     private int freeAttempts;
 
+    private boolean isImageAgreement;
+
     public VkUser() {
     }
     public VkUser(String vkId) {
@@ -52,5 +54,13 @@ public class VkUser {
 
     public void setFreeAttempts(int freeAttempts) {
         this.freeAttempts = freeAttempts;
+    }
+
+    public boolean isImageAgreement() {
+        return isImageAgreement;
+    }
+
+    public void setImageAgreement(boolean imageAgreement) {
+        isImageAgreement = imageAgreement;
     }
 }

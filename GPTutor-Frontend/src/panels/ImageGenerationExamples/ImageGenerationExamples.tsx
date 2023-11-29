@@ -16,6 +16,7 @@ import { useNavigationContext } from "$/NavigationContext";
 import classes from "./ImageGenerationExamples.module.css";
 import { ImageExample } from "$/entity/image/types";
 import { imageGeneration } from "$/entity/image";
+import { useGenerateImage } from "$/hooks/useGenerateImage";
 
 interface IProps {
   id: string;
@@ -213,7 +214,7 @@ const examples: ImageExample[] = [
 
 function ImageGenerationExamples({ id }: IProps) {
   const platform = usePlatform();
-
+  const generateImage = useGenerateImage();
   const { goBack, goToGenerationImagesResult } = useNavigationContext();
 
   return (
@@ -235,7 +236,7 @@ function ImageGenerationExamples({ id }: IProps) {
                   ? goBack()
                   : goToGenerationImagesResult();
 
-                imageGeneration.generate();
+                generateImage();
               }}
               key={example.url}
               src={example.url}

@@ -1,0 +1,60 @@
+.container {
+    max-width: calc(100vw - var(--vkui--size_base_padding_horizontal--regular) * 2);
+    padding: 0 var(--vkui--size_base_padding_horizontal--regular);
+}
+
+.containerDesktop {
+    max-width: calc(100vw - 18px);
+    padding: 0 0 0 18px;
+}
+
+.item {
+    width: 100%;
+    break-inside: avoid;
+}
+
+.disableContent {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.itemContent {
+    word-break: break-word;
+    display: grid;
+    grid-template-columns: 80% max-content;
+    gap: 8px;
+
+}
+
+.itemText {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+}
+
+.itemActions {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    right: 6px;
+    top: 5px;
+    position: absolute;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.itemActions :global(.vkuiIconButton) {
+    margin-left: 6px;
+}
+
+.itemSubhead {
+    margin-top: 8px;
+    color: var(--vkui--color_text_secondary);
+}
+
+.mobileContainer {
+    padding-bottom: 12px;
+}

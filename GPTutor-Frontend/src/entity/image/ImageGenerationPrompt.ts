@@ -1,4 +1,5 @@
 import { sig } from "dignals";
+import { imageGeneration } from "$/entity/image/index";
 
 export class ImageGenerationPrompt {
   selectedPrompt$ = sig("");
@@ -14,12 +15,17 @@ export class ImageGenerationPrompt {
 
   $selectStyles(style: string) {
     if (this.isSelectedStyle(style)) {
-      return this.selectedStyles$.set(
+      this.selectedStyles$.set(
         this.selectedStyles$.get().filter((item) => item !== style)
       );
+
+      imageGeneration.disableEnhance();
+      return;
     }
 
     this.selectedStyles$.set([style, ...this.selectedStyles$.get()]);
+
+    imageGeneration.disableEnhance();
   }
 
   $removeStyles(styles: string[]) {

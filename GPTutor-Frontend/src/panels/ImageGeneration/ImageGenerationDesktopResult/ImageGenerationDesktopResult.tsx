@@ -6,10 +6,6 @@ import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { ImageItem } from "$/panels/ImageGeneration/ImageItem";
 import { TimeGenerationInfo } from "$/components/TimeGenerationInfo";
 import { attempts } from "$/entity/attempts";
-import {
-  Icon12ArrowDownCircle,
-  Icon28CancelCircleFillRed,
-} from "@vkontakte/icons";
 import { NotEnoughAttempts } from "$/panels/ImageGeneration/NotEnoughAttempts";
 
 function ImageGenerationDesktopResult() {

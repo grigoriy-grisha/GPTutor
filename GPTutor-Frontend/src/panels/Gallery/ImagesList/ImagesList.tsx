@@ -9,7 +9,7 @@ import { Icon24MagicWandOutline, Icon56GhostOutline } from "@vkontakte/icons";
 import { useNavigationContext } from "$/NavigationContext";
 
 function ImagesList() {
-  const { goBack } = useNavigationContext();
+  const { goToGenerationImages } = useNavigationContext();
   const images = imageHistory.images;
 
   if (images.get().length === 0) {
@@ -23,7 +23,7 @@ function ImagesList() {
               mode="outline"
               size="m"
               after={<Icon24MagicWandOutline />}
-              onClick={goBack}
+              onClick={goToGenerationImages}
             >
               Начать генерировать
             </Button>

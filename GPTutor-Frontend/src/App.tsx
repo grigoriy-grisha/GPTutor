@@ -49,6 +49,9 @@ import Gallery from "$/panels/Gallery";
 import ImageCreatePrompts from "$/panels/ImageCreatePrompts";
 import Profile from "$/panels/Profile";
 import ApplicationInfoStableArt from "./modals/ApplicationInfoStableArt/ApplicationInfoStableArt";
+import { PublishingImages } from "$/panels/PublishingImages";
+import { DetailImage } from "$/panels/DetailImage";
+import { Agreement } from "$/modals/Agreement";
 
 const App = () => {
   const location = useLocation();
@@ -84,6 +87,7 @@ const App = () => {
             <ApplicationInfo id={Modals.applicationInfo} />
             <ApplicationInfoStableArt id={Modals.applicationInfoStableArt} />
             <InterviewQuestions id={Modals.interviewQuestions} />
+            <Agreement id={Modals.agreement} />
           </ModalRoot>
         }
       >
@@ -117,6 +121,8 @@ const App = () => {
             <Gallery id={Panels.gallery} />
             <ImageCreatePrompts id={Panels.generationImagesPrompts} />
             <Profile id={Panels.profile} />
+            <PublishingImages id={Panels.publishingImages} />
+            <DetailImage id={Panels.detailImage} />
           </View>
         )}
       </SplitLayout>

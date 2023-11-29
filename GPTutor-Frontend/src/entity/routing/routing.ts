@@ -14,6 +14,7 @@ export enum RoutingPages {
   generationImagesExamples = "/generation-images-examples",
   gallery = "/gallery",
   generationImagesPrompts = "/generation-images-prompts",
+  publishingImages = "/publishing-images",
 
   chatLeetCode = "/chat-leetcode",
   problemDetail = "/problem-detail",
@@ -21,6 +22,8 @@ export enum RoutingPages {
 
   chatTrainer = "/chat-trainer",
   chatSettings = "/chat-settings",
+
+  detailImage = "/detail-image",
 
   profile = "/profile",
 }
@@ -46,6 +49,8 @@ export enum Panels {
   generationImagesResult = "generation-images-result",
   generationImagesExamples = "generation-images-examples",
   generationImagesPrompts = "generation-images-prompts",
+  publishingImages = "publishing-images",
+  detailImage = "detail-image",
   gallery = "gallery",
 
   editor = "editor",
@@ -61,6 +66,8 @@ export enum Modals {
   applicationInfoStableArt = "application-info-stable-art",
 
   interviewQuestions = "interview-questions",
+
+  agreement = "agreement",
 
   alert = "alert",
   imageDonut = "image-donut",

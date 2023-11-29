@@ -25,8 +25,12 @@ import { downloadService } from "$/services/DownloadService";
 import AppBanner from "$/components/AppBanner";
 import { ImageHistoryItem } from "$/entity/image/ImageHistoryItem";
 import { useNavigationContext } from "$/NavigationContext";
-
-import ImageSeed from "../../ImageGeneration/ImageSeed/ImageSeed";
+import { CopyText } from "$/components/CopyText";
+import { useGenerateImage } from "$/hooks/useGenerateImage";
+import {
+  LazyLoadComponent,
+  LazyLoadImage,
+} from "react-lazy-load-image-component";
 
 interface IProps {
   image: ImageHistoryItem;
@@ -34,7 +38,9 @@ interface IProps {
 
 function ImageItem({ image }: IProps) {
   const { isWebView, platform } = useConfigProvider();
-  const { goBack, goToGenerationImagesResult } = useNavigationContext();
+  const { goToGenerationImages, goToGenerationImagesResult } =
+    useNavigationContext();
+  const generateImage = useGenerateImage();
 
   return (
     <AppBanner
@@ -44,12 +50,28 @@ function ImageItem({ image }: IProps) {
           activeMode="opacity"
           onClick={() => imageService.openImages([image.item.url])}
         >
-          <img
+          <div
             className={classNames(classes.image, {
               [classes.imageMobile]: platform !== Platform.VKCOM,
             })}
-            src={image.item.url}
-          />
+            style={{
+              width: 150,
+              height: 150 * (image.item.height / image.item.width),
+              background: `rgb(${image.item.rbg})`,
+            }}
+          >
+            <LazyLoadImage
+              effect="black-and-white"
+              className={classNames(classes.image, {
+                [classes.imageMobile]: platform !== Platform.VKCOM,
+              })}
+              style={{
+                width: 150,
+                height: 150 * (image.item.height / image.item.width),
+              }}
+              src={image.item.url}
+            />
+          </div>
         </Tappable>
       }
       key={image.item.url}
@@ -60,7 +82,6 @@ function ImageItem({ image }: IProps) {
           <div>
             Создано:
             <Headline style={{ display: "inline" }} level="2" weight="1">
-              {" "}
               {new Date(image.item.createdAt).toLocaleString()}
             </Headline>
           </div>
@@ -68,7 +89,7 @@ function ImageItem({ image }: IProps) {
           <div>
             <Headline style={{ display: "inline" }} level="2" weight="1">
               {image.item.generatedSeed && (
-                <ImageSeed seed={image.item.generatedSeed} />
+                <CopyText text={image.item.generatedSeed} />
               )}
             </Headline>
           </div>
@@ -82,12 +103,12 @@ function ImageItem({ image }: IProps) {
               after={<Icon24RepeatOutline />}
               onClick={() => {
                 imageGeneration.applyExample(image.item);
-                if (platform !== Platform.VKCOM) {
-                  goToGenerationImagesResult();
-                } else {
-                  goBack();
-                }
-                imageGeneration.generate();
+
+                platform === Platform.VKCOM
+                  ? goToGenerationImages()
+                  : goToGenerationImagesResult();
+
+                generateImage();
               }}
             >
               Повторить
