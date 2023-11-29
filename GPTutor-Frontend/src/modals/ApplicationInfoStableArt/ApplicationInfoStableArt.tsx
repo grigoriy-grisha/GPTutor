@@ -63,16 +63,6 @@ function ApplicationInfoStableArt({ id }: IProps) {
           </Text>
         </AppDiv>
       </Group>
-      {subscriptionsController.isDisable() && (
-        <Group style={{ marginTop: 0, padding: 0 }}>
-          <SimpleCell
-            onClick={() => subscriptionsController.create()}
-            before={<Icon20DonutCircleFillYellow width={28} height={24} />}
-          >
-            <Text weight="2">Получить подписку</Text>
-          </SimpleCell>
-        </Group>
-      )}
       <Group style={{ padding: 0 }}>
         <SimpleCell
           before={<Icon28LogoVk />}
