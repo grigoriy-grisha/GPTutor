@@ -32,7 +32,7 @@ class ImagesFeed {
 
   async loadHistory() {
     this.loading$.set(true);
-    this.pageNumber = 0;
+    this.pageNumber = 1;
     const images = await this.getImages$.run(
       this.searchValue$.get(),
       this.searchValue$.get(),
