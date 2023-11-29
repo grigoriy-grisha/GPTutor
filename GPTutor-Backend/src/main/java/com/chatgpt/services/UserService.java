@@ -24,7 +24,7 @@ public class UserService {
     }
 
     public boolean setUserImageAgreement(String vkId) {
-        var foundFoundUser = vkUsersRepository.findByVkId(vkId);
+        var foundFoundUser = getOrCreateVkUser(vkId);
 
         foundFoundUser.setImageAgreement(true);
 
@@ -34,7 +34,7 @@ public class UserService {
     }
 
     public  boolean getUserImageAgreement(String vkId) {
-        var foundFoundUser = vkUsersRepository.findByVkId(vkId);
+        var foundFoundUser = getOrCreateVkUser(vkId);
 
         return foundFoundUser.isImageAgreement();
     }
