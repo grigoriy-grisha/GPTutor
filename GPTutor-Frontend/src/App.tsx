@@ -88,7 +88,7 @@ const App = () => {
             <ApplicationInfoStableArt id={Modals.applicationInfoStableArt} />
             <InterviewQuestions id={Modals.interviewQuestions} />
             <Agreement id={Modals.agreement} />
-            <DetailImage id={Modals.detailImage} />
+            <DetailImage id={Modals.detailImage} settlingHeight={100} />
           </ModalRoot>
         }
       >

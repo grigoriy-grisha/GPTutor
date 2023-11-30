@@ -34,9 +34,10 @@ import { useGenerateImage } from "$/hooks/useGenerateImage";
 
 interface IProps {
   id: string;
+  settlingHeight: number;
 }
 
-function DetailImage({ id }: IProps) {
+function DetailImage({ id, settlingHeight }: IProps) {
   const { sizeX } = useAdaptivityConditionalRender();
   const image = imagesFeed.currentImage$.get()?.image$.get();
   const { isWebView, platform } = useConfigProvider();
@@ -51,26 +52,24 @@ function DetailImage({ id }: IProps) {
 
   return (
     <ModalPage
+      settlingHeight={settlingHeight}
       style={{ position: "relative" }}
       id={id}
-      header={
-        <>
-          <ModalPageHeader
-            before={
-              sizeX.compact && (
-                <PanelHeaderClose
-                  className={sizeX.compact.className}
-                  onClick={goBack}
-                />
-              )
-            }
-          >
-            Изображение
-          </ModalPageHeader>
-          <Separator wide />
-        </>
-      }
+      header={<></>}
     >
+      <ModalPageHeader
+        before={
+          sizeX.compact && (
+            <PanelHeaderClose
+              className={sizeX.compact.className}
+              onClick={goBack}
+            />
+          )
+        }
+      >
+        Изображение
+      </ModalPageHeader>
+      <Separator wide />
       <Div>
         <Card mode="shadow">
           <Div>
