@@ -26,6 +26,7 @@ export type ImageExample = {
   scheduler: string;
   modelId: string;
   negativePrompt: string;
+  loraModel: string;
 };
 
 export type GeneratedImage = {
@@ -49,6 +50,7 @@ export type GeneratedImage = {
   upscale: "no" | "yes";
   complaints: ImageComplaint[];
   imageLikes: ImageLikes[];
+  loraModel: string;
 };
 
 export enum ImageAspectRatio {
@@ -79,6 +81,7 @@ export const emptyImageGenerated: GeneratedImage = {
   numInferenceSteps: 1,
   upscale: "no",
   generatedSeed: "",
+  loraModel: "",
 };
 
 export type ImageComplaint = {

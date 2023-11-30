@@ -75,12 +75,20 @@ function ImageItem({ image }: IProps) {
         </Tappable>
       }
       key={image.item.url}
-      header={getModelByValue(image.item.modelId).label}
+      header={getModelByValue(image.item.modelId)?.label || image.item.modelId}
       subheader={
         <div className={classes.subHeader}>
+          {image.item.loraModel && (
+            <div>
+              Lora model:{" "}
+              <Headline style={{ display: "inline" }} level="2" weight="1">
+                {image.item.loraModel}
+              </Headline>
+            </div>
+          )}
           <div>{image.item.originalPrompt}</div>
           <div>
-            Создано:
+            Создано:{" "}
             <Headline style={{ display: "inline" }} level="2" weight="1">
               {new Date(image.item.createdAt).toLocaleString()}
             </Headline>
