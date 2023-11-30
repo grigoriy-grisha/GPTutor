@@ -50,7 +50,7 @@ export enum Panels {
   generationImagesExamples = "generation-images-examples",
   generationImagesPrompts = "generation-images-prompts",
   publishingImages = "publishing-images",
-  detailImage = "detail-image",
+
   gallery = "gallery",
 
   editor = "editor",
@@ -66,7 +66,7 @@ export enum Modals {
   applicationInfoStableArt = "application-info-stable-art",
 
   interviewQuestions = "interview-questions",
-
+  detailImage = "detail-image",
   agreement = "agreement",
 
   alert = "alert",

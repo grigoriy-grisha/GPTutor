@@ -25,7 +25,7 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
 
   const platform = usePlatform();
 
-  const { goToDetailImage } = useNavigationContext();
+  const { openDetailImage } = useNavigationContext();
 
   const { openAlert, goBack } = useNavigationContext();
 
@@ -51,8 +51,8 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
           [classes.disableContent]: imageFeed.isComplaint(),
         })}
         onClick={() => {
-          goToDetailImage();
           imagesFeed.setCurrentImage(imageFeed);
+          openDetailImage();
         }}
         key={image.url}
         src={image.url}
