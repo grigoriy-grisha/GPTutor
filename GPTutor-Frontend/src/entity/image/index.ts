@@ -220,6 +220,7 @@ class ImageGeneration {
     this.CFGScale$.set(example.guidanceScale);
     this.sampler$.set(example.scheduler);
     this.aspectRatio$.set(ImageAspectRatio.square);
+    this.loraModel$.set(example.loraModel);
 
     const negativePrompts = example.negativePrompt.trim().split(",");
 
