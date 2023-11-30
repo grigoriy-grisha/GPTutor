@@ -149,6 +149,14 @@ function DetailImageMobile() {
                 <InfoRow header="Сид">{image?.seed}</InfoRow>
                 <InfoRow header="Ширина/Высота">{`${image?.width}/${image?.height}`}</InfoRow>
               </div>
+              {image?.loraModel && (
+                <>
+                  <Spacing size={16} />
+                  <div className={classes.containerInfoMobile}>
+                    <InfoRow header="Lora Model">{image?.loraModel}</InfoRow>
+                  </div>
+                </>
+              )}
             </Div>
           </Card>
           <Spacing size={12} />

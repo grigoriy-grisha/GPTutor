@@ -31,7 +31,7 @@ def textToImage(
         payload = json.dumps({
             "key": os.environ.get('IMAGES_API_KEY'),
             "prompt": prompt,
-            "negative_prompt": negative_prompt_default + negative_prompt,
+            "negative_prompt": negative_prompt_default + "," + negative_prompt,
             "model_id": model_id,
             "width": str(width),
             "height": str(height),
@@ -40,11 +40,10 @@ def textToImage(
             "guidance_scale": guidance_scale,
             "upscale": upscale,
             "safety_checker": "yes",
-            "multi_lingual": "yes",
+            "multi_lingual": "no",
             "clip_skip": "6",
             "enhance_prompt": "no",
-            "panorama": "yes",
-            "safety_checker_type": "blur",
+            "safety_checker_type": "black",
             "self_attention": "no",
             "embeddings_model": None,
             "webhook": None,
@@ -54,7 +53,6 @@ def textToImage(
             **getSeed(seed)
         })
 
-        print(payload)
 
         headers = {'Content-Type': 'application/json'}
 
@@ -67,6 +65,9 @@ def textToImage(
                                         data=payload)
 
         result = response.json()
+
+        print(result)
+
 
         if result["status"] == "error" or result["status"] == "failed":
             time.sleep(1.5)

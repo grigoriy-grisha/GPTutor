@@ -25,12 +25,20 @@ export const styles = [
     label: "Чудовища",
     loraModel: "",
   },
-  // {
-  //   value: "anything-v3",
-  //   imageName: "maf.jpg",
-  //   loraModel: "maf",
-  //   label: "Maf",
-  // },
+  {
+    value: "anything-v3",
+    imageName: "maf.jpg",
+    loraModel: "maf",
+    label: "Maf",
+  },
+
+  {
+    value: "dream-shaper-8797",
+    imageName: "hacked-tech.png",
+    loraModel: "hacked-tech",
+    label: "Hacked Tech",
+  },
+
   {
     value: "lowpoly-diffusion",
     imageName: "lowpoly.png",

@@ -12,6 +12,7 @@ import { AppPanelHeader } from "$/components/AppPanelHeader";
 import { RequestParameters } from "$/panels/ImageGeneration/RequestParameters";
 import { AdvancedSettings } from "$/panels/ImageGeneration/AdvancedSettings";
 import { MainControls } from "$/panels/ImageGeneration/ImageGenerationDesktop/MainControls";
+import ImageStyles from "../ImageStyles/ImageStyles";
 
 function ImageGenerationDesktop() {
   const { goToGenerationImagesExamples, openApplicationInfoStableArt } =
@@ -52,6 +53,8 @@ function ImageGenerationDesktop() {
       <Div className={classes.container}>
         <div>
           <MainControls />
+          <Spacing size={8} />
+          <ImageStyles />
           <Spacing size={8} />
           <RequestParameters />
           <Spacing size={8} />

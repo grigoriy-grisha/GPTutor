@@ -116,6 +116,14 @@ function DetailImageDesktop() {
                 <InfoRow header="Cэмлпер">{image?.scheduler}</InfoRow>
                 <InfoRow header="Ширина/Высота">{`${image?.width}/${image?.height}`}</InfoRow>
               </div>
+              {image?.loraModel && (
+                <>
+                  <Spacing size={16} />
+                  <div className={classes.containerInfo}>
+                    <InfoRow header="Lora Model">{image?.loraModel}</InfoRow>
+                  </div>
+                </>
+              )}
             </Div>
           </Card>
           <Spacing size={12} />
