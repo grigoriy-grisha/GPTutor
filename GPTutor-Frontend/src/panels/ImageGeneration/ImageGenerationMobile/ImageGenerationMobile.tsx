@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Div, IconButton, Spacing } from "@vkontakte/vkui";
+import { Button, Div, IconButton, Spacing, Text } from "@vkontakte/vkui";
 import {
   Icon28HelpCircleOutline,
   Icon28ServicesOutline,
@@ -38,28 +38,38 @@ function ImageGenerationMobile() {
         <AppPanelHeader
           before={
             <IconButton
+              style={{ marginLeft: 6 }}
               onClick={openApplicationInfoStableArt}
               className={classes.buttonService}
             >
-              <Icon28ServicesOutline className={classes.iconService} />
+              <Icon28ServicesOutline
+                width={22}
+                height={22}
+                className={classes.iconService}
+              />
             </IconButton>
           }
           after={
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
               <IconButton
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 12,
+                }}
                 target="_blank"
                 href="https://vk.com/@gptutor-primer-sozdaniya-kachestvennogo-zaprosa"
-                className={classes.buttonService}
               >
-                <Icon28HelpCircleOutline className={classes.iconService} />
+                <Icon28HelpCircleOutline width={22} height={22} />
               </IconButton>
               <IconButton onClick={goToGenerationImagesExamples}>
-                <Icon32StarsOutline width={28} height={28} />
+                <Icon32StarsOutline width={22} height={22} />
               </IconButton>
             </div>
           }
         >
-          Stable Art
+          <Text weight="1">Stable Art</Text>
         </AppPanelHeader>
       }
       fixedBottomContent={

@@ -83,7 +83,7 @@ class ImageGeneration {
   };
 
   async initHelpBlock() {
-    const isHasHelpBlock = await vkStorageService.get("isHasHelpBlock");
+    const isHasHelpBlock = await vkStorageService.get("isHasHelpBlock2");
     if (!isHasHelpBlock) return;
 
     this.isHasHelpBlock$.set(true);
@@ -91,7 +91,7 @@ class ImageGeneration {
 
   setHelpBlock = () => {
     this.isHasHelpBlock$.set(true);
-    vkStorageService.set("isHasHelpBlock", String(true));
+    vkStorageService.set("isHasHelpBlock2", String(true));
   };
 
   toggleAdvancedSettingOpen = () => {
