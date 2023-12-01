@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
+import { Button, Div, IconButton, Spacing, Text } from "@vkontakte/vkui";
 import {
-  Button,
-  Div,
-  IconButton,
-  Spacing,
-  useConfigProvider,
-} from "@vkontakte/vkui";
-import { Icon28ServicesOutline, Icon32StarsOutline } from "@vkontakte/icons";
+  Icon28HelpCircleOutline,
+  Icon28ServicesOutline,
+  Icon32StarsOutline,
+} from "@vkontakte/icons";
 
 import { imageGeneration } from "$/entity/image";
 import { AppContainer } from "$/components/AppContainer";
@@ -18,6 +16,7 @@ import { MainControls } from "$/panels/ImageGeneration/ImageGenerationMobile/Mai
 
 import classes from "./ImageGenerationMobile.module.css";
 import { ImageStyles } from "$/panels/ImageGeneration/ImageStyles";
+import { HelpBlock } from "$/panels/ImageGeneration/HelpBlock";
 
 function ImageGenerationMobile() {
   const {
@@ -39,19 +38,38 @@ function ImageGenerationMobile() {
         <AppPanelHeader
           before={
             <IconButton
+              style={{ marginLeft: 6 }}
               onClick={openApplicationInfoStableArt}
               className={classes.buttonService}
             >
-              <Icon28ServicesOutline className={classes.iconService} />
+              <Icon28ServicesOutline
+                width={22}
+                height={22}
+                className={classes.iconService}
+              />
             </IconButton>
           }
           after={
-            <IconButton onClick={goToGenerationImagesExamples}>
-              <Icon32StarsOutline width={28} height={28} />
-            </IconButton>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <IconButton
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 12,
+                }}
+                target="_blank"
+                href="https://vk.com/@gptutor-primer-sozdaniya-kachestvennogo-zaprosa"
+              >
+                <Icon28HelpCircleOutline width={22} height={22} />
+              </IconButton>
+              <IconButton onClick={goToGenerationImagesExamples}>
+                <Icon32StarsOutline width={22} height={22} />
+              </IconButton>
+            </div>
           }
         >
-          Stable Art
+          <Text weight="1">Stable Art</Text>
         </AppPanelHeader>
       }
       fixedBottomContent={
@@ -71,6 +89,7 @@ function ImageGenerationMobile() {
       }
     >
       <Div className={classes.container}>
+        <HelpBlock />
         <MainControls />
         <Spacing size={8} />
         <ImageStyles />

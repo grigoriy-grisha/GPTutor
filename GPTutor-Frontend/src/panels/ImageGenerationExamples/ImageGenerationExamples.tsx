@@ -24,6 +24,7 @@ interface IProps {
 
 const examples: ImageExample[] = [
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/1281c2f4-8f47-44e5-894c-0ce9b4504b45",
     seed: "-1",
     numInferenceSteps: 25,
@@ -37,6 +38,7 @@ const examples: ImageExample[] = [
       "lineart| vibrant| comprehensive cinematic| Carne Griffiths| Conrad Roset",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/a668d790-6aa3-48f6-adca-f024d82c870f",
     seed: "-1",
     numInferenceSteps: 25,
@@ -50,6 +52,7 @@ const examples: ImageExample[] = [
       "an astronaut riding a horse on mars artstation, hd, dramatic lighting, detailed",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/6fced89a-118f-42f3-b60f-a00d79a72a5e",
     seed: "-1",
     numInferenceSteps: 25,
@@ -62,6 +65,7 @@ const examples: ImageExample[] = [
       "analog style portrait of a cute young woman with blonde hair",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/d74a8846-87c0-4582-897d-e4ddac1fcb05",
     seed: "-1",
     numInferenceSteps: 25,
@@ -73,6 +77,7 @@ const examples: ImageExample[] = [
     originalPrompt: "analog style Santa as a 1960s",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/8f6124b2-80f5-470f-9327-917272349eeb",
     seed: "-1",
     numInferenceSteps: 25,
@@ -86,6 +91,7 @@ const examples: ImageExample[] = [
       "1girl, brown hair, green eyes, colorful, autumn, cumulonimbus clouds",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/c11972ef-ec94-47fa-a0df-04ca5d7502f5",
     seed: "-1",
     numInferenceSteps: 25,
@@ -98,6 +104,7 @@ const examples: ImageExample[] = [
       "70s progressive rock artwork, funky, vibrant, acid-culture",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/fdbfaec8-b817-4b70-8413-cca5525a8182",
     seed: "-1",
     numInferenceSteps: 25,
@@ -111,6 +118,7 @@ const examples: ImageExample[] = [
       "portrait of superman, style of (van gogh), short hair, highly detailed, beautiful art,",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/ab983418-8f55-4542-8195-559a1ddff09f",
     seed: "-1",
     numInferenceSteps: 25,
@@ -124,6 +132,7 @@ const examples: ImageExample[] = [
       "vintage blonde pin-up girl, style of (picasso), very abstract, surrealism, cubism",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/3e449318-5c73-4ab6-b201-e335ccb6392f",
     seed: "-1",
     numInferenceSteps: 25,
@@ -137,6 +146,7 @@ const examples: ImageExample[] = [
       "style of (Albert Bierstadt), beautiful valley with mountains on each side, morning yellow sun, vast and luminous, luminism, realism, romanticism, insane detail, highly detailed, warm colors, warm lighting",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/bf109934-d282-4136-a8fe-800c81ddb935",
     seed: "-1",
     numInferenceSteps: 25,
@@ -148,6 +158,7 @@ const examples: ImageExample[] = [
     originalPrompt: "style of (Tim Burton), woman ",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/c1219d6c-549a-4c8b-972e-7af7affe8856",
     seed: "-1",
     numInferenceSteps: 25,
@@ -161,6 +172,7 @@ const examples: ImageExample[] = [
       "tiny isometric scientific lab, little scientist, smooth lighting, 100mm lens",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/a2c85b4a-f540-4c83-993c-13f6262b0b13",
     seed: "-1",
     numInferenceSteps: 25,
@@ -174,6 +186,7 @@ const examples: ImageExample[] = [
       "kawaii low poly beluga whale, 3d isometric render, blue background, unity engine, ambient occlusion",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/9c8d831d-fbbd-4fc2-ba0c-1d887c1d9272",
     seed: "-1",
     numInferenceSteps: 25,
@@ -187,6 +200,7 @@ const examples: ImageExample[] = [
       "Retro comic style artwork, highly detailed michael j fox, comic book cover, symmetrical, vintage",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/fc7d0108-abd1-4763-8150-cbdf0873ce76",
     seed: "-1",
     numInferenceSteps: 25,
@@ -198,6 +212,7 @@ const examples: ImageExample[] = [
     originalPrompt: "Man outside saloon, wild west",
   },
   {
+    loraModel: "",
     url: "https://storage.yandexcloud.net/gptutor-bucket/eea52f4b-655f-4460-99b8-a05373432561",
     seed: "-1",
     numInferenceSteps: 25,

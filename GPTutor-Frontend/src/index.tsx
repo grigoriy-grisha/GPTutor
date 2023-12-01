@@ -102,7 +102,6 @@ const routes = {
     Views.viewMain
   ),
   [RoutingPages.profile]: new Page(Panels.profile, Views.viewMain),
-  [RoutingPages.detailImage]: new Page(Panels.detailImage, Views.viewMain),
 };
 
 const router = new Router(routes);
