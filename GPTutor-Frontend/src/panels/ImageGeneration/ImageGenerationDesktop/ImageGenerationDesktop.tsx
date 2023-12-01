@@ -5,7 +5,13 @@ import { AppContainer } from "$/components/AppContainer";
 
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { imageGeneration } from "$/entity/image";
-import { Icon28ServicesOutline, Icon32StarsOutline } from "@vkontakte/icons";
+import {
+  Icon20InfoCircleOutline,
+  Icon24DoneOutline,
+  Icon28HelpCircleOutline,
+  Icon28ServicesOutline,
+  Icon32StarsOutline,
+} from "@vkontakte/icons";
 import { useNavigationContext } from "$/NavigationContext";
 import { ImageGenerationDesktopResult } from "$/panels/ImageGeneration/ImageGenerationDesktopResult";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
@@ -13,6 +19,7 @@ import { RequestParameters } from "$/panels/ImageGeneration/RequestParameters";
 import { AdvancedSettings } from "$/panels/ImageGeneration/AdvancedSettings";
 import { MainControls } from "$/panels/ImageGeneration/ImageGenerationDesktop/MainControls";
 import ImageStyles from "../ImageStyles/ImageStyles";
+import { HelpBlock } from "$/panels/ImageGeneration/HelpBlock";
 
 function ImageGenerationDesktop() {
   const { goToGenerationImagesExamples, openApplicationInfoStableArt } =
@@ -39,9 +46,18 @@ function ImageGenerationDesktop() {
             </IconButton>
           }
           after={
-            <IconButton onClick={goToGenerationImagesExamples}>
-              <Icon32StarsOutline width={28} height={28} />
-            </IconButton>
+            <div style={{ display: "flex" }}>
+              <IconButton
+                target="_blank"
+                href="https://vk.com/@gptutor-primer-sozdaniya-kachestvennogo-zaprosa"
+                className={classes.buttonService}
+              >
+                <Icon28HelpCircleOutline className={classes.iconService} />
+              </IconButton>
+              <IconButton onClick={goToGenerationImagesExamples}>
+                <Icon32StarsOutline width={28} height={28} />
+              </IconButton>
+            </div>
           }
         >
           <Title level="2" className={classes.title}>
@@ -52,6 +68,7 @@ function ImageGenerationDesktop() {
     >
       <Div className={classes.container}>
         <div>
+          <HelpBlock />
           <MainControls />
           <Spacing size={8} />
           <ImageStyles />

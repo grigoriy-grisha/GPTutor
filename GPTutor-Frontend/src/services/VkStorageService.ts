@@ -25,3 +25,5 @@ export class VkStorageService {
     }
   }
 }
+
+export const vkStorageService = new VkStorageService();

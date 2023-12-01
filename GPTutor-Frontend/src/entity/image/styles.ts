@@ -55,11 +55,6 @@ export const styles = [
     label: "Векторный",
   },
   {
-    value: "synthwave-diffusion",
-    imageName: "SynthwavePunk.png",
-    label: "SynthwavePunk",
-  },
-  {
     value: "midjourney-papercut",
     imageName: "paper.png",
     label: "Бумажный",

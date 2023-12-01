@@ -16,8 +16,8 @@ import { ImageGenerationPrompt } from "$/entity/image/ImageGenerationPrompt";
 
 import { ChipOption } from "@vkontakte/vkui/dist/components/Chip/Chip";
 import { StopWatch } from "$/entity/stopWatch";
-import { subscriptionsController } from "$/entity/subscriptions";
 import { getRandomStylesImage } from "$/entity/image/prompts";
+import { vkStorageService } from "$/services/VkStorageService";
 
 const emptyPrompt = {
   ru: "Космонавт верхном на лошади, hd, Космическое сияние, высокое качество, профессиональное фото",
@@ -25,6 +25,8 @@ const emptyPrompt = {
 };
 
 class ImageGeneration {
+  isHasHelpBlock$ = sig(false);
+
   requestParameters = false;
   advancedSettingOpen = false;
 
@@ -71,12 +73,25 @@ class ImageGeneration {
 
   constructor() {
     this.setResults();
+    this.initHelpBlock();
   }
 
   init() {}
 
   toggleEnhancePrompt = () => {
     this.enhancePrompt$.set(!this.enhancePrompt$.get());
+  };
+
+  async initHelpBlock() {
+    const isHasHelpBlock = await vkStorageService.get("isHasHelpBlock");
+    if (!isHasHelpBlock) return;
+
+    this.isHasHelpBlock$.set(true);
+  }
+
+  setHelpBlock = () => {
+    this.isHasHelpBlock$.set(true);
+    vkStorageService.set("isHasHelpBlock", String(true));
   };
 
   toggleAdvancedSettingOpen = () => {
