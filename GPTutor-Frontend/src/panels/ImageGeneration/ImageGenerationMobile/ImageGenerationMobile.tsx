@@ -98,33 +98,6 @@ function ImageGenerationMobile() {
       }
     >
       <Div className={classes.container}>
-        <Tabs layoutFillMode="shrinked" mode="secondary">
-          <TabsItem
-            selected
-            id="tab-recommendations"
-            aria-controls="tab-content-recommendations"
-          >
-            Интересное
-          </TabsItem>
-          <TabsItem
-            id="tab-recommendations"
-            aria-controls="tab-content-recommendations"
-          >
-            Интересное
-          </TabsItem>
-          <TabsItem
-            id="tab-recommendations"
-            aria-controls="tab-content-recommendations"
-          >
-            Интересное
-          </TabsItem>
-          <TabsItem
-            id="tab-recommendations"
-            aria-controls="tab-content-recommendations"
-          >
-            Интересное
-          </TabsItem>
-        </Tabs>
         <Separator wide />
         <Spacing size={8} />
         <HelpBlock />
