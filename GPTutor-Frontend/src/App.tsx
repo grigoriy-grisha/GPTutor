@@ -52,6 +52,7 @@ import ApplicationInfoStableArt from "./modals/ApplicationInfoStableArt/Applicat
 import { PublishingImages } from "$/panels/PublishingImages";
 import { Agreement } from "$/modals/Agreement";
 import { DetailImage } from "$/modals/DetailImage";
+import { WeakRequestModal } from "$/modals/WeakRequestModal";
 
 const App = () => {
   const location = useLocation();
@@ -89,6 +90,7 @@ const App = () => {
             <InterviewQuestions id={Modals.interviewQuestions} />
             <Agreement id={Modals.agreement} />
             <DetailImage id={Modals.detailImage} settlingHeight={100} />
+            <WeakRequestModal id={Modals.weakRequest} />
           </ModalRoot>
         }
       >
@@ -96,7 +98,7 @@ const App = () => {
           <LoadingPanel />
         ) : (
           <View
-            style={{ maxWidth: "100vw" }}
+            style={{ maxWidth: "100vw", overflowX: "hidden" }}
             id={Views.viewMain}
             activePanel={location.getViewActivePanel(Views.viewMain)!}
             onSwipeBack={goBack}

@@ -11,13 +11,12 @@ import {
   Separator,
   Slider,
   Spacing,
+  Text,
   Title,
-  useConfigProvider,
 } from "@vkontakte/vkui";
 import { imageGeneration } from "$/entity/image";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { AppDiv } from "$/components/AppDiv";
-import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
 import { Icon24HelpOutline } from "@vkontakte/icons";
 import { ChipsSelect } from "@vkontakte/vkui/dist/components/ChipsSelect/ChipsSelect";
 import { negativePrompts } from "$/entity/image/prompts";
@@ -123,6 +122,12 @@ function AdvancedSettings() {
                     onChange={imageGeneration.setCFGScale}
                   />
                 </div>
+                {imageGeneration.CFGScale$.get() > 12 && (
+                  <Text>
+                    ❗ При высоком значении CFG Scale могут возникать артефакты.
+                    Оптимальные занчения CFG Scale 5-9
+                  </Text>
+                )}
               </FormItem>
               <FormItem
                 id="step"

@@ -1,5 +1,14 @@
 import React, { useEffect } from "react";
-import { Button, Div, IconButton, Spacing, Text } from "@vkontakte/vkui";
+import {
+  Button,
+  Div,
+  IconButton,
+  Separator,
+  Spacing,
+  Tabs,
+  TabsItem,
+  Text,
+} from "@vkontakte/vkui";
 import {
   Icon28HelpCircleOutline,
   Icon28ServicesOutline,
@@ -89,6 +98,35 @@ function ImageGenerationMobile() {
       }
     >
       <Div className={classes.container}>
+        <Tabs layoutFillMode="shrinked" mode="secondary">
+          <TabsItem
+            selected
+            id="tab-recommendations"
+            aria-controls="tab-content-recommendations"
+          >
+            Интересное
+          </TabsItem>
+          <TabsItem
+            id="tab-recommendations"
+            aria-controls="tab-content-recommendations"
+          >
+            Интересное
+          </TabsItem>
+          <TabsItem
+            id="tab-recommendations"
+            aria-controls="tab-content-recommendations"
+          >
+            Интересное
+          </TabsItem>
+          <TabsItem
+            id="tab-recommendations"
+            aria-controls="tab-content-recommendations"
+          >
+            Интересное
+          </TabsItem>
+        </Tabs>
+        <Separator wide />
+        <Spacing size={8} />
         <HelpBlock />
         <MainControls />
         <Spacing size={8} />

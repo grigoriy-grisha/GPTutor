@@ -9,6 +9,7 @@ import {
   Spacing,
   Textarea,
   Text,
+  Link,
 } from "@vkontakte/vkui";
 import { Icon24MagicWandOutline } from "@vkontakte/icons";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
@@ -17,6 +18,8 @@ import { PromptStyles } from "$/panels/ImageGeneration/PromptStyles";
 import { useNavigationContext } from "$/NavigationContext";
 import { attempts } from "$/entity/attempts";
 import { useGenerateImage } from "$/hooks/useGenerateImage";
+import { userAgreement } from "$/entity/user/UserAgreement";
+import { AgreementBlock } from "$/panels/ImageGeneration/AgreementBlock";
 
 function MainControls() {
   const { goToGenerationImagesPrompts } = useNavigationContext();
@@ -46,7 +49,7 @@ function MainControls() {
             placeholder="космонавт верхном на лошади, hd, Космическое сияние, высокое качество, профессиональное фото"
           />
         </FormItem>
-        <Spacing size={6} />
+        <AgreementBlock />
         <PromptStyles />
         <Spacing size={6} />
         <Button
@@ -77,7 +80,7 @@ function MainControls() {
             size="l"
             align="center"
             mode="primary"
-            onClick={generateImage}
+            onClick={() => generateImage(false)}
             after={<Icon24MagicWandOutline />}
           >
             Сгенерировать
