@@ -11,7 +11,7 @@ import {
   Text,
   Textarea,
 } from "@vkontakte/vkui";
-import { Icon24MagicWandOutline, Icon24RepeatOutline } from "@vkontakte/icons";
+import { Icon24MagicWandOutline } from "@vkontakte/icons";
 
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
 import { imageGeneration } from "$/entity/image";
@@ -19,6 +19,7 @@ import { PromptStyles } from "$/panels/ImageGeneration/PromptStyles";
 import { useNavigationContext } from "$/NavigationContext";
 import { attempts } from "$/entity/attempts";
 import { useGenerateImage } from "$/hooks/useGenerateImage";
+import { AgreementBlock } from "$/panels/ImageGeneration/AgreementBlock";
 
 function MainControls() {
   const { goToGenerationImagesPrompts, goToGenerationImagesResult } =
@@ -48,7 +49,7 @@ function MainControls() {
             placeholder="Космонавт верхном на лошади, hd, Космическое сияние, высокое качество, профессиональное фото"
           />
         </FormItem>
-        <Spacing size={6} />
+        <AgreementBlock />
         <PromptStyles />
         <Spacing size={6} />
         <Button
@@ -82,8 +83,8 @@ function MainControls() {
             align="center"
             mode="primary"
             onClick={() => {
-              goToGenerationImagesResult();
-              generateImage();
+              const isSuccess = generateImage(false);
+              if (isSuccess) goToGenerationImagesResult();
             }}
           >
             Сгенерировать

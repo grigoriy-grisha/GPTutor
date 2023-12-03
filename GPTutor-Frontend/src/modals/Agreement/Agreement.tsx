@@ -1,5 +1,4 @@
 import {
-  Button,
   Div,
   ModalPage,
   ModalPageHeader,
@@ -14,22 +13,14 @@ import React from "react";
 import { useNavigationContext } from "$/NavigationContext";
 
 import classes from "./Agreement.module.css";
-import { useGenerateImage } from "$/hooks/useGenerateImage";
-import { userAgreement } from "$/entity/user/UserAgreement";
+
 interface IProps {
   id: string;
 }
 
 function Agreement({ id }: IProps) {
-  const { goBack, goToOpenSource } = useNavigationContext();
+  const { goBack } = useNavigationContext();
   const { sizeX } = useAdaptivityConditionalRender();
-  const generateImage = useGenerateImage();
-
-  const onSubmit = async () => {
-    await userAgreement.setUserImageAgreement();
-    generateImage();
-    goBack();
-  };
 
   return (
     <ModalPage settlingHeight={100} id={id}>
@@ -42,7 +33,7 @@ function Agreement({ id }: IProps) {
             />
           )
         }
-        after={<PanelHeaderSubmit onClick={onSubmit} />}
+        after={<PanelHeaderSubmit onClick={goBack} />}
       >
         <Title level="1">Соглашение</Title>
       </ModalPageHeader>
@@ -322,9 +313,6 @@ function Agreement({ id }: IProps) {
           силы, это не оказывает влияния на действительность или применимость
           остальных положений.
         </Text>
-        <Button style={{ marginTop: 6 }} size="m" onClick={onSubmit}>
-          Подтвердить
-        </Button>
       </Div>
     </ModalPage>
   );

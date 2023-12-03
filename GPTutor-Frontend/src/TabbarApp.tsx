@@ -46,6 +46,7 @@ function TabbarApp({ setRef }: IProps) {
     return (
       <Tabbar
         className={classes.tabBar}
+        style={{ display: "grid" }}
         mode={platform === Platform.VKCOM ? "horizontal" : "vertical"}
       >
         <Separator wide style={{ width: "100%" }} />
@@ -84,6 +85,7 @@ function TabbarApp({ setRef }: IProps) {
 
   return (
     <Tabbar
+      style={{ display: "grid" }}
       className={classes.tabBar}
       mode={platform === Platform.VKCOM ? "horizontal" : "vertical"}
     >

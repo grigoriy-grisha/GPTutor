@@ -272,6 +272,11 @@ class ImageGeneration {
     return [];
   }
 
+  isWeakRequest() {
+    if (this.prompt$.get() === "") return false;
+    return this.getPromptWithStyles(this.prompt$.get()).split(",").length <= 4;
+  }
+
   getTextWithNegativePrompts(prompt: string) {
     const negativePrompts = this.negativePrompts$.get();
 

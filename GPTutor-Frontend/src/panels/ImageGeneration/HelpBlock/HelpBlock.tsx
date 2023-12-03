@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Div, Link, Spacing, Title } from "@vkontakte/vkui";
+import { Button, Card, Div, Link, Spacing, Text, Title } from "@vkontakte/vkui";
 import { Icon20InfoCircleOutline, Icon24DoneOutline } from "@vkontakte/icons";
 
 import { imageGeneration } from "$/entity/image";
@@ -26,8 +26,8 @@ function HelpBlock() {
               height={24}
             />
             <Title level="3">
-              Старайтесь писать больше ключевых слов, нейросети тяжело выстроить
-              образ из 1-4 слов.{" "}
+              Старайтесь писать больше ключевых слов через запятую! Нейросети
+              тяжело выстроить образ из 1-4 слов.{" "}
               <Link
                 target="_blank"
                 href="https://vk.com/@gptutor-primer-sozdaniya-kachestvennogo-zaprosa"

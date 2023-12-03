@@ -3,15 +3,29 @@ import { useNavigationContext } from "$/NavigationContext";
 import { imageGeneration } from "$/entity/image";
 
 export function useGenerateImage() {
-  const { openAgreement } = useNavigationContext();
+  const { openWeakRequest } = useNavigationContext();
 
-  return () => {
-    console.log(userAgreement);
+  return (ignoreWeak = true) => {
     if (!userAgreement.isHasImageAgreement.get()) {
-      openAgreement();
-      return;
+      if (userAgreement.viewUserAgreement.get()) {
+        userAgreement.setUserImageAgreement();
+        imageGeneration.generate();
+        return true;
+      }
+
+      imageGeneration.error$.set("Подтвердите соглашение!");
+      return false;
+    }
+
+    if (!ignoreWeak) {
+      if (imageGeneration.isWeakRequest()) {
+        openWeakRequest();
+        return false;
+      }
     }
 
     imageGeneration.generate();
+
+    return true;
   };
 }

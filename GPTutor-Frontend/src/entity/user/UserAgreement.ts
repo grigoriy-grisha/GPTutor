@@ -3,6 +3,11 @@ import { getImageAgreement, setImageAgreement } from "$/api/user";
 
 class UserAgreement {
   isHasImageAgreement = sig(false);
+  viewUserAgreement = sig(true);
+
+  toggleViewUserAgreement = () => {
+    this.viewUserAgreement.set(!this.viewUserAgreement.get());
+  };
 
   async getUserImageAgreement() {
     const imageAgreement = await getImageAgreement();

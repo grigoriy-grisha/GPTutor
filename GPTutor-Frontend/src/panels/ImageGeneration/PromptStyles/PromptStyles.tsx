@@ -1,4 +1,4 @@
-import { Card, Chip, IconButton } from "@vkontakte/vkui";
+import { Card, Chip, IconButton, Spacing } from "@vkontakte/vkui";
 import React from "react";
 import { imageGeneration } from "$/entity/image";
 import { Icon16CopyOutline } from "@vkontakte/icons";
@@ -15,43 +15,47 @@ function PromptStyles() {
   }
 
   return (
-    <Card mode="outline" className={classes.container}>
-      <div style={{ padding: 4 }}>
-        {imageGenerationPrompt.selectedStyles$.get().map((style) => (
-          <Chip
-            style={{ margin: 2 }}
-            key={style}
-            value={style}
-            onRemove={() => imageGenerationPrompt.$selectStyles(style)}
-          >
-            {style}
-          </Chip>
-        ))}
-      </div>
-      <div>
-        <IconButton>
-          <Icon16CopyOutline
-            className={classes.copy}
-            onClick={() => {
-              copyService.copyToClickBoard$
-                .run(imageGenerationPrompt.selectedStyles$.get().join(", "))
-                .then(() => {
-                  snackbarNotify.notify({
-                    type: "success",
-                    message: "Скопировано",
-                  });
-                })
-                .catch(() =>
-                  snackbarNotify.notify({
-                    type: "error",
-                    message: "Не удалось скопировать",
+    <>
+      <Spacing size={6} />
+
+      <Card mode="outline" className={classes.container}>
+        <div style={{ padding: 4 }}>
+          {imageGenerationPrompt.selectedStyles$.get().map((style) => (
+            <Chip
+              style={{ margin: 2 }}
+              key={style}
+              value={style}
+              onRemove={() => imageGenerationPrompt.$selectStyles(style)}
+            >
+              {style}
+            </Chip>
+          ))}
+        </div>
+        <div>
+          <IconButton>
+            <Icon16CopyOutline
+              className={classes.copy}
+              onClick={() => {
+                copyService.copyToClickBoard$
+                  .run(imageGenerationPrompt.selectedStyles$.get().join(", "))
+                  .then(() => {
+                    snackbarNotify.notify({
+                      type: "success",
+                      message: "Скопировано",
+                    });
                   })
-                );
-            }}
-          />
-        </IconButton>
-      </div>
-    </Card>
+                  .catch(() =>
+                    snackbarNotify.notify({
+                      type: "error",
+                      message: "Не удалось скопировать",
+                    })
+                  );
+              }}
+            />
+          </IconButton>
+        </div>
+      </Card>
+    </>
   );
 }
 
