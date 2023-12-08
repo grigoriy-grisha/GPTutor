@@ -43,17 +43,7 @@ bridge
     });
 
     await userAgreement.getUserImageAgreement();
-
-    let isDon = false;
-
-    await authService.setupToken("groups");
-    isDon = !!(await groupsService.checkIsDon());
-
     await adService.showBannerAd();
-
-    if (isDon) {
-      await adService.hideBannerAd();
-    }
 
     imageGeneration.init();
 
