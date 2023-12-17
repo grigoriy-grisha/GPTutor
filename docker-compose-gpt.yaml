@@ -1,0 +1,10 @@
+version: '3.9'
+
+services:
+  models-gpt:
+    container_name: models-gpt
+    ports:
+      - "1337:1337"
+    build:
+      context: GPTutor-Models
+      dockerfile: Dockerfile

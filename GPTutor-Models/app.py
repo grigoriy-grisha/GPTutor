@@ -42,20 +42,20 @@ def default_model():
 
     def raise_func():
         raise BadRequest()
-    #
-    # return Response(
-    #     generate_stream(
-    #         ChatCompletion.create(
-    #             model="gpt-4",
-    #             provider=Provider.Bing,
-    #             messages=messages,
-    #             chatId=uuid.uuid4(),
-    #             stream=True
-    #         ),
-    #         raise_func,
-    #     ),
-    #     mimetype='text/event-stream;charset=UTF-8',
-    # )
+
+    return Response(
+        generate_stream(
+            ChatCompletion.create(
+                model="gpt-4",
+                provider=Provider.Bing,
+                messages=messages,
+                chatId=uuid.uuid4(),
+                stream=True
+            ),
+            raise_func,
+        ),
+        mimetype='text/event-stream;charset=UTF-8',
+    )
 
 
 @app.post('/gpt-4')
