@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Platform, useAppearance, usePlatform } from "@vkontakte/vkui";
+import { Platform, Tooltip, useAppearance, usePlatform } from "@vkontakte/vkui";
 
 import { OutsideAlerter } from "$/components/OutsideAlerter";
-import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
 
 interface IProps {
   text: string;
@@ -17,21 +16,21 @@ function AppTextTooltip({ text, children }: IProps) {
 
   if (platform === Platform.VKCOM) {
     return (
-      <TextTooltip
+      <Tooltip
         placement="top-end"
         style={{ maxWidth: 350 }}
         appearance={appearance === "light" ? "accent" : "white"}
         text={text}
       >
         <div>{children}</div>
-      </TextTooltip>
+      </Tooltip>
     );
   }
 
   return (
     <OutsideAlerter handleOutside={() => setShown(false)}>
       {() => (
-        <TextTooltip
+        <Tooltip
           shown={shown}
           style={{ maxWidth: 200 }}
           appearance={appearance === "light" ? "accent" : "white"}
@@ -44,7 +43,7 @@ function AppTextTooltip({ text, children }: IProps) {
           >
             {children}
           </div>
-        </TextTooltip>
+        </Tooltip>
       )}
     </OutsideAlerter>
   );

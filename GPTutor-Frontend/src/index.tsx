@@ -1,4 +1,4 @@
-import "dignals-react/jsxPatch17";
+import "dignals-react/jsxPatch18";
 import "./env.js";
 
 import React from "react";

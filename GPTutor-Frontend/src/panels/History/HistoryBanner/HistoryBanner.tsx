@@ -134,14 +134,14 @@ function HistoryBanner({ dialog }: IProps) {
       subheader={
         <>
           <span className={classes.lineClamp}>
-            <Headline style={{ display: "inline" }} level="2" weight="1">
+            <Headline style={{ display: "inline" }} level="2" weight="1" Component="h4">
               Последнее сообщение:
             </Headline>{" "}
             {dialog.lastMessage}
           </span>
           {dialog.lastUpdated && (
             <span className={classes.lineClamp}>
-              <Headline style={{ display: "inline" }} level="2" weight="1">
+              <Headline style={{ display: "inline" }} level="2" weight="1" Component="h4">
                 Последнее обновление:
               </Headline>{" "}
               {new Date(dialog.lastUpdated).toLocaleString()}

@@ -33,7 +33,7 @@ function SubscriptionBlock({ chatGpt }: IProps) {
       <Separator wide />
       <Div className={classes.container}>
         <div className={classes.text}>
-          <Title level="3" className={classes.title}>
+          <Title level="3" className={classes.title} Component="h3">
             {platform === Platform.VKCOM &&
               plural(attempts, ["Доступен", "Доступно", "Доступно"])}{" "}
             <Title
@@ -41,6 +41,7 @@ function SubscriptionBlock({ chatGpt }: IProps) {
               className={classNames(classes.count, {
                 [classes.countError]: attempts === 0,
               })}
+              Component="h1"
             >
               {attempts}
             </Title>{" "}

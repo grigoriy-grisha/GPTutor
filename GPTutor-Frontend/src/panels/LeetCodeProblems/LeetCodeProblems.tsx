@@ -53,7 +53,7 @@ function LeetcodeProblems({ id }: IProps) {
         maxHeight
         headerChildren={
           <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            <Title>LeetCode</Title>
+            <Title Component="h1">LeetCode</Title>
           </PanelHeader>
         }
       >

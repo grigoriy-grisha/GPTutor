@@ -1,12 +1,11 @@
 import React from "react";
 
-import { useAppearance, WriteBarIcon } from "@vkontakte/vkui";
+import { Tooltip, useAppearance, WriteBarIcon } from "@vkontakte/vkui";
 import {
   Icon28CancelCircleOutline,
   Icon28DeleteOutline,
   Icon28Send,
 } from "@vkontakte/icons";
-import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
 import Time from "$/components/Time";
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 import { chatGpt } from "$/entity/GPT";
@@ -89,7 +88,7 @@ function WriteBarAfter({
       {timerIsStopped ? (
         sendBars
       ) : (
-        <TextTooltip
+        <Tooltip
           appearance={appearance === "light" ? "accent" : "white"}
           style={{ maxWidth: 150 }}
           text="Подождите, пока истечет время для отправки следующего сообщения"
@@ -97,7 +96,7 @@ function WriteBarAfter({
           <div>
             <Time seconds={time} />
           </div>
-        </TextTooltip>
+        </Tooltip>
       )}
     </div>
   );

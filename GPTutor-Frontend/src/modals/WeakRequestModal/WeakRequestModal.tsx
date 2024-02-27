@@ -70,6 +70,8 @@ function WeakRequestModal({ id }: IProps) {
           </Button>
         </div>
       }
+      subheaderComponent="h5"
+      headerComponent="h2"
     ></ModalCard>
   );
 }

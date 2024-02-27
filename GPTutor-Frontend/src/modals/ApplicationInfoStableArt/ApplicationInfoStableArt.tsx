@@ -46,7 +46,7 @@ function ApplicationInfoStableArt({ id }: IProps) {
           )
         }
       >
-        <Title level="1">Приложение</Title>
+        <Title level="1" Component="h1">Приложение</Title>
       </ModalPageHeader>
 
       <Separator wide />
@@ -54,7 +54,7 @@ function ApplicationInfoStableArt({ id }: IProps) {
       <Group style={{ marginTop: 8 }}>
         <AppDiv>
           <Text weight="3">
-            <Title style={{ display: "inline" }} level="3" as="span">
+            <Title style={{ display: "inline" }} level="3" as="span" Component="h3">
               Stable Art{" — "}
             </Title>
             это развлекательное приложение-инструмент, которое дает возможность

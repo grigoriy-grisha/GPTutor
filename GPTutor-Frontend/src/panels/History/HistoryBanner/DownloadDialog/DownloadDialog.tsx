@@ -1,7 +1,6 @@
-import { IconButton, Separator, SimpleCell, Title } from "@vkontakte/vkui";
+import { IconButton, Popover, Separator, SimpleCell, Title } from "@vkontakte/vkui";
 import { Icon56DownloadSquareOutline } from "@vkontakte/icons";
 import React, { useState } from "react";
-import { RichTooltip } from "@vkontakte/vkui/dist/components/RichTooltip/RichTooltip";
 
 import classes from "./DownloadDialog.module.css";
 import { OutsideAlerter } from "$/components/OutsideAlerter";
@@ -17,9 +16,7 @@ function DownloadDialog({ downloadTXT, downloadJSON }: IProps) {
   return (
     <OutsideAlerter handleOutside={() => setShown(false)}>
       {(getRef) => (
-        <RichTooltip
-          appearance="accent"
-          getRef={getRef}
+        <Popover
           placement="left"
           shown={shown}
           content={
@@ -31,7 +28,7 @@ function DownloadDialog({ downloadTXT, downloadJSON }: IProps) {
                   setShown(false);
                 }}
               >
-                <Title level="3" className={classes.extension}>
+                <Title level="3" className={classes.extension} Component="h3">
                   JSON
                 </Title>
               </SimpleCell>
@@ -43,7 +40,7 @@ function DownloadDialog({ downloadTXT, downloadJSON }: IProps) {
                   setShown(false);
                 }}
               >
-                <Title level="3" className={classes.extension}>
+                <Title level="3" className={classes.extension} Component="h3">
                   TXT
                 </Title>
               </SimpleCell>
@@ -56,7 +53,7 @@ function DownloadDialog({ downloadTXT, downloadJSON }: IProps) {
           >
             <Icon56DownloadSquareOutline width={34} height={34} />
           </IconButton>
-        </RichTooltip>
+        </Popover>
       )}
     </OutsideAlerter>
   );

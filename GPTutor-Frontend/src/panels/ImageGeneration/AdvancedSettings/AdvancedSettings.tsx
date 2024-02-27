@@ -28,13 +28,13 @@ function AdvancedSettings() {
     <Card mode="shadow">
       <Div>
         <Accordion
-          open={imageGeneration.advancedSettingOpen}
+          expanded={imageGeneration.advancedSettingOpen}
           className={classes.accordion}
         >
           <Accordion.Summary
             onClick={imageGeneration.toggleAdvancedSettingOpen}
           >
-            <Title level="3" weight="3" className={classes.accordionTitle}>
+            <Title level="3" weight="3" className={classes.accordionTitle} Component="h3">
               Расширенные настройки
             </Title>
           </Accordion.Summary>
@@ -139,6 +139,7 @@ function AdvancedSettings() {
                     </AppTextTooltip>
                   </div>
                 }
+                topComponent="h5"
               >
                 <div>
                   {imageGeneration.step$.get()}

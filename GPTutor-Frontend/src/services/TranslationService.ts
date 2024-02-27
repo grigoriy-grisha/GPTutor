@@ -1,5 +1,4 @@
 import bridge, { AnyRequestMethodName } from "@vkontakte/vk-bridge";
-import { log } from "@craco/craco/dist/lib/logger";
 
 export class TranslationService {
   attempts = 10;
@@ -11,26 +10,26 @@ export class TranslationService {
   }
 
   async translate(text: string) {
-    if (this.isEnglishOver50Percent(text)) return text;
-    if (this.attempts === 0) return text;
-    this.attempts--;
-    if (this.attempts === 0) {
-      this.runCleanAttempts();
-    }
-
-    const result = (await bridge.send(
-      <AnyRequestMethodName>"VKWebAppTranslate",
-      {
-        texts: [text.replaceAll(",", "$")],
-        translation_language: "ru-en",
-      } as any
-    )) as any;
-
-    if (result.texts) {
-      return result.texts.join("").replaceAll("$", ",");
-    }
-
-    return result.result.texts.join("").replaceAll("$", ",");
+    // if (this.isEnglishOver50Percent(text)) return text;
+    // if (this.attempts === 0) return text;
+    // this.attempts--;
+    // if (this.attempts === 0) {
+    //   this.runCleanAttempts();
+    // }
+    //
+    // const result = (await bridge.send(
+    //   <AnyRequestMethodName>"VKWebAppTranslate",
+    //   {
+    //     texts: [text.replaceAll(",", "$")],
+    //     translation_language: "ru-en",
+    //   } as any
+    // )) as any;
+    //
+    // if (result.texts) {
+    //   return result.texts.join("").replaceAll("$", ",");
+    // }
+    //
+    // return result.result.texts.join("").replaceAll("$", ",");
   }
 
   isEnglishOver50Percent(text: string) {

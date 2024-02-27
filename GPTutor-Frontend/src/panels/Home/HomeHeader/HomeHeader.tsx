@@ -25,7 +25,7 @@ function HomeHeader() {
       }
     >
       <div className={classes.wrapper}>
-        <Title level="1">GPTutor</Title>
+        <Title level="1" Component="h1">GPTutor</Title>
       </div>
     </AppPanelHeader>
   );

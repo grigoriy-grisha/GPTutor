@@ -43,7 +43,7 @@ function History({ id }: IProps) {
             before={<PanelHeaderBack onClick={goBack} />}
             after={<HistoryDelete />}
           >
-            <Title level="1">История</Title>
+            <Title level="1" Component="h1">История</Title>
           </AppPanelHeader>
         }
       >

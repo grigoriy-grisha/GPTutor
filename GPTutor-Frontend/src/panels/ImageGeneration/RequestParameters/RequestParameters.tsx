@@ -33,11 +33,11 @@ function RequestParameters() {
       <Div>
         <Spacing size={6} />
         <Accordion
-          open={imageGeneration.requestParameters}
+          expanded={imageGeneration.requestParameters}
           className={classes.accordion}
         >
           <Accordion.Summary onClick={imageGeneration.toggleRequestParameters}>
-            <Title level="3" weight="3" className={classes.accordionTitle}>
+            <Title level="3" weight="3" className={classes.accordionTitle} Component="h3">
               Параметры результата
             </Title>
           </Accordion.Summary>
@@ -83,7 +83,7 @@ function RequestParameters() {
             </div>
 
             <Spacing size={8} />
-            <FormItem id="step" top="Ширина">
+            <FormItem id="step" top="Ширина" topComponent="h5">
               <div>
                 {imageGeneration.width$.get()}
                 <Spacing size={4} />
@@ -97,7 +97,7 @@ function RequestParameters() {
                 />
               </div>
             </FormItem>
-            <FormItem id="step" top="Высота">
+            <FormItem id="step" top="Высота" topComponent="h5">
               <div>
                 {imageGeneration.height$.get()}
                 <Spacing size={4} />
@@ -112,7 +112,7 @@ function RequestParameters() {
               </div>
             </FormItem>
             <Spacing size={8} />
-            <FormItem top="Количество изображений">
+            <FormItem top="Количество изображений" topComponent="h5">
               <Select
                 options={["1", "2", "3", "4"]
                   .map((item) => ({
