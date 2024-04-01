@@ -85,8 +85,11 @@ const App = () => {
         }
         modal={
           <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
-            <ApplicationInfo id={Modals.applicationInfo} />
-            <ApplicationInfoStableArt id={Modals.applicationInfoStableArt} />
+            <ApplicationInfo settlingHeight={100} id={Modals.applicationInfo} />
+            <ApplicationInfoStableArt
+              settlingHeight={100}
+              id={Modals.applicationInfoStableArt}
+            />
             <InterviewQuestions id={Modals.interviewQuestions} />
             <Agreement id={Modals.agreement} />
             <DetailImage id={Modals.detailImage} settlingHeight={100} />

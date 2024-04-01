@@ -47,41 +47,44 @@ function AppContainer({
   const offsetHeightTabbar = tabbarElem?.offsetHeight || 0;
   const offsetHeightFixedBottom = fixedBottom?.offsetHeight || 0;
 
+  console.log(offsetHeightTabbar);
   const offset =
     offsetHeightHeader + offsetHeightTabbar + offsetHeightFixedBottom;
 
   const height = `calc(100vh - ${offset}px)`;
 
-  return <>
-    {headerChildren && <div ref={setHeaderElem as any}>{headerChildren}</div>}
-    <div
-      ref={containerRef}
-      className={classNames(classes.container, className, {
-        [classes.secondary]: isSecondary,
-      })}
-      style={{
-        marginBottom: `${offsetHeightTabbar + offsetHeightFixedBottom}px`,
-        minHeight: height,
-        height: "100%",
-        ...(maxHeight ? { maxHeight: height } : {}),
-        ...style,
-      }}
-    >
-      {childrenWithHeight ? childrenWithHeight(height, offset) : children}
-    </div>
-    {fixedBottomContent && (
-      <FixedLayout
-        style={{ bottom: offsetHeightTabbar }}
-        getRootRef={setFixedElem as any}
-        filled
-        vertical="bottom"
+  return (
+    <>
+      {headerChildren && <div ref={setHeaderElem as any}>{headerChildren}</div>}
+      <div
+        ref={containerRef}
+        className={classNames(classes.container, className, {
+          [classes.secondary]: isSecondary,
+        })}
+        style={{
+          marginBottom: `${offsetHeightTabbar + offsetHeightFixedBottom}px`,
+          minHeight: height,
+          height: "100%",
+          ...(maxHeight ? { maxHeight: height } : {}),
+          ...style,
+        }}
       >
-        <Separator wide />
-        {fixedBottomContent}
-      </FixedLayout>
-    )}
-    {!withoutTabbar && <TabbarApp setRef={setTabbarElem} />}
-  </>;
+        {childrenWithHeight ? childrenWithHeight(height, offset) : children}
+      </div>
+      {fixedBottomContent && (
+        <FixedLayout
+          style={{ bottom: offsetHeightTabbar }}
+          getRootRef={setFixedElem as any}
+          filled
+          vertical="bottom"
+        >
+          <Separator wide />
+          {fixedBottomContent}
+        </FixedLayout>
+      )}
+      {!withoutTabbar && <TabbarApp setRef={setTabbarElem} />}
+    </>
+  );
 }
 
 export default AppContainer;

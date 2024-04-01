@@ -6,6 +6,7 @@ import {
   PanelHeader,
   PanelHeaderBack,
   Platform,
+  Separator,
   SimpleCell,
   Text,
   usePlatform,
@@ -16,6 +17,7 @@ import { ChatGPTLogo } from "$/icons";
 import { IsTypingLoader } from "$/components/IsTypingLoader";
 
 import classes from "./Header.module.css";
+import { AppPanelHeader } from "$/components/AppPanelHeader";
 
 interface IProps {
   goBack: () => void;
@@ -26,7 +28,7 @@ function Header({ goBack, isTyping }: IProps) {
   const platform = usePlatform();
 
   return (
-    <PanelHeader
+    <AppPanelHeader
       className={classNames(classes.header, {
         [classes.desktopHeader]: platform === Platform.VKCOM,
         [classes.compactHeader]: platform !== Platform.VKCOM,
@@ -63,7 +65,7 @@ function Header({ goBack, isTyping }: IProps) {
       >
         <Text weight="1">GPTutor</Text>
       </SimpleCell>
-    </PanelHeader>
+    </AppPanelHeader>
   );
 }
 
