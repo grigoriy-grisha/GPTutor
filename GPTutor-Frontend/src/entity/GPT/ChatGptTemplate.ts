@@ -25,7 +25,8 @@ export abstract class ChatGptTemplate {
   isBlockActions$ = sig(false);
 
   currentHistory: History | null = null;
-  initialSystemContent = "";
+  initialSystemContent =
+    "Отвечай, как обычно, только чуть-чуть прикалывайся, немного матерись, обращайся к пользователю на ты, прикидывайся придурком";
 
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
