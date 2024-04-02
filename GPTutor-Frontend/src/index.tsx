@@ -24,7 +24,7 @@ const isFirstVisitFlagName = "isFirstVisit";
 
 const storageService = new VkStorageService();
 
-listenResize(1200, 1200);
+listenResize(800, 900);
 
 bridge
   .send("VKWebAppInit")
