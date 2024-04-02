@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Platform, usePlatform } from "@vkontakte/vkui";
+import { useAdaptivityWithJSMediaQueries } from "@vkontakte/vkui";
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 
 type HookWriteParams = {
@@ -8,7 +8,7 @@ type HookWriteParams = {
 };
 
 export function useWrite({ chatGpt, handleSend }: HookWriteParams) {
-  const platform = usePlatform();
+  const { sizeX } = useAdaptivityWithJSMediaQueries();
   const [value, setValue] = useState("");
   const isTyping = chatGpt.sendCompletions$.loading.get();
 
@@ -19,7 +19,7 @@ export function useWrite({ chatGpt, handleSend }: HookWriteParams) {
 
   const onEnterSend = (event: any) => {
     if (!valueRef.current.trim()) return;
-    if (platform !== Platform.VKCOM) return;
+    if (sizeX !== "regular") return;
 
     if (chatGpt.isBlockActions$.get()) return;
     if (!chatGpt.timer.isStopped$.get()) return;
