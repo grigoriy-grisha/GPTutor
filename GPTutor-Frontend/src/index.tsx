@@ -2,7 +2,7 @@ import "dignals-react/jsxPatch18";
 import "./env.js";
 
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import bridge from "@vkontakte/vk-bridge";
 import { Page, Router, RouterContext } from "@happysanta/router";
 import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
@@ -18,10 +18,13 @@ import { subscriptionsController } from "$/entity/subscriptions";
 import { VkStorageService } from "$/services/VkStorageService";
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
 import { userAgreement } from "$/entity/user/UserAgreement";
+import { listenResize } from "./resizeWindow";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
 const storageService = new VkStorageService();
+
+listenResize(1200, 1200);
 
 bridge
   .send("VKWebAppInit")
@@ -102,7 +105,9 @@ const router = new Router(routes);
 
 router.start();
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root")!);
+
+root.render(
   <RouterContext.Provider value={router}>
     <NavigationContextProvider>
       <ConfigProvider>
@@ -113,6 +118,5 @@ ReactDOM.render(
         </AdaptivityProvider>
       </ConfigProvider>
     </NavigationContextProvider>
-  </RouterContext.Provider>,
-  document.getElementById("root")
+  </RouterContext.Provider>
 );
