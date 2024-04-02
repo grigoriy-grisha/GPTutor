@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Tooltip, useAppearance, WriteBarIcon } from "@vkontakte/vkui";
+import { Button, Tooltip, useAppearance, WriteBarIcon } from "@vkontakte/vkui";
 import {
   Icon28CancelCircleOutline,
   Icon28DeleteOutline,
@@ -26,7 +26,7 @@ function WriteBarAfter({
   sendMessage,
   hideDeleteDialog,
 }: IProps) {
-  const { openAlert, goBack } = useNavigationContext();
+  const { openAlert, goBack, goToGPTutorProfile } = useNavigationContext();
   const appearance = useAppearance();
 
   const isTyping = chatGptModel.sendCompletions$.loading.get();
@@ -88,15 +88,25 @@ function WriteBarAfter({
       {timerIsStopped ? (
         sendBars
       ) : (
-        <Tooltip
-          appearance={appearance === "light" ? "accent" : "white"}
-          style={{ maxWidth: 150 }}
-          text="Подождите, пока истечет время для отправки следующего сообщения"
-        >
-          <div>
-            <Time seconds={time} />
-          </div>
-        </Tooltip>
+        <div className={classes.containerButtons}>
+          <Button
+            onClick={goToGPTutorProfile}
+            size="s"
+            mode="tertiary"
+            className={classes.skipButton}
+          >
+            Отключить
+          </Button>
+          <Tooltip
+            appearance={appearance === "light" ? "accent" : "white"}
+            style={{ maxWidth: 150 }}
+            text="Подождите, пока истечет время для отправки следующего сообщения"
+          >
+            <div>
+              <Time seconds={time} />
+            </div>
+          </Tooltip>
+        </div>
       )}
     </div>
   );

@@ -8,11 +8,11 @@ import {
 } from "@vkontakte/vkui";
 import {
   Icon20PictureStack,
-  Icon20User,
   Icon24MagicWandOutline,
   Icon28BookSpreadOutline,
   Icon28HistoryBackwardOutline,
   Icon28NewsfeedLinesOutline,
+  Icon28UserRectangleHorizontalOutline,
 } from "@vkontakte/icons";
 import React from "react";
 import { useNavigationContext } from "$/NavigationContext";
@@ -33,8 +33,9 @@ function TabbarApp({ setRef }: IProps) {
     goToModes,
     goToHistory,
     goToGallery,
-    goToGenerationImages,
     goToPublishingImages,
+    goToGPTutorProfileReplace,
+    goToGenerationImages,
   } = useNavigationContext();
 
   const platform = usePlatform();
@@ -100,6 +101,13 @@ function TabbarApp({ setRef }: IProps) {
           onClick={goToModes}
         >
           <Icon28BookSpreadOutline />
+        </TabbarItem>
+        <TabbarItem
+          className={classes.tabItem}
+          text="Профиль"
+          onClick={goToGPTutorProfileReplace}
+        >
+          <Icon28UserRectangleHorizontalOutline />
         </TabbarItem>
         <TabbarItem
           className={classes.tabItem}

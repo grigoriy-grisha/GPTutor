@@ -47,6 +47,8 @@ export type NavigationContextType = {
   openApplicationInfoStableArt: () => void;
   openWeakRequest: () => void;
   openAgreement: () => void;
+  goToGPTutorProfileReplace: () => void;
+  goToGPTutorProfile: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -173,6 +175,10 @@ export function NavigationContextProvider({
 
   const openWeakRequest = () => router.pushModal(Modals.weakRequest);
 
+  const goToGPTutorProfileReplace = () =>
+    push(RoutingPages.gptutorProfile, "replace");
+
+  const goToGPTutorProfile = () => push(RoutingPages.gptutorProfile);
   const openApplicationInfoStableArt = () =>
     router.pushModal(Modals.applicationInfoStableArt);
 
@@ -217,6 +223,8 @@ export function NavigationContextProvider({
         openDetailImage,
         openAgreement,
         openWeakRequest,
+        goToGPTutorProfileReplace,
+        goToGPTutorProfile,
         alert,
         isForbidden,
       }}

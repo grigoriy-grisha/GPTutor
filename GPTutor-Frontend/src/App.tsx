@@ -53,6 +53,7 @@ import { PublishingImages } from "$/panels/PublishingImages";
 import { Agreement } from "$/modals/Agreement";
 import { DetailImage } from "$/modals/DetailImage";
 import { WeakRequestModal } from "$/modals/WeakRequestModal";
+import { GPTutorProfile } from "$/panels/GPTutorProfile";
 
 const App = () => {
   const location = useLocation();
@@ -128,6 +129,7 @@ const App = () => {
             <ImageCreatePrompts id={Panels.generationImagesPrompts} />
             <Profile id={Panels.profile} />
             <PublishingImages id={Panels.publishingImages} />
+            <GPTutorProfile id={Panels.gptutorProfile} />
           </View>
         )}
       </SplitLayout>

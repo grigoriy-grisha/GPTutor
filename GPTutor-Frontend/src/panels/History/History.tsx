@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { Panel, PanelHeaderBack, Spinner, Title } from "@vkontakte/vkui";
+import { Div, Panel, PanelHeaderBack, Spinner, Title } from "@vkontakte/vkui";
 
 import { AppContainer } from "$/components/AppContainer";
 import { useNavigationContext } from "$/NavigationContext";
@@ -43,11 +43,13 @@ function History({ id }: IProps) {
             before={<PanelHeaderBack onClick={goBack} />}
             after={<HistoryDelete />}
           >
-            <Title level="1" Component="h1">История</Title>
+            <Title level="1" Component="h1">
+              История
+            </Title>
           </AppPanelHeader>
         }
       >
-        <div>
+        <Div>
           <HistoryList />
           {loading && (
             <div
@@ -57,7 +59,7 @@ function History({ id }: IProps) {
               <Spinner size="large" />
             </div>
           )}
-        </div>
+        </Div>
       </AppContainer>
     </Panel>
   );

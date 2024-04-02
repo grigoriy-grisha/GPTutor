@@ -22,8 +22,11 @@ public class SubscriptionImages {
 
     int expire;
 
+    String name;
+
     public SubscriptionImages(
             VkUser vkUser,
+            String name,
             boolean isActive,
             String subscriptionId,
             int expire
@@ -32,6 +35,7 @@ public class SubscriptionImages {
         this.isActive = isActive;
         this.subscriptionId = subscriptionId;
         this.expire = expire;
+        this.name = name;
 
     }
 
@@ -78,5 +82,13 @@ public class SubscriptionImages {
 
     public void setExpire(int expire) {
         this.expire = expire;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

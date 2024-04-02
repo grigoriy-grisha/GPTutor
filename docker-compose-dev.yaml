@@ -8,6 +8,8 @@ services:
     container_name: backend-dev
     depends_on:
       - postgresql-dev
+    ports:
+      - "8080:8080"
 
   models-dev:
     env_file:

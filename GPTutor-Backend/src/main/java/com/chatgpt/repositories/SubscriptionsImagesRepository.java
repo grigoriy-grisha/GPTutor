@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.UUID;
 
 public interface SubscriptionsImagesRepository extends CrudRepository<SubscriptionImages, UUID> {
-    SubscriptionImages findByVkUserId(UUID vkId);
+    SubscriptionImages findByVkUserIdAndName(UUID vkUser_id, String name);
 }
