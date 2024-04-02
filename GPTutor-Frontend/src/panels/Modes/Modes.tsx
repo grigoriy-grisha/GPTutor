@@ -19,6 +19,7 @@ import { chatGpt } from "$/entity/GPT";
 
 import classes from "./Modes.module.css";
 import { trainers } from "$/entity/Trainers";
+import { AppPanelHeader } from "$/components/AppPanelHeader";
 
 interface IProps {
   id: string;
@@ -39,9 +40,9 @@ function Modes({ id }: IProps) {
         isSecondary
         className={classes.container}
         headerChildren={
-          <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            <PanelTitle mobileTitle="Режимы" title="Режимы"></PanelTitle>
-          </PanelHeader>
+          <AppPanelHeader before={<PanelHeaderBack onClick={goBack} />}>
+            <PanelTitle mobileTitle="Режимы" title="Режимы" />
+          </AppPanelHeader>
         }
       >
         <Cards

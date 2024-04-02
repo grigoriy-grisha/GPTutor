@@ -1,5 +1,4 @@
 import bridge, { AnyRequestMethodName } from "@vkontakte/vk-bridge";
-import { log } from "@craco/craco/dist/lib/logger";
 
 export class TranslationService {
   attempts = 10;

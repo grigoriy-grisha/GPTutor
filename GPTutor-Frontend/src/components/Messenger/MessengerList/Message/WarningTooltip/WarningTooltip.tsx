@@ -1,6 +1,5 @@
 import React, { memo, useState } from "react";
-import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
-import { IconButton, useAppearance } from "@vkontakte/vkui";
+import { IconButton, Tooltip, useAppearance } from "@vkontakte/vkui";
 import { Icon24WarningTriangleOutline } from "@vkontakte/icons";
 
 import { OutsideAlerter } from "$/components/OutsideAlerter";
@@ -12,7 +11,7 @@ function WarningTooltip() {
   return (
     <OutsideAlerter handleOutside={() => setShown(false)}>
       {() => (
-        <TextTooltip
+        <Tooltip
           shown={shown}
           style={{ maxWidth: 200 }}
           appearance={appearance === "light" ? "accent" : "white"}
@@ -23,7 +22,7 @@ function WarningTooltip() {
           <IconButton onClick={() => setShown(!shown)}>
             <Icon24WarningTriangleOutline />
           </IconButton>
-        </TextTooltip>
+        </Tooltip>
       )}
     </OutsideAlerter>
   );

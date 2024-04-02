@@ -9,6 +9,7 @@ import PanelTitle from "$/components/PanelTitle";
 import Lessons from "./Lessons";
 import { useNavigationContext } from "$/NavigationContext";
 import { AppContainer } from "$/components/AppContainer";
+import { AppPanelHeader } from "$/components/AppPanelHeader";
 
 interface IProps {
   id: string;
@@ -34,12 +35,12 @@ function Chapters({ id }: IProps) {
     <Panel id={id}>
       <AppContainer
         headerChildren={
-          <PanelHeader shadow before={<PanelHeaderBack onClick={goBack} />}>
+          <AppPanelHeader before={<PanelHeaderBack onClick={goBack} />}>
             <PanelTitle
               mobileTitle="Темы"
               title={chapterTitles[currentChapter?.type]}
-            ></PanelTitle>
-          </PanelHeader>
+            />
+          </AppPanelHeader>
         }
       >
         {currentChapter && (

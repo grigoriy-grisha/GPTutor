@@ -22,6 +22,7 @@ import classes from "./LeetCodeProblems.module.css";
 import { useInfinityScroll } from "$/hooks/useInfinityScroll";
 import { StatusTag } from "$/panels/LeetCodeProblems/StatusTag";
 import { chatGpt } from "$/entity/GPT";
+import { AppPanelHeader } from "$/components/AppPanelHeader";
 
 interface IProps {
   id: string;
@@ -52,9 +53,9 @@ function LeetcodeProblems({ id }: IProps) {
         className={classes.mainContainer}
         maxHeight
         headerChildren={
-          <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            <Title>LeetCode</Title>
-          </PanelHeader>
+          <AppPanelHeader before={<PanelHeaderBack onClick={goBack} />}>
+            <Title Component="h1">LeetCode</Title>
+          </AppPanelHeader>
         }
       >
         <div>

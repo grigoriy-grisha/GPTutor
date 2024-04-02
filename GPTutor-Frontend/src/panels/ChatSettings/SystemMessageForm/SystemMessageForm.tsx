@@ -36,7 +36,7 @@ function SystemMessageForm({
       mode="plain"
       header={
         <AppDiv>
-          <Title level="3">Системное сообщение</Title>
+          <Title level="3" Component="h3">Системное сообщение</Title>
         </AppDiv>
       }
       description="Системное сообщение предназначено для ChatGPT.

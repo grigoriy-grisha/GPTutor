@@ -24,6 +24,7 @@ public class PurchaseService {
 
     PurchaseService() {
         items.put("subscription_1", new PurchaseItem("Расширение функционала на месяц", 12));
+        items.put("subscription_2", new PurchaseItem("Отключение ограничений на месяц", 12));
     }
 
     public PurchaseItem getItem(String itemName) {

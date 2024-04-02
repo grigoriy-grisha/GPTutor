@@ -81,7 +81,7 @@ function ImageItem({ image }: IProps) {
           {image.item.loraModel && (
             <div>
               Lora model:{" "}
-              <Headline style={{ display: "inline" }} level="2" weight="1">
+              <Headline style={{ display: "inline" }} level="2" weight="1" Component="h4">
                 {image.item.loraModel}
               </Headline>
             </div>
@@ -89,13 +89,13 @@ function ImageItem({ image }: IProps) {
           <div>{image.item.originalPrompt}</div>
           <div>
             Создано:{" "}
-            <Headline style={{ display: "inline" }} level="2" weight="1">
+            <Headline style={{ display: "inline" }} level="2" weight="1" Component="h4">
               {new Date(image.item.createdAt).toLocaleString()}
             </Headline>
           </div>
 
           <div>
-            <Headline style={{ display: "inline" }} level="2" weight="1">
+            <Headline style={{ display: "inline" }} level="2" weight="1" Component="h4">
               {image.item.generatedSeed && (
                 <CopyText text={image.item.generatedSeed} />
               )}

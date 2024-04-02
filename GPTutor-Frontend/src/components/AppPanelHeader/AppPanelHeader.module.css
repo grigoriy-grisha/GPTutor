@@ -8,7 +8,11 @@
 
 .panelHeader :global(.vkuiPanelHeader__after) {
     flex: none;
+}
 
+.panelHeader :global(.vkuiSpacing) {
+    height: 0 !important;
+    padding: 0 !important;
 }
 
 .panelHeaderVkApps :global(.vkuiPanelHeader__after) {

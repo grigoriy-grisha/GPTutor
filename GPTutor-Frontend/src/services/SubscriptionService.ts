@@ -1,11 +1,11 @@
 import bridge from "@vkontakte/vk-bridge";
 
 class SubscriptionService {
-  async subscription(action: "create" | "resume" | "cancel") {
+  async subscription(action: "create" | "resume" | "cancel", item: string) {
     await bridge
       .send("VKWebAppShowSubscriptionBox", {
         action,
-        item: "subscription_1",
+        item,
       })
       .catch((error) => {
         console.log(
@@ -14,10 +14,10 @@ class SubscriptionService {
         );
       });
   }
-  create() {
+  create(item: string) {
     return bridge.send("VKWebAppShowSubscriptionBox", {
       action: "create",
-      item: "subscription_1",
+      item,
     });
   }
   cancel(subscription_id: string) {

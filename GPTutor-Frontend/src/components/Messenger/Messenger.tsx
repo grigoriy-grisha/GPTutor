@@ -1,6 +1,7 @@
 import React, { memo, useEffect } from "react";
 
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
+import { subscriptionsController } from "$/entity/subscriptions";
 
 import { Header } from "./Header";
 import { MessengerContainer } from "./MessengerContainer";
@@ -46,10 +47,14 @@ function Messenger({
   const { isTyping, scrollRef, showScrollDown, handlerSend, scrollToBottom } =
     useMessenger({ chatGpt });
 
+  const isDisableSubscription = subscriptionsController.isDisable();
+
   useEffect(() => {
-    chatGpt.init();
+    if (!isDisableSubscription) {
+      chatGpt.disableTimer();
+    }
     return () => chatGpt.closeDelay();
-  }, []);
+  }, [isDisableSubscription]);
 
   return (
     <AppContainer

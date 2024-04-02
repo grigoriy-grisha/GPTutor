@@ -15,7 +15,7 @@ function NotEnoughAttempts() {
     <Card mode="shadow">
       <Div>
         <div>
-          <Title level="3" weight="2" className={classes.text}>
+          <Title level="3" weight="2" className={classes.text} Component="h3">
             <Icon28CancelCircleFillRed className={classes.icon} /> У вас
             закончились запросы! Пополните баланс или заработайте бесплатно
           </Title>

@@ -24,7 +24,7 @@ function OpenSource({ id }: IProps) {
         isSecondary
         headerChildren={
           <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            <Title level="1">Присоединяйся</Title>
+            <Title level="1" Component="h1">Присоединяйся</Title>
           </PanelHeader>
         }
       >

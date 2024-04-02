@@ -1,6 +1,6 @@
 import { memo, sig } from "dignals";
+import { ChipOption } from "@vkontakte/vkui";
 
-import { defaultModel, defaultSampler } from "./styles";
 import ReactivePromise from "$/services/ReactivePromise";
 import { generateImage, getImageBase64 } from "$/api/images";
 import {
@@ -14,10 +14,11 @@ import { translationService } from "$/services/TranslationService";
 import { datePlus30Days } from "$/utility/date";
 import { ImageGenerationPrompt } from "$/entity/image/ImageGenerationPrompt";
 
-import { ChipOption } from "@vkontakte/vkui/dist/components/Chip/Chip";
 import { StopWatch } from "$/entity/stopWatch";
 import { getRandomStylesImage } from "$/entity/image/prompts";
 import { vkStorageService } from "$/services/VkStorageService";
+
+import { defaultModel, defaultSampler } from "./styles";
 
 const emptyPrompt = {
   ru: "Космонавт верхном на лошади, hd, Космическое сияние, высокое качество, профессиональное фото",
@@ -75,8 +76,6 @@ class ImageGeneration {
     this.setResults();
     this.initHelpBlock();
   }
-
-  init() {}
 
   toggleEnhancePrompt = () => {
     this.enhancePrompt$.set(!this.enhancePrompt$.get());

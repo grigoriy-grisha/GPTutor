@@ -60,7 +60,7 @@ function ImageGenerationDesktop() {
             </div>
           }
         >
-          <Title level="2" className={classes.title}>
+          <Title level="2" className={classes.title} Component="h2">
             Stable Art
           </Title>
         </AppPanelHeader>

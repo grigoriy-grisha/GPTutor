@@ -53,6 +53,7 @@ import { PublishingImages } from "$/panels/PublishingImages";
 import { Agreement } from "$/modals/Agreement";
 import { DetailImage } from "$/modals/DetailImage";
 import { WeakRequestModal } from "$/modals/WeakRequestModal";
+import { GPTutorProfile } from "$/panels/GPTutorProfile";
 
 const App = () => {
   const location = useLocation();
@@ -85,8 +86,11 @@ const App = () => {
         }
         modal={
           <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
-            <ApplicationInfo id={Modals.applicationInfo} />
-            <ApplicationInfoStableArt id={Modals.applicationInfoStableArt} />
+            <ApplicationInfo settlingHeight={100} id={Modals.applicationInfo} />
+            <ApplicationInfoStableArt
+              settlingHeight={100}
+              id={Modals.applicationInfoStableArt}
+            />
             <InterviewQuestions id={Modals.interviewQuestions} />
             <Agreement id={Modals.agreement} />
             <DetailImage id={Modals.detailImage} settlingHeight={100} />
@@ -125,6 +129,7 @@ const App = () => {
             <ImageCreatePrompts id={Panels.generationImagesPrompts} />
             <Profile id={Panels.profile} />
             <PublishingImages id={Panels.publishingImages} />
+            <GPTutorProfile id={Panels.gptutorProfile} />
           </View>
         )}
       </SplitLayout>

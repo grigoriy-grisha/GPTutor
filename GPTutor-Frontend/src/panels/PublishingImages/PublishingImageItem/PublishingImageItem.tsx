@@ -87,7 +87,7 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
                 </IconButton>
               </div>
             </div>
-            <Subhead className={classes.itemSubhead}>{image.modelId}</Subhead>
+            <Subhead className={classes.itemSubhead} Component="h5">{image.modelId}</Subhead>
           </div>
         }
       />

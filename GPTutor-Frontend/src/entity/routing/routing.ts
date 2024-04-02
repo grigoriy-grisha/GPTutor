@@ -1,3 +1,5 @@
+import { GPTutorProfile } from "$/panels/GPTutorProfile";
+
 export enum RoutingPages {
   home = "/",
   chapters = "/chapters",
@@ -26,6 +28,7 @@ export enum RoutingPages {
   detailImage = "/detail-image",
 
   profile = "/profile",
+  gptutorProfile = "/gptutor-profile",
 }
 
 export enum Views {
@@ -50,6 +53,7 @@ export enum Panels {
   generationImagesExamples = "generation-images-examples",
   generationImagesPrompts = "generation-images-prompts",
   publishingImages = "publishing-images",
+  gptutorProfile = "gptutor-profile",
 
   gallery = "gallery",
 

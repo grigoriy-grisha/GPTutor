@@ -24,7 +24,6 @@
 
 .tabItem {
     cursor: pointer;
-    padding-bottom: 3px;
 }
 
 .tabItem:hover {

@@ -1,18 +1,14 @@
 package com.chatgpt.services;
 
-import com.chatgpt.entity.OrderSubscription;
 import com.chatgpt.entity.SubscriptionImages;
-import com.chatgpt.entity.responses.OrderSubscriptionResponse;
 import com.chatgpt.entity.responses.SubscriptionsChangeResponse;
 import com.chatgpt.repositories.SubscriptionsImagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 public class SubscriptionsImagesService {
@@ -31,14 +27,15 @@ public class SubscriptionsImagesService {
 
         if (Objects.equals(allRequestParams.get("status"), "active")
                 && allRequestParams.get("cancel_reason") != null) {
-            cancelSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"));
+            cancelSubscription(allRequestParams.get("user_id"), allRequestParams.get("subscription_id"), allRequestParams.get("item_id"));
         } else {
             activeSubscription(
                     allRequestParams.get("user_id"),
                     allRequestParams.get("subscription_id"),
                     allRequestParams.get("next_bill_time") != null
                             ? Integer.parseInt(allRequestParams.get("next_bill_time"))
-                            : 0
+                            : 0,
+                    allRequestParams.get("item_id")
             );
         }
 
@@ -50,15 +47,16 @@ public class SubscriptionsImagesService {
 
     }
 
-    public SubscriptionImages getOrCreateSubscriptions(String vkUser) {
+    public SubscriptionImages getOrCreateSubscriptions(String vkUser, String subscriptionName) {
         var user = userService.getOrCreateVkUser(vkUser);
 
-        var foundSubscriptions = subscriptionsImagesRepository.findByVkUserId(user.getId());
+        var foundSubscriptions = subscriptionsImagesRepository.findByVkUserIdAndName(user.getId(), subscriptionName);
         if (foundSubscriptions != null) return foundSubscriptions;
 
 
         var subscriptionsImages = new SubscriptionImages(
                 user,
+                subscriptionName,
                 false,
                 null,
                 0
@@ -69,22 +67,22 @@ public class SubscriptionsImagesService {
         return subscriptionsImages;
     }
 
-    public SubscriptionImages getSubscription(String vkUser) {
-        if (subscriptionIsEmpty(vkUser)) {
-            return getOrCreateSubscriptions(vkUser);
+    public SubscriptionImages getSubscription(String vkUser, String subscriptionName) {
+        if (subscriptionIsEmpty(vkUser, subscriptionName)) {
+            return getOrCreateSubscriptions(vkUser, subscriptionName);
         }
 
-        return updateSubscription(vkUser);
+        return updateSubscription(vkUser, subscriptionName);
     }
 
-    boolean subscriptionIsEmpty(String vkUser) {
-        var subscription = getOrCreateSubscriptions(vkUser);
+    boolean subscriptionIsEmpty(String vkUser, String subscriptionName) {
+        var subscription = getOrCreateSubscriptions(vkUser, subscriptionName);
 
         return subscription.getSubscriptionId() == null && subscription.getExpire() == 0;
     }
 
-    void activeSubscription(String vkUser, String subscriptionId, int nextBillTime) throws Exception {
-        var subscription = getOrCreateSubscriptions(vkUser);
+    void activeSubscription(String vkUser, String subscriptionId, int nextBillTime, String subscriptionName) {
+        var subscription = getOrCreateSubscriptions(vkUser, subscriptionName);
 
         subscription.setActive(true);
         if (nextBillTime > 0) {
@@ -95,8 +93,8 @@ public class SubscriptionsImagesService {
         subscriptionsImagesRepository.save(subscription);
     }
 
-    void cancelSubscription(String vkUser, String subscriptionId) throws Exception {
-        var subscription = getOrCreateSubscriptions(vkUser);
+    void cancelSubscription(String vkUser, String subscriptionId, String subscriptionName) {
+        var subscription = getOrCreateSubscriptions(vkUser, subscriptionName);
 
         subscription.setActive(false);
         subscription.setSubscriptionId(subscriptionId);
@@ -104,14 +102,14 @@ public class SubscriptionsImagesService {
         subscriptionsImagesRepository.save(subscription);
     }
 
-    boolean isAvailableSubscription(String vkUser) {
-        var subscription = getOrCreateSubscriptions(vkUser);
+    boolean isAvailableSubscription(String vkUser, String subscriptionName) {
+        var subscription = getOrCreateSubscriptions(vkUser, subscriptionName);
 
         return new Date(subscription.getExpire() * 1000L).after(new Date());
     }
 
-    public SubscriptionImages updateSubscription(String vkUser) {
-        var subscription = getOrCreateSubscriptions(vkUser);
+    public SubscriptionImages updateSubscription(String vkUser, String subscriptionName) {
+        var subscription = getOrCreateSubscriptions(vkUser, subscriptionName);
 
         try {
             var order = vkService.getUserSubscriptionById(vkUser, subscription.getSubscriptionId());
@@ -126,18 +124,6 @@ public class SubscriptionsImagesService {
         } catch (Exception e) {
             System.out.println(e.toString());
             return subscription;
-        }
-    }
-
-    @Async
-    void asyncMethodWithDelay(String vkUser) {
-        try {
-            Thread.sleep(10000);
-            updateSubscription(vkUser);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 }

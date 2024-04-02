@@ -74,7 +74,7 @@ function CodeEditor({ id }: IProps) {
                   )
                 }
               >
-                <Title level="2">Песочница</Title>
+                <Title level="2" Component="h2">Песочница</Title>
               </AppPanelHeader>
             </>
           }

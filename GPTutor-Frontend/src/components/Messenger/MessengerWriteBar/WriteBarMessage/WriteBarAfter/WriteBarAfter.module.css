@@ -1,5 +1,13 @@
 .container {
     display: flex;
     align-items: center;
+}
 
+.containerButtons {
+    display: flex;
+    align-items: center;
+}
+
+.skipButton {
+    color: #FF8C00 !important;
 }

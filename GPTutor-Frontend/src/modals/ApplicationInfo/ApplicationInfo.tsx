@@ -28,15 +28,16 @@ import { useApplicationInfo } from "./hooks/useApplicationInfo";
 
 interface IProps {
   id: string;
+  settlingHeight: number;
 }
 
-function ApplicationInfo({ id }: IProps) {
+function ApplicationInfo({ id, settlingHeight }: IProps) {
   const { goBack, goToOpenSource } = useNavigationContext();
   const { sizeX } = useAdaptivityConditionalRender();
   const { subscribe, favourites, share, getAppLink } = useApplicationInfo();
 
   return (
-    <ModalPage settlingHeight={100} id={id}>
+    <ModalPage settlingHeight={settlingHeight} id={id}>
       <ModalPageHeader
         before={
           sizeX.compact && (
@@ -47,15 +48,20 @@ function ApplicationInfo({ id }: IProps) {
           )
         }
       >
-        <Title level="1">Приложение</Title>
+        <Title level="1" Component="h1">
+          Приложение
+        </Title>
       </ModalPageHeader>
-
-      <Separator wide />
 
       <Group style={{ marginTop: 8 }}>
         <AppDiv>
           <Text weight="3">
-            <Title style={{ display: "inline" }} level="3" as="span">
+            <Title
+              style={{ display: "inline" }}
+              level="3"
+              as="span"
+              Component="h3"
+            >
               GPTutor{" — "}
             </Title>
             это образовательное приложение, которое предлагает уникальный подход

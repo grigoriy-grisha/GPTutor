@@ -39,9 +39,9 @@ function ImageStyles() {
   return (
     <Card mode="shadow">
       <Div>
-        <Accordion open={true} className={classes.accordion}>
+        <Accordion expanded={true} className={classes.accordion}>
           <Accordion.Summary>
-            <Title level="3" weight="3" className={classes.accordionTitle}>
+            <Title level="3" weight="3" className={classes.accordionTitle} Component="h3">
               Выбрать стиль
             </Title>
           </Accordion.Summary>
