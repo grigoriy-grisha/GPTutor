@@ -32,7 +32,8 @@ interface IProps {
 }
 
 function ApplicationInfo({ id, settlingHeight }: IProps) {
-  const { goBack, goToOpenSource } = useNavigationContext();
+  const { goBack, goToOpenSource, goToGPTutorProfileReplace } =
+    useNavigationContext();
   const { sizeX } = useAdaptivityConditionalRender();
   const { subscribe, favourites, share, getAppLink } = useApplicationInfo();
 
@@ -72,8 +73,7 @@ function ApplicationInfo({ id, settlingHeight }: IProps) {
       <Group style={{ marginTop: 0, padding: 0 }}>
         <SimpleCell
           before={<Icon20DonutCircleFillYellow width={28} height={24} />}
-          href="https://vk.com/gptutor?source=description&w=donut_payment-220371433"
-          target="_blank"
+          onClick={goToGPTutorProfileReplace}
         >
           <Text weight="2">Снять ограничения</Text>
         </SimpleCell>
