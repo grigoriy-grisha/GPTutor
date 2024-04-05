@@ -47,6 +47,25 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        if (authCheckerService.isUrlCheck(url)) {
+            boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(url);
+
+            if (isSignSuccess) {
+                request.setAttribute(
+                        "vkUserId",
+                        authCheckerService.getVkUserId(url)
+                );
+
+                request.setAttribute(
+                        "vkAppId",
+                        authCheckerService.getVkAppId(url)
+                );
+
+                return true;
+            }
+
+        }
+
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader != null) {
