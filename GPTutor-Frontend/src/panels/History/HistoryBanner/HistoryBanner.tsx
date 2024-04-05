@@ -20,6 +20,7 @@ import {
   classNames,
   Headline,
   Platform,
+  Spacing,
   Title,
   useAdaptivityWithJSMediaQueries,
   usePlatform,
@@ -144,6 +145,7 @@ function HistoryBanner({ dialog }: IProps) {
             </Headline>{" "}
             {dialog.lastMessage}
           </span>
+          <Spacing size={8} />
           {dialog.lastUpdated && (
             <span className={classes.lineClamp}>
               <Headline
