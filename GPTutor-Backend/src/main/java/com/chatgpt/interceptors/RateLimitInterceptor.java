@@ -21,7 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RateLimitInterceptor implements HandlerInterceptor {
 
     private final Map<String, Map<String, Bucket>> urlBuckets = new ConcurrentHashMap<>();
-    private final Map<String, Instant> userLastRequestTime = new ConcurrentHashMap<>();
 
     @Override
     public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
@@ -57,6 +56,10 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
         if (uri.startsWith("/history")) {
             return 30;
+        }
+
+        if (uri.startsWith("/conversation")) {
+            return 10;
         }
 
         return 100;
