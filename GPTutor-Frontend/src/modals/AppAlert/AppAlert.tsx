@@ -23,7 +23,7 @@ function AppAlert({ id }: IProps) {
           mode: "destructive",
           action: alert.onAction,
         },
-        { title: "Отмена", mode: "cancel", action: goBack },
+        { title: "Отмена", mode: "cancel" },
       ]}
       actionsLayout="vertical"
       header={alert.header}

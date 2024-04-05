@@ -5,8 +5,8 @@ import {
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
-  Separator,
   SimpleCell,
+  Spacing,
   Text,
   Title,
   useAdaptivityConditionalRender,
@@ -22,7 +22,7 @@ import {
 } from "@vkontakte/icons";
 
 import { useNavigationContext } from "$/NavigationContext";
-import { GithubIcon, StableArtLogo } from "$/icons";
+import { StableArtLogo } from "$/icons";
 import { AppDiv } from "$/components/AppDiv";
 import { useApplicationInfo } from "./hooks/useApplicationInfo";
 
@@ -111,7 +111,7 @@ function ApplicationInfo({ id, settlingHeight }: IProps) {
           href={getAppLink()}
           target="_blank"
           before={
-            <span style={{ paddingRight: 16 }}>
+            <span style={{ paddingRight: 4 }}>
               <StableArtLogo borderRadius="25%" />
             </span>
           }
@@ -123,17 +123,7 @@ function ApplicationInfo({ id, settlingHeight }: IProps) {
           <Text weight="2">Stable Art</Text>
         </SimpleCell>
       </Group>
-      <Group style={{ paddingTop: 0 }}>
-        <SimpleCell
-          onClick={goToOpenSource}
-          before={<GithubIcon style={{ paddingRight: 16 }} />}
-          after={
-            <Icon28ChevronRightOutline fill="var(--vkui--color_text_secondary)" />
-          }
-        >
-          <Text weight="2">OPEN SOURCE</Text>
-        </SimpleCell>
-      </Group>
+      <Spacing size={12} />
     </ModalPage>
   );
 }

@@ -29,7 +29,6 @@ import { Modals, Panels, Views } from "./entity/routing";
 
 import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
-import { OpenSource } from "./panels/OpenSource";
 import { History } from "./panels/History";
 import { Modes } from "./panels/Modes";
 
@@ -142,7 +141,6 @@ const App = () => {
                 <ChatFree id={Panels.chatFree} />
                 <ChatLesson id={Panels.chatLesson} />
                 <ChatInterview id={Panels.chatInterview} />
-                <OpenSource id={Panels.openSource} />
                 <History id={Panels.history} />
                 <Modes id={Panels.modes} />
                 <LeetcodeProblems id={Panels.leetcodeProblems} />

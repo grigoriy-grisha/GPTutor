@@ -8,7 +8,7 @@ function SubscriptionText() {
       <ul style={{ listStyle: "none", paddingLeft: 0 }}>
         <li>Отключение задержки!</li>
         <li>Отключение любой рекламы!</li>
-        <li>10 голосов!</li>
+        <li>12 голосов!</li>
       </ul>
     </div>
   );

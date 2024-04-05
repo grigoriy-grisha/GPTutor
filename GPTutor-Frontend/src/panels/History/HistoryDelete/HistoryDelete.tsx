@@ -19,7 +19,6 @@ function HistoryDelete() {
           openAlert({
             onAction: async () => {
               await chatGpt.history.removeAllHistories();
-              goBack();
             },
             actionText: "Удалить всю историю",
             header: "Подтвердите действие",
