@@ -96,6 +96,7 @@ function TabbarApp({ setRef }: IProps) {
         style={{ display: "flex", justifyContent: "space-between" }}
       >
         <TabbarItem
+          selected={activePanel === Panels.modes}
           className={classes.tabItem}
           text="Режимы"
           onClick={goToModes}
@@ -103,6 +104,7 @@ function TabbarApp({ setRef }: IProps) {
           <Icon28BookSpreadOutline />
         </TabbarItem>
         <TabbarItem
+          selected={activePanel === Panels.gptutorProfile}
           className={classes.tabItem}
           text="Профиль"
           onClick={goToGPTutorProfileReplace}
@@ -110,6 +112,7 @@ function TabbarApp({ setRef }: IProps) {
           <Icon28UserRectangleHorizontalOutline />
         </TabbarItem>
         <TabbarItem
+          selected={activePanel === Panels.history}
           className={classes.tabItem}
           text="История диалогов"
           onClick={goToHistory}
