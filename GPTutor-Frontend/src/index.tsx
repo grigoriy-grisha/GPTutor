@@ -110,13 +110,7 @@ const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <RouterContext.Provider value={router}>
     <NavigationContextProvider>
-      <ConfigProvider>
-        <AdaptivityProvider>
-          <AppRoot>
-            <App />
-          </AppRoot>
-        </AdaptivityProvider>
-      </ConfigProvider>
+      <App />
     </NavigationContextProvider>
   </RouterContext.Provider>
 );

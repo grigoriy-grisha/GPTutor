@@ -25,6 +25,7 @@ services:
       - .env-dev
     volumes:
       - db-data-dev:/var/lib/postgresql/data
-
+    ports:
+      - "5432:5432"
 volumes:
   db-data-dev:
