@@ -67,6 +67,7 @@ export abstract class ChatGptTemplate {
   abortController = new AbortController();
 
   disableTimer() {
+    this.timer.stop();
     this.timer.setDisabled();
   }
 
