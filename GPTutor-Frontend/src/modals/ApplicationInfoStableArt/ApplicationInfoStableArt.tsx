@@ -4,8 +4,8 @@ import {
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
-  Separator,
   SimpleCell,
+  Spacing,
   Text,
   Title,
   useAdaptivityConditionalRender,
@@ -13,7 +13,6 @@ import {
 import { useApplicationInfo } from "$/modals/ApplicationInfo/hooks/useApplicationInfo";
 import { AppDiv } from "$/components/AppDiv";
 import {
-  Icon20DonutCircleFillYellow,
   Icon24Share,
   Icon28ChevronRightOutline,
   Icon28Favorite,
@@ -21,9 +20,8 @@ import {
   Icon28MessageHeart,
   Icon28Users,
 } from "@vkontakte/icons";
-import { ChatGPTLogo, GithubIcon } from "$/icons";
+import { ChatGPTLogo } from "$/icons";
 import React from "react";
-import { subscriptionsController } from "$/entity/subscriptions";
 
 interface IProps {
   id: string;
@@ -114,17 +112,7 @@ function ApplicationInfoStableArt({ id, settlingHeight }: IProps) {
           <Text weight="2">GPTutor</Text>
         </SimpleCell>
       </Group>
-      <Group style={{ paddingTop: 0 }}>
-        <SimpleCell
-          onClick={goToOpenSource}
-          before={<GithubIcon style={{ paddingRight: 16 }} />}
-          after={
-            <Icon28ChevronRightOutline fill="var(--vkui--color_text_secondary)" />
-          }
-        >
-          <Text weight="2">OPEN SOURCE</Text>
-        </SimpleCell>
-      </Group>
+      <Spacing size={12} />
     </ModalPage>
   );
 }

@@ -134,14 +134,24 @@ function HistoryBanner({ dialog }: IProps) {
       subheader={
         <>
           <span className={classes.lineClamp}>
-            <Headline style={{ display: "inline" }} level="2" weight="1" Component="h4">
+            <Headline
+              style={{ display: "inline" }}
+              level="2"
+              weight="1"
+              Component="h4"
+            >
               Последнее сообщение:
             </Headline>{" "}
             {dialog.lastMessage}
           </span>
           {dialog.lastUpdated && (
             <span className={classes.lineClamp}>
-              <Headline style={{ display: "inline" }} level="2" weight="1" Component="h4">
+              <Headline
+                style={{ display: "inline" }}
+                level="2"
+                weight="1"
+                Component="h4"
+              >
                 Последнее обновление:
               </Headline>{" "}
               {new Date(dialog.lastUpdated).toLocaleString()}
@@ -184,7 +194,6 @@ function HistoryBanner({ dialog }: IProps) {
                 openAlert({
                   onAction: async () => {
                     await chatGpt.history.removeHistoryDialog(dialog.id);
-                    goBack();
                   },
                   actionText: "Удалить диалог",
                   header: "Подтвердите действие",

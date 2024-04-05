@@ -39,14 +39,13 @@ function WriteBarAfter({
 
   const blockActions = chatGptModel.isBlockActions$.get();
 
-  const applySettings = () => {
+  const applySettings = async () => {
     if (!chatGptModel.currentHistory) return;
 
-    chatGpt.history
+    await chatGpt.history
       .removeHistoryDialog(chatGptModel.currentHistory.id)
       .then(() => {
         chatGptModel.clearMessages();
-        goBack();
       });
   };
 

@@ -32,7 +32,6 @@ function AppPanelHeader({ after, before, className, children }: IProps) {
           <span className={classes.after}>{after}</span>
         </div>
       </PanelHeader>
-      <Separator wide />
     </>
   );
 }
