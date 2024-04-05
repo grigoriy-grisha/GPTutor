@@ -36,7 +36,9 @@ function SystemMessageForm({
       mode="plain"
       header={
         <AppDiv>
-          <Title level="3" Component="h3">Системное сообщение</Title>
+          <Title level="3" Component="h3">
+            Системное сообщение
+          </Title>
         </AppDiv>
       }
       description="Системное сообщение предназначено для ChatGPT.
@@ -47,7 +49,6 @@ function SystemMessageForm({
         <Textarea
           grow
           placeholder="Введите промпт..."
-          className={classes.wrapper}
           value={systemMessageValue}
           onChange={({ target }) => updateSystemMessage(target.value)}
         />
