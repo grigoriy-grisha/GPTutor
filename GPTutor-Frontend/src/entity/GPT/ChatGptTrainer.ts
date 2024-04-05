@@ -15,6 +15,7 @@ export class ChatGptTrainer extends ChatGptTemplate {
       this.timer.run();
 
       if (message === this.getLastMessage()) return;
+      this.subscriptionGPT.$handleSendMessage();
     } catch {
       this.timer.run();
     } finally {

@@ -5,7 +5,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import bridge from "@vkontakte/vk-bridge";
 import { Page, Router, RouterContext } from "@happysanta/router";
-import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
 import "react-virtualized/styles.css";
 
 import App from "./App";

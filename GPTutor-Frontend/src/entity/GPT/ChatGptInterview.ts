@@ -53,6 +53,7 @@ export class ChatGptInterview extends ChatGptTemplate {
     this.addMessage(message);
     await this.createHistory();
     await this.postMessage(message);
+    this.subscriptionGPT.$handleSendMessage();
 
     try {
       await this.sendCompletions$.run();

@@ -1,10 +1,6 @@
 import React from "react";
 
-import {
-  IconButton,
-  Title,
-  useAdaptivityWithJSMediaQueries,
-} from "@vkontakte/vkui";
+import { IconButton, Platform, Title, usePlatform } from "@vkontakte/vkui";
 
 import {
   Icon24FullscreenExit,
@@ -21,7 +17,7 @@ import { useFullScreen } from "$/hooks/useFullScreen";
 
 function HomeHeader() {
   const { openApplicationInfo } = useNavigationContext();
-  const { sizeX } = useAdaptivityWithJSMediaQueries();
+  const platform = usePlatform();
 
   const { isFullScreen, onFullScreen, offFullScreen } = useFullScreen();
 
@@ -36,7 +32,7 @@ function HomeHeader() {
         </IconButton>
       }
       after={
-        sizeX === "regular" && (
+        platform === Platform.VKCOM && (
           <IconButton onClick={isFullScreen ? offFullScreen : onFullScreen}>
             {isFullScreen ? (
               <Icon24FullscreenExit width={28} height={28} />
