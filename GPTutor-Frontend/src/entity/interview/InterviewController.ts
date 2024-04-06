@@ -17,4 +17,8 @@ export class InterviewController {
   getCurrentInterview() {
     return this.currentInterview;
   }
+
+  reset() {
+    this.currentInterview = null as unknown as Interview;
+  }
 }
