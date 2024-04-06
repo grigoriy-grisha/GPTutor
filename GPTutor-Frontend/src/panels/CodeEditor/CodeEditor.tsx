@@ -39,7 +39,7 @@ function CodeEditor({ id }: IProps) {
   if (!currentTrainer) return null;
 
   return (
-    <Panel id={id}>
+    <Panel id={id} className={classes.panel}>
       <div style={{ height: "100vh" }}>
         <AppContainer
           withoutTabbar
@@ -74,7 +74,9 @@ function CodeEditor({ id }: IProps) {
                   )
                 }
               >
-                <Title level="2" Component="h2">Песочница</Title>
+                <Title level="2" Component="h2">
+                  Песочница
+                </Title>
               </AppPanelHeader>
             </>
           }
