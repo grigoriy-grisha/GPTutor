@@ -4,7 +4,13 @@ import { groupsIsMember } from "$/api/vk";
 
 class CommunicationService {
   private isRequested = false;
+  private isFavorite: string = "0";
   private isMember = false;
+
+  constructor() {
+    this.isFavorite = this.getSearchParams().get("vk_is_favorite")!;
+  }
+
   async addToSubscribe() {
     try {
       const isMember = await this.getIsMember();
@@ -23,21 +29,19 @@ class CommunicationService {
         message: "Вы не были подписаны на группу!",
       });
 
-      console.log(error, "asd;lkas;ldk;laskd;laks;dlkas;ldkl+___A_SD_ASD_");
-
       return false;
     }
   }
   async addToFavorite() {
-    const isFavorite = this.getSearchParams().get("vk_is_favorite");
-    if (isFavorite === "1") {
+    if (this.isFavorite === "1") {
       snackbarNotify.notify({
         type: "success",
         message: "Приложение уже в избранном",
       });
-      return;
     }
+
     await bridge.send("VKWebAppAddToFavorites");
+    this.isFavorite = "1";
   }
 
   async getIsMember() {

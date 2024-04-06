@@ -32,7 +32,11 @@ function Cards({ chapters, title, isTop, isBottom, onClickChapter }: IProps) {
                 size="l"
                 header={
                   <Caption
-                    style={{ color: "var(--vkui--color_text_tertiary)" }}
+                    style={{
+                      color: "var(--vkui--color_text_tertiary)",
+                      fontSize: 15,
+                      marginTop: 4,
+                    }}
                   >
                     {chapter.header}
                   </Caption>

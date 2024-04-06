@@ -29,6 +29,7 @@ function Subscription() {
           <Image src={vkUser.photo_200} size={96} />
           <div className={classes.cardText}>
             <Title
+              className={classes.cardName}
               level="3"
               Component="h3"
             >{`${vkUser.first_name} ${vkUser.last_name}`}</Title>

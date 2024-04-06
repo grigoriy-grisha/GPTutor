@@ -2,10 +2,20 @@
     display: flex;
 }
 
+.cardName {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .cardText {
     margin-left: 12px;
 }
 
 .subtitleText {
-    color: var(--vkui--color_text_secondary)
+    color: var(--vkui--color_text_secondary);
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
