@@ -5,6 +5,7 @@ import {
   Div,
   Headline,
   Image,
+  Link,
   Placeholder,
   Spacing,
   Title,
@@ -60,6 +61,14 @@ function Subscription() {
                   </Headline>
                 </div>
               )}
+              <div>
+                <Link
+                  target="_blank"
+                  href="https://vk.com/settings?act=payments&section=subscriptions"
+                >
+                  Управление подписками
+                </Link>
+              </div>
             </div>
           </div>
         </Div>

@@ -47,9 +47,12 @@ function SubscriptionBlock({ chatGpt }: IProps) {
             </Title>{" "}
             {plural(attempts, ["запрос", "запроса", "запросов"])}
           </Title>
-          <Caption weight="2" className={classes.subTitle}>
-            Подпишитесь на группу, чтобы убрать ограничения 😉
-          </Caption>
+          <span>
+            Бот бесплатный
+            <Caption weight="2" className={classes.subTitle}>
+              Подпишитесь на группу, чтобы убрать ограничения 😉
+            </Caption>
+          </span>
         </div>
         <Button onClick={subscriptionGPT.$subscribe}>Подписаться</Button>
       </Div>
