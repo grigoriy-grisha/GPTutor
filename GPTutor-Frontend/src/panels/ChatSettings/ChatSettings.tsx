@@ -22,7 +22,6 @@ interface IProps {
 
 function ChatSettings({ id }: IProps) {
   const { goBack } = useNavigationContext();
-  const { sizeX } = useAdaptivityConditionalRender();
 
   const gpt = chatGpt.getCurrentChatGpt();
 

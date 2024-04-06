@@ -12,6 +12,10 @@ export class Interview {
     return this.questions[this.currentInterviewIndex$.get()];
   }
 
+  reset() {
+    this.currentInterviewIndex$.set(0);
+  }
+
   getQuestions() {
     return this.questions;
   }

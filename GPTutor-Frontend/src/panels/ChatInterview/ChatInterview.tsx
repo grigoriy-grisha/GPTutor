@@ -15,6 +15,15 @@ interface IProps {
 function ChatInterview({ id }: IProps) {
   const { goBack, openInterviewQuestions } = useNavigationContext();
 
+  useEffect(() => {
+    const interview = interviews.getCurrentInterview();
+    interview.reset();
+    return () => {
+      interviews.reset();
+      chatGpt.chatGptInterview.abortSend();
+    };
+  }, []);
+
   const onStartChat = async () => {
     await chatGpt.chatGptInterview.sendQuestion(
       interviews.getCurrentInterview().getCurrentQuestion().question
@@ -25,10 +34,6 @@ function ChatInterview({ id }: IProps) {
     openInterviewQuestions();
   };
 
-  useEffect(() => {
-    return () => chatGpt.chatGptInterview.abortSend();
-  }, []);
-
   return (
     <Panel id={id}>
       <Messenger
@@ -36,7 +41,7 @@ function ChatInterview({ id }: IProps) {
         writeBarBefore={
           <ChatInterviewWriteBarBefore onClickList={onClickList} />
         }
-        additionalRequest={(handleSend, scrollToBottom) => (
+        additionalRequest={(_, scrollToBottom) => (
           <ChatInterviewAdditionalRequests
             scrollToBottom={scrollToBottom}
             interviews={interviews}
