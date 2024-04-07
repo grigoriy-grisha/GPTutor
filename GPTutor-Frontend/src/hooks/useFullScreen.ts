@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { cancelFullScreen, fullScreen } from "$/utility/fullScreen";
+import { sig } from "dignals";
+
+const isFullScreen = sig(false);
+
+addEventListener("fullscreenchange", (event) => {
+  isFullScreen.set(!isFullScreen.get());
+});
 
 export function useFullScreen() {
-  const [isFullScreen, setFullScreen] = useState(false);
-
-  useEffect(() => {
-    addEventListener("fullscreenchange", (event) => {
-      setFullScreen((prev) => !prev);
-    });
-  }, []);
-
   return {
-    isFullScreen,
+    isFullScreen: isFullScreen.get(),
     onFullScreen: () => {
       fullScreen();
     },
