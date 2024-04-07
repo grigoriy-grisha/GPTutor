@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { cancelFullScreen, fullScreen } from "$/utility/fullScreen";
 import { sig } from "dignals";
 
