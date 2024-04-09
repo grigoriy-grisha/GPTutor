@@ -47,7 +47,6 @@ function SystemMessageForm({
     >
       <FormItem>
         <Textarea
-          grow
           placeholder="Введите промпт..."
           value={systemMessageValue}
           onChange={({ target }) => updateSystemMessage(target.value)}
