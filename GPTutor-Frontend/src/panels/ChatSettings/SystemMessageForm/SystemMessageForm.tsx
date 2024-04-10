@@ -32,8 +32,6 @@ function SystemMessageForm({
   resetSystemMessage,
   updateSystemMessage,
 }: IProps) {
-  const platform = usePlatform();
-
   return (
     <Group
       mode="plain"
@@ -49,19 +47,11 @@ function SystemMessageForm({
                 (Писать стихи, музыку, код, рецепты и т.д.)"
     >
       <FormItem>
-        {platform === Platform.VKCOM ? (
-          <Textarea
-            placeholder="Введите промпт..."
-            value={systemMessageValue}
-            onChange={({ target }) => updateSystemMessage(target.value)}
-          />
-        ) : (
-          <Input
-            placeholder="Введите промпт..."
-            value={systemMessageValue}
-            onChange={({ target }) => updateSystemMessage(target.value)}
-          />
-        )}
+        <Textarea
+          placeholder="Введите промпт..."
+          value={systemMessageValue}
+          onChange={({ target }) => updateSystemMessage(target.value)}
+        />
       </FormItem>
       <Div style={{ paddingTop: 0 }}>
         {initialSystemMessage !== "" && (
