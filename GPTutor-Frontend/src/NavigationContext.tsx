@@ -49,6 +49,7 @@ export type NavigationContextType = {
   openAgreement: () => void;
   goToGPTutorProfileReplace: () => void;
   goToGPTutorProfile: () => void;
+  goToMermaidPage: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -190,6 +191,10 @@ export function NavigationContextProvider({
   const openInterviewQuestions = () =>
     router.pushModal(Modals.interviewQuestions);
 
+  const goToMermaidPage = () => {
+    router.pushPage(RoutingPages.mermaidPage);
+  };
+
   return (
     <NavigationContext.Provider
       value={{
@@ -225,6 +230,7 @@ export function NavigationContextProvider({
         openWeakRequest,
         goToGPTutorProfileReplace,
         goToGPTutorProfile,
+        goToMermaidPage,
         alert,
         isForbidden,
       }}

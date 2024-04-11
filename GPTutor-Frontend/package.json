@@ -43,6 +43,7 @@
         "lodash.throttle": "^4.1.1",
         "markdown-it": "^13.0.1",
         "markdown-it-link-attributes": "^4.0.1",
+        "mermaid-react": "^0.1.0",
         "prismjs": "^1.29.0",
         "react": "18.2.0",
         "react-ace": "9.5.0",
