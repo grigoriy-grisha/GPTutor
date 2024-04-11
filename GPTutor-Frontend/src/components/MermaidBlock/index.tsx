@@ -42,7 +42,7 @@ function MermaidBlock({ mmd, id, className, onRender, onClick }: Props) {
         onRender(svg);
       }
     });
-  }, [mmd]);
+  }, [mmd, appearance]);
   return (
     <Div
       onClick={onClick}
