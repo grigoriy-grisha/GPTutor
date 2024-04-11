@@ -98,6 +98,7 @@ const routes = {
     Panels.gptutorProfile,
     Views.viewMain
   ),
+  [RoutingPages.mermaidPage]: new Page(Panels.mermaidPage, Views.viewMain),
 };
 
 const router = new Router(routes);

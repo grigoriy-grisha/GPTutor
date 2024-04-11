@@ -12,7 +12,11 @@ import { Copy } from "../components/Copy";
 // @ts-ignore
 import mila from "markdown-it-link-attributes";
 import { Button } from "@vkontakte/vkui";
-import { Icon28BracketsSlashSquareOutline } from "@vkontakte/icons";
+import {
+  Icon20SquareStackUpOutline,
+  Icon24StatisticsOutline,
+  Icon28BracketsSlashSquareOutline,
+} from "@vkontakte/icons";
 
 require(`prismjs/components/prism-go.min.js`);
 require(`prismjs/components/prism-python.min.js`);
@@ -22,7 +26,7 @@ const getLanguage = (lang: string) => {
 };
 
 const copyMockButton = ReactDOM.renderToString(
-  <div data-copy-mock="">
+  <div data-copy-mock="" data-mock-button="">
     <Copy
       copyText="Скопировать код"
       mode="secondary"
@@ -42,11 +46,23 @@ const editMockButton = ReactDOM.renderToString(
   </Button>
 );
 
+const mermaidMockButton = ReactDOM.renderToString(
+  <Button
+    size="m"
+    mode="secondary"
+    before={<Icon20SquareStackUpOutline width={22} height={22} />}
+  >
+    Визуализировать
+  </Button>
+);
+
 const isEditableLanguages = [
   "language-javascript",
   "language-python",
   "language-go",
 ];
+
+const mermaidLang = ["language-mermaid"];
 
 function renderCode(origRule?: RenderRule): RenderRule {
   return (tokens: Token[], idx: number, ...props) => {
@@ -58,6 +74,8 @@ function renderCode(origRule?: RenderRule): RenderRule {
       code.includes(lang)
     );
 
+    const mermaidLanguage = mermaidLang.find((lang) => code.includes(lang));
+
     return `
       <div style="position: relative" data-pre-container>
         ${code}
@@ -65,8 +83,15 @@ function renderCode(origRule?: RenderRule): RenderRule {
             ${copyMockButton}
             ${
               foundLanguage
-                ? ` <div class="${foundLanguage}" data-edit-mock="">
+                ? ` <div class="${foundLanguage}" data-edit-mock="" data-mock-button="">
                       ${editMockButton}
+                    </div>`
+                : ""
+            }
+            ${
+              mermaidLanguage
+                ? ` <div class="${mermaidLanguage}" data-mermaid="" data-mock-button="">
+                      ${mermaidMockButton}
                     </div>`
                 : ""
             }

@@ -6,6 +6,7 @@ import { copyService } from "$/services/CopyService";
 import { useLocation } from "@happysanta/router";
 import { Panels, Views } from "$/entity/routing";
 import { chatGpt } from "$/entity/GPT";
+import { mermaid } from "$/entity/mermaid";
 
 interface IProps {
   elem?: HTMLElement;
@@ -20,7 +21,7 @@ const isEditableLanguages = [
 function BlockCode({ elem }: IProps) {
   const location = useLocation();
 
-  const { goToEditor } = useNavigationContext();
+  const { goToEditor, goToMermaidPage } = useNavigationContext();
 
   function getCodeText() {
     let textToClickBoard = "";
@@ -73,6 +74,12 @@ function BlockCode({ elem }: IProps) {
     goToEditor();
   }
 
+  function handleMermaid() {
+    mermaid.setMermaidCode(getCodeText());
+
+    goToMermaidPage();
+  }
+
   useEffect(() => {
     const copyMock = elem?.querySelector("[data-copy-mock]");
     if (!copyMock) return;
@@ -87,6 +94,14 @@ function BlockCode({ elem }: IProps) {
 
     editMock.addEventListener("click", editor);
     return () => editMock.removeEventListener("click", editor);
+  });
+
+  useEffect(() => {
+    const mermaidMock = elem?.querySelector("[data-mermaid]");
+    if (!mermaidMock) return;
+
+    mermaidMock.addEventListener("click", handleMermaid);
+    return () => mermaidMock.removeEventListener("click", handleMermaid);
   });
 
   return null;

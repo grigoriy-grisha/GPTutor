@@ -92,37 +92,34 @@ tfoot > tr  {
     margin-left: -12px;
 }
 
-[data-edit-mock] {
+
+[data-mock-button] {
     margin-top: 12px;
     margin-left: 12px;
 }
 
-[data-copy-mock] {
-    margin-top: 12px;
-    margin-left: 12px;
-}
 
-[data-copy-mock] button{
+[data-mock-button] button{
     transition: opacity 0.3s;
 }
 
-[data-edit-mock] button{
+[data-mock-button] button{
     transition: opacity 0.3s;
 }
 
-[data-copy-mock] button:hover{
+[data-mock-button] button:hover{
     opacity: 0.8;
 }
 
-[data-edit-mock] button:hover{
+[data-mock-button] button:hover{
     opacity: 0.8;
 }
 
-[data-copy-mock] button:active{
+[data-mock-button] button:active{
     opacity: 0.6;
 }
 
-[data-edit-mock] button:active{
+[data-mock-button] button:active{
     opacity: 0.6;
 }
 
