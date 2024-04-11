@@ -47,11 +47,7 @@ const editMockButton = ReactDOM.renderToString(
 );
 
 const mermaidMockButton = ReactDOM.renderToString(
-  <Button
-    size="m"
-    mode="secondary"
-    before={<Icon20SquareStackUpOutline width={22} height={22} />}
-  >
+  <Button size="m" mode="secondary">
     Визуализировать
   </Button>
 );
