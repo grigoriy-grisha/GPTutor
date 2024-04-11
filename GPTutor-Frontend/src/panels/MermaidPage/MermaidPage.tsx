@@ -6,6 +6,7 @@ import { AppContainer } from "$/components/AppContainer";
 import { useNavigationContext } from "$/NavigationContext";
 import { mermaid } from "$/entity/mermaid";
 import MermaidBlock from "$/components/MermaidBlock";
+import { FullscreenButton } from "$/components/FullscreenButton";
 
 import classes from "./MermaidPage.module.css";
 
@@ -21,7 +22,10 @@ function MermaidPage({ id }: IProps) {
       <AppContainer
         withoutTabbar
         headerChildren={
-          <AppPanelHeader before={<PanelHeaderBack onClick={goBack} />}>
+          <AppPanelHeader
+            before={<PanelHeaderBack onClick={goBack} />}
+            after={<FullscreenButton />}
+          >
             Mermaid
           </AppPanelHeader>
         }
