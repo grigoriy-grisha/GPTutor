@@ -39,57 +39,67 @@ function ImageStyles() {
   return (
     <Card mode="shadow">
       <Div>
-        <Accordion open={true} className={classes.accordion}>
-          <Accordion.Summary>
-            <Title level="3" weight="3" className={classes.accordionTitle}>
-              Выбрать стиль
-            </Title>
-          </Accordion.Summary>
-          <Separator wide className={classes.separator} />
-          <div>
-            <HorizontalScroll>
-              <div
-                className={classes.accordionItems}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: `repeat(${styles?.length}, max-content)`,
-                }}
+        <div className={classes.accordion}>
+          <Accordion expanded={true}>
+            <Accordion.Summary>
+              <Title
+                level="3"
+                weight="3"
+                className={classes.accordionTitle}
+                Component="h3"
               >
-                {styles.map((model) => (
-                  <HorizontalCell key={model.value + model.loraModel} size="l">
-                    <div
-                      onClick={() => {
-                        imageGeneration.setModel(model.value);
-                        model.loraModel &&
-                          imageGeneration.setLoraModel(model.loraModel);
-                      }}
-                      className={classes.accordionItem}
+                Выбрать стиль
+              </Title>
+            </Accordion.Summary>
+            <Separator wide className={classes.separator} />
+            <div>
+              <HorizontalScroll>
+                <div
+                  className={classes.accordionItems}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: `repeat(${styles?.length}, max-content)`,
+                  }}
+                >
+                  {styles.map((model) => (
+                    <HorizontalCell
+                      key={model.value + model.loraModel}
+                      size="l"
                     >
-                      <Image
-                        className={classes.accordionImage}
-                        src={`https://storage.yandexcloud.net/gptutor-bucket/${model.imageName}`}
+                      <div
+                        onClick={() => {
+                          imageGeneration.setModel(model.value);
+                          model.loraModel &&
+                            imageGeneration.setLoraModel(model.loraModel);
+                        }}
+                        className={classes.accordionItem}
                       >
-                        {isSelected(model) && (
-                          <Image.Badge>
-                            <Icon28CheckCircleOn
-                              className={classes.badge}
-                              width={24}
-                              height={24}
-                            />
-                          </Image.Badge>
-                        )}
-                        <Image.Overlay>
-                          <></>
-                        </Image.Overlay>
-                      </Image>
-                      <Caption level="1">{model.label}</Caption>
-                    </div>
-                  </HorizontalCell>
-                ))}
-              </div>
-            </HorizontalScroll>
-          </div>
-        </Accordion>
+                        <Image
+                          className={classes.accordionImage}
+                          src={`https://storage.yandexcloud.net/gptutor-bucket/${model.imageName}`}
+                        >
+                          {isSelected(model) && (
+                            <Image.Badge>
+                              <Icon28CheckCircleOn
+                                className={classes.badge}
+                                width={24}
+                                height={24}
+                              />
+                            </Image.Badge>
+                          )}
+                          <Image.Overlay>
+                            <></>
+                          </Image.Overlay>
+                        </Image>
+                        <Caption level="1">{model.label}</Caption>
+                      </div>
+                    </HorizontalCell>
+                  ))}
+                </div>
+              </HorizontalScroll>
+            </div>
+          </Accordion>
+        </div>
       </Div>
     </Card>
   );

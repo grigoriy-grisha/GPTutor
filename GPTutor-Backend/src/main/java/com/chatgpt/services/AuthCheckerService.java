@@ -1,12 +1,12 @@
 package com.chatgpt.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -104,5 +104,9 @@ public class AuthCheckerService {
         }
 
         return value;
+    }
+
+    public Boolean isUrlCheck(String url) throws MalformedURLException {
+        return !getQueryParams(new URL(url)).get("vk_app_id").isEmpty();
     }
 }

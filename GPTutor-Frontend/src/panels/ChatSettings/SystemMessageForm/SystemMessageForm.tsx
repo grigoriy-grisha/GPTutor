@@ -5,14 +5,15 @@ import {
   Div,
   FormItem,
   Group,
+  Input,
+  Platform,
   Spacing,
   Textarea,
   Title,
+  usePlatform,
 } from "@vkontakte/vkui";
 
 import { AppDiv } from "$/components/AppDiv";
-
-import classes from "./SystemMessageForm.module.css";
 
 interface IProps {
   initialSystemMessage: string;
@@ -31,12 +32,16 @@ function SystemMessageForm({
   resetSystemMessage,
   updateSystemMessage,
 }: IProps) {
+  const platform = usePlatform();
+
   return (
     <Group
       mode="plain"
       header={
         <AppDiv>
-          <Title level="3">Системное сообщение</Title>
+          <Title level="3" Component="h3">
+            Системное сообщение
+          </Title>
         </AppDiv>
       }
       description="Системное сообщение предназначено для ChatGPT.
@@ -44,13 +49,19 @@ function SystemMessageForm({
                 (Писать стихи, музыку, код, рецепты и т.д.)"
     >
       <FormItem>
-        <Textarea
-          grow
-          placeholder="Введите промпт..."
-          className={classes.wrapper}
-          value={systemMessageValue}
-          onChange={({ target }) => updateSystemMessage(target.value)}
-        />
+        {platform === Platform.VKCOM ? (
+          <Textarea
+            placeholder="Введите промпт..."
+            value={systemMessageValue}
+            onChange={({ target }) => updateSystemMessage(target.value)}
+          />
+        ) : (
+          <Input
+            placeholder="Введите промпт..."
+            value={systemMessageValue}
+            onChange={({ target }) => updateSystemMessage(target.value)}
+          />
+        )}
       </FormItem>
       <Div style={{ paddingTop: 0 }}>
         {initialSystemMessage !== "" && (

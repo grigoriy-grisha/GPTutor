@@ -72,7 +72,6 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
                       header: "Подтвердите действие",
                       onAction: () => {
                         imagesFeed.createComplaint(image.id);
-                        goBack();
                       },
                       text: "Пожаловаться на изображение?",
                     });
@@ -87,7 +86,9 @@ function PublishingImageItem({ image: imageFeed, style, columnWidth }: IProps) {
                 </IconButton>
               </div>
             </div>
-            <Subhead className={classes.itemSubhead}>{image.modelId}</Subhead>
+            <Subhead className={classes.itemSubhead} Component="h5">
+              {image.modelId}
+            </Subhead>
           </div>
         }
       />

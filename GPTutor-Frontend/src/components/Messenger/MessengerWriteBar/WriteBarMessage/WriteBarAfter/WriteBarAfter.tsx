@@ -1,12 +1,11 @@
 import React from "react";
 
-import { useAppearance, WriteBarIcon } from "@vkontakte/vkui";
+import { Button, Tooltip, useAppearance, WriteBarIcon } from "@vkontakte/vkui";
 import {
   Icon28CancelCircleOutline,
   Icon28DeleteOutline,
   Icon28Send,
 } from "@vkontakte/icons";
-import { TextTooltip } from "@vkontakte/vkui/dist/components/TextTooltip/TextTooltip";
 import Time from "$/components/Time";
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 import { chatGpt } from "$/entity/GPT";
@@ -27,7 +26,7 @@ function WriteBarAfter({
   sendMessage,
   hideDeleteDialog,
 }: IProps) {
-  const { openAlert, goBack } = useNavigationContext();
+  const { openAlert, goBack, goToGPTutorProfile } = useNavigationContext();
   const appearance = useAppearance();
 
   const isTyping = chatGptModel.sendCompletions$.loading.get();
@@ -40,14 +39,13 @@ function WriteBarAfter({
 
   const blockActions = chatGptModel.isBlockActions$.get();
 
-  const applySettings = () => {
+  const applySettings = async () => {
     if (!chatGptModel.currentHistory) return;
 
-    chatGpt.history
+    await chatGpt.history
       .removeHistoryDialog(chatGptModel.currentHistory.id)
       .then(() => {
         chatGptModel.clearMessages();
-        goBack();
       });
   };
 
@@ -89,15 +87,25 @@ function WriteBarAfter({
       {timerIsStopped ? (
         sendBars
       ) : (
-        <TextTooltip
-          appearance={appearance === "light" ? "accent" : "white"}
-          style={{ maxWidth: 150 }}
-          text="Подождите, пока истечет время для отправки следующего сообщения"
-        >
-          <div>
-            <Time seconds={time} />
-          </div>
-        </TextTooltip>
+        <div className={classes.containerButtons}>
+          <Button
+            onClick={goToGPTutorProfile}
+            size="s"
+            mode="tertiary"
+            className={classes.skipButton}
+          >
+            Отключить
+          </Button>
+          <Tooltip
+            appearance={appearance === "light" ? "accent" : "white"}
+            style={{ maxWidth: 150 }}
+            text="Подождите, пока истечет время для отправки следующего сообщения"
+          >
+            <div>
+              <Time seconds={time} />
+            </div>
+          </Tooltip>
+        </div>
       )}
     </div>
   );

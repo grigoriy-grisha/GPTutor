@@ -1,6 +1,11 @@
 .banner {
     position: relative;
     margin: 8px 0;
+
+}
+
+.banner :global(.vkuiBanner__in){
+    background: var(--vkui--color_background_content) !important;
 }
 
 .compactBanner :global(.vkuiBanner__in) {

@@ -10,9 +10,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.MalformedURLException;
 import java.util.Objects;
 
 @Component

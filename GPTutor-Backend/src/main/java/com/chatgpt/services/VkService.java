@@ -100,6 +100,9 @@ public class VkService {
     }
 
     public OrderSubscriptionByIdResponse getUserSubscriptionById(String userId, String subscriptionId) throws Exception {
+        System.out.println(vkSecretesService.getAuthKey());
+        System.out.println(userId);
+
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.vk.com/method/orders.getUserSubscriptionById"
                 + "?user_id={userId}&subscription_id={subscriptionId}&access_token={accessToken}&v={v}";
@@ -109,7 +112,7 @@ public class VkService {
         params.put("userId", userId);
         params.put("subscriptionId", subscriptionId);
         params.put("accessToken", vkSecretesService.getAuthKey());
-        params.put("v", "5.131");
+        params.put("v", "5.199");
 
         String response = restTemplate.getForObject(url, String.class, params);
 

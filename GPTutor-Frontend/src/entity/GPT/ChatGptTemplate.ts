@@ -13,14 +13,13 @@ import { History } from "$/entity/history";
 import { snackbarNotify } from "$/entity/notify";
 import { interviews } from "$/entity/interview";
 import { leetCode } from "$/entity/leetCode/LeetCode";
-import { groupsService } from "$/services/GroupsService";
-import { createReactiveModelBuilder } from "dignals-model";
 import { SubscriptionGPT } from "$/entity/GPT/SubscriptionGPT";
 
 const MAX_CONTEXT_WORDS = 1000;
 
+const subscriptionGPT = new SubscriptionGPT();
 export abstract class ChatGptTemplate {
-  subscriptionGPT = new SubscriptionGPT();
+  subscriptionGPT = subscriptionGPT;
 
   isBlockActions$ = sig(false);
 
@@ -29,7 +28,7 @@ export abstract class ChatGptTemplate {
 
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
-  timer = new Timer(20, 0, "decrement");
+  timer = new Timer(30, 0, "decrement");
 
   messages$ = sig<GptMessage[]>([]);
 
@@ -67,10 +66,9 @@ export abstract class ChatGptTemplate {
 
   abortController = new AbortController();
 
-  init() {
-    if (groupsService.isDon) {
-      this.timer.setDisabled();
-    }
+  disableTimer() {
+    this.timer.stop();
+    this.timer.setDisabled();
   }
 
   closeDelay() {

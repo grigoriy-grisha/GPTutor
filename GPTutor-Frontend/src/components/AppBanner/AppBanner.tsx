@@ -24,7 +24,7 @@ function AppBanner({ header, subheader, before, actions }: IProps) {
         [classes.compactBanner]: isCompact,
       })}
       before={before}
-      header={<Title level="3">{header}</Title>}
+      header={<Title level="3" Component="h3">{header}</Title>}
       subheader={subheader}
       actions={actions}
     />

@@ -146,6 +146,7 @@ export const ContentCard = ({
               className={styles["ContentCard__text"]}
               weight="2"
               level="1"
+              Component="h4"
             >
               {header}
             </Headline>

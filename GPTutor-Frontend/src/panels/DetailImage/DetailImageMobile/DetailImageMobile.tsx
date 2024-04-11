@@ -120,7 +120,7 @@ function DetailImageMobile() {
           <Card mode="shadow">
             <Div style={{ paddingTop: 2 }}>
               <div className={classes.header}>
-                <Title level="2" className={classes.headerText}>
+                <Title level="2" className={classes.headerText} Component="h2">
                   Запрос
                 </Title>
                 <Copy

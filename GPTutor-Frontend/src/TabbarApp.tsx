@@ -1,5 +1,6 @@
 import classes from "$/panels/Home/Home.module.css";
 import {
+  classNames,
   Platform,
   Separator,
   Tabbar,
@@ -8,11 +9,11 @@ import {
 } from "@vkontakte/vkui";
 import {
   Icon20PictureStack,
-  Icon20User,
   Icon24MagicWandOutline,
   Icon28BookSpreadOutline,
   Icon28HistoryBackwardOutline,
   Icon28NewsfeedLinesOutline,
+  Icon28UserRectangleHorizontalOutline,
 } from "@vkontakte/icons";
 import React from "react";
 import { useNavigationContext } from "$/NavigationContext";
@@ -33,8 +34,9 @@ function TabbarApp({ setRef }: IProps) {
     goToModes,
     goToHistory,
     goToGallery,
-    goToGenerationImages,
     goToPublishingImages,
+    goToGPTutorProfileReplace,
+    goToGenerationImages,
   } = useNavigationContext();
 
   const platform = usePlatform();
@@ -55,24 +57,27 @@ function TabbarApp({ setRef }: IProps) {
           style={{ display: "flex", justifyContent: "space-between" }}
         >
           <TabbarItem
-            selected={activePanel === Panels.publishingImages}
-            className={classes.tabItem}
+            className={classNames(classes.tabItem, {
+              [classes.tabItemActive]: activePanel === Panels.publishingImages,
+            })}
             text="Лента"
             onClick={goToPublishingImages}
           >
             <Icon28NewsfeedLinesOutline width={28} height={28} />
           </TabbarItem>
           <TabbarItem
-            selected={activePanel === Panels.generationImages}
-            className={classes.tabItem}
+            className={classNames(classes.tabItem, {
+              [classes.tabItemActive]: activePanel === Panels.generationImages,
+            })}
             text="Генератор"
             onClick={goToGenerationImages}
           >
             <Icon24MagicWandOutline width={28} height={28} />
           </TabbarItem>
           <TabbarItem
-            selected={activePanel === Panels.gallery}
-            className={classes.tabItem}
+            className={classNames(classes.tabItem, {
+              [classes.tabItemActive]: activePanel === Panels.gallery,
+            })}
             text="Коллекция"
             onClick={goToGallery}
           >
@@ -95,14 +100,27 @@ function TabbarApp({ setRef }: IProps) {
         style={{ display: "flex", justifyContent: "space-between" }}
       >
         <TabbarItem
-          className={classes.tabItem}
+          className={classNames(classes.tabItem, {
+            [classes.tabItemActive]: activePanel === Panels.modes,
+          })}
           text="Режимы"
           onClick={goToModes}
         >
           <Icon28BookSpreadOutline />
         </TabbarItem>
         <TabbarItem
-          className={classes.tabItem}
+          className={classNames(classes.tabItem, {
+            [classes.tabItemActive]: activePanel === Panels.gptutorProfile,
+          })}
+          text="Профиль"
+          onClick={goToGPTutorProfileReplace}
+        >
+          <Icon28UserRectangleHorizontalOutline />
+        </TabbarItem>
+        <TabbarItem
+          className={classNames(classes.tabItem, {
+            [classes.tabItemActive]: activePanel === Panels.history,
+          })}
           text="История диалогов"
           onClick={goToHistory}
         >

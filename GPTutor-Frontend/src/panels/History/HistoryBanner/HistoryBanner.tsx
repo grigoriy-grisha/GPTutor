@@ -20,6 +20,7 @@ import {
   classNames,
   Headline,
   Platform,
+  Spacing,
   Title,
   useAdaptivityWithJSMediaQueries,
   usePlatform,
@@ -134,14 +135,25 @@ function HistoryBanner({ dialog }: IProps) {
       subheader={
         <>
           <span className={classes.lineClamp}>
-            <Headline style={{ display: "inline" }} level="2" weight="1">
+            <Headline
+              style={{ display: "inline" }}
+              level="2"
+              weight="1"
+              Component="h4"
+            >
               Последнее сообщение:
             </Headline>{" "}
             {dialog.lastMessage}
           </span>
+          <Spacing size={8} />
           {dialog.lastUpdated && (
             <span className={classes.lineClamp}>
-              <Headline style={{ display: "inline" }} level="2" weight="1">
+              <Headline
+                style={{ display: "inline" }}
+                level="2"
+                weight="1"
+                Component="h4"
+              >
                 Последнее обновление:
               </Headline>{" "}
               {new Date(dialog.lastUpdated).toLocaleString()}
@@ -151,16 +163,6 @@ function HistoryBanner({ dialog }: IProps) {
       }
       actions={
         <>
-          {platform === Platform.VKCOM && (
-            <DownloadDialog
-              downloadTXT={async () => {
-                await chatGpt.history.downloadDialogAsTXT(dialog.id);
-              }}
-              downloadJSON={async () => {
-                await chatGpt.history.downloadDialogAsJSON(dialog.id);
-              }}
-            />
-          )}
           <ButtonGroup mode="vertical">
             <Button
               disabled={currentChatGpt.getMessages$.loading.get()}
@@ -184,7 +186,6 @@ function HistoryBanner({ dialog }: IProps) {
                 openAlert({
                   onAction: async () => {
                     await chatGpt.history.removeHistoryDialog(dialog.id);
-                    goBack();
                   },
                   actionText: "Удалить диалог",
                   header: "Подтвердите действие",

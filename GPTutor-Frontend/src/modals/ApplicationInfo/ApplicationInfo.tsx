@@ -5,8 +5,8 @@ import {
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
-  Separator,
   SimpleCell,
+  Spacing,
   Text,
   Title,
   useAdaptivityConditionalRender,
@@ -22,21 +22,23 @@ import {
 } from "@vkontakte/icons";
 
 import { useNavigationContext } from "$/NavigationContext";
-import { GithubIcon, StableArtLogo } from "$/icons";
+import { StableArtLogo } from "$/icons";
 import { AppDiv } from "$/components/AppDiv";
 import { useApplicationInfo } from "./hooks/useApplicationInfo";
 
 interface IProps {
   id: string;
+  settlingHeight: number;
 }
 
-function ApplicationInfo({ id }: IProps) {
-  const { goBack, goToOpenSource } = useNavigationContext();
+function ApplicationInfo({ id, settlingHeight }: IProps) {
+  const { goBack, goToOpenSource, goToGPTutorProfileReplace } =
+    useNavigationContext();
   const { sizeX } = useAdaptivityConditionalRender();
   const { subscribe, favourites, share, getAppLink } = useApplicationInfo();
 
   return (
-    <ModalPage settlingHeight={100} id={id}>
+    <ModalPage settlingHeight={settlingHeight} id={id}>
       <ModalPageHeader
         before={
           sizeX.compact && (
@@ -47,15 +49,20 @@ function ApplicationInfo({ id }: IProps) {
           )
         }
       >
-        <Title level="1">Приложение</Title>
+        <Title level="1" Component="h1">
+          Приложение
+        </Title>
       </ModalPageHeader>
-
-      <Separator wide />
 
       <Group style={{ marginTop: 8 }}>
         <AppDiv>
           <Text weight="3">
-            <Title style={{ display: "inline" }} level="3" as="span">
+            <Title
+              style={{ display: "inline" }}
+              level="3"
+              as="span"
+              Component="h3"
+            >
               GPTutor{" — "}
             </Title>
             это образовательное приложение, которое предлагает уникальный подход
@@ -66,8 +73,7 @@ function ApplicationInfo({ id }: IProps) {
       <Group style={{ marginTop: 0, padding: 0 }}>
         <SimpleCell
           before={<Icon20DonutCircleFillYellow width={28} height={24} />}
-          href="https://vk.com/gptutor?source=description&w=donut_payment-220371433"
-          target="_blank"
+          onClick={goToGPTutorProfileReplace}
         >
           <Text weight="2">Снять ограничения</Text>
         </SimpleCell>
@@ -105,7 +111,7 @@ function ApplicationInfo({ id }: IProps) {
           href={getAppLink()}
           target="_blank"
           before={
-            <span style={{ paddingRight: 16 }}>
+            <span style={{ paddingRight: 4 }}>
               <StableArtLogo borderRadius="25%" />
             </span>
           }
@@ -117,17 +123,7 @@ function ApplicationInfo({ id }: IProps) {
           <Text weight="2">Stable Art</Text>
         </SimpleCell>
       </Group>
-      <Group style={{ paddingTop: 0 }}>
-        <SimpleCell
-          onClick={goToOpenSource}
-          before={<GithubIcon style={{ paddingRight: 16 }} />}
-          after={
-            <Icon28ChevronRightOutline fill="var(--vkui--color_text_secondary)" />
-          }
-        >
-          <Text weight="2">OPEN SOURCE</Text>
-        </SimpleCell>
-      </Group>
+      <Spacing size={12} />
     </ModalPage>
   );
 }

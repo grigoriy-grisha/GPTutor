@@ -1,31 +1,29 @@
-import "dignals-react/jsxPatch17";
+import "dignals-react/jsxPatch18";
 import "./env.js";
 
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import bridge from "@vkontakte/vk-bridge";
 import { Page, Router, RouterContext } from "@happysanta/router";
-import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
 import "react-virtualized/styles.css";
 
 import App from "./App";
-
-import ErrorBoundaryApp from "./ErrorBoundaryApp";
 import { Panels, RoutingPages, Views } from "./entity/routing";
 import { OnboardingService } from "./services/OnboardingService";
 import { NavigationContextProvider } from "$/NavigationContext";
 import { adService } from "$/services/AdService";
-import { authService } from "$/services/AuthService";
-import { groupsService } from "$/services/GroupsService";
 import { appService } from "$/services/AppService";
 import { subscriptionsController } from "$/entity/subscriptions";
-import { imageGeneration } from "$/entity/image";
 import { VkStorageService } from "$/services/VkStorageService";
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
 import { userAgreement } from "$/entity/user/UserAgreement";
+import { listenResize } from "./resizeWindow";
+
 const isFirstVisitFlagName = "isFirstVisit";
 
 const storageService = new VkStorageService();
+
+listenResize(800, 900);
 
 bridge
   .send("VKWebAppInit")
@@ -42,14 +40,18 @@ bridge
       storageService.set(isFirstVisitFlagName, String(true));
     });
 
-    await userAgreement.getUserImageAgreement();
+    if (appService.isStableArt()) {
+      await userAgreement.getUserImageAgreement();
+    }
     await adService.showBannerAd();
-
-    imageGeneration.init();
-
-    appService.toggleLoading();
+    if (appService.isGPTutor()) {
+      await subscriptionsController.getSubscription("subscription_2");
+    }
   })
-  .catch(console.log);
+  .catch(console.log)
+  .finally(() => {
+    appService.toggleLoading();
+  });
 
 const routes = {
   [RoutingPages.home]: new Page(Panels.home, Views.viewMain),
@@ -92,23 +94,22 @@ const routes = {
     Views.viewMain
   ),
   [RoutingPages.profile]: new Page(Panels.profile, Views.viewMain),
+  [RoutingPages.gptutorProfile]: new Page(
+    Panels.gptutorProfile,
+    Views.viewMain
+  ),
 };
 
 const router = new Router(routes);
 
 router.start();
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root")!);
+
+root.render(
   <RouterContext.Provider value={router}>
     <NavigationContextProvider>
-      <ConfigProvider>
-        <AdaptivityProvider>
-          <AppRoot>
-            <App />
-          </AppRoot>
-        </AdaptivityProvider>
-      </ConfigProvider>
+      <App />
     </NavigationContextProvider>
-  </RouterContext.Provider>,
-  document.getElementById("root")
+  </RouterContext.Provider>
 );

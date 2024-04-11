@@ -3,45 +3,46 @@ package com.chatgpt.services;
 import com.chatgpt.entity.DetailProblem;
 import com.chatgpt.entity.LeetCodeProblem;
 import com.chatgpt.entity.LeetCodeProblemResult;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.net.httpserver.Headers;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.function.ServerRequest;
 
 import java.io.IOException;
-import java.net.http.HttpHeaders;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 
 @Service
-public class LeetCodeService {
-    LeetCodeProblemResult leetCodeProblemResult;
+public class LeetCodeService implements InitializingBean {
 
-    public List<LeetCodeProblem> getProblems() throws JsonProcessingException {
-        if (leetCodeProblemResult != null) return leetCodeProblemResult.getStat_status_pairs();
+    @Autowired
+    private ResourceLoader resourceLoader;
 
-        RestTemplate restTemplate = new RestTemplate();
 
-        String result = restTemplate.getForObject("https://leetcode.com/api/problems/all/", String.class);
+    LeetCodeProblemResult leetCodeProblems;
 
-        leetCodeProblemResult = new ObjectMapper().readValue(result, LeetCodeProblemResult.class);
+    public void afterPropertiesSet() throws IOException {
+        Resource resource = resourceLoader.getResource("classpath:json/leetcodeProblems.json");
+        String fileContent = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
+        leetCodeProblems = new ObjectMapper().readValue(fileContent, LeetCodeProblemResult.class);
+    }
 
-        return leetCodeProblemResult.getStat_status_pairs();
+    public List<LeetCodeProblem> getProblems() {
+        return leetCodeProblems.getStat_status_pairs();
     }
 
     public DetailProblem getProblemDetail(String name) throws IOException {
         String LEETCODE_API_ENDPOINT = "https://leetcode.com/graphql";
-        String DAILY_CODING_CHALLENGE_QUERY = "{\"query\":\"query questionContent($titleSlug: String!) {\\n  question(titleSlug: $titleSlug) { \\n    content \\n  }\\n}\",\"variables\":{\"titleSlug\":\"" + name +"\"}}";
+        String DAILY_CODING_CHALLENGE_QUERY = "{\"query\":\"query questionContent($titleSlug: String!) {\\n  question(titleSlug: $titleSlug) { \\n    content \\n  }\\n}\",\"variables\":{\"titleSlug\":\"" + name + "\"}}";
 
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add("Content-Type", "application/json");

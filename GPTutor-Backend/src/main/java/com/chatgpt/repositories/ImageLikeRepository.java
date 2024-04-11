@@ -1,6 +1,5 @@
 package com.chatgpt.repositories;
 
-import com.chatgpt.entity.ImageComplaint;
 import com.chatgpt.entity.ImageLike;
 import org.springframework.data.repository.CrudRepository;
 

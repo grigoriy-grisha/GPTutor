@@ -269,6 +269,7 @@ function ImageGenerationExamples({ id }: IProps) {
                 </div>
               }
               maxHeight={250}
+              headerComponent="h4"
             />
           ))}
         </Div>

@@ -1,3 +1,12 @@
+import {
+  type AdaptivityProps,
+  getViewWidthByViewportWidth,
+  getViewHeightByViewportHeight,
+  ViewWidth,
+  SizeType,
+} from "@vkontakte/vkui";
+import type { UseAdaptivity } from "@vkontakte/vk-bridge-react";
+
 export function plural(number: number, forms: string[]) {
   const cases = [2, 0, 1, 1, 1, 2];
   const index =
@@ -7,3 +16,27 @@ export function plural(number: number, forms: string[]) {
 
   return forms[index];
 }
+
+export const transformVKBridgeAdaptivity = ({
+  type,
+  viewportWidth,
+  viewportHeight,
+}: UseAdaptivity): AdaptivityProps => {
+  if (type === "adaptive") {
+    return {
+      viewWidth: getViewWidthByViewportWidth(viewportWidth),
+      viewHeight: getViewHeightByViewportHeight(viewportHeight),
+    };
+  }
+
+  if (type === "force_mobile" || type === "force_mobile_compact") {
+    return {
+      viewWidth: ViewWidth.MOBILE,
+      sizeX: SizeType.COMPACT,
+      sizeY:
+        type === "force_mobile_compact" ? SizeType.COMPACT : SizeType.REGULAR,
+    };
+  }
+
+  return {};
+};

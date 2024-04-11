@@ -52,14 +52,14 @@ function ImageCreatePrompts({ id }: ImageCreatePromptsProps) {
       >
         <div style={{ maxWidth: "100vw" }}>
           <Div>
-            <Title>Используйте выразительные образы ✨</Title>
+            <Title Component="h1">Используйте выразительные образы ✨</Title>
           </Div>
           <PromptTrack prompts={randomPromptsOne} type="prompt" />
           <PromptTrack prompts={randomPromptsTwo} type="prompt" />
           <Spacing size={4} />
           <Separator />
           <Div>
-            <Title level="2">
+            <Title level="2" Component="h2">
               Дописывайте модификаторы стилей, для ярких образов 🔥
             </Title>
           </Div>

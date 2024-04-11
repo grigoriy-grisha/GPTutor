@@ -1,12 +1,21 @@
 import React, { useEffect } from "react";
 import {
+  AdaptivityProvider,
+  AppRoot,
+  ConfigProvider,
   ModalRoot,
   SplitLayout,
-  useConfigProvider,
   View,
 } from "@vkontakte/vkui";
-import bridge from "@vkontakte/vk-bridge";
+import bridge, {
+  parseURLSearchParamsForGetLaunchParams,
+} from "@vkontakte/vk-bridge";
 import { useLocation } from "@happysanta/router";
+import {
+  useAdaptivity,
+  useAppearance,
+  useInsets,
+} from "@vkontakte/vk-bridge-react";
 
 import "@vkontakte/vkui/dist/vkui.css";
 import "./index.css";
@@ -20,7 +29,6 @@ import { Modals, Panels, Views } from "./entity/routing";
 
 import { Home } from "./panels/Home";
 import { Chapters } from "./panels/Chapters";
-import { OpenSource } from "./panels/OpenSource";
 import { History } from "./panels/History";
 import { Modes } from "./panels/Modes";
 
@@ -53,11 +61,12 @@ import { PublishingImages } from "$/panels/PublishingImages";
 import { Agreement } from "$/modals/Agreement";
 import { DetailImage } from "$/modals/DetailImage";
 import { WeakRequestModal } from "$/modals/WeakRequestModal";
+import { GPTutorProfile } from "$/panels/GPTutorProfile";
+import { transformVKBridgeAdaptivity } from "$/utility/strings";
 
 const App = () => {
   const location = useLocation();
   const { goBack, goToForbidden } = useNavigationContext();
-  const { appearance } = useConfigProvider();
 
   useEffect(() => {
     bridge
@@ -74,63 +83,85 @@ const App = () => {
     ? []
     : location.getViewHistory(Views.viewMain);
 
+  const vkBridgeAppearance = useAppearance() || undefined;
+  const vkBridgeInsets = useInsets() || undefined;
+  const adaptivity = transformVKBridgeAdaptivity(useAdaptivity());
+  const { vk_platform } = parseURLSearchParamsForGetLaunchParams(
+    window.location.search
+  );
+
   return (
-    <>
-      {appearance === "dark" ? <OneDark /> : <OneLight />}
-      <SplitLayout
-        popout={
-          <>
-            <AppAlert id={Modals.alert} />
-          </>
-        }
-        modal={
-          <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
-            <ApplicationInfo id={Modals.applicationInfo} />
-            <ApplicationInfoStableArt id={Modals.applicationInfoStableArt} />
-            <InterviewQuestions id={Modals.interviewQuestions} />
-            <Agreement id={Modals.agreement} />
-            <DetailImage id={Modals.detailImage} settlingHeight={100} />
-            <WeakRequestModal id={Modals.weakRequest} />
-          </ModalRoot>
-        }
-      >
-        {appService.loading.get() ? (
-          <LoadingPanel />
-        ) : (
-          <View
-            style={{ maxWidth: "100vw", overflowX: "hidden" }}
-            id={Views.viewMain}
-            activePanel={location.getViewActivePanel(Views.viewMain)!}
-            onSwipeBack={goBack}
-            history={history}
+    <ConfigProvider
+      appearance={vkBridgeAppearance}
+      platform={vk_platform === "desktop_web" ? "vkcom" : undefined}
+      isWebView={bridge.isWebView()}
+      hasCustomPanelHeaderAfter={true}
+    >
+      <AdaptivityProvider {...adaptivity}>
+        <AppRoot mode="full" safeAreaInsets={vkBridgeInsets}>
+          {vkBridgeAppearance === "dark" ? <OneDark /> : <OneLight />}
+          <SplitLayout
+            popout={
+              <>
+                <AppAlert id={Modals.alert} />
+              </>
+            }
+            modal={
+              <ModalRoot activeModal={location.getModalId()} onClose={goBack}>
+                <ApplicationInfo
+                  settlingHeight={100}
+                  id={Modals.applicationInfo}
+                />
+                <ApplicationInfoStableArt
+                  settlingHeight={100}
+                  id={Modals.applicationInfoStableArt}
+                />
+                <InterviewQuestions id={Modals.interviewQuestions} />
+                <Agreement id={Modals.agreement} />
+                <DetailImage id={Modals.detailImage} settlingHeight={100} />
+                <WeakRequestModal id={Modals.weakRequest} />
+              </ModalRoot>
+            }
           >
-            <ChatSettings id={Panels.chatSettings} />
-            <CodeEditor id={Panels.editor} />
-            <ChatTrainer id={Panels.chatTrainer} />
-            <Home id={Panels.home} />
-            <Chapters id={Panels.chapters} />
-            <ChatFree id={Panels.chatFree} />
-            <ChatLesson id={Panels.chatLesson} />
-            <ChatInterview id={Panels.chatInterview} />
-            <OpenSource id={Panels.openSource} />
-            <History id={Panels.history} />
-            <Modes id={Panels.modes} />
-            <LeetcodeProblems id={Panels.leetcodeProblems} />
-            <ChatLeetCode id={Panels.chatLeetCode} />
-            <ProblemDetail id={Panels.problemDetail} />
-            <ImageGeneration id={Panels.generationImages} />
-            <ImageGenerationResult id={Panels.generationImagesResult} />
-            <ImageGenerationExamples id={Panels.generationImagesExamples} />
-            <Gallery id={Panels.gallery} />
-            <ImageCreatePrompts id={Panels.generationImagesPrompts} />
-            <Profile id={Panels.profile} />
-            <PublishingImages id={Panels.publishingImages} />
-          </View>
-        )}
-      </SplitLayout>
-      <UtilBlock />
-      <SnackbarNotifier />
-    </>
+            {appService.loading.get() ? (
+              <LoadingPanel />
+            ) : (
+              <View
+                style={{ maxWidth: "100vw", overflowX: "hidden" }}
+                id={Views.viewMain}
+                activePanel={location.getViewActivePanel(Views.viewMain)!}
+                onSwipeBack={goBack}
+                history={history}
+              >
+                <ChatSettings id={Panels.chatSettings} />
+                <CodeEditor id={Panels.editor} />
+                <ChatTrainer id={Panels.chatTrainer} />
+                <Home id={Panels.home} />
+                <Chapters id={Panels.chapters} />
+                <ChatFree id={Panels.chatFree} />
+                <ChatLesson id={Panels.chatLesson} />
+                <ChatInterview id={Panels.chatInterview} />
+                <History id={Panels.history} />
+                <Modes id={Panels.modes} />
+                <LeetcodeProblems id={Panels.leetcodeProblems} />
+                <ChatLeetCode id={Panels.chatLeetCode} />
+                <ProblemDetail id={Panels.problemDetail} />
+                <ImageGeneration id={Panels.generationImages} />
+                <ImageGenerationResult id={Panels.generationImagesResult} />
+                <ImageGenerationExamples id={Panels.generationImagesExamples} />
+                <Gallery id={Panels.gallery} />
+                <ImageCreatePrompts id={Panels.generationImagesPrompts} />
+                <Profile id={Panels.profile} />
+                <PublishingImages id={Panels.publishingImages} />
+                <GPTutorProfile id={Panels.gptutorProfile} />
+              </View>
+            )}
+          </SplitLayout>
+          <UtilBlock />
+          <SnackbarNotifier />
+        </AppRoot>
+      </AdaptivityProvider>
+    </ConfigProvider>
   );
 };
 

@@ -25,6 +25,7 @@ function CountIndicator({ negativeCount, warningCount, count }: IProps) {
       style={{ display: "inline" }}
       level="2"
       className={getAttemptColor(negativeCount, warningCount, count)}
+      Component="h2"
     >
       {count}
     </Title>

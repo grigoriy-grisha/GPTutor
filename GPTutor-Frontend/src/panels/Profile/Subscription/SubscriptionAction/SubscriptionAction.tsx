@@ -18,7 +18,7 @@ function SubscriptionAction() {
           size="m"
           appearance="positive"
           onClick={async () => {
-            await subscriptionsController.resume();
+            await subscriptionsController.resume("subscription_1");
           }}
         >
           Возообновить подписку
@@ -34,7 +34,7 @@ function SubscriptionAction() {
           mode="outline"
           appearance="negative"
           onClick={async () => {
-            await subscriptionsController.cancel();
+            await subscriptionsController.cancel("subscription_1");
           }}
         >
           Приостановить подписку
@@ -55,7 +55,7 @@ function SubscriptionAction() {
           color: "#FF8C00 !important",
         }}
         onClick={async () => {
-          await subscriptionsController.create();
+          await subscriptionsController.create("subscription_1");
         }}
       >
         Получить подписку

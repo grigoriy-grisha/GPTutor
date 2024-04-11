@@ -254,17 +254,6 @@ export const reactLessons = [
     new LessonRequest("Что такое PropTypes в React?"),
     [
       new LessonRequest(
-        "Покажи примеры использования PropTypes в React",
-        "Пример"
-      ),
-    ]
-  ),
-  new LessonItem(
-    "Проверка типов с помощью PropTypes",
-    ADVANCED,
-    new LessonRequest("Что такое PropTypes в React?"),
-    [
-      new LessonRequest(
         "Покажи примеры использования PropTypes в React для функциональных компонентов",
         "Пример"
       ),

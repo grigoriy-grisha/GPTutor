@@ -29,11 +29,20 @@ function Subscription() {
         <Div className={classes.cardContainer}>
           <Image src={vkUser.photo_200} size={96} />
           <div className={classes.cardText}>
-            <Title level="3">{`${vkUser.first_name} ${vkUser.last_name}`}</Title>
+            <Title
+              level="3"
+              Component="h3"
+              className={classes.cardName}
+            >{`${vkUser.first_name} ${vkUser.last_name}`}</Title>
             <div className={classes.subtitleText}>
               <div>
                 Подписка:{" "}
-                <Headline style={{ display: "inline" }} level="2" weight="1">
+                <Headline
+                  style={{ display: "inline" }}
+                  level="2"
+                  weight="1"
+                  Component="h4"
+                >
                   {subscriptionsController.isDisable()
                     ? "Не активна"
                     : "Активна"}
@@ -42,7 +51,12 @@ function Subscription() {
               {!subscriptionsController.isDisable() && (
                 <div>
                   Срок подписки до:{" "}
-                  <Headline style={{ display: "inline" }} level="2" weight="1">
+                  <Headline
+                    style={{ display: "inline" }}
+                    level="2"
+                    weight="1"
+                    Component="h4"
+                  >
                     {expireDate?.toLocaleDateString()}
                   </Headline>
                 </div>

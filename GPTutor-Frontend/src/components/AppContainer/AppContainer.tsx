@@ -47,6 +47,7 @@ function AppContainer({
   const offsetHeightTabbar = tabbarElem?.offsetHeight || 0;
   const offsetHeightFixedBottom = fixedBottom?.offsetHeight || 0;
 
+  console.log(offsetHeightTabbar);
   const offset =
     offsetHeightHeader + offsetHeightTabbar + offsetHeightFixedBottom;
 
@@ -73,7 +74,7 @@ function AppContainer({
       {fixedBottomContent && (
         <FixedLayout
           style={{ bottom: offsetHeightTabbar }}
-          getRef={setFixedElem as any}
+          getRootRef={setFixedElem as any}
           filled
           vertical="bottom"
         >

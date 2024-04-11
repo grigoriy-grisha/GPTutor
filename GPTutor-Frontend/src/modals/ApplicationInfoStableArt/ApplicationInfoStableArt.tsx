@@ -4,8 +4,8 @@ import {
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
-  Separator,
   SimpleCell,
+  Spacing,
   Text,
   Title,
   useAdaptivityConditionalRender,
@@ -13,7 +13,6 @@ import {
 import { useApplicationInfo } from "$/modals/ApplicationInfo/hooks/useApplicationInfo";
 import { AppDiv } from "$/components/AppDiv";
 import {
-  Icon20DonutCircleFillYellow,
   Icon24Share,
   Icon28ChevronRightOutline,
   Icon28Favorite,
@@ -21,21 +20,21 @@ import {
   Icon28MessageHeart,
   Icon28Users,
 } from "@vkontakte/icons";
-import { ChatGPTLogo, GithubIcon } from "$/icons";
+import { ChatGPTLogo } from "$/icons";
 import React from "react";
-import { subscriptionsController } from "$/entity/subscriptions";
 
 interface IProps {
   id: string;
+  settlingHeight: number;
 }
 
-function ApplicationInfoStableArt({ id }: IProps) {
+function ApplicationInfoStableArt({ id, settlingHeight }: IProps) {
   const { goBack, goToOpenSource } = useNavigationContext();
   const { sizeX } = useAdaptivityConditionalRender();
   const { subscribe, favourites, share, getAppLink } = useApplicationInfo();
 
   return (
-    <ModalPage settlingHeight={100} id={id}>
+    <ModalPage settlingHeight={settlingHeight} id={id}>
       <ModalPageHeader
         before={
           sizeX.compact && (
@@ -46,15 +45,20 @@ function ApplicationInfoStableArt({ id }: IProps) {
           )
         }
       >
-        <Title level="1">Приложение</Title>
+        <Title level="1" Component="h1">
+          Приложение
+        </Title>
       </ModalPageHeader>
-
-      <Separator wide />
 
       <Group style={{ marginTop: 8 }}>
         <AppDiv>
           <Text weight="3">
-            <Title style={{ display: "inline" }} level="3" as="span">
+            <Title
+              style={{ display: "inline" }}
+              level="3"
+              as="span"
+              Component="h3"
+            >
               Stable Art{" — "}
             </Title>
             это развлекательное приложение-инструмент, которое дает возможность
@@ -108,17 +112,7 @@ function ApplicationInfoStableArt({ id }: IProps) {
           <Text weight="2">GPTutor</Text>
         </SimpleCell>
       </Group>
-      <Group style={{ paddingTop: 0 }}>
-        <SimpleCell
-          onClick={goToOpenSource}
-          before={<GithubIcon style={{ paddingRight: 16 }} />}
-          after={
-            <Icon28ChevronRightOutline fill="var(--vkui--color_text_secondary)" />
-          }
-        >
-          <Text weight="2">OPEN SOURCE</Text>
-        </SimpleCell>
-      </Group>
+      <Spacing size={12} />
     </ModalPage>
   );
 }

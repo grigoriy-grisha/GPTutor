@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  backend-dev:
+    env_file:
+      - .env-dev
+    build: ./GPTutor-Backend
+    container_name: backend-dev
+    depends_on:
+      - postgresql-dev
+    ports:
+      - "8080:8080"
+
+  models-dev:
+    env_file:
+      - .env-dev
+    container_name: models-dev
+    build:
+      context: ./GPTutor-Models
+
+  postgresql-dev:
+    image: 'postgres:13.1-alpine'
+    container_name: postgresql-dev
+    env_file:
+      - .env-dev
+    volumes:
+      - db-data-dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  db-data-dev:
