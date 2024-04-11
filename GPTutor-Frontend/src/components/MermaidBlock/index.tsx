@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import mermaid from "mermaid";
 import { classNames, Div, useAppearance } from "@vkontakte/vkui";
 
@@ -24,8 +24,7 @@ function MermaidBlock({ mmd, id, className, onRender, onClick }: Props) {
   const [svg, setSvg] = useState<string>("");
   const appearance = useAppearance();
 
-  console.log(appearance);
-  useEffect(() => {
+  useLayoutEffect(() => {
     mermaid.initialize({
       startOnLoad: false,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -42,7 +41,7 @@ function MermaidBlock({ mmd, id, className, onRender, onClick }: Props) {
         onRender(svg);
       }
     });
-  }, [mmd]);
+  }, [mmd, appearance]);
   return (
     <Div
       onClick={onClick}
