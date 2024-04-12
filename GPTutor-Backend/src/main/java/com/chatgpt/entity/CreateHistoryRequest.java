@@ -12,6 +12,7 @@ public class CreateHistoryRequest {
 
     private String systemMessage;
 
+    private String title;
     private Timestamp lastUpdated;
 
     public CreateHistoryRequest() {
@@ -55,5 +56,13 @@ public class CreateHistoryRequest {
 
     public void setLastUpdated(Timestamp lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

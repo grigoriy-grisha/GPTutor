@@ -37,3 +37,14 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+.title {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.title :global(.vkuiTappable) {
+    color: var(--vkui--color_icon_accent_themed);
+
+}

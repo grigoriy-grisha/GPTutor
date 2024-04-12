@@ -3,7 +3,12 @@ import { memo, sig } from "dignals";
 import { UUID_V4 } from "$/entity/common";
 
 import ReactivePromise from "$/services/ReactivePromise";
-import { deleteAllHistory, deleteHistory, getHistoryById } from "$/api/history";
+import {
+  deleteAllHistory,
+  deleteHistory,
+  getHistoryById,
+  updateHistory,
+} from "$/api/history";
 import { snackbarNotify } from "$/entity/notify";
 import { History } from "$/entity/history";
 import { chatGpt } from "$/entity/GPT/ChatGpt";
@@ -122,5 +127,21 @@ export class GptHistoryDialogs {
       downloadMessagesUrl("json", id),
       `${foundDialog?.type} ${foundDialog?.lastUpdated}.json`
     );
+  }
+
+  updateHistoryTitle(id: string, title: string) {
+    this.dialogs.set(
+      this.dialogs.get().map((item) => {
+        if (item.id === id) {
+          return { ...item, title };
+        }
+        return item;
+      })
+    );
+
+    const dialog = this.getDialogById(id);
+    if (!dialog) return;
+
+    updateHistory(dialog);
   }
 }
