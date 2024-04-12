@@ -54,10 +54,6 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             return 10;
         }
 
-        if (uri.startsWith("/history")) {
-            return 30;
-        }
-
         if (uri.startsWith("/conversation")) {
             return 10;
         }

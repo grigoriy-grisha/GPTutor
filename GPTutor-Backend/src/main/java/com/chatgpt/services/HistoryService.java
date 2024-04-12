@@ -49,10 +49,10 @@ public class HistoryService {
     }
 
 
-    public Page<History> getAllHistory(String vkUserId, int pageNumber, int pageSize) {
+    public Page<History> getAllHistory(String vkUserId, String substring, int pageNumber, int pageSize) {
         PageRequest pageable = PageRequest.of(pageNumber, pageSize, Sort.by("lastUpdated").descending());
         var user = userService.getOrCreateVkUser(vkUserId);
-        return historyRepository.findAllByVkUserId(user.getId(),  pageable);
+        return historyRepository.findByVkUserIdAndByLessonNameOrMessageContentContainingIgnoreCase(user.getId(), substring,  pageable);
     }
 
     public void deleteHistory(String vkUserId, UUID historyId) {

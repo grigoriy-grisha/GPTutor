@@ -1,6 +1,13 @@
 import React, { useEffect } from "react";
 
-import { Div, Panel, PanelHeaderBack, Spinner, Title } from "@vkontakte/vkui";
+import {
+  Div,
+  Panel,
+  PanelHeaderBack,
+  Search,
+  Spinner,
+  Title,
+} from "@vkontakte/vkui";
 
 import { AppContainer } from "$/components/AppContainer";
 import { useNavigationContext } from "$/NavigationContext";
@@ -12,6 +19,7 @@ import { AppPanelHeader } from "$/components/AppPanelHeader";
 import { HistoryDelete } from "./HistoryDelete";
 
 import classes from "./History.module.css";
+import useDebounce from "$/hooks/useDebounce";
 
 interface IProps {
   id: string;
@@ -28,6 +36,8 @@ function History({ id }: IProps) {
     hasNextPage,
     loading,
   });
+
+  const onSearchValue = useDebounce(chatGpt.history.search);
 
   useEffect(() => {
     chatGpt.history.loadHistory();
@@ -49,7 +59,15 @@ function History({ id }: IProps) {
           </AppPanelHeader>
         }
       >
-        <Div>
+        <Search
+          placeholder="Поиск по сообщениям"
+          value={chatGpt.history.searchValue$.get()}
+          onChange={(event) => {
+            chatGpt.history.setSearchValue(event.target.value);
+            onSearchValue();
+          }}
+        />
+        <Div style={{ paddingTop: 0 }}>
           <HistoryList />
           {loading && (
             <div

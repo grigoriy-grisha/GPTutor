@@ -18,6 +18,7 @@ export class GptHistoryDialogs {
   getMessages$ = ReactivePromise.create(getMessagesById);
 
   dialogs = sig<History[]>([]);
+  searchValue$ = sig("");
 
   pageNumber = 0;
 
@@ -29,7 +30,10 @@ export class GptHistoryDialogs {
 
   async loadHistory() {
     this.pageNumber = 0;
-    const history = await this.getHistory$.run(this.pageNumber);
+    const history = await this.getHistory$.run(
+      this.pageNumber,
+      this.searchValue$.get().trim()
+    );
     this.dialogs.set(history.content);
   }
 
@@ -37,10 +41,22 @@ export class GptHistoryDialogs {
     if (!chatGpt.history.hasNextHistory$.get()) return;
 
     this.pageNumber++;
-    const history = await this.getHistory$.run(this.pageNumber);
+    const history = await this.getHistory$.run(
+      this.pageNumber,
+      this.searchValue$.get().trim()
+    );
 
     this.dialogs.set([...this.dialogs.get(), ...history.content]);
   }
+
+  setSearchValue = (value: string) => {
+    console.log(value);
+    this.searchValue$.set(value);
+  };
+
+  search = async () => {
+    await this.loadHistory();
+  };
 
   async removeAllHistories() {
     try {
