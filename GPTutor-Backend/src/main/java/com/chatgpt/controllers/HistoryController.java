@@ -37,10 +37,12 @@ public class HistoryController {
     public ResponseEntity<Page<History>> getHistoryById(
             HttpServletRequest request,
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "") String search
     ) {
         return ResponseEntity.ok().body(
                 historyService.getAllHistory((String) request.getAttribute("vkUserId"),
+                        search,
                         pageNumber,
                         pageSize
                 )

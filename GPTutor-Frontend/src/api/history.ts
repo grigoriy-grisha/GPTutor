@@ -15,14 +15,20 @@ export function createHistory(params: HistoryCreate): Promise<History> {
   }).then((res) => res.json());
 }
 
-export function getHistoryById(pageNumber: number): Promise<Pageable<History>> {
-  return fetch(`${BACKEND_HOST}history?pageNumber=${pageNumber}`, {
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + location.href,
-      "Content-Type": "application/json",
-    },
-  }).then((res) => res.json());
+export function getHistoryById(
+  pageNumber: number,
+  search: string
+): Promise<Pageable<History>> {
+  return fetch(
+    `${BACKEND_HOST}history?pageNumber=${pageNumber}&search=${search}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + location.href,
+        "Content-Type": "application/json",
+      },
+    }
+  ).then((res) => res.json());
 }
 
 export function deleteHistory(id: string) {
