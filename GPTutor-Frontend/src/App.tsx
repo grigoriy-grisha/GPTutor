@@ -16,6 +16,7 @@ import {
   useAppearance,
   useInsets,
 } from "@vkontakte/vk-bridge-react";
+import "markdown-it-latex/dist/index.css";
 
 import "@vkontakte/vkui/dist/vkui.css";
 import "./index.css";

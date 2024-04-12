@@ -11,12 +11,11 @@ import { Copy } from "../components/Copy";
 
 // @ts-ignore
 import mila from "markdown-it-link-attributes";
+// @ts-ignore
+import markdownItLatex from "markdown-it-latex";
+import mathjax3 from "markdown-it-mathjax3";
 import { Button } from "@vkontakte/vkui";
-import {
-  Icon20SquareStackUpOutline,
-  Icon24StatisticsOutline,
-  Icon28BracketsSlashSquareOutline,
-} from "@vkontakte/icons";
+import { Icon28BracketsSlashSquareOutline } from "@vkontakte/icons";
 
 require(`prismjs/components/prism-go.min.js`);
 require(`prismjs/components/prism-python.min.js`);
@@ -142,7 +141,9 @@ export default class Markdown {
       );
       plugin.renderer.rules.fence = renderCode(plugin.renderer.rules.fence);
     })
-    .use(mila, { attrs: { target: "_blank" } });
+    .use(mila, { attrs: { target: "_blank" } })
+    .use(markdownItLatex)
+    .use(mathjax3);
 
   markdownIt = new MarkdownIt({
     breaks: true,
@@ -192,7 +193,9 @@ export default class Markdown {
       );
       plugin.renderer.rules.fence = renderCode(plugin.renderer.rules.fence);
     })
-    .use(mila, { attrs: { target: "_blank" } });
+    .use(mila, { attrs: { target: "_blank" } })
+    .use(markdownItLatex)
+    .use(mathjax3);
 
   render(markdown: string) {
     return this.markdownItWithPlugins.render(markdown);
