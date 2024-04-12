@@ -17,6 +17,13 @@ import { SubscriptionGPT } from "$/entity/GPT/SubscriptionGPT";
 
 const MAX_CONTEXT_WORDS = 1000;
 
+const initialSystemContent = `
+Если ты пишешь блоки кода, то обязательно помечай язык в этом блоке кода, всегда, это очень важно!.
+
+Пиши формулы и решения уравнений katex формате, оборачивай вместо [] в $ выражения, это важно!!! чтобы можно было обработать  в markdown
+
+Все уравнения и выражения должны быть обернуты в $ в начале и конце, ни при каких обстоятельствах не оборачивай выражения в квадратные скобки ([]), оборачивай в доллары ($$)`;
+
 const subscriptionGPT = new SubscriptionGPT();
 export abstract class ChatGptTemplate {
   subscriptionGPT = subscriptionGPT;
@@ -24,7 +31,7 @@ export abstract class ChatGptTemplate {
   isBlockActions$ = sig(false);
 
   currentHistory: History | null = null;
-  initialSystemContent = "";
+  initialSystemContent = initialSystemContent;
 
   systemMessage = new GptMessage(this.initialSystemContent, GPTRoles.system);
 
