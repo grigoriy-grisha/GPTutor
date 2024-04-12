@@ -48,3 +48,14 @@ export function deleteAllHistory() {
     },
   }).then((res) => res.json());
 }
+
+export function updateHistory(history: History) {
+  return fetch(`${BACKEND_HOST}history`, {
+    method: "PUT",
+    headers: {
+      Authorization: "Bearer " + location.href,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(history),
+  }).then((res) => res.json());
+}

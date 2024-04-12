@@ -20,6 +20,8 @@ public class History {
 
     private String lastMessage;
 
+    private String title;
+
     private String type;
 
     private String systemMessage;
@@ -30,13 +32,14 @@ public class History {
 
     public History() {}
 
-    public History(VkUser vkUser, String lastMessage, String type, String systemMessage, String lessonName,  Timestamp lastUpdated) {
+    public History(VkUser vkUser, String lastMessage, String type, String systemMessage, String lessonName,  Timestamp lastUpdated, String title) {
         this.vkUser = vkUser;
         this.lastMessage = lastMessage;
         this.type = type;
         this.systemMessage = systemMessage;
         this.lessonName = lessonName;
         this.lastUpdated = lastUpdated;
+        this.title = title;
     }
 
     public void setVkUser(VkUser vkUser) {
@@ -89,5 +92,13 @@ public class History {
 
     public void setLastUpdated(Timestamp lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

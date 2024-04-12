@@ -4,6 +4,7 @@ export type HistoryCreate = {
   type: string;
   systemMessage: string;
   lastUpdated: Date;
+  title?: string;
 };
 
 export type History = {
@@ -12,5 +13,6 @@ export type History = {
   type: string;
   lessonName: string;
   systemMessage: string;
+  title?: string;
   lastUpdated: Date;
 };

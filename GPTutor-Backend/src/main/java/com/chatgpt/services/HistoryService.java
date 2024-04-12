@@ -40,7 +40,8 @@ public class HistoryService {
                 createHistoryRequest.getType(),
                 createHistoryRequest.getSystemMessage(),
                 createHistoryRequest.getLessonName(),
-                createHistoryRequest.getLastUpdated()
+                createHistoryRequest.getLastUpdated(),
+                createHistoryRequest.getTitle()
         );
 
         historyRepository.save(history);
@@ -79,5 +80,13 @@ public class HistoryService {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
             }
         }
+    }
+
+    public Boolean updateHistory(String vkUserId, History history) {
+        checkHistory(vkUserId, history.getId());
+
+        historyRepository.save(history);
+
+        return true;
     }
 }

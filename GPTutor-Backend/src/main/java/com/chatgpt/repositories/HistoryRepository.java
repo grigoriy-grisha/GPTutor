@@ -14,11 +14,10 @@ public interface HistoryRepository extends CrudRepository<History, UUID> {
     Page<History> findAllByVkUserId(UUID vkId, PageRequest pageable);
     void deleteAllByVkUserId(UUID vkId);
 
-
     @Query("SELECT DISTINCT h FROM History h " +
             "INNER JOIN Message m ON h.id = m.history.id " +
             "WHERE h.vkUser.id = :vkId " +
-            "AND (LOWER(h.lessonName) LIKE LOWER(concat('%', :substring, '%')) " +
+            "AND (LOWER(h.title) LIKE LOWER(concat('%', :substring, '%')) " +
             "OR LOWER(m.content) LIKE LOWER(concat('%', :substring, '%')))")
     Page<History> findByVkUserIdAndByLessonNameOrMessageContentContainingIgnoreCase(@Param("vkId") UUID vkId, @Param("substring") String substring, PageRequest pageable);
 }

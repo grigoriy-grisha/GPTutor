@@ -67,6 +67,13 @@ public class HistoryController {
         return ResponseEntity.ok().body("{}");
     }
 
+    @PutMapping(path = "/history")
+    @RateLimiter(name = "historyLimit", fallbackMethod = "fallbackMethod")
+    @Transactional
+    public ResponseEntity<Boolean> updateHistory(@RequestBody History history, HttpServletRequest request) {
+        return ResponseEntity.ok().body(historyService.updateHistory((String) request.getAttribute("vkUserId"), history));
+    }
+
     public ResponseEntity<Object> fallbackMethod(Exception e) throws Exception {
         if (e != null) throw e;
 

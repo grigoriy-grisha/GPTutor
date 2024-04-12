@@ -14,19 +14,17 @@ import {
   VueLesson,
 } from "$/icons";
 import {
-  Banner,
   Button,
   ButtonGroup,
   classNames,
   Headline,
-  Platform,
+  IconButton,
+  Input,
   Spacing,
-  Title,
   useAdaptivityWithJSMediaQueries,
-  usePlatform,
 } from "@vkontakte/vkui";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { chatGpt } from "$/entity/GPT";
 import { ModeType } from "$/entity/lessons";
 import { History } from "$/entity/history";
@@ -34,11 +32,12 @@ import { History } from "$/entity/history";
 import classes from "./HistoryBanner.module.css";
 import { useNavigationContext } from "$/NavigationContext";
 import { ErrorBlock } from "$/components/ErrorBlock";
-
-import { DownloadDialog } from "./DownloadDialog";
 import { PythonTraining } from "$/icons/LessonIcons/PythonTraining";
 import { GoTraining } from "$/icons/LessonIcons/GoTraining";
 import AppBanner from "$/components/AppBanner";
+import { Icon24Done, Icon24Write } from "@vkontakte/icons";
+import { ChangeHistoryTitle } from "$/entity/history/ChangeHistoryTitle";
+import { getBannerName } from "$/entity/history/utils";
 
 const BannerIcon: Record<string, React.FC> = {
   [ModeType.JS]: JSLesson,
@@ -57,26 +56,23 @@ const BannerIcon: Record<string, React.FC> = {
   [ModeType.GO_TRAINING]: GoTraining,
 };
 
-const chapterNames: Record<string, string> = {
-  [ModeType.JS]: "Javascript",
-  [ModeType.Typescript]: "Typescript",
-  [ModeType.Vue]: "Vue",
-  [ModeType.React]: "React",
-  [ModeType.Git]: "Git",
-  [ModeType.Go]: "Go",
-  [ModeType.HTMLCSS]: "HTML/CSS",
-  [ModeType.HTMLCSS_INTERVIEW]: "Собеседование HTML/CSS",
-  [ModeType.JAVASCRIPT_INTERVIEW]: "Собеседование JavaScript",
-  [ModeType.REACT_INTERVIEW]: "Собеседование React",
-  [ModeType.LeetCode]: "LeetCode",
-};
-
 interface IProps {
   dialog: History;
 }
 
 function HistoryBanner({ dialog }: IProps) {
-  const platform = usePlatform();
+  const chapterType = dialog.type;
+  const Icon =
+    !chapterType || chapterType === "Free"
+      ? ChatGptIcon
+      : BannerIcon[chapterType];
+
+  const bannerTitle = getBannerName(dialog);
+
+  const changeHistoryTitle = useMemo(
+    () => new ChangeHistoryTitle(bannerTitle),
+    [bannerTitle]
+  );
 
   const {
     goToChatFree,
@@ -84,15 +80,7 @@ function HistoryBanner({ dialog }: IProps) {
     goToChatInterview,
     goToChatLeetCode,
     openAlert,
-    goBack,
   } = useNavigationContext();
-
-  const chapterType = dialog.type;
-  const lessonName = dialog.lessonName;
-  const Icon =
-    !chapterType || chapterType === "Free"
-      ? ChatGptIcon
-      : BannerIcon[chapterType];
 
   const { sizeX } = useAdaptivityWithJSMediaQueries();
 
@@ -102,16 +90,6 @@ function HistoryBanner({ dialog }: IProps) {
 
   if (chatGpt.history.getHistory$.error.get()) {
     return <ErrorBlock />;
-  }
-
-  function getBannerName() {
-    if (chapterType && lessonName) {
-      return `${chapterNames[chapterType]} : ${lessonName}`;
-    }
-
-    if (chapterType === "Free") return "Свободный диалог";
-
-    return chapterNames[chapterType];
   }
 
   return (
@@ -131,7 +109,44 @@ function HistoryBanner({ dialog }: IProps) {
           </div>
         </div>
       }
-      header={getBannerName()}
+      header={
+        <>
+          {changeHistoryTitle.edit$.get() ? (
+            <div className={classes.title}>
+              <Input
+                value={changeHistoryTitle.title$.get()}
+                onChange={(event) => {
+                  changeHistoryTitle.title$.set(event.target.value);
+                }}
+              />
+
+              <IconButton
+                disabled={!changeHistoryTitle.title$.get()}
+                onClick={() => {
+                  changeHistoryTitle.edit$.set(false);
+                  chatGpt.history.updateHistoryTitle(
+                    dialog.id,
+                    changeHistoryTitle.title$.get()
+                  );
+                }}
+              >
+                <Icon24Done />
+              </IconButton>
+            </div>
+          ) : (
+            <div className={classes.title}>
+              {changeHistoryTitle.title$.get()}
+              <IconButton
+                onClick={() => {
+                  changeHistoryTitle.edit$.set(true);
+                }}
+              >
+                <Icon24Write />
+              </IconButton>
+            </div>
+          )}
+        </>
+      }
       subheader={
         <>
           <span className={classes.lineClamp}>

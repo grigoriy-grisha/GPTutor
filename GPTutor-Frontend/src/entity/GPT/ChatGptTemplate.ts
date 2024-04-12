@@ -14,6 +14,7 @@ import { snackbarNotify } from "$/entity/notify";
 import { interviews } from "$/entity/interview";
 import { leetCode } from "$/entity/leetCode/LeetCode";
 import { SubscriptionGPT } from "$/entity/GPT/SubscriptionGPT";
+import { getBannerName } from "$/entity/history/utils";
 
 const MAX_CONTEXT_WORDS = 1000;
 
@@ -270,12 +271,17 @@ export abstract class ChatGptTemplate {
     const lengthMessages = this.messages$.get().length;
     if (lengthMessages > 1) return;
 
-    this.currentHistory = await this.createHistory$.run({
+    const dialog = {
       systemMessage: this.systemMessage.content$.get(),
       lastMessage: lastMessage.content$.get(),
       lessonName: data?.lessonName || "",
       lastUpdated: new Date(),
       type,
+    };
+
+    this.currentHistory = await this.createHistory$.run({
+      ...dialog,
+      title: getBannerName(dialog),
     });
   }
 
