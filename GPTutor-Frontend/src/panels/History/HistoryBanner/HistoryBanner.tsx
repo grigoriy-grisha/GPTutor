@@ -135,7 +135,9 @@ function HistoryBanner({ dialog }: IProps) {
             </div>
           ) : (
             <div className={classes.title}>
-              {changeHistoryTitle.title$.get()}
+              <span className={classes.titleText}>
+                {changeHistoryTitle.title$.get()}
+              </span>
               <IconButton
                 onClick={() => {
                   changeHistoryTitle.edit$.set(true);
