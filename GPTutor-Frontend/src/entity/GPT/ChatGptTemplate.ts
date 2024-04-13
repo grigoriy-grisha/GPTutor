@@ -103,7 +103,7 @@ export abstract class ChatGptTemplate {
   };
 
   resetSystemMessage = () => {
-    this.systemMessage.content$.set(this.initialSystemContent);
+    this.systemMessage.content$.set(initialSystemContent);
   };
 
   abortSend = () => {

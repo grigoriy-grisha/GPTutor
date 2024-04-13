@@ -33,9 +33,7 @@ export class ChatGpt {
     this.chatGptFree.clearMessages();
     this.chatGptFree.abortSend();
 
-    this.chatGptFree.setInitialSystemMessage(
-      this.chatGptFree.initialSystemContent
-    );
+    this.chatGptFree.resetSystemMessage();
 
     goToChat();
   };

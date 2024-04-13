@@ -63,7 +63,6 @@ function useChatSettings(chatGpt: ChatGptTemplate) {
     chatGpt.clearMessages();
     systemMessageContent.set(systemMessageValue);
     goBack();
-    goBack();
   };
 
   return {
