@@ -59,6 +59,7 @@
         "@babel/runtime": "^7.21.5",
         "@craco/craco": "^7.1.0",
         "@types/jest": "^29.5.1",
+        "@types/katex": "^0.16.7",
         "@types/lodash.debounce": "^4.0.7",
         "@types/lodash.throttle": "^4.1.7",
         "@types/markdown-it": "^12.2.3",
