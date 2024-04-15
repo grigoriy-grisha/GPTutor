@@ -16,8 +16,6 @@ import { leetCode } from "$/entity/leetCode/LeetCode";
 import { SubscriptionGPT } from "$/entity/GPT/SubscriptionGPT";
 import { getBannerName } from "$/entity/history/utils";
 
-const MAX_CONTEXT_WORDS = 1000;
-
 const initialSystemContent = `
 Если ты пишешь блоки кода, то обязательно помечай язык в этом блоке кода, всегда, это очень важно!.
 
@@ -27,6 +25,8 @@ const initialSystemContent = `
 
 const subscriptionGPT = new SubscriptionGPT();
 export abstract class ChatGptTemplate {
+  maxContentWords = 1000;
+
   subscriptionGPT = subscriptionGPT;
 
   isBlockActions$ = sig(false);
@@ -77,6 +77,10 @@ export abstract class ChatGptTemplate {
   disableTimer() {
     this.timer.stop();
     this.timer.setDisabled();
+  }
+
+  updateMaxContentWords() {
+    this.maxContentWords = 4000;
   }
 
   closeDelay() {
@@ -176,7 +180,7 @@ export abstract class ChatGptTemplate {
 
   checkOnRunOutOfMessages() {
     [...this.messages$.get()].reverse().reduce((acc, message) => {
-      if (acc > MAX_CONTEXT_WORDS) {
+      if (acc > this.maxContentWords) {
         message.toggleRunOutOff();
         return acc;
       }
