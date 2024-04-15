@@ -52,6 +52,7 @@ function Messenger({
   useEffect(() => {
     if (!isDisableSubscription) {
       chatGpt.disableTimer();
+      chatGpt.updateMaxContentWords();
     }
     return () => chatGpt.closeDelay();
   }, [isDisableSubscription]);
