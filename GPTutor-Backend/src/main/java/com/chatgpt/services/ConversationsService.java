@@ -43,8 +43,12 @@ public class ConversationsService {
 
         Pair<ApiKey, String> apiKey = apiKeysService.getKey();
 
+        var isGpt = conversationRequest.getModel().startsWith("gpt");
+
         if (!subscriptionsImagesService.isAvailableSubscription(userId, "subscription_2")) {
-            conversationRequest.setModel("gpt-3.5-turbo-0125");
+            if (!isGpt) {
+                conversationRequest.setModel("gpt-3.5-turbo-0125");
+            }
         }
 
         ChatGptRequest chatGptRequest = new ChatGptRequest(

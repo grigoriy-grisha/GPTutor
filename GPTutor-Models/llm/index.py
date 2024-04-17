@@ -2,8 +2,10 @@ import json
 import os
 from random import randint
 
+from g4f.Provider import Bing
 from g4f.client import Client
-from g4f.models import codellama_70b_instruct, dbrx_instruct, mixtral_8x22b, command_r_plus
+from g4f.models import dbrx_instruct, mixtral_8x22b, command_r_plus, Model
+from g4f.providers.retry_provider import RetryProvider
 
 os.environ["G4F_PROXY"] = "http://bFLvNd:V0TPu2@45.155.203.207:8000"
 
@@ -35,6 +37,11 @@ models_dict = {
     "command_r_plus": command_r_plus,
     "dbrx_instruct": dbrx_instruct,
     "mixtral_8x22b": mixtral_8x22b,
+    "gpt-4-bing": Model(
+        name='gpt-4',
+        base_provider='openai',
+        best_provider=RetryProvider([Bing])
+    )
 }
 
 
