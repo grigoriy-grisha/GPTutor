@@ -62,7 +62,7 @@ function ImageGenerationResult({ id }: IProps) {
               </Button>
             ) : (
               <Button
-                onClick={generateImage}
+                onClick={() => generateImage()}
                 after={<Icon24RepeatOutline />}
                 style={{ width: "100%" }}
                 size="m"

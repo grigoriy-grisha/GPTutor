@@ -13,6 +13,9 @@ import { Copy } from "../components/Copy";
 import mila from "markdown-it-link-attributes";
 // @ts-ignore
 import markdownItLatex from "markdown-it-latex";
+// @ts-ignore
+import markdownFootnote from "markdown-it-footnote";
+
 import mathjax3 from "markdown-it-mathjax3";
 import { Button } from "@vkontakte/vkui";
 import { Icon28BracketsSlashSquareOutline } from "@vkontakte/icons";
@@ -96,6 +99,7 @@ function renderCode(origRule?: RenderRule): RenderRule {
   };
 }
 
+console.log(markdownFootnote);
 export default class Markdown {
   markdownItWithPlugins = new MarkdownIt({
     breaks: true,
@@ -143,7 +147,8 @@ export default class Markdown {
     })
     .use(mila, { attrs: { target: "_blank" } })
     .use(markdownItLatex)
-    .use(mathjax3);
+    .use(mathjax3)
+    .use(markdownFootnote);
 
   markdownIt = new MarkdownIt({
     breaks: true,
@@ -195,7 +200,8 @@ export default class Markdown {
     })
     .use(mila, { attrs: { target: "_blank" } })
     .use(markdownItLatex)
-    .use(mathjax3);
+    .use(mathjax3)
+    .use(markdownFootnote);
 
   render(markdown: string) {
     return this.markdownItWithPlugins.render(markdown);

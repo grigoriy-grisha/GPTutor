@@ -67,6 +67,7 @@ def create_completions(model, messages):
         model=models_dict[model],
         messages=messages,
         stream=True,
+        web_search=True
     )
 
     for token in response:
