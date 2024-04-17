@@ -8,3 +8,23 @@
     position: relative;
 }
 
+.paragraph a {
+    background: none;
+    border: 0;
+    border-radius: 0;
+    color: var(--vkui_internal--link-color, var(--vkui--color_text_link));
+    cursor: pointer;
+    display: inline;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.paragraph a:hover {
+    text-decoration: underline;
+}
+
