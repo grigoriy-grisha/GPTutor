@@ -21,6 +21,7 @@ import classes from "./ModelsForm.module.css";
 import { gptModels } from "$/entity/GPT/GptModels";
 import { subscriptionsController } from "$/entity/subscriptions";
 import { useNavigationContext } from "$/NavigationContext";
+import { ModelCard } from "$/panels/ChatSettings/ModelsForm/ModelCard";
 
 function ModelsForm() {
   const isDisableSubscription = subscriptionsController.isDisable();
@@ -57,38 +58,33 @@ function ModelsForm() {
           </Div>
         </Card>
       )}
-      {gptModels.models.map((model) => (
-        <Card
-          className={classNames(classes.containerCard, {
-            [classes.containerCardDisable]: isDisableSubscription,
-          })}
-          mode="shadow"
+      <Title Component="h1">Бесплатные модели ✨</Title>
+      {gptModels.freeModels.map((model) => (
+        <ModelCard
           key={model.model}
+          title={model.model}
+          description={model.description}
+          checked={gptModels.selectedCurrentModel(model.model)}
+          lang={model.lang}
+          onClick={() => gptModels.selectModel(model.model)}
+        />
+      ))}
+      <Title Component="h1">Модели по подписке 🔥</Title>
+      {gptModels.models.map((model) => (
+        <ModelCard
+          key={model.model}
+          title={model.model}
+          description={model.description}
+          checked={gptModels.selectedCurrentModel(model.model)}
+          lang={model.lang}
           onClick={() => {
             if (isDisableSubscription) return;
             gptModels.selectModel(model.model);
           }}
-        >
-          <Div>
-            <Card mode="outline-tint">
-              <Div className={classes.cardTitle}>
-                <Title level="3">{model.model}</Title>
-                <Radio
-                  name="radio"
-                  checked={gptModels.selectedCurrentModel(model.model)}
-                />
-              </Div>
-            </Card>
-            <Spacing size={12} />
-            <SimpleCell before={<Icon24TreeNodesOutline />}>
-              {model.description}
-            </SimpleCell>
-            <Separator />
-            <SimpleCell before={<Icon28HieroglyphCharacterOutline />}>
-              {model.lang}
-            </SimpleCell>
-          </Div>
-        </Card>
+          className={classNames({
+            [classes.containerCardDisable]: isDisableSubscription,
+          })}
+        />
       ))}
     </Div>
   );
