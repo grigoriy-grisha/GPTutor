@@ -4,11 +4,12 @@ const BACKEND_HOST = env.REACT_APP_BACKEND_HOST;
 
 export async function sendChatCompletions(
   body: any,
-  onMessage: (content: string, isFirst: boolean) => void,
+  onMessage: (content: string, isFirst: boolean, isSecond: boolean) => void,
   onError: () => void,
   controller: AbortController
 ) {
   let isFirst = true;
+  let isSecond = true;
   let isHasError = false;
 
   await fetchEventSource(`${BACKEND_HOST}conversation`, {
@@ -31,7 +32,11 @@ export async function sendChatCompletions(
       if (!Object.keys(delta).length) return;
 
       if (!delta.content) return;
-      onMessage(delta.content, isFirst);
+      onMessage(delta.content, isFirst, isSecond);
+
+      if (!isFirst) {
+        isSecond = false;
+      }
       isFirst = false;
     },
     onerror(err) {

@@ -13,15 +13,26 @@ interface IProps {
   html: string;
 }
 
-function MessageLinks({ containerRef, html }: IProps) {
-  return (
-    <div className={classes.container}>
-      {useDebounceValue<JSX.Element[]>(
-        [],
-        () => {
-          const links = containerRef.current!.querySelectorAll("a");
+function getSafeHost(link: string) {
+  try {
+    return new URL(link).host;
+  } catch (e) {
+    return null;
+  }
+}
 
-          return [...links].map((link, index) => (
+function MessageLinks({ containerRef, html }: IProps) {
+  const elements = useDebounceValue<React.ReactElement[]>(
+    [],
+    () => {
+      const links = containerRef.current!.querySelectorAll("a");
+
+      return [...links]
+        .map((link, index) => {
+          const host = getSafeHost(link.href);
+          if (!host) return null;
+
+          return (
             <Tappable href={link.href} key={index} target="_blank">
               <Card className={classes.card} mode="shadow">
                 <img
@@ -30,16 +41,21 @@ function MessageLinks({ containerRef, html }: IProps) {
                   src={faviconFetch({ uri: link.href, fallbackText: "G" })}
                   alt=""
                 />
-                <span>{link.innerText}</span>
+                <span>{host}</span>
               </Card>
             </Tappable>
-          ));
-        },
-        [html],
-        300
-      )}
-    </div>
+          );
+        })
+        .filter(Boolean) as React.ReactElement[];
+    },
+    [html],
+    300
   );
+  console.log(elements);
+
+  if (elements.length === 0) return null;
+
+  return <div className={classes.container}>{elements}</div>;
 }
 
 export default MessageLinks;

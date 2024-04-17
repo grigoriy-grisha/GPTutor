@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import { batch, memo, sig } from "dignals";
 
 import { sendChatCompletions } from "$/api/completions";
@@ -25,6 +26,7 @@ const initialSystemContent = `
 Все уравнения и выражения должны быть обернуты в $ в начале и конце, ни при каких обстоятельствах не оборачивай выражения в квадратные скобки ([]), оборачивай в доллары ($$)`;
 
 const subscriptionGPT = new SubscriptionGPT();
+
 export abstract class ChatGptTemplate {
   maxContentWords = 1000;
 
@@ -190,16 +192,32 @@ export abstract class ChatGptTemplate {
     }, 0);
   }
 
-  onMessage = (message: GptMessage) => (value: string, isFirst: boolean) => {
-    this.closeDelay();
+  onMessage =
+    (message: GptMessage) =>
+    (value: string, isFirst: boolean, isSecond: boolean) => {
+      this.closeDelay();
 
-    if (isFirst) {
+      console.log(value);
+      console.log(isFirst, "isFirst");
+      console.log(isSecond, "isSecond");
+      if (isFirst) {
+        message.onSetMessageContent(value);
+        this.addMessage(message);
+        return;
+      }
+
+      if (!isFirst && isSecond) {
+        message.onSetMessageContent(value);
+        return;
+      }
+
+      if (value.length >= 100) {
+        console.log("END!!!");
+        return;
+      }
+
       message.onSetMessageContent(value);
-      this.addMessage(message);
-      return;
-    }
-    message.onSetMessageContent(value);
-  };
+    };
 
   getMessages() {
     if (!this.systemMessage) {
