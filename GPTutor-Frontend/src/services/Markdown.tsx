@@ -18,7 +18,7 @@ import markdownFootnote from "markdown-it-footnote";
 import { footnote } from "@mdit/plugin-footnote";
 
 import mathjax3 from "markdown-it-mathjax3";
-import { Button } from "@vkontakte/vkui";
+import { Button, Search, Title } from "@vkontakte/vkui";
 import { Icon28BracketsSlashSquareOutline } from "@vkontakte/icons";
 
 require(`prismjs/components/prism-go.min.js`);
@@ -150,7 +150,31 @@ export default class Markdown {
     .use(markdownItLatex)
     .use(mathjax3)
     .use(markdownFootnote)
-    .use(footnote);
+    .use(footnote)
+    .use((plugin) => {
+      const s = plugin.renderer.rules.text!;
+
+      plugin.renderer.rules.text = (...args) => {
+        const text = s(...args);
+        if (text.startsWith("Поиск в интернете")) {
+          return `<div class="search">
+                ${ReactDOM.renderToString(
+                  <div>
+                    <Title level="3">Поиск google:</Title>
+                    <Search
+                      style={{ padding: 0, paddingTop: 12 }}
+                      readOnly
+                      after={null}
+                      value={text.split(" : ")[1]}
+                    />
+                  </div>
+                )}
+              </div>`;
+        }
+
+        return text;
+      };
+    });
 
   markdownIt = new MarkdownIt({
     breaks: true,
@@ -212,15 +236,13 @@ export default class Markdown {
         .replace(/\[\^\d+\^]\[\d+]:/g, "")
         .replace(/\[\^\d+\^]\[\d+]/g, "")
         .replace(/\[\d+]\s*.*?""/g, (r) => {
-          console.log(r);
           const link = r.replace(/\[\d+]: /g, "").replace(/ ""/, "");
           return `[${new URL(link).host}](${link})`;
         })
         .replace(/Searching the web for:\s.(?<=`).*?`/, (match) => {
-          return `**Поиск в интернете** :  ${match.split(": ")[1]} 
-            -----------------------------------------------------------
-            Результат поиска: \n
-          `;
+          return `Поиск в интернете : ${match
+            .split(": ")[1]
+            .replaceAll("`", "")}`;
         })
     );
   }

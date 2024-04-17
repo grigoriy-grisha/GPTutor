@@ -135,3 +135,11 @@ tfoot > tr  {
     --vkui--size_border_radius--regular: 12px;
     --vkui--size_card_border_radius--regular: 12px;
 }
+
+.search :global(.vkuiTappable) {
+    display: none;
+}
+
+.search :global(.vkuiSearch) {
+    padding: 0;
+}
