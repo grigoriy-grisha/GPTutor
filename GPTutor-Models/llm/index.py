@@ -45,7 +45,7 @@ models_dict = {
 }
 
 
-def get_event_message(chunk, model):
+def get_event_message(chunk, model, finish_reason):
     return json.dumps({
         "id": str(randint(0, 10000000)),
         "object": "chat.completion.chunk",
@@ -54,7 +54,7 @@ def get_event_message(chunk, model):
             {
                 "index": 0,
                 "delta": {"content": chunk},
-                "finish_reason": None
+                "finish_reason": finish_reason
             }
         ]
     })
@@ -73,6 +73,6 @@ def create_completions(model, messages):
     for token in response:
         content = token.choices[0].delta.content
         if content is not None:
-            yield 'data:' + get_event_message(token.choices[0].delta.content, model) + '\n\n'
+            yield 'data:' + get_event_message(token.choices[0].delta.content, model, token.choices[0].finish_reason) + '\n\n'
 
     yield "data: [DONE]\n\n"
