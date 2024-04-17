@@ -216,6 +216,12 @@ export default class Markdown {
           const link = r.replace(/\[\d+]: /g, "").replace(/ ""/, "");
           return `[${new URL(link).host}](${link})`;
         })
+        .replace(/Searching the web for:\s.(?<=`).*?`/, (match) => {
+          return `**Поиск в интернете** :  ${match.split(": ")[1]} 
+            -----------------------------------------------------------
+            Результат поиска: \n
+          `;
+        })
     );
   }
 
