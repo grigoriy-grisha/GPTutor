@@ -15,6 +15,7 @@ import mila from "markdown-it-link-attributes";
 import markdownItLatex from "markdown-it-latex";
 // @ts-ignore
 import markdownFootnote from "markdown-it-footnote";
+import { footnote } from "@mdit/plugin-footnote";
 
 import mathjax3 from "markdown-it-mathjax3";
 import { Button } from "@vkontakte/vkui";
@@ -148,7 +149,8 @@ export default class Markdown {
     .use(mila, { attrs: { target: "_blank" } })
     .use(markdownItLatex)
     .use(mathjax3)
-    .use(markdownFootnote);
+    .use(markdownFootnote)
+    .use(footnote);
 
   markdownIt = new MarkdownIt({
     breaks: true,
@@ -201,10 +203,20 @@ export default class Markdown {
     .use(mila, { attrs: { target: "_blank" } })
     .use(markdownItLatex)
     .use(mathjax3)
-    .use(markdownFootnote);
+    .use(markdownFootnote)
+    .use(footnote);
 
   render(markdown: string) {
-    return this.markdownItWithPlugins.render(markdown);
+    return this.markdownItWithPlugins.render(
+      markdown
+        .replace(/\[\^\d+\^]\[\d+]:/g, "")
+        .replace(/\[\^\d+\^]\[\d+]/g, "")
+        .replace(/\[\d+]\s*.*?""/g, (r) => {
+          console.log(r);
+          const link = r.replace(/\[\d+]: /g, "").replace(/ ""/, "");
+          return `[${new URL(link).host}](${link})`;
+        })
+    );
   }
 
   renderWithoutPlugins(markdown: string) {
