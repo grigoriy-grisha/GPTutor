@@ -15,6 +15,7 @@ import { interviews } from "$/entity/interview";
 import { leetCode } from "$/entity/leetCode/LeetCode";
 import { SubscriptionGPT } from "$/entity/GPT/SubscriptionGPT";
 import { getBannerName } from "$/entity/history/utils";
+import { gptModels } from "$/entity/GPT/GptModels";
 
 const initialSystemContent = `
 Если ты пишешь блоки кода, то обязательно помечай язык в этом блоке кода, всегда, это очень важно!.
@@ -155,8 +156,9 @@ export abstract class ChatGptTemplate {
   }
 
   async sendChatCompletions(message: GptMessage) {
+    console.log(this.getMessages());
     const result = await sendChatCompletions(
-      { messages: this.getMessages() },
+      { messages: this.getMessages(), model: gptModels.getModel() },
       this.onMessage(message),
       () => {
         this.closeDelay();

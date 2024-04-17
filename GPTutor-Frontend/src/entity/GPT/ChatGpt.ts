@@ -9,8 +9,26 @@ import { ChatGptInterview } from "$/entity/GPT/ChatGptInterview";
 import { ChatGptLeetCode } from "$/entity/GPT/ChatGptLeetCode";
 import { interviews } from "$/entity/interview";
 import { ChatGptTrainer } from "$/entity/GPT/ChatGptTrainer";
+import { VkStorageService } from "$/services/VkStorageService";
 
 export class ChatGpt {
+  storageService = new VkStorageService();
+
+  hasNewModel = false;
+  constructor() {
+    this.initHasNewModel();
+  }
+
+  async initHasNewModel() {
+    const hasNewModel = await this.storageService.get("hasNewModel");
+    this.hasNewModel = !!hasNewModel;
+  }
+
+  setHasNewModel() {
+    this.storageService.set("hasNewModel", "true");
+    this.hasNewModel = true;
+  }
+
   history = new GptHistoryDialogs();
   chatGptFree = new ChatGptFree();
 

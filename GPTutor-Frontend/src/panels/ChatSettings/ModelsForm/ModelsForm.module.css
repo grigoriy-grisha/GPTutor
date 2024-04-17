@@ -1,0 +1,40 @@
+.container {
+    display: grid;
+    grid-gap: 16px;
+    max-width: 100vw;
+
+}
+
+.containerCard {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.containerCard:hover {
+    opacity: 0.6;
+}
+
+.containerCardDisable {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.containerCard :global( .vkuiSimpleCell__content) {
+    white-space: break-spaces;
+}
+
+.cardTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cardTitle :global(.vkuiRadio__icon) {
+    height: 24px;
+    width: 24px;
+}
+
+.cardTitle :global(.vkuiRadio__container) {
+    height: 24px;
+    width: 24px;
+}

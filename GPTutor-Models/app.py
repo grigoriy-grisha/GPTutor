@@ -1,66 +1,25 @@
-import json
-from random import randint
-
 from flask import Flask, Response, request
-from werkzeug.exceptions import BadRequest
 
 from images.sd import textToImage
+from llm.index import create_completions, models
 
 app = Flask(__name__)
 
 
-def get_event_message(chunk):
-    return json.dumps({
-        "id": str(randint(0, 10000000)),
-        "object": "chat.completion.chunk",
-        "model": "gpt-4",
-        "choices": [
-            {
-                "index": 0,
-                "delta": {"content": chunk},
-                "finish_reason": None
-            }
-        ]
-    })
-
-
-def generate_stream(stream, except_func):
-    count = 0
-    for chunk in stream:
-        count += 1
-        yield 'data:' + get_event_message(chunk) + '\n\n'
-
-    if count == 0:
-        generate_stream(stream, except_func)
-    else:
-        print("DONE")
-        yield "data: [DONE]\n\n"
-
-
-def default_model():
-    messages = request.json['messages']
-
-    def raise_func():
-        raise BadRequest()
-
+@app.post('/llm')
+def llm_post():
     return Response(
-        generate_stream(
-            ChatCompletion.create(
-                model="gpt-4",
-                provider=Provider.Bing,
-                messages=messages,
-                chatId=uuid.uuid4(),
-                stream=True
-            ),
-            raise_func,
+        create_completions(
+            request.json["model"],
+            request.json["messages"]
         ),
-        mimetype='text/event-stream;charset=UTF-8',
+        mimetype='text/event-stream;charset=UTF-8'
     )
 
 
-@app.post('/gpt-4')
-def gpt():
-    return default_model()
+@app.get('/llm')
+def llm_get():
+    return models
 
 
 @app.post("/image")

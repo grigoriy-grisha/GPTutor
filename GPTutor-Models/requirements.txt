@@ -2,7 +2,6 @@ aiofiles==23.2.1
 aiohttp==3.8.5
 Flask==2.3.2
 Flask[async]==2.3.2
-g4f==0.1.9.4
 numpy==1.24.3
 Requests==2.31.0
 tensorflow==2.13.0
@@ -12,3 +11,5 @@ keras==2.13.1
 Pillow==10.0.0
 onnxruntime==1.15.1
 opencv-python==4.8.0.76
+g4f~=0.2.9.9
+aiohttp-socks==0.8.4

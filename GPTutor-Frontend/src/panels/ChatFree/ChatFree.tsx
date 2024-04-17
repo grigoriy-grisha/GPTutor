@@ -27,7 +27,12 @@ function ChatFree({ id }: IProps) {
     <Panel id={id}>
       <Messenger
         writeBarBefore={
-          <ChatFreeWriteBarBefore onSettingsClick={goToChatSettingsModal} />
+          <ChatFreeWriteBarBefore
+            onSettingsClick={() => {
+              goToChatSettingsModal();
+              chatGpt.setHasNewModel();
+            }}
+          />
         }
         additionalRequest={(handleSend) => (
           <ChatFreeAdditionalRequests handleSend={handleSend} />
