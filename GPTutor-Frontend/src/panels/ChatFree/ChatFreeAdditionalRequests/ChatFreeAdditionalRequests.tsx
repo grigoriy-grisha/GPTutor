@@ -3,12 +3,16 @@ import { Button, Div, Separator } from "@vkontakte/vkui";
 
 import classes from "./ChatFreeAdditionalRequests.module.css";
 import { chatGpt } from "$/entity/GPT";
+import { useNavigationContext } from "$/NavigationContext";
+import { gptModels } from "$/entity/GPT/GptModels";
 
 interface IProps {
   handleSend: (value: string) => void;
 }
 
 function ChatFreeAdditionalRequests({ handleSend }: IProps) {
+  const { goToChatSettingsModal } = useNavigationContext();
+
   const isTyping = chatGpt.chatGptFree.sendCompletions$.loading.get();
   const isStopped = chatGpt.chatGptFree.timer.isStopped$.get();
   const hasMessages = chatGpt.chatGptFree.messages$.get().length !== 0;
@@ -18,6 +22,9 @@ function ChatFreeAdditionalRequests({ handleSend }: IProps) {
     <>
       <Separator wide />
       <Div className={classes.additionalRequests}>
+        <Button onClick={() => goToChatSettingsModal()} mode="outline">
+          Модель: {gptModels.getModel()}
+        </Button>
         <Button
           disabled={isDisabled}
           onClick={() =>
