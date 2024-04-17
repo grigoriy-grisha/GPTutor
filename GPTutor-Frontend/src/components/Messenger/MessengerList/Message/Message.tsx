@@ -69,7 +69,6 @@ function Message({ chatGpt, message }: IProps) {
               </IconButton>
             </div>
           </div>
-
           <MessengerParagraph message={message} />
         </div>
       </Div>

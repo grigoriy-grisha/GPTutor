@@ -8,6 +8,7 @@ import { GptMessage } from "$/entity/GPT";
 import classes from "./MessengerParagraph.module.css";
 import DebouncedCode from "./DebouncedCode";
 import ErrorBlock from "./ErrorBlock";
+import { MessageLinks } from "$/components/Messenger/MessengerParagraph/MessageLinks";
 
 interface IProps {
   message: GptMessage;
@@ -46,7 +47,8 @@ function MessengerParagraph({ message }: IProps) {
       <div ref={containerRef} className={classes.codeContainer}>
         <div dangerouslySetInnerHTML={{ __html: html }} />
       </div>
-      {<DebouncedCode containerRef={containerRef} html={html} />}
+      <DebouncedCode containerRef={containerRef} html={html} />
+      <MessageLinks containerRef={containerRef} html={html} />
     </Paragraph>
   );
 }
