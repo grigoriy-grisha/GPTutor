@@ -18,34 +18,44 @@ import java.net.http.HttpRequest;
 
 @Service
 public class ConversationsService {
+    @Value("${models.url}")
+    String modelsUrl;
+
     @Autowired
     ApiRequestsService apiRequestsService;
 
     @Autowired
     ApiKeysService apiKeysService;
 
-    public SseEmitter getConversation(ConversationRequest conversationRequest) throws IOException {
+    @Autowired
+    SubscriptionsImagesService subscriptionsImagesService;
+
+    public SseEmitter getConversation(ConversationRequest conversationRequest, String userId) throws IOException {
         Utf8SseEmitter emitter = new Utf8SseEmitter();
 
-        fetchCompletion(emitter, conversationRequest, 0);
+        fetchCompletion(emitter, conversationRequest, userId, 0);
 
         return emitter;
     }
 
-    public void fetchCompletion(Utf8SseEmitter emitter, ConversationRequest conversationRequest, int attempt) throws JsonProcessingException {
+    public void fetchCompletion(Utf8SseEmitter emitter, ConversationRequest conversationRequest, String userId, int attempt) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
         Pair<ApiKey, String> apiKey = apiKeysService.getKey();
 
+        if (!subscriptionsImagesService.isAvailableSubscription(userId, "subscription_2")) {
+            conversationRequest.setModel("gpt-3.5-turbo-0125");
+        }
+
         ChatGptRequest chatGptRequest = new ChatGptRequest(
-                "gpt-3.5-turbo-1106",
+                conversationRequest.getModel(),
                 conversationRequest.getMessages(),
                 true
         );
 
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.aiguoguo199.com/v1/chat/completions"))
+                .uri(URI.create(conversationRequest.getModel().startsWith("gpt-3.5") ? "https://api.aiguoguo199.com/v1/chat/completions" : modelsUrl + "/llm"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + apiKey.getFirst().getKey())
                 .POST(HttpRequest.BodyPublishers.ofString(input))
@@ -77,7 +87,7 @@ public class ConversationsService {
                 }
 
                 Thread.sleep(200);
-                fetchCompletion(emitter, conversationRequest, attempt + 1);
+                fetchCompletion(emitter, conversationRequest, userId, attempt + 1);
             } catch (IOException | InterruptedException e) {
                 emitter.completeWithError(e);
             }

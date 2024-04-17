@@ -17,6 +17,8 @@ services:
     container_name: models-dev
     build:
       context: ./GPTutor-Models
+    ports:
+      - "1337:1337"
 
   postgresql-dev:
     image: 'postgres:13.1-alpine'

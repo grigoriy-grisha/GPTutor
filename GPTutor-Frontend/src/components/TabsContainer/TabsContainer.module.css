@@ -1,0 +1,12 @@
+.container {
+    width: 100%;
+}
+
+.container :global(.vkuiTabsItem) {
+    flex-grow: 1;
+}
+
+.container :global(.vkuiTabs__in) {
+    width: 100%;
+    justify-content: space-around;
+}
