@@ -35,7 +35,7 @@ import { ErrorBlock } from "$/components/ErrorBlock";
 import { PythonTraining } from "$/icons/LessonIcons/PythonTraining";
 import { GoTraining } from "$/icons/LessonIcons/GoTraining";
 import AppBanner from "$/components/AppBanner";
-import { Icon24Done, Icon24Write } from "@vkontakte/icons";
+import { Icon24Done, Icon28WriteOutline } from "@vkontakte/icons";
 import { ChangeHistoryTitle } from "$/entity/history/ChangeHistoryTitle";
 import { getBannerName } from "$/entity/history/utils";
 
@@ -143,7 +143,7 @@ function HistoryBanner({ dialog }: IProps) {
                   changeHistoryTitle.edit$.set(true);
                 }}
               >
-                <Icon24Write />
+                <Icon28WriteOutline />
               </IconButton>
             </div>
           )}

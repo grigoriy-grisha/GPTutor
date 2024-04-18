@@ -50,6 +50,7 @@ export type NavigationContextType = {
   goToGPTutorProfileReplace: () => void;
   goToGPTutorProfile: () => void;
   goToMermaidPage: () => void;
+  goToAdditionalRequest: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -195,6 +196,10 @@ export function NavigationContextProvider({
     router.pushPage(RoutingPages.mermaidPage);
   };
 
+  const goToAdditionalRequest = () => {
+    router.pushPage(RoutingPages.additionalRequest);
+  };
+
   return (
     <NavigationContext.Provider
       value={{
@@ -231,6 +236,7 @@ export function NavigationContextProvider({
         goToGPTutorProfileReplace,
         goToGPTutorProfile,
         goToMermaidPage,
+        goToAdditionalRequest,
         alert,
         isForbidden,
       }}

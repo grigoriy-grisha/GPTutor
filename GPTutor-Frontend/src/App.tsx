@@ -65,6 +65,7 @@ import { WeakRequestModal } from "$/modals/WeakRequestModal";
 import { GPTutorProfile } from "$/panels/GPTutorProfile";
 import { transformVKBridgeAdaptivity } from "$/utility/strings";
 import { MermaidPage } from "$/panels/MermaidPage";
+import { AdditionalRequests } from "$/panels/AdditionalRequests";
 
 const App = () => {
   const location = useLocation();
@@ -157,6 +158,7 @@ const App = () => {
                 <PublishingImages id={Panels.publishingImages} />
                 <GPTutorProfile id={Panels.gptutorProfile} />
                 <MermaidPage id={Panels.mermaidPage} />
+                <AdditionalRequests id={Panels.additionalRequest} />
               </View>
             )}
           </SplitLayout>

@@ -1,6 +1,5 @@
 package com.chatgpt.controllers;
 
-import com.chatgpt.entity.OrderSubscription;
 import com.chatgpt.entity.requests.UploadPhotoRequest;
 import com.chatgpt.entity.responses.OrderSubscriptionResponse;
 import com.chatgpt.entity.responses.UploadFileResponse;

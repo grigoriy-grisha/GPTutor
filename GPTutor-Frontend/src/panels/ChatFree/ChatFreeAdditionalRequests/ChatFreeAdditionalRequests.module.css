@@ -1,6 +1,21 @@
+.container {
+    display: grid;
+    grid-template-columns: 14fr 1fr;
+    align-items: center;
+}
+
 .additionalRequests {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    display: grid;
+    align-items: center;
     background: var(--vkui--color_background_content);
+}
+
+.additionalRequest {
+    margin: 4px;
+    max-width: 300px;
+}
+
+.edit {
+    margin-left: 8px;
+    color: var(--vkui--color_accent_blue);
 }
