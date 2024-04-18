@@ -1,7 +1,7 @@
 package com.chatgpt.services;
 
 import com.chatgpt.entity.VkUser;
-import com.chatgpt.entity.database.AdditionalRequests;
+import com.chatgpt.entity.database.AdditionalRequest;
 import com.chatgpt.entity.requests.CreateAdditionalRequest;
 import com.chatgpt.entity.requests.UpdateAdditionalRequest;
 import com.chatgpt.repositories.AdditionalRequestRepository;
@@ -21,7 +21,7 @@ public class AdditionalRequestsService {
     @Autowired
     AdditionalRequestRepository additionalRequestRepository;
 
-    public AdditionalRequests createAdditionalRequest(String vkUserId, CreateAdditionalRequest createAdditionalRequest) {
+    public AdditionalRequest createAdditionalRequest(String vkUserId, CreateAdditionalRequest createAdditionalRequest) {
         var user = userService.getOrCreateVkUser(vkUserId);
         return saveAdditionalRequest(
                 user,
@@ -32,7 +32,7 @@ public class AdditionalRequestsService {
     }
 
 
-    public List<AdditionalRequests> getAdditionalRequest(String vkUserId) {
+    public List<AdditionalRequest> getAdditionalRequest(String vkUserId) {
         var user = userService.getOrCreateVkUser(vkUserId);
         var additionalRequests = additionalRequestRepository.findAllByVkUserId(user.getId());
 
@@ -70,15 +70,15 @@ public class AdditionalRequestsService {
     }
 
 
-    private void checkAccess(VkUser user, AdditionalRequests additionalRequest) {
+    private void checkAccess(VkUser user, AdditionalRequest additionalRequest) {
         if (user.getId() != additionalRequest.getVkUser().getId()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
     }
 
 
-    private AdditionalRequests saveAdditionalRequest(VkUser user, String title, String message, Boolean isActive) {
-        var additionalRequest = new AdditionalRequests();
+    private AdditionalRequest saveAdditionalRequest(VkUser user, String title, String message, Boolean isActive) {
+        var additionalRequest = new AdditionalRequest();
 
         additionalRequest.setVkUser(user);
         additionalRequest.setMessage(message);
