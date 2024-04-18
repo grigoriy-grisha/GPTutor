@@ -18,6 +18,7 @@ import { VkStorageService } from "$/services/VkStorageService";
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
 import { userAgreement } from "$/entity/user/UserAgreement";
 import { listenResize } from "./resizeWindow";
+import { additionalRequests } from "$/entity/additionalRequest/AdditionalRequests";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
@@ -47,6 +48,7 @@ bridge
     if (appService.isGPTutor()) {
       await subscriptionsController.getSubscription("subscription_2");
     }
+    await additionalRequests.init();
   })
   .catch(console.log)
   .finally(() => {
@@ -99,6 +101,10 @@ const routes = {
     Views.viewMain
   ),
   [RoutingPages.mermaidPage]: new Page(Panels.mermaidPage, Views.viewMain),
+  [RoutingPages.additionalRequest]: new Page(
+    Panels.additionalRequest,
+    Views.viewMain
+  ),
 };
 
 const router = new Router(routes);

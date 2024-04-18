@@ -30,6 +30,7 @@ export enum RoutingPages {
   profile = "/profile",
   gptutorProfile = "/gptutor-profile",
   mermaidPage = "/mermaid-page",
+  additionalRequest = "/additional-request",
 }
 
 export enum Views {
@@ -56,6 +57,7 @@ export enum Panels {
   publishingImages = "publishing-images",
   gptutorProfile = "gptutor-profile",
   mermaidPage = "mermaid-page",
+  additionalRequest = "additional-request",
 
   gallery = "gallery",
 

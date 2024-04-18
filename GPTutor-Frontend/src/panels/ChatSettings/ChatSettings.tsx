@@ -23,7 +23,6 @@ function ChatSettings({ id }: IProps) {
   const gpt = chatGpt.getCurrentChatGpt();
 
   const {
-    isDirty,
     systemMessageValue,
     isChangedSystemMessage,
     resetSystemMessage,

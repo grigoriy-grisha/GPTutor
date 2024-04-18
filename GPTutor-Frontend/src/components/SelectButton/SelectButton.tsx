@@ -7,6 +7,7 @@ interface IProps {
   selected: boolean;
   children: React.ReactNode;
   onClick?: () => void;
+  className?: string;
   selectedMode?: "primary" | "outline" | "secondary" | "tertiary";
   defaultMode?: "primary" | "outline" | "secondary" | "tertiary";
 }
@@ -17,9 +18,11 @@ function SelectButton({
   onClick,
   selectedMode,
   defaultMode,
+  className,
 }: IProps) {
   return (
     <Button
+      className={className}
       onClick={onClick}
       mode={selected ? selectedMode || "primary" : defaultMode || "outline"}
       size="m"
