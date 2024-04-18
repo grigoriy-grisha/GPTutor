@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-public class AdditionalRequests {
+public class AdditionalRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

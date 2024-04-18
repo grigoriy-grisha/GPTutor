@@ -1,6 +1,6 @@
 package com.chatgpt.controllers;
 
-import com.chatgpt.entity.database.AdditionalRequests;
+import com.chatgpt.entity.database.AdditionalRequest;
 import com.chatgpt.entity.requests.CreateAdditionalRequest;
 import com.chatgpt.entity.requests.UpdateAdditionalRequest;
 import com.chatgpt.services.AdditionalRequestsService;
@@ -18,12 +18,12 @@ public class AdditionalRequestController {
     AdditionalRequestsService additionalRequestsService;
 
     @PostMapping(path = "/additional-request")
-    public AdditionalRequests createAdditionalRequest(HttpServletRequest request, @RequestBody CreateAdditionalRequest createAdditionalRequest) {
+    public AdditionalRequest createAdditionalRequest(HttpServletRequest request, @RequestBody CreateAdditionalRequest createAdditionalRequest) {
         return additionalRequestsService.createAdditionalRequest((String) request.getAttribute("vkUserId"), createAdditionalRequest);
     }
 
     @GetMapping(path = "/additional-request")
-    public List<AdditionalRequests> getAdditionalRequest(HttpServletRequest request) {
+    public List<AdditionalRequest> getAdditionalRequest(HttpServletRequest request) {
         return additionalRequestsService.getAdditionalRequest((String) request.getAttribute("vkUserId"));
     }
 
