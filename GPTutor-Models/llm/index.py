@@ -4,7 +4,8 @@ from random import randint
 
 from g4f.Provider import Llama
 from g4f.client import Client
-from g4f.models import dbrx_instruct, Model, mixtral_8x22b
+from g4f.models import dbrx_instruct, Model, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct
+from g4f.providers.retry_provider import RetryProvider
 
 os.environ["G4F_PROXY"] = "http://bFLvNd:V0TPu2@45.155.203.207:8000"
 
@@ -32,22 +33,16 @@ models = [
 
 ]
 
+
+
 models_dict = {
     "llama3_70b": {
         "stream": False,
-        "model": Model(
-            name="meta-llama/Meta-Llama-3-70B-Instruct",
-            base_provider="meta",
-            best_provider=Llama
-        )
+        "model": llama3_70b_instruct
     },
     "llama3_8b": {
         "stream": False,
-        "model": Model(
-            name="meta-llama/Meta-Llama-3-8B-Instruct",
-            base_provider="meta",
-            best_provider=Llama
-        )
+        "model": llama3_8b_instruct
     },
     "dbrx_instruct": {
         "stream": True,
