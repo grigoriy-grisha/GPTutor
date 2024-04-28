@@ -37,11 +37,11 @@ models = [
 
 models_dict = {
     "llama3_70b": {
-        "stream": False,
+        "stream": True,
         "model": llama3_70b_instruct
     },
     "llama3_8b": {
-        "stream": False,
+        "stream": True,
         "model": llama3_8b_instruct
     },
     "dbrx_instruct": {
