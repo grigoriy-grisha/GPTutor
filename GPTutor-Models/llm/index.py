@@ -2,10 +2,9 @@ import json
 import os
 from random import randint
 
-from g4f.Provider import Bing
+from g4f.Provider import Llama
 from g4f.client import Client
-from g4f.models import dbrx_instruct, mixtral_8x22b, command_r_plus, Model
-from g4f.providers.retry_provider import RetryProvider
+from g4f.models import dbrx_instruct, Model, mixtral_8x22b
 
 os.environ["G4F_PROXY"] = "http://bFLvNd:V0TPu2@45.155.203.207:8000"
 
@@ -56,7 +55,7 @@ models_dict = {
     },
     "mixtral_8x22b": {
         "stream": True,
-        "model": dbrx_inmixtral_8x22bstruct
+        "model": mixtral_8x22b
     },
 }
 
