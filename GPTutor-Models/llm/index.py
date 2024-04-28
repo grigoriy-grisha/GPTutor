@@ -34,14 +34,30 @@ models = [
 ]
 
 models_dict = {
-    "command_r_plus": command_r_plus,
-    "dbrx_instruct": dbrx_instruct,
-    "mixtral_8x22b": mixtral_8x22b,
-    "gpt-4-bing": Model(
-        name='gpt-4',
-        base_provider='openai',
-        best_provider=RetryProvider([Bing])
-    )
+    "llama3_70b": {
+        "stream": False,
+        "model": Model(
+            name="meta-llama/Meta-Llama-3-70B-Instruct",
+            base_provider="meta",
+            best_provider=Llama
+        )
+    },
+    "llama3_8b": {
+        "stream": False,
+        "model": Model(
+            name="meta-llama/Meta-Llama-3-8B-Instruct",
+            base_provider="meta",
+            best_provider=Llama
+        )
+    },
+    "dbrx_instruct": {
+        "stream": True,
+        "model": dbrx_instruct
+    },
+    "mixtral_8x22b": {
+        "stream": True,
+        "model": dbrx_inmixtral_8x22bstruct
+    },
 }
 
 
@@ -63,16 +79,27 @@ def get_event_message(chunk, model, finish_reason):
 def create_completions(model, messages):
     client = Client()
 
+    stream = models_dict[model]["stream"]
+
     response = client.chat.completions.create(
-        model=models_dict[model],
+        model=models_dict[model]["model"],
+        stream=models_dict[model]["stream"],
         messages=messages,
-        stream=True,
         web_search=True
     )
 
-    for token in response:
-        content = token.choices[0].delta.content
-        if content is not None:
-            yield 'data:' + get_event_message(token.choices[0].delta.content, model, token.choices[0].finish_reason) + '\n\n'
+    if stream:
+        for token in response:
+            content = token.choices[0].delta.content
+            if content is not None:
+                yield 'data:' + get_event_message(token.choices[0].delta.content, model,
+                                                  token.choices[0].finish_reason) + '\n\n'
 
+        yield "data: [DONE]\n\n"
+
+        return
+
+    yield 'data:' + get_event_message(response.choices[0].message.content, model, None) + '\n\n'
     yield "data: [DONE]\n\n"
+
+
