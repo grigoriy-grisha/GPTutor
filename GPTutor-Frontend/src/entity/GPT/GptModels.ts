@@ -21,6 +21,24 @@ class GptModels {
   freeModels = freeModels;
   models = [
     {
+      model: "claude_3_opus",
+      description:
+          "claude_3_opus",
+      lang: "Имеется поддержка Русского языка",
+    },
+    {
+      model: "claude_3_sonnet",
+      description:
+          "claude_3_sonnet",
+      lang: "Имеется поддержка Русского языка",
+    },
+    {
+      model: "pi",
+      description:
+          "pi",
+      lang: "Имеется поддержка Русского языка",
+    },
+    {
       model: "llama3_70b",
       description:
           "Llama-3 70b. Аналог GPT-4. Новая, одна из самых мощных моделей. Отключена поддержа потоковой генерации",
