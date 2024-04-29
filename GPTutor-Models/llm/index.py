@@ -2,10 +2,8 @@ import json
 import os
 from random import randint
 
-from g4f.Provider import Llama
 from g4f.client import Client
-from g4f.models import dbrx_instruct, Model, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct
-from g4f.providers.retry_provider import RetryProvider
+from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct
 
 os.environ["G4F_PROXY"] = "http://bFLvNd:V0TPu2@45.155.203.207:8000"
 
