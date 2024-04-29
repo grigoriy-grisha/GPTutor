@@ -2,8 +2,10 @@ import json
 import os
 from random import randint
 
+from g4f.Provider import Bing
 from g4f.client import Client
-from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct
+from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct, Model
+from g4f.providers.retry_provider import RetryProvider
 
 os.environ["G4F_PROXY"] = "http://bFLvNd:V0TPu2@45.155.203.207:8000"
 
@@ -31,8 +33,6 @@ models = [
 
 ]
 
-
-
 models_dict = {
     "llama3_70b": {
         "stream": True,
@@ -50,6 +50,14 @@ models_dict = {
         "stream": True,
         "model": mixtral_8x22b
     },
+    "gpt-4-bing": {
+        "stream": True,
+        "model": Model(
+            name='gpt-4',
+            base_provider='openai',
+            best_provider=RetryProvider([Bing])
+        )
+    }
 }
 
 
@@ -93,5 +101,3 @@ def create_completions(model, messages):
 
     yield 'data:' + get_event_message(response.choices[0].message.content, model, None) + '\n\n'
     yield "data: [DONE]\n\n"
-
-
