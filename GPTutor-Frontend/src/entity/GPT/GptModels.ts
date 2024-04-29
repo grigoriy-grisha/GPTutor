@@ -34,7 +34,8 @@ class GptModels {
     },
     {
       model: "pi",
-      description: "pi",
+      description:
+          "pi",
       lang: "Имеется поддержка Русского языка",
     },
     {
