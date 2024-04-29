@@ -13,11 +13,25 @@ const freeModels = [
     lang: "Имеется поддержка Русского языка",
   },
 ];
+
+
 class GptModels {
   currentModel$ = sig("gpt-3.5-turbo-0125");
 
   freeModels = freeModels;
   models = [
+    {
+      model: "claude_3_opus",
+      description:
+          "claude_3_opus",
+      lang: "Имеется поддержка Русского языка",
+    },
+    {
+      model: "claude_3_sonnet",
+      description:
+          "claude_3_sonnet",
+      lang: "Имеется поддержка Русского языка",
+    },
     {
       model: "llama3_70b",
       description:
