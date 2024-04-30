@@ -8,8 +8,6 @@ from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_
     blackbox
 from g4f.providers.retry_provider import RetryProvider
 
-from llm.blackbox import Blackbox
-
 os.environ["G4F_PROXY"] = "http://bFLvNd:V0TPu2@45.155.203.207:8000"
 
 models = [
