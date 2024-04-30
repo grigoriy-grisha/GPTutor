@@ -4,7 +4,8 @@ from random import randint
 
 from g4f.Provider import Bing, Llama
 from g4f.client import Client
-from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct, Model, claude_3_opus, pi
+from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct, Model, claude_3_opus, pi, \
+    blackbox
 from g4f.providers.retry_provider import RetryProvider
 
 os.environ["G4F_PROXY"] = "http://bFLvNd:V0TPu2@45.155.203.207:8000"
@@ -34,6 +35,10 @@ models = [
 ]
 
 models_dict = {
+    "blackbox": {
+        "stream": True,
+        "model": blackbox,
+    },
     "llama3_70b": {
         "stream": True,
         "model": llama3_70b_instruct
