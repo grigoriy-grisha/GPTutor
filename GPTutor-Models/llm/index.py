@@ -4,7 +4,8 @@ from random import randint
 
 from g4f.Provider import Bing, Llama
 from g4f.client import Client
-from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct, Model, claude_3_opus, pi
+from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct, Model, claude_3_opus, pi, \
+    blackbox
 from g4f.providers.retry_provider import RetryProvider
 
 from llm.blackbox import Blackbox
@@ -38,11 +39,7 @@ models = [
 models_dict = {
     "blackbox": {
         "stream": True,
-        "model": Model(
-            name='blackbox',
-            base_provider='blackbox',
-            best_provider=Blackbox
-        ),
+        "model": blackbox,
     },
     "llama3_70b": {
         "stream": True,
