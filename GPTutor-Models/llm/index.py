@@ -2,7 +2,7 @@ import json
 import os
 from random import randint
 
-from g4f.Provider import Bing
+from g4f.Provider import Bing, Llama
 from g4f.client import Client
 from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct, Model, claude_3_opus, pi
 from g4f.providers.retry_provider import RetryProvider
@@ -41,6 +41,30 @@ models_dict = {
     "llama3_8b": {
         "stream": True,
         "model": llama3_8b_instruct
+    },
+    "llama2_7b": {
+        "stream": True,
+        "model": Model(
+            name="meta-llama/Llama-2-7b-chat-hf",
+            base_provider='meta',
+            best_provider=RetryProvider([Llama])
+        )
+    },
+    "llama2_13b": {
+        "stream": True,
+        "model": Model(
+            name="meta-llama/Llama-2-13b-chat-hf",
+            base_provider='meta',
+            best_provider=RetryProvider([Llama])
+        )
+    },
+    "llama2_70b": {
+        "stream": True,
+        "model": Model(
+            name="meta-llama/Llama-2-70b-chat-hf",
+            base_provider="meta",
+            best_provider=RetryProvider([Llama])
+        )
     },
     "dbrx_instruct": {
         "stream": True,
