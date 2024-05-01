@@ -119,7 +119,7 @@ def get_event_message(chunk, model, finish_reason):
 
 def normalize_messages(model, messages):
     if model == 'blackbox':
-        return messages[-1]
+        return [messages[-1]]
     return messages
 
 
