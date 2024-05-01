@@ -117,6 +117,12 @@ def get_event_message(chunk, model, finish_reason):
     })
 
 
+def normalize_messages(model, messages):
+    if model == 'blackbox':
+        return messages[-1]
+    return messages
+
+
 def create_completions(model, messages):
     client = Client()
 
@@ -125,7 +131,7 @@ def create_completions(model, messages):
     response = client.chat.completions.create(
         model=models_dict[model]["model"],
         stream=models_dict[model]["stream"],
-        messages=messages,
+        messages=normalize_messages(model, messages),
         web_search=True
     )
 
