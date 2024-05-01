@@ -128,6 +128,8 @@ def create_completions(model, messages):
 
     stream = models_dict[model]["stream"]
 
+    print(normalize_messages(model, messages))
+
     response = client.chat.completions.create(
         model=models_dict[model]["model"],
         stream=models_dict[model]["stream"],
