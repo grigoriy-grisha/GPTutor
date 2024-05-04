@@ -87,6 +87,38 @@ models_dict = {
         "stream": True,
         "model": llama2_70b
     },
+    "wizardLM_2_8x22B": {
+        "stream": True,
+        "model": wizardLM_2_8x22B
+    },
+    "wizardLM_2_7B": {
+        "stream": True,
+        "model": wizardLM_2_7B
+    },
+    "lzlv_70b_fp16_hf": {
+        "stream": True,
+        "model": lzlv_70b_fp16_hf
+    },
+    "openchat_35": {
+        "stream": True,
+        "model": openchat_35
+    },
+    "airoboros_70b": {
+        "stream": True,
+        "model": airoboros_70b
+    },
+    "mixtral_8x7B": {
+        "stream": True,
+        "model": mixtral_8x7B
+    },
+    "mistral_7B": {
+        "stream": True,
+        "model": mistral_7B
+    },
+    "dolphin_26_mixtral_8x7b": {
+        "stream": True,
+        "model": dolphin_26_mixtral_8x7b
+    },
     "dbrx_instruct": {
         "stream": True,
         "model": dbrx_instruct
