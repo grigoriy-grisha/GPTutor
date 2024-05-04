@@ -5,7 +5,7 @@ from random import randint
 from g4f.Provider import Bing, Llama
 from g4f.client import Client
 from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct, Model, claude_3_opus, pi, \
-    blackbox
+    blackbox, llama2_7b, llama2_13b, llama2_70b
 from g4f.providers.retry_provider import RetryProvider
 
 os.environ["G4F_PROXY"] = "http://bFLvNd:V0TPu2@45.155.203.207:8000"
@@ -49,27 +49,15 @@ models_dict = {
     },
     "llama2_7b": {
         "stream": True,
-        "model": Model(
-            name="meta-llama/Llama-2-7b-chat-hf",
-            base_provider='meta',
-            best_provider=RetryProvider([Llama])
-        )
+        "model": llama2_7b
     },
     "llama2_13b": {
         "stream": True,
-        "model": Model(
-            name="meta-llama/Llama-2-13b-chat-hf",
-            base_provider='meta',
-            best_provider=RetryProvider([Llama])
-        )
+        "model":llama2_13b
     },
     "llama2_70b": {
         "stream": True,
-        "model": Model(
-            name="meta-llama/Llama-2-70b-chat-hf",
-            base_provider="meta",
-            best_provider=RetryProvider([Llama])
-        )
+        "model": llama2_70b
     },
     "dbrx_instruct": {
         "stream": True,
