@@ -1,12 +1,12 @@
 import asyncio
+import json
 import threading
 
 from flask import Flask, Response, request
 
 from images.sd import textToImage
-from llm import models
 from llm.index import create_completions
-from llm.models import run_check_models
+from llm.models import run_check_models, models
 
 app = Flask(__name__)
 
@@ -24,9 +24,9 @@ def llm_post():
 
 @app.get('/llm')
 def llm_get():
-    return {
+    return json.dumps({
         "response": models
-    }
+    })
 
 
 @app.post("/image")
