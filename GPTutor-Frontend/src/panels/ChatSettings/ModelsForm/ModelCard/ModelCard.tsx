@@ -16,6 +16,7 @@ import {
 } from "@vkontakte/icons";
 
 import classes from "$/panels/ChatSettings/ModelsForm/ModelsForm.module.css";
+import StatusTag from "../../../../components/StatusTag/StatusTag";
 
 interface IProps {
   className?: string;
@@ -49,7 +50,15 @@ function ModelCard({
       <Div>
         <Card mode="outline-tint">
           <Div className={classes.cardTitle}>
-            <Title level="3">{title}</Title>
+            <div className={classes.title}>
+              <Title level="3" style={{ marginRight: 12 }}>
+                {title}
+              </Title>
+              <StatusTag
+                status={disable ? 1 : 3}
+                text={disable ? "Не активна" : "Активна"}
+              />
+            </div>
             <Radio name="radio" checked={checked} />
           </Div>
         </Card>

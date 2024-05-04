@@ -20,7 +20,7 @@ import { leetCode } from "$/entity/leetCode/LeetCode";
 
 import classes from "./LeetCodeProblems.module.css";
 import { useInfinityScroll } from "$/hooks/useInfinityScroll";
-import { StatusTag } from "$/panels/LeetCodeProblems/StatusTag";
+import { StatusTag } from "src/components/StatusTag";
 import { chatGpt } from "$/entity/GPT";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
 

@@ -23,6 +23,11 @@
     white-space: break-spaces;
 }
 
+.title {
+    display: flex;
+    align-items: center;
+}
+
 .cardTitle {
     display: flex;
     align-items: center;

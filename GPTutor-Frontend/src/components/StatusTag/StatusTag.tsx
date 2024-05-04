@@ -7,6 +7,7 @@ type StatusType = 1 | 2 | 3;
 
 interface IProps {
   status: StatusType;
+  text?: string;
 }
 
 function getText(status: StatusType) {
@@ -22,10 +23,10 @@ function getClassName(status: StatusType) {
   return classes.hard;
 }
 
-function StatusTag({ status }: IProps) {
+function StatusTag({ status, text }: IProps) {
   return (
     <Counter className={classNames(classes.tag, getClassName(status))}>
-      {getText(status)}
+      {text ? text : getText(status)}
     </Counter>
   );
 }
