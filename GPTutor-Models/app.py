@@ -1,7 +1,12 @@
+import asyncio
+import threading
+
 from flask import Flask, Response, request
 
 from images.sd import textToImage
-from llm.index import create_completions, models
+from llm import models
+from llm.index import create_completions
+from llm.models import run_check_models
 
 app = Flask(__name__)
 
@@ -41,5 +46,12 @@ def image():
     )
 
 
-if __name__ == '__main__':
+def run_flask():
     app.run(debug=False, port=1337, host="0.0.0.0")
+
+
+if __name__ == '__main__':
+    flask_thread = threading.Thread(target=run_flask)
+    check_models_thread = threading.Thread(target=run_check_models)
+    flask_thread.start()
+    check_models_thread.start()

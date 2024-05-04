@@ -2,92 +2,11 @@ import json
 import os
 from random import randint
 
-from g4f.Provider import Bing, Llama
 from g4f.client import Client
-from g4f.models import dbrx_instruct, mixtral_8x22b, llama3_8b_instruct, llama3_70b_instruct, Model, claude_3_opus, pi, \
-    blackbox, llama2_7b, llama2_13b, llama2_70b
-from g4f.providers.retry_provider import RetryProvider
+
+from llm.models import models_dict
 
 os.environ["G4F_PROXY"] = "http://bFLvNd:V0TPu2@45.155.203.207:8000"
-
-models = [
-    {
-        "model": "gpt-3.5",
-        "description": "Основная модель. Обучена до 2021 года",
-        "lang": "Имеется поддержка русского",
-    },
-    {
-        "model": "mixtral_8x22b",
-        "description": "Аналог GPT-3.5, Во многих аспектах превосходит GPT-3.5. Обучена до 2024 года",
-        "lang": "Имеется поддержка русского",
-    },
-    {
-        "model": "dbrx_instruct",
-        "description": "Аналог GPT-3.5, Модель адаптированная под программирование. Обучена до 2024 года",
-        "lang": "Имеется поддержка русского",
-    },
-    {
-        "model": "codellama_70b_instruct",
-        "description": "Аналог GPT-3.5, Модель адаптированная под программирование. Обучена до 2023 года",
-        "lang": "Слабая поддержка русского",
-    },
-
-]
-
-models_dict = {
-    "blackbox": {
-        "stream": True,
-        "model": blackbox,
-    },
-    "llama3_70b": {
-        "stream": True,
-        "model": llama3_70b_instruct
-    },
-    "llama3_8b": {
-        "stream": True,
-        "model": llama3_8b_instruct
-    },
-    "llama2_7b": {
-        "stream": True,
-        "model": llama2_7b
-    },
-    "llama2_13b": {
-        "stream": True,
-        "model":llama2_13b
-    },
-    "llama2_70b": {
-        "stream": True,
-        "model": llama2_70b
-    },
-    "dbrx_instruct": {
-        "stream": True,
-        "model": dbrx_instruct
-    },
-    "mixtral_8x22b": {
-        "stream": True,
-        "model": mixtral_8x22b
-    },
-    "gpt-4-bing": {
-        "stream": True,
-        "model": Model(
-            name='gpt-4',
-            base_provider='openai',
-            best_provider=RetryProvider([Bing])
-        )
-    },
-    "claude_3_opus": {
-        "stream": True,
-        "model": claude_3_opus
-    },
-    "claude_3_sonnet": {
-        "stream": True,
-        "model": claude_3_opus
-    },
-    "pi": {
-        "stream": True,
-        "model": pi
-    }
-}
 
 
 def get_event_message(chunk, model, finish_reason):

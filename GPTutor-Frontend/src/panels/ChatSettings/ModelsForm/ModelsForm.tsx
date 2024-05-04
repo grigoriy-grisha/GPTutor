@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Card,
@@ -27,6 +27,9 @@ function ModelsForm() {
   const isDisableSubscription = subscriptionsController.isDisable();
   const { goToGPTutorProfile } = useNavigationContext();
 
+  useEffect(() => {
+    gptModels.loadModels();
+  }, []);
   return (
     <Div className={classes.container}>
       {isDisableSubscription && (
