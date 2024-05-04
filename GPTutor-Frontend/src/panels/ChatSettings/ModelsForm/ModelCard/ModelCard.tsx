@@ -55,7 +55,7 @@ function ModelCard({
                 {title}
               </Title>
               <StatusTag
-                status={disable ? 1 : 3}
+                status={disable ? 3 : 1}
                 text={disable ? "Не активна" : "Активна"}
               />
             </div>
