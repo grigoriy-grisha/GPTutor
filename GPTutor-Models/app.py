@@ -24,7 +24,9 @@ def llm_post():
 
 @app.get('/llm')
 def llm_get():
-    return models
+    return {
+        "response": models
+    }
 
 
 @app.post("/image")
