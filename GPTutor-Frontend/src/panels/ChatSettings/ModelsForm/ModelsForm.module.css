@@ -38,3 +38,8 @@
     height: 24px;
     width: 24px;
 }
+
+.disable {
+    pointer-events: none;
+    opacity: 0.4;
+}

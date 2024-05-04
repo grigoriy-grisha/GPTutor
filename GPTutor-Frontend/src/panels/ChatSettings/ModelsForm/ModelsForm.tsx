@@ -64,6 +64,7 @@ function ModelsForm() {
       <Title Component="h1">Бесплатные модели ✨</Title>
       {gptModels.freeModels.map((model) => (
         <ModelCard
+          disable={false}
           key={model.model}
           title={model.model}
           description={model.description}
@@ -73,8 +74,9 @@ function ModelsForm() {
         />
       ))}
       <Title Component="h1">Модели по подписке 🔥</Title>
-      {gptModels.models.map((model) => (
+      {gptModels.models.get().map((model) => (
         <ModelCard
+          disable={!model.active}
           key={model.model}
           title={model.model}
           description={model.description}

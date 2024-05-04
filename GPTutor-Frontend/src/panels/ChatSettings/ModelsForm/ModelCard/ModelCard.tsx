@@ -24,6 +24,7 @@ interface IProps {
   checked: boolean;
   description: string;
   lang: string;
+  disable: boolean;
 }
 
 function ModelCard({
@@ -33,10 +34,15 @@ function ModelCard({
   checked,
   description,
   lang,
+  disable,
 }: IProps) {
   return (
     <Card
-      className={classNames(classes.containerCard, className)}
+      className={classNames(
+        classes.containerCard,
+        { [classes.disable]: disable },
+        className
+      )}
       mode="shadow"
       onClick={onClick}
     >

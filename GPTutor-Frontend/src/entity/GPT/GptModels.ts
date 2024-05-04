@@ -13,7 +13,7 @@ class GptModels {
   currentModel$ = sig("gpt-3.5-turbo-0125");
 
   freeModels = freeModels;
-  models = [
+  models = sig([
     {
       model: "gpt-4-bing",
       description:
@@ -21,7 +21,7 @@ class GptModels {
       lang: "Имеется поддержка Русского языка",
       active: true,
     },
-  ];
+  ]);
 
   selectedCurrentModel(modelId: string) {
     return this.currentModel$.get() === modelId;
@@ -37,7 +37,7 @@ class GptModels {
 
   async loadModels() {
     const models = await getModels();
-    this.models = models.sort((a, b) => Number(a.active) - Number(b.active));
+    this.models.set(models.sort((a, b) => Number(b.active) - Number(a.active)));
   }
 }
 
