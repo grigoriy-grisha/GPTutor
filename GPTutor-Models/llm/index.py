@@ -131,6 +131,7 @@ def create_completions(model, messages):
     print(normalize_messages(model, messages))
 
     response = client.chat.completions.create(
+        api_key="1r_x8Y1GaZoHnUtZeRXYaTVyjPkmPEEPNBMOA0rLZmA7t2l2PyxjIBi0oNuhPCZz0hLT8szD6EtmrKAA1f5bgHtTvyk82l6dw_GoSO8VQpuoXJDDcacvWnCE5a3e6JW7OzLz43zpyuSuI49yawY9IUMt5I9dRaPgFYXtyOTvwIzUfJMXLln18Y3EcrZr-AolskGMND04GZfq-HsaCOFTl_OUOc2w9ZA5N7gWmxvftLdaJN6m4YxSSS9Cwx08oudfb",
         model=models_dict[model]["model"],
         stream=models_dict[model]["stream"],
         messages=normalize_messages(model, messages),
