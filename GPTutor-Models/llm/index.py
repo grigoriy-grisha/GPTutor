@@ -6,7 +6,7 @@ from g4f.client import Client
 
 from llm.models import models_dict
 
-os.environ["G4F_PROXY"] = "http://bFLvNd:V0TPu2@45.155.203.207:8000"
+os.environ["G4F_PROXY"] = "http://ZJWRYK:voPkwQ@95.164.111.172:9408"
 
 
 def get_event_message(chunk, model, finish_reason):

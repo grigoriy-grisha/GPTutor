@@ -1,5 +1,3 @@
-import asyncio
-import json
 import threading
 
 from flask import Flask, Response, request
@@ -29,7 +27,6 @@ def llm_get():
 
 @app.post("/image")
 def image():
-    print(request.json["loraModel"])
     return textToImage(
         prompt=request.json["prompt"],
         model_id=request.json["modelId"],
