@@ -5,8 +5,7 @@ from random import randint
 from g4f.client import Client
 
 from llm.models import models_dict
-
-os.environ["G4F_PROXY"] = "http://ZJWRYK:voPkwQ@95.164.111.172:9408"
+from llm.proxy import get_proxy
 
 
 def get_event_message(chunk, model, finish_reason):
@@ -42,6 +41,7 @@ def create_completions(model, messages):
         model=models_dict[model]["model"],
         stream=models_dict[model]["stream"],
         messages=normalize_messages(model, messages),
+        proxy=get_proxy(),
         web_search=True
     )
 

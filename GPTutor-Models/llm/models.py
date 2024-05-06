@@ -2,11 +2,13 @@ import random
 import sched
 import time
 
-from g4f.Provider import Bing, DeepInfra
+from g4f.Provider import Bing
 from g4f.client import Client
-from g4f.models import blackbox, llama3_70b_instruct, llama3_8b_instruct, llama2_7b, llama2_13b, llama2_70b, \
-    dbrx_instruct, Model, claude_3_opus, pi
+from g4f.models import blackbox, Model, claude_3_opus, pi
 from g4f.providers.retry_provider import RetryProvider
+
+from llm.DeepInfra import DeepInfra
+from llm.proxy import get_proxy
 
 wizardLM_2_8x22B = Model(
     name="microsoft/WizardLM-2-8x22B",
@@ -62,10 +64,56 @@ airoboros_70b = Model(
     best_provider=RetryProvider([DeepInfra])
 )
 
+llama3_70b_instruct = Model(
+    name="meta-llama/Meta-Llama-3-70B-Instruct",
+    base_provider="meta",
+    best_provider=RetryProvider([DeepInfra])
+)
+
+llama3_8b_instruct = Model(
+    name="meta-llama/Meta-Llama-3-8B-Instruct",
+    base_provider="meta",
+    best_provider=RetryProvider([DeepInfra])
+)
+
+codellama_70b_instruct = Model(
+    name="codellama/CodeLlama-70b-Instruct-hf",
+    base_provider="meta",
+    best_provider=RetryProvider([DeepInfra])
+)
+
+llama2_7b = Model(
+    name="meta-llama/Llama-2-7b-chat-hf",
+    base_provider='meta',
+    best_provider=RetryProvider([DeepInfra])
+)
+
+llama2_13b = Model(
+    name="meta-llama/Llama-2-13b-chat-hf",
+    base_provider='meta',
+    best_provider=RetryProvider([DeepInfra])
+)
+
+llama2_70b = Model(
+    name="meta-llama/Llama-2-70b-chat-hf",
+    base_provider="meta",
+    best_provider=RetryProvider([DeepInfra])
+)
+
+dbrx_instruct = Model(
+    name='databricks/dbrx-instruct',
+    base_provider='mistral',
+    best_provider=RetryProvider([DeepInfra])
+)
+
 models_dict = {
     "blackbox": {
         "stream": True,
         "model": blackbox,
+    },
+    "codellama_70b_instruct": {
+        "stream": True,
+        "model": codellama_70b_instruct
     },
     "llama3_70b": {
         "stream": True,
@@ -172,6 +220,13 @@ models = [
     {
         "model": "airoboros_70b",
         "description": "Аналог GPT-4. Улучшенная версия Llama2-70b",
+        "lang": "Имеется поддержка Русского языка",
+        "active": True,
+    },
+    {
+        "model": "codellama_70b_instruct",
+        "description":
+            "Аналог GPT-4. Улучшенная модель llama-2 70b заточенная специально под программирование",
         "lang": "Имеется поддержка Русского языка",
         "active": True,
     },
@@ -289,6 +344,7 @@ def check_model(model, attempts):
             api_key="1r_x8Y1GaZoHnUtZeRXYaTVyjPkmPEEPNBMOA0rLZmA7t2l2PyxjIBi0oNuhPCZz0hLT8szD6EtmrKAA1f5bgHtTvyk82l6dw_GoSO8VQpuoXJDDcacvWnCE5a3e6JW7OzLz43zpyuSuI49yawY9IUMt5I9dRaPgFYXtyOTvwIzUfJMXLln18Y3EcrZr-AolskGMND04GZfq-HsaCOFTl_OUOc2w9ZA5N7gWmxvftLdaJN6m4YxSSS9Cwx08oudfb",
             model=models_dict[model_name]["model"],
             messages=[{"role": "user", "content": random.randint(0, 10000000)}],
+            proxy=get_proxy()
         )
 
         print(response.choices[0].message.content)
@@ -301,6 +357,10 @@ def check_model(model, attempts):
         check_model(model, attempts - 1)
 
 
+def get_delay():
+    return random.randint(1200, 2000) * random.randint(1, 5)
+
+
 def check_llm_models(scheduler=None):
     for model in models:
         if "skip_check" in model:
@@ -309,12 +369,12 @@ def check_llm_models(scheduler=None):
         check_model(model, 10)
 
     if scheduler is not None:
-        scheduler.enter(3600, 1, check_llm_models, (scheduler,))
+        scheduler.enter(get_delay(), 1, check_llm_models, (scheduler,))
 
 
 def run_check_models():
     check_llm_models()
 
     my_scheduler = sched.scheduler(time.time, time.sleep)
-    my_scheduler.enter(3600, 1, check_llm_models, (my_scheduler,))
+    my_scheduler.enter(get_delay(), 1, check_llm_models, (my_scheduler,))
     my_scheduler.run()
