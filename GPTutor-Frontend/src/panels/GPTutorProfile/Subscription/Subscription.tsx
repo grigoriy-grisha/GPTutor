@@ -44,7 +44,7 @@ function Subscription() {
                   Component="h4"
                 >
                   {subscriptionsController.isDisable()
-                    ? "Не активна"
+                    ? "Неактивна"
                     : "Активна"}
                 </Headline>
               </div>

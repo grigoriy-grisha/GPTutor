@@ -24,8 +24,9 @@
 }
 
 .title {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: auto auto;
+    word-break: break-all;
 }
 
 .cardTitle {
