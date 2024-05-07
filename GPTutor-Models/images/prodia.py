@@ -29,6 +29,6 @@ def txt2img(prompt, negative_prompt, model, scheduler, guidance_scale, steps, se
             resp = get(f"https://api.prodia.com/job/{data['job']}", headers=headers)
             json = resp.json()
             if json["status"] == "succeeded":
-                return f"https://images.prodia.xyz/{data['job']}.png"
+                return {"output": [f"https://images.prodia.xyz/{data['job']}.png"], "meta": {"seed": seed}}
     except RequestException as exc:
         raise RequestException("Unable to fetch the response.") from exc

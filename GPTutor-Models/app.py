@@ -28,7 +28,7 @@ def llm_get():
 
 @app.post("/image")
 def image():
-    output = txt2img(
+    return txt2img(
         prompt=request.json["prompt"],
         model=request.json["modelId"],
         negative_prompt=request.json["negativePrompt"],
@@ -37,8 +37,6 @@ def image():
         seed=request.json["seed"],
         steps=request.json["numInferenceSteps"],
     )
-
-    return {"output": [output]}
 
 
 def run_flask():
