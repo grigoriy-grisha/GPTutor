@@ -221,7 +221,7 @@ models_dict = {
 
 models = [
     {
-        "model": "gpt-3.5-turbo",
+        "model": "gpt_35_turbo",
         "description": "GPT-3.5. Основная модель. Обучена до 2021 года",
         "lang": "Имеется поддержка Русского языка",
         "isFree": True,
