@@ -10,7 +10,7 @@ const freeModels = [
 ];
 
 class GptModels {
-  currentModel$ = sig("gpt-3.5-turbo-0125");
+  currentModel$ = sig("gpt_35_turbo");
 
   freeModels = sig(freeModels);
   models = sig([
