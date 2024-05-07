@@ -64,7 +64,7 @@ function ModelsForm() {
       <Title Component="h1">Бесплатные модели ✨</Title>
       {gptModels.freeModels.get().map((model) => (
         <ModelCard
-          disable={false}
+          disable={!model.active}
           key={model.model}
           title={model.model}
           description={model.description}

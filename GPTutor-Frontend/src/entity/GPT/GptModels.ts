@@ -6,6 +6,7 @@ const freeModels = [
     model: "gpt-3.5-turbo-0125",
     description: "GPT-3.5. Основная модель. Обучена до 2021 года",
     lang: "Имеется поддержка Русского языка",
+    active: true,
   },
 ];
 
