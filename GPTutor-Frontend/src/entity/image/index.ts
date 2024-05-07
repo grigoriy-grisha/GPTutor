@@ -51,7 +51,7 @@ class ImageGeneration {
   result$ = sig<GeneratedImage[]>([]);
   error$ = sig<string>("");
   aspectRatio$ = sig<ImageAspectRatio>(ImageAspectRatio.square);
-  samples$ = sig(4);
+  samples$ = sig(1);
   height$ = sig(512);
   width$ = sig(512);
   widthView$ = sig(512);

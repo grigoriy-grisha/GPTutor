@@ -10,7 +10,7 @@ session_api = vk_session.get_api()
 long_pool = VkLongPoll(vk_session)
 
 
-def send_some_msg(user_id, message, keyboard):
+def send_msg(user_id: str, message: str, keyboard: VkKeyboard):
     vk_session.method(
         "messages.send",
         {
@@ -31,20 +31,18 @@ def create_keyboard():
     return keyboard
 
 
+help_message = """
+Привет!
+                    
+Бот находится в отдельном сервисе ВКонтакте!
+                    
+GPT Бот 🤖: https://vk.com/app51602327 
+Генератор картинок 🖼: https://vk.com/app5160232
+"""
+
+
 def run_long_pool():
     for event in long_pool.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             if event.text == "Начать":
-                send_some_msg(
-                    event.user_id,
-                    """
-                    Привет!
-                    
-                    Бот находится в отдельном приложении!
-                    
-                    GPT Бот 🤖: https://vk.com/app51602327 
-                    Генератор картинок 🖼: https://vk.com/app5160232
-                    
-                    """,
-                    create_keyboard()
-                )
+                send_msg(event.user_id, help_message, create_keyboard())

@@ -71,10 +71,10 @@ function ImageGenerationDesktop() {
           <HelpBlock />
           <MainControls />
           <Spacing size={8} />
-          <ImageStyles />
-          <Spacing size={8} />
-          <RequestParameters />
-          <Spacing size={8} />
+          {/*<ImageStyles />*/}
+          {/*<Spacing size={8} />*/}
+          {/*<RequestParameters />*/}
+          {/*<Spacing size={8} />*/}
           <AdvancedSettings />
         </div>
 

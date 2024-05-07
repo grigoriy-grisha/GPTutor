@@ -107,7 +107,6 @@ public class ImagesService {
 
         GenerateImageResponse imageResponse = objectMapper.readValue(responseImage.getBody(), GenerateImageResponse.class);
 
-        System.out.println(responseImage.getBody());
         JsonNode response = objectMapper.readTree(responseImage.getBody());
         JsonNode meta = response.get("meta");
         JsonNode seed = meta != null ? meta.get("seed") : null;

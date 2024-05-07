@@ -25,16 +25,11 @@ interface IProps {
   setRef: (ref: HTMLDivElement) => void;
 }
 
-function Icon28Newsfeed(props: { width: number; height: number }) {
-  return null;
-}
-
 function TabbarApp({ setRef }: IProps) {
   const {
     goToModes,
     goToHistory,
     goToGallery,
-    goToPublishingImages,
     goToGPTutorProfileReplace,
     goToGenerationImages,
   } = useNavigationContext();
@@ -56,15 +51,6 @@ function TabbarApp({ setRef }: IProps) {
           ref={setRef}
           style={{ display: "flex", justifyContent: "space-between" }}
         >
-          <TabbarItem
-            className={classNames(classes.tabItem, {
-              [classes.tabItemActive]: activePanel === Panels.publishingImages,
-            })}
-            text="Лента"
-            onClick={goToPublishingImages}
-          >
-            <Icon28NewsfeedLinesOutline width={28} height={28} />
-          </TabbarItem>
           <TabbarItem
             className={classNames(classes.tabItem, {
               [classes.tabItemActive]: activePanel === Panels.generationImages,
