@@ -73,6 +73,10 @@ export const styles = [
 
 export const models = [
   {
+    value: "ICantBelieveItsNotPhotography_seco.safetensors [4e7a3dfd]",
+    label: "I Cant Believe Its Not Photography Seco",
+  },
+  {
     value: "v1-5-pruned-emaonly.safetensors [d7049739]",
     label: "SD V1.5",
   },
@@ -212,10 +216,7 @@ export const models = [
     value: "epicrealism_pureEvolutionV3.safetensors [42c8440c]",
     label: "EpiCRealism Pure Evolution V3",
   },
-  {
-    value: "ICantBelieveItsNotPhotography_seco.safetensors [4e7a3dfd]",
-    label: "I Cant Believe Its Not Photography Seco",
-  },
+
   {
     value: "indigoFurryMix_v75Hybrid.safetensors [91208cbb]",
     label: "Indigo Furry Mix V7.5 Hybrid",
