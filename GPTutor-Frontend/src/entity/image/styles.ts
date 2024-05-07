@@ -73,6 +73,10 @@ export const styles = [
 
 export const models = [
   {
+    value: "v1-5-pruned-emaonly.safetensors [d7049739]",
+    label: "SD V1.5",
+  },
+  {
     value: "3Guofeng3_v34.safetensors [50f420de]",
     label: "3 Guofeng3 V3.4",
   },
@@ -299,10 +303,6 @@ export const models = [
   {
     value: "sdv1_4.ckpt [7460a6fa]",
     label: "SD V1.4",
-  },
-  {
-    value: "v1-5-pruned-emaonly.safetensors [d7049739]",
-    label: "SD V1.5",
   },
   {
     value: "v1-5-inpainting.safetensors [21c7ab71]",
