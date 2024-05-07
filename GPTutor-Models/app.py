@@ -5,6 +5,7 @@ from flask import Flask, Response, request
 from images.sd import textToImage
 from llm.index import create_completions
 from llm.models import run_check_models, models
+from vk.bot import run_long_pool
 
 app = Flask(__name__)
 
@@ -50,5 +51,8 @@ def run_flask():
 if __name__ == '__main__':
     flask_thread = threading.Thread(target=run_flask)
     check_models_thread = threading.Thread(target=run_check_models)
+    run_long_pool_thread = threading.Thread(target=run_long_pool)
+
     flask_thread.start()
     check_models_thread.start()
+    run_long_pool_thread.start()
