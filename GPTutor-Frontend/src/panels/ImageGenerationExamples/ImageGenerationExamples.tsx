@@ -32,7 +32,7 @@ const examples: ImageExample[] = [
       "lineart| vibrant| comprehensive cinematic| Carne Griffiths| Conrad Roset",
     guidanceScale: 7,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt:
       "lineart| vibrant| comprehensive cinematic| Carne Griffiths| Conrad Roset",
@@ -46,7 +46,7 @@ const examples: ImageExample[] = [
       "an astronaut riding a horse on mars artstation, hd, dramatic lighting, detailed",
     guidanceScale: 7,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt:
       "an astronaut riding a horse on mars artstation, hd, dramatic lighting, detailed",
@@ -59,7 +59,7 @@ const examples: ImageExample[] = [
     prompt: "analog style portrait of a cute young woman with blonde hair",
     guidanceScale: 7,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt:
       "analog style portrait of a cute young woman with blonde hair",
@@ -72,7 +72,7 @@ const examples: ImageExample[] = [
     prompt: "analog style Santa as a 1960s",
     guidanceScale: 7,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt: "analog style Santa as a 1960s",
   },
@@ -85,7 +85,7 @@ const examples: ImageExample[] = [
       "1girl, brown hair, green eyes, colorful, autumn, cumulonimbus clouds",
     guidanceScale: 7,
     scheduler: "DDPMScheduler",
-    modelId: "anything-v4",
+    modelId: "anything-v4.5-pruned.ckpt [65745d25]",
     negativePrompt: "",
     originalPrompt:
       "1girl, brown hair, green eyes, colorful, autumn, cumulonimbus clouds",
@@ -98,7 +98,7 @@ const examples: ImageExample[] = [
     prompt: "70s progressive rock artwork, funky, vibrant, acid-culture",
     guidanceScale: 7,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt:
       "70s progressive rock artwork, funky, vibrant, acid-culture",
@@ -112,7 +112,7 @@ const examples: ImageExample[] = [
       "portrait of superman, style of (van gogh), short hair, highly detailed, beautiful art,",
     guidanceScale: 7,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "((beard:1.4,)) red hair, frame, canvas frame",
     originalPrompt:
       "portrait of superman, style of (van gogh), short hair, highly detailed, beautiful art,",
@@ -126,7 +126,7 @@ const examples: ImageExample[] = [
       "vintage blonde pin-up girl, style of (picasso), very abstract, surrealism, cubism",
     guidanceScale: 7,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "nsfw:1.3",
     originalPrompt:
       "vintage blonde pin-up girl, style of (picasso), very abstract, surrealism, cubism",
@@ -140,7 +140,7 @@ const examples: ImageExample[] = [
       "style of (Albert Bierstadt), beautiful valley with mountains on each side, morning yellow sun, vast and luminous, luminism, realism, romanticism, insane detail, highly detailed, warm colors, warm lighting",
     guidanceScale: 7,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt:
       "style of (Albert Bierstadt), beautiful valley with mountains on each side, morning yellow sun, vast and luminous, luminism, realism, romanticism, insane detail, highly detailed, warm colors, warm lighting",
@@ -153,7 +153,7 @@ const examples: ImageExample[] = [
     prompt: "style of (Tim Burton), woman ",
     guidanceScale: 7,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt: "style of (Tim Burton), woman ",
   },
@@ -166,7 +166,7 @@ const examples: ImageExample[] = [
       "tiny isometric scientific lab, little scientist, smooth lighting, 100mm lens",
     guidanceScale: 10,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt:
       "tiny isometric scientific lab, little scientist, smooth lighting, 100mm lens",
@@ -180,7 +180,7 @@ const examples: ImageExample[] = [
       "kawaii low poly beluga whale, 3d isometric render, blue background, unity engine, ambient occlusion",
     guidanceScale: 10,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt:
       "kawaii low poly beluga whale, 3d isometric render, blue background, unity engine, ambient occlusion",
@@ -194,7 +194,7 @@ const examples: ImageExample[] = [
       "Retro comic style artwork, highly detailed michael j fox, comic book cover, symmetrical, vintage",
     guidanceScale: 10,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt:
       "Retro comic style artwork, highly detailed michael j fox, comic book cover, symmetrical, vintage",
@@ -207,7 +207,7 @@ const examples: ImageExample[] = [
     prompt: "Man outside saloon, wild west",
     guidanceScale: 10,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt: "Man outside saloon, wild west",
   },
@@ -220,7 +220,7 @@ const examples: ImageExample[] = [
       "extreme close-up of old man outdoors, telephoto, ambient lighting, monochrome",
     guidanceScale: 10,
     scheduler: "DDPMScheduler",
-    modelId: "sd",
+    modelId: "v1-5-pruned-emaonly.safetensors [d7049739]",
     negativePrompt: "",
     originalPrompt:
       "extreme close-up of old man outdoors, telephoto, ambient lighting, monochrome",

@@ -10,7 +10,7 @@ export const styles = [
     label: "Реалистичный",
   },
   {
-    value: "anythingV5_PrtRE.safetensors [893e49b9]",
+    value: "anything-v4.5-pruned.ckpt [65745d25]",
     imageName: "anything-4.png",
     label: "Аниме",
   },

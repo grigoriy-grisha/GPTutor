@@ -62,15 +62,10 @@ function ImageStyles() {
                   }}
                 >
                   {styles.map((model) => (
-                    <HorizontalCell
-                      key={model.value + model.loraModel}
-                      size="l"
-                    >
+                    <HorizontalCell key={model.value} size="l">
                       <div
                         onClick={() => {
                           imageGeneration.setModel(model.value);
-                          model.loraModel &&
-                            imageGeneration.setLoraModel(model.loraModel);
                         }}
                         className={classes.accordionItem}
                       >
