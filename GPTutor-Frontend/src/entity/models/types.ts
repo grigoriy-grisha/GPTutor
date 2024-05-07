@@ -3,5 +3,5 @@ export type Model = {
   active: boolean;
   description: string;
   lang: string;
-  isFree: boolean;
+  free: boolean;
 };
