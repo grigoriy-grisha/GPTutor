@@ -15,12 +15,7 @@ gpt_35_turbo = Model(
     base_provider='openai',
     best_provider=RetryProvider([
         You,
-        ChatgptNext,
-        Koala,
         OpenaiChat,
-        Aichatos,
-        Cnote,
-        Feedough,
     ])
 )
 
