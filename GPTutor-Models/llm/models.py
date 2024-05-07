@@ -2,13 +2,27 @@ import random
 import sched
 import time
 
-from g4f.Provider import Bing
+from g4f.Provider import Bing, You, ChatgptNext, Koala, OpenaiChat, Aichatos, Cnote, Feedough
 from g4f.client import Client
 from g4f.models import blackbox, Model, claude_3_opus, pi
 from g4f.providers.retry_provider import RetryProvider
 
 from llm.DeepInfra import DeepInfra
 from llm.proxy import get_proxy
+
+gpt_35_turbo = Model(
+    name='gpt-3.5-turbo',
+    base_provider='openai',
+    best_provider=RetryProvider([
+        You,
+        ChatgptNext,
+        Koala,
+        OpenaiChat,
+        Aichatos,
+        Cnote,
+        Feedough,
+    ])
+)
 
 wizardLM_2_8x22B = Model(
     name="microsoft/WizardLM-2-8x22B",
@@ -107,6 +121,10 @@ dbrx_instruct = Model(
 )
 
 models_dict = {
+    "gpt_35_turbo": {
+        "stream": True,
+        "model": gpt_35_turbo,
+    },
     "blackbox": {
         "stream": True,
         "model": blackbox,
@@ -203,10 +221,18 @@ models_dict = {
 
 models = [
     {
+        "model": "gpt-3.5-turbo",
+        "description": "GPT-3.5. Основная модель. Обучена до 2021 года",
+        "lang": "Имеется поддержка Русского языка",
+        "isFree": True,
+        "active": True,
+    },
+    {
         "model": "gpt-4-bing",
         "description":
             "GPT-4 от Бинг. Самая умная модель из всех существующих на данный момент. Имеет доступ в интернет, в ней всегда актуальные данные",
         "lang": "Имеется поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
 
@@ -215,12 +241,14 @@ models = [
         "description":
             "Llama-3 70b. Аналог GPT-4. Обучена до 2024 года. Новая, одна из самых мощных моделей.",
         "lang": "Имеется частичная поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
         "model": "airoboros_70b",
         "description": "Аналог GPT-4. Улучшенная версия Llama2-70b",
         "lang": "Имеется поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -228,6 +256,7 @@ models = [
         "description":
             "Аналог GPT-4. Улучшенная модель llama-2 70b заточенная специально под программирование",
         "lang": "Имеется поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -235,6 +264,7 @@ models = [
         "description":
             "Аналог GPT-3.5. Модель заточенная специально под программирование",
         "lang": "Имеется поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -242,6 +272,7 @@ models = [
         "description":
             "Аналог GPT-3.5. Модель от microsoft. Хорошо подходит для обычного общения и соченения историй",
         "lang": "Имеется поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -249,6 +280,7 @@ models = [
         "description":
             "Аналог GPT-3.5. Модель от goggle. Хорошо подходит для программирования и обычного общения",
         "lang": "Имеется поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -256,6 +288,7 @@ models = [
         "description":
             "Аналог чем GPT-3.5. Хорошо подходит для программирования, работает быстро",
         "lang": "Имеется поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -263,6 +296,7 @@ models = [
         "description":
             "Аналог чем GPT-3.5. Хорошо подходит для программирования, работает быстро",
         "lang": "Имеется поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -270,6 +304,7 @@ models = [
         "description":
             "Аналог GPT-3.5. Креативная модель, хорошо подходит для развлечения и создания контента",
         "lang": "Имеется поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -277,6 +312,7 @@ models = [
         "description":
             "Полный аналог gpt-3.5",
         "lang": "Имеется поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
 
@@ -284,12 +320,14 @@ models = [
         "model": "mixtral_8x22b",
         "description": "Аналог GPT-3.5, Во многих аспектах превосходит GPT-3.5. Обучена до 2024 года",
         "lang": "Имеется поддержка русского",
+        "isFree": False,
         "active": True,
     },
     {
         "model": "dbrx_instruct",
         "description": "Аналог GPT-3.5, Модель адаптированная под программирование. Обучена до 2024 года",
         "lang": "Имеется поддержка русского",
+        "isFree": False,
         "active": True,
     },
     {
@@ -297,12 +335,14 @@ models = [
         "description":
             "Llama-2 70b. Аналог GPT-4. Обучена до 2023 года. Модель чуть хуже, чем Llama-3 70b, но имеет скорость повыше, чем его старшая модель. ",
         "lang": "Имеется частичная поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
         "model": "blackbox",
         "description": "Аналог GPT-4, Имеет доступ интернет, работает быстро",
         "lang": "Плохая поддержка русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -310,6 +350,7 @@ models = [
         "description":
             "Llama-3 8b. Аналог GPT-3.5. Обучена до 2024 года. Новая и быстрая модель. Отключена поддержа потоковой генерации",
         "lang": "Имеется частичная поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -317,6 +358,7 @@ models = [
         "description":
             "Llama-2 13b. Аналог GPT-3.5. Обучена до 2023 года. Быстрая модель.",
         "lang": "Имеется частичная поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
     {
@@ -324,6 +366,7 @@ models = [
         "description":
             "Llama-2 7b. Аналог GPT-3.5. Обучена до 2023 года. Очень быстрая модель.",
         "lang": "Имеется частичная поддержка Русского языка",
+        "isFree": False,
         "active": True,
     },
 ]

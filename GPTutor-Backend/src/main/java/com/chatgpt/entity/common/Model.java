@@ -9,6 +9,8 @@ public class Model {
 
     Boolean active;
 
+    Boolean isFree;
+
     public String getModel() {
         return model;
     }
@@ -39,5 +41,13 @@ public class Model {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Boolean getFree() {
+        return isFree;
+    }
+
+    public void setFree(Boolean free) {
+        isFree = free;
     }
 }

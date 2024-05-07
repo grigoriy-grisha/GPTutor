@@ -12,7 +12,7 @@ const freeModels = [
 class GptModels {
   currentModel$ = sig("gpt-3.5-turbo-0125");
 
-  freeModels = freeModels;
+  freeModels = sig(freeModels);
   models = sig([
     {
       model: "gpt-4-bing",
@@ -38,6 +38,7 @@ class GptModels {
   async loadModels() {
     const models = await getModels();
     this.models.set(models.sort((a, b) => Number(b.active) - Number(a.active)));
+    this.freeModels.set(models.filter((item) => item.isFree));
   }
 }
 

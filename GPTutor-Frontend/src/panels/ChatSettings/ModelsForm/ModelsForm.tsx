@@ -62,7 +62,7 @@ function ModelsForm() {
         </Card>
       )}
       <Title Component="h1">Бесплатные модели ✨</Title>
-      {gptModels.freeModels.map((model) => (
+      {gptModels.freeModels.get().map((model) => (
         <ModelCard
           disable={false}
           key={model.model}

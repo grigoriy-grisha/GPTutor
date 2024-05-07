@@ -42,7 +42,7 @@ class DeepInfra(g4f.Provider.Openai):
             stream: bool,
             api_base: str = "https://api.deepinfra.com/v1/openai",
             temperature: float = 0.7,
-            max_tokens: int = 1028,
+            max_tokens: int = 2056,
             **kwargs
     ) -> AsyncResult:
         headers = {
