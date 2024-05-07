@@ -37,7 +37,11 @@ class GptModels {
 
   async loadModels() {
     const models = await getModels();
-    this.models.set(models.sort((a, b) => Number(b.active) - Number(a.active)));
+    this.models.set(
+      models
+        .filter((item) => !item.free)
+        .sort((a, b) => Number(b.active) - Number(a.active))
+    );
     this.freeModels.set(models.filter((item) => item.free));
   }
 }
