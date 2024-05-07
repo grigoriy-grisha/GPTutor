@@ -1,73 +1,23 @@
 export const styles = [
   {
-    value: "sd",
+    value: "epicrealism_pureEvolutionV3.safetensors [42c8440c]",
     imageName: "universal.png",
     label: "Универсальный",
   },
   {
-    value: "realistic-vision-v40",
+    value: "ICantBelieveItsNotPhotography_seco.safetensors [4e7a3dfd]",
     imageName: "realystic-vision.png",
     label: "Реалистичный",
   },
   {
-    value: "anything-v3",
+    value: "anythingV5_PrtRE.safetensors [893e49b9]",
     imageName: "anything-4.png",
     label: "Аниме",
   },
   {
-    value: "samaritan-3d-cartoon",
+    value: "childrensStories_v1ToonAnime.safetensors [2ec7b88b]",
     imageName: "3D-toon.png",
     label: "3D мультик",
-  },
-  {
-    value: "food-crit",
-    imageName: "creepy.png",
-    label: "Чудовища",
-    loraModel: "",
-  },
-  {
-    value: "anything-v3",
-    imageName: "maf.jpg",
-    loraModel: "maf",
-    label: "Maf",
-  },
-
-  {
-    value: "dream-shaper-8797",
-    imageName: "hacked-tech.png",
-    loraModel: "hacked-tech",
-    label: "Hacked Tech",
-  },
-
-  {
-    value: "lowpoly-diffusion",
-    imageName: "lowpoly.png",
-    label: "Low poly",
-  },
-  {
-    value: "pixel-sprite",
-    imageName: "sprite.png",
-    label: "Пиксель спрайты",
-  },
-  {
-    value: "vector-art",
-    imageName: "vector.png",
-    label: "Векторный",
-  },
-  {
-    value: "midjourney-papercut",
-    imageName: "paper.png",
-    label: "Бумажный",
-  },
-  {
-    value: "icons-diffusion",
-    imageName: "icons.png",
-    label: "Иконки",
-  },
-  {
-    value: "woolitize-diffusion",
-    imageName: "woolitize.png",
-    label: "Плюшевый",
   },
 ];
 
