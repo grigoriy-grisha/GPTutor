@@ -357,5 +357,5 @@ export const samplers = [
   },
 ];
 
-export const defaultModel = styles[0].value;
+export const defaultModel = models[0].value;
 export const defaultSampler = samplers[0].value;
