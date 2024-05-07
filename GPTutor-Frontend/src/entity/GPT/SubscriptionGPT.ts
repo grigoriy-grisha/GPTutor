@@ -5,7 +5,7 @@ import { communicationService } from "$/services/CommunicationService";
 export class SubscriptionGPT {
   storageService = new VkStorageService();
   $attempts = sig(0);
-  isSubscribe$ = sig(false);
+  isSubscribe$ = sig(true);
 
   constructor() {
     this.$initAttempts();
@@ -13,6 +13,7 @@ export class SubscriptionGPT {
   }
 
   async $initAttempts() {
+    if (this.isSubscribe$.get()) return;
     const attempts = await this.storageService.get("attempts1");
     if (attempts) return this.$attempts.set(Number(attempts));
     this.storageService.set("attempts1", String(10));
@@ -20,6 +21,7 @@ export class SubscriptionGPT {
   }
 
   async initSubscription() {
+    if (this.isSubscribe$.get()) return;
     this.isSubscribe$.set(await communicationService.getIsMember());
   }
 
