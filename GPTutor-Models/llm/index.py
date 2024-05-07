@@ -1,5 +1,4 @@
 import json
-import os
 from random import randint
 
 from g4f.client import Client

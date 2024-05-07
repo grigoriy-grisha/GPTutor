@@ -2,7 +2,7 @@ import random
 import sched
 import time
 
-from g4f.Provider import Bing, You, ChatgptNext, Koala, OpenaiChat, Aichatos, Cnote, Feedough
+from g4f.Provider import Bing, You, OpenaiChat, Cnote
 from g4f.client import Client
 from g4f.models import blackbox, Model, claude_3_opus, pi
 from g4f.providers.retry_provider import RetryProvider
@@ -16,6 +16,7 @@ gpt_35_turbo = Model(
     best_provider=RetryProvider([
         You,
         OpenaiChat,
+        Cnote
     ])
 )
 
