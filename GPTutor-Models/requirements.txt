@@ -11,6 +11,6 @@ keras==2.13.1
 Pillow==10.0.0
 onnxruntime==1.15.1
 opencv-python==4.8.0.76
-g4f==0.3.0.10
+g4f==0.3.1.0
 aiohttp-socks==0.8.4
 vk_api==11.9.9
