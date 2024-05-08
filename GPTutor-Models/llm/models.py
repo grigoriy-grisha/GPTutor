@@ -4,20 +4,11 @@ import time
 
 from g4f.Provider import Bing, You, OpenaiChat, Cnote
 from g4f.client import Client
-from g4f.models import blackbox, Model, claude_3_opus, pi
+from g4f.models import blackbox, Model, claude_3_opus, pi, gpt_35_turbo
 from g4f.providers.retry_provider import RetryProvider
 
 from llm.DeepInfra import DeepInfra
 from llm.proxy import get_proxy
-
-gpt_35_turbo = Model(
-    name='gpt-3.5-turbo',
-    base_provider='openai',
-    best_provider=RetryProvider([
-        You,
-        OpenaiChat,
-    ])
-)
 
 wizardLM_2_8x22B = Model(
     name="microsoft/WizardLM-2-8x22B",
