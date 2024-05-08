@@ -16,7 +16,6 @@ gpt_35_turbo = Model(
     best_provider=RetryProvider([
         You,
         OpenaiChat,
-        Cnote
     ])
 )
 
