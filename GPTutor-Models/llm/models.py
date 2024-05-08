@@ -407,6 +407,8 @@ def check_llm_models(scheduler=None):
     for model in models:
         if "skip_check" in model:
             continue
+        if model["model"] == "gpt_35_turbo":
+            continue
 
         check_model(model, 10)
 
