@@ -44,5 +44,5 @@ GPT Бот 🤖: https://vk.com/app51602327
 def run_long_pool():
     for event in long_pool.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            if event.text == "Начать":
+            if event.text == "Начать" or event.text == "Start":
                 send_msg(event.user_id, help_message, create_keyboard())
