@@ -2,7 +2,7 @@ import random
 import sched
 import time
 
-from g4f.Provider import Bing, You, OpenaiChat, ChatgptNext
+from g4f.Provider import Bing, You, OpenaiChat, ChatgptNext, Aichatos, Feedough, Koala
 from g4f.client import Client
 from g4f.models import blackbox, Model, claude_3_opus, pi
 from g4f.providers.retry_provider import RetryProvider
@@ -106,14 +106,16 @@ dbrx_instruct = Model(
     best_provider=RetryProvider([DeepInfra])
 )
 
-
 gpt_35_turbo = Model(
     name='gpt-3.5-turbo',
     base_provider='openai',
     best_provider=RetryProvider([
         You,
         ChatgptNext,
+        Koala,
         OpenaiChat,
+        Aichatos,
+        Feedough,
     ])
 )
 
