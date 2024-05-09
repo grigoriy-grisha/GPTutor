@@ -322,13 +322,13 @@ models = [
         "free": False,
         "active": True,
     },
-    {
-        "model": "dbrx_instruct",
-        "description": "Аналог GPT-3.5, Модель адаптированная под программирование. Обучена до 2024 года",
-        "lang": "Имеется поддержка русского",
-        "free": False,
-        "active": True,
-    },
+    # {
+    #     "model": "dbrx_instruct",
+    #     "description": "Аналог GPT-3.5, Модель адаптированная под программирование. Обучена до 2024 года",
+    #     "lang": "Имеется поддержка русского",
+    #     "free": False,
+    #     "active": True,
+    # },
     {
         "model": "llama2_70b",
         "description":
@@ -337,13 +337,13 @@ models = [
         "free": False,
         "active": True,
     },
-    {
-        "model": "blackbox",
-        "description": "Аналог GPT-4, Имеет доступ интернет, работает быстро",
-        "lang": "Плохая поддержка русского языка",
-        "free": False,
-        "active": True,
-    },
+    # {
+    #     "model": "blackbox",
+    #     "description": "Аналог GPT-4, Имеет доступ интернет, работает быстро",
+    #     "lang": "Плохая поддержка русского языка",
+    #     "free": False,
+    #     "active": True,
+    # },
     {
         "model": "llama3_8b",
         "description":
@@ -352,14 +352,14 @@ models = [
         "free": False,
         "active": True,
     },
-    {
-        "model": "llama2_13b",
-        "description":
-            "Llama-2 13b. Аналог GPT-3.5. Обучена до 2023 года. Быстрая модель.",
-        "lang": "Имеется частичная поддержка Русского языка",
-        "free": False,
-        "active": True,
-    },
+    # {
+    #     "model": "llama2_13b",
+    #     "description":
+    #         "Llama-2 13b. Аналог GPT-3.5. Обучена до 2023 года. Быстрая модель.",
+    #     "lang": "Имеется частичная поддержка Русского языка",
+    #     "free": False,
+    #     "active": True,
+    # },
     {
         "model": "llama2_7b",
         "description":
