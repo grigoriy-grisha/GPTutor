@@ -26,7 +26,7 @@ public class ImageLikeService {
         var user  = userService.getOrCreateVkUser(userId);
 
         if (image.isEmpty()) {
-            throw new NotAFoundException("Изображение не найдено");
+            throw new NotAFoundException("Изображение не найдено.");
         }
 
         var imageLike = new ImageLike();
