@@ -43,15 +43,19 @@ public class ConversationsService {
 
         Pair<ApiKey, String> apiKey = apiKeysService.getKey();
 
+        if (conversationRequest.getModel().startsWith("gpt_35")) {
+            conversationRequest.setModel("gpt-3.5-turbo-0125");
+        }
+
         ChatGptRequest chatGptRequest = new ChatGptRequest(
                 conversationRequest.getModel(),
                 conversationRequest.getMessages(),
                 true
         );
-
+в
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(conversationRequest.getModel().startsWith("gpt_35") ? "https://api.aiguoguo199.com/v1/chat/completions" : modelsUrl + "/llm"))
+                .uri(URI.create(conversationRequest.getModel().startsWith("gpt-3.5") ? "https://api.aiguoguo199.com/v1/chat/completions" : modelsUrl + "/llm"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + apiKey.getFirst().getKey())
                 .POST(HttpRequest.BodyPublishers.ofString(input))
