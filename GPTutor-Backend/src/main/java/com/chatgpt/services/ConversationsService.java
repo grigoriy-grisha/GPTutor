@@ -41,16 +41,20 @@ public class ConversationsService {
     public void fetchCompletion(Utf8SseEmitter emitter, ConversationRequest conversationRequest, String userId, int attempt) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
+        Pair<ApiKey, String> apiKey = apiKeysService.getKey();
+
         ChatGptRequest chatGptRequest = new ChatGptRequest(
                 conversationRequest.getModel(),
                 conversationRequest.getMessages(),
                 true
         );
-
+в
+        String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(modelsUrl + "/llm"))
+                .uri(URI.create(conversationRequest.getModel().startsWith("gpt_35") ? "https://api.aiguoguo199.com/v1/chat/completions" : modelsUrl + "/llm"))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(chatGptRequest)))
+                .header("Authorization", "Bearer " + apiKey.getFirst().getKey())
+                .POST(HttpRequest.BodyPublishers.ofString(input))
                 .build();
 
         HttpClient.newHttpClient().sendAsync(request, respInfo ->
