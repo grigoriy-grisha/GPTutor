@@ -63,6 +63,7 @@ public class ConversationsService {
 
         HttpClient.newHttpClient().sendAsync(request, respInfo ->
         {
+            System.out.println(respInfo.statusCode());
             apiRequestsService.addApiRequest("OfficialGPT", respInfo.statusCode());
 
             if (respInfo.statusCode() == 200) {
