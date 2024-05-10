@@ -52,7 +52,7 @@ public class ConversationsService {
                 conversationRequest.getMessages(),
                 true
         );
-в
+
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(conversationRequest.getModel().startsWith("gpt-3.5") ? "https://api.aiguoguo199.com/v1/chat/completions" : modelsUrl + "/llm"))
