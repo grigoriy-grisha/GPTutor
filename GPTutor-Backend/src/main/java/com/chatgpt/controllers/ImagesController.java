@@ -28,7 +28,7 @@ public class ImagesController {
     ImageLikeService imageLikeService;
 
     @PostMapping(path = "/image")
-    List<Image> generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) throws Exception {
+    List<Image> generateImage(@RequestBody GenerateImageRequest prompt, HttpServletRequest request) {
         return imagesService.generateImage((String) request.getAttribute("vkUserId"), prompt);
     }
 
