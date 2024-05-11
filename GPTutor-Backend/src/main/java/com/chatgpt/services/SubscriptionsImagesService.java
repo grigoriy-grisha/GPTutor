@@ -68,7 +68,11 @@ public class SubscriptionsImagesService {
     }
 
     public SubscriptionImages getSubscription(String vkUser, String subscriptionName) {
-        return getOrCreateSubscriptions(vkUser, subscriptionName);
+        if (subscriptionIsEmpty(vkUser, subscriptionName)) {
+            return getOrCreateSubscriptions(vkUser, subscriptionName);
+        }
+
+        return updateSubscription(vkUser, subscriptionName);
     }
 
     boolean subscriptionIsEmpty(String vkUser, String subscriptionName) {
