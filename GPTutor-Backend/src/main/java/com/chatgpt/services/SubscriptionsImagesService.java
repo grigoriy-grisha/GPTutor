@@ -1,11 +1,16 @@
 package com.chatgpt.services;
 
+import com.chatgpt.Exceptions.NotAFoundException;
 import com.chatgpt.entity.SubscriptionImages;
 import com.chatgpt.entity.responses.SubscriptionsChangeResponse;
 import com.chatgpt.repositories.SubscriptionsImagesRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -38,7 +43,6 @@ public class SubscriptionsImagesService {
                     allRequestParams.get("item_id")
             );
         }
-
 
 
         return new SubscriptionsChangeResponse(
@@ -75,7 +79,7 @@ public class SubscriptionsImagesService {
         if (isAvailableSubscription(vkUser, subscriptionName)) {
             return getOrCreateSubscriptions(vkUser, subscriptionName);
         }
- 
+
         return updateSubscription(vkUser, subscriptionName);
     }
 
@@ -115,18 +119,32 @@ public class SubscriptionsImagesService {
     public SubscriptionImages updateSubscription(String vkUser, String subscriptionName) {
         var subscription = getOrCreateSubscriptions(vkUser, subscriptionName);
 
-        try {
-            var order = vkService.getUserSubscriptionById(vkUser, subscription.getSubscriptionId());
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
 
-            subscription.setActive(!order.getResponse().isPending_cancel());
-            subscription.setExpire(order.getResponse().getExpire_time());
+        var appId = request.getAttribute("vkAppId");
+
+
+        try {
+            var orders = vkService.getUserSubscriptions(vkUser).getResponse().getItems();
+
+            var targetEntity =
+                    Arrays.stream(orders)
+                            .filter(entity -> Integer.toString(entity.getApp_id()).equals(Integer.toString((Integer) appId)))
+                            .findFirst();
+
+            if (targetEntity.isEmpty()) {
+                throw new NotAFoundException("Подписка не найдена");
+            }
+
+            subscription.setActive(!targetEntity.get().isPending_cancel());
+            subscription.setExpire(targetEntity.get().getExpire_time());
+            subscription.setSubscriptionId(Integer.toString(targetEntity.get().getId()));
 
             subscriptionsImagesRepository.save(subscription);
 
             return subscription;
-
         } catch (Exception e) {
-            System.out.println(e.toString());
             return subscription;
         }
     }
