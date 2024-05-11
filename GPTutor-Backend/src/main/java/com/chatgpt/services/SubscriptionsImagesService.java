@@ -72,6 +72,10 @@ public class SubscriptionsImagesService {
             return getOrCreateSubscriptions(vkUser, subscriptionName);
         }
 
+        if (isAvailableSubscription(vkUser, subscriptionName)) {
+            return getOrCreateSubscriptions(vkUser, subscriptionName);
+        }
+ 
         return updateSubscription(vkUser, subscriptionName);
     }
 
