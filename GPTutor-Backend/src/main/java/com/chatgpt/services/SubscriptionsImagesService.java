@@ -76,6 +76,7 @@ public class SubscriptionsImagesService {
             return getOrCreateSubscriptions(vkUser, subscriptionName);
         }
 
+        System.out.println(isAvailableSubscription(vkUser, subscriptionName));
         if (isAvailableSubscription(vkUser, subscriptionName)) {
             return getOrCreateSubscriptions(vkUser, subscriptionName);
         }
@@ -125,14 +126,19 @@ public class SubscriptionsImagesService {
         var appId = request.getAttribute("vkAppId");
 
 
+        System.out.println(subscription);
+
         try {
             var orders = vkService.getUserSubscriptions(vkUser).getResponse().getItems();
+
+            System.out.println(Arrays.toString(Arrays.stream(orders).toArray()));
 
             var targetEntity =
                     Arrays.stream(orders)
                             .filter(entity -> Integer.toString(entity.getApp_id()).equals(Integer.toString((Integer) appId)))
                             .findFirst();
 
+            System.out.println(targetEntity);
             if (targetEntity.isEmpty()) {
                 throw new NotAFoundException("Подписка не найдена");
             }
