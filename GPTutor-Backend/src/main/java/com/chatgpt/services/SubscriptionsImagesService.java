@@ -76,7 +76,6 @@ public class SubscriptionsImagesService {
             return getOrCreateSubscriptions(vkUser, subscriptionName);
         }
 
-        System.out.println(isAvailableSubscription(vkUser, subscriptionName));
         if (isAvailableSubscription(vkUser, subscriptionName)) {
             return getOrCreateSubscriptions(vkUser, subscriptionName);
         }
@@ -120,37 +119,18 @@ public class SubscriptionsImagesService {
     public SubscriptionImages updateSubscription(String vkUser, String subscriptionName) {
         var subscription = getOrCreateSubscriptions(vkUser, subscriptionName);
 
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-
-        var appId = request.getAttribute("vkAppId");
-
-
-        System.out.println(subscription);
-
         try {
-            var orders = vkService.getUserSubscriptions(vkUser).getResponse().getItems();
+            var order = vkService.getUserSubscriptionById(vkUser, subscription.getSubscriptionId());
 
-            System.out.println(Arrays.toString(Arrays.stream(orders).toArray()));
-
-            var targetEntity =
-                    Arrays.stream(orders)
-                            .filter(entity -> Integer.toString(entity.getApp_id()).equals(Integer.toString((Integer) appId)))
-                            .findFirst();
-
-            System.out.println(targetEntity);
-            if (targetEntity.isEmpty()) {
-                throw new NotAFoundException("Подписка не найдена");
-            }
-
-            subscription.setActive(!targetEntity.get().isPending_cancel());
-            subscription.setExpire(targetEntity.get().getExpire_time());
-            subscription.setSubscriptionId(Integer.toString(targetEntity.get().getId()));
+            subscription.setActive(!order.getResponse().isPending_cancel());
+            subscription.setExpire(order.getResponse().getExpire_time());
 
             subscriptionsImagesRepository.save(subscription);
 
             return subscription;
+
         } catch (Exception e) {
+            System.out.println(e.toString());
             return subscription;
         }
     }
