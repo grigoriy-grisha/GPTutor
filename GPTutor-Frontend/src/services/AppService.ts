@@ -1,8 +1,10 @@
 import { sig } from "dignals";
+import { RoutingPages } from "$/entity/routing";
 
 export enum AppInstanceType {
   StableArt = "Stable Art",
   GPTutor = "GPTutor",
+  AiHumor = "AiHumor",
 }
 
 class AppService {
@@ -15,11 +17,31 @@ class AppService {
   }
 
   isStableArt() {
-    return this.appInstance === AppInstanceType.StableArt;
+    return false;
   }
 
   isGPTutor() {
-    return this.appInstance === AppInstanceType.GPTutor;
+    return false;
+  }
+
+  isAiHumor() {
+    return true;
+  }
+
+  getGroupId() {
+    return this.isAiHumor() ? 201104273 : 220371433;
+  }
+
+  getBasePanel() {
+    if (this.isGPTutor()) {
+      return RoutingPages.home;
+    }
+
+    if (this.isStableArt()) {
+      return RoutingPages.generationImages;
+    }
+
+    return RoutingPages.mainAnecdote;
   }
 }
 

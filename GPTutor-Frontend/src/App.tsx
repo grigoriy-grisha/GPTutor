@@ -66,6 +66,10 @@ import { GPTutorProfile } from "$/panels/GPTutorProfile";
 import { transformVKBridgeAdaptivity } from "$/utility/strings";
 import { MermaidPage } from "$/panels/MermaidPage";
 import { AdditionalRequests } from "$/panels/AdditionalRequests";
+import { AnecdoteMain } from "$/panels/AnecdoteMain";
+import AnecdoteGeneration from "./panels/AnecdoteGeneration/AnecdoteGeneration";
+import { AnecdoteNews } from "$/panels/AnecdoteNews";
+import ApplicationInfoHumor from "./modals/ApplicationInfoHumor/ApplicationInfoHumor";
 
 const App = () => {
   const location = useLocation();
@@ -119,6 +123,10 @@ const App = () => {
                   settlingHeight={100}
                   id={Modals.applicationInfoStableArt}
                 />
+                <ApplicationInfoHumor
+                  settlingHeight={100}
+                  id={Modals.applicationInfoHumor}
+                />
                 <InterviewQuestions id={Modals.interviewQuestions} />
                 <Agreement id={Modals.agreement} />
                 <DetailImage id={Modals.detailImage} settlingHeight={100} />
@@ -159,6 +167,9 @@ const App = () => {
                 <GPTutorProfile id={Panels.gptutorProfile} />
                 <MermaidPage id={Panels.mermaidPage} />
                 <AdditionalRequests id={Panels.additionalRequest} />
+                <AnecdoteMain id={Panels.mainAnecdote} />
+                <AnecdoteGeneration id={Panels.anecdoteGeneration} />
+                <AnecdoteNews id={Panels.anecdoteNews} />
               </View>
             )}
           </SplitLayout>

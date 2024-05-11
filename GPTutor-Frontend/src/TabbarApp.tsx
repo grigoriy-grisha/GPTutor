@@ -32,6 +32,8 @@ function TabbarApp({ setRef }: IProps) {
     goToGallery,
     goToGPTutorProfileReplace,
     goToGenerationImages,
+    goToAnecdoteGeneration,
+    goToAnecdoteNews,
   } = useNavigationContext();
 
   const platform = usePlatform();
@@ -68,6 +70,42 @@ function TabbarApp({ setRef }: IProps) {
             onClick={goToGallery}
           >
             <Icon20PictureStack width={28} height={28} />
+          </TabbarItem>
+        </div>
+      </Tabbar>
+    );
+  }
+
+  if (appService.isAiHumor()) {
+    return (
+      <Tabbar
+        className={classes.tabBar}
+        style={{ display: "grid" }}
+        mode={platform === Platform.VKCOM ? "horizontal" : "vertical"}
+      >
+        <Separator wide style={{ width: "100%" }} />
+        <div
+          ref={setRef}
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <TabbarItem
+            className={classNames(classes.tabItem, {
+              [classes.tabItemActive]: activePanel === Panels.anecdoteNews,
+            })}
+            text="Лента"
+            onClick={goToAnecdoteNews}
+          >
+            <Icon28NewsfeedLinesOutline width={28} height={28} />
+          </TabbarItem>
+          <TabbarItem
+            className={classNames(classes.tabItem, {
+              [classes.tabItemActive]:
+                activePanel === Panels.anecdoteGeneration,
+            })}
+            text="Генератор"
+            onClick={goToAnecdoteGeneration}
+          >
+            <Icon24MagicWandOutline width={28} height={28} />
           </TabbarItem>
         </div>
       </Tabbar>

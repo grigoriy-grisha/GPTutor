@@ -12,15 +12,9 @@ export function useApplicationInfo() {
   };
 
   const share = () => {
-    bridge
-      .send("VKWebAppShare", {
-        link: appService.isGPTutor()
-          ? "https://vk.com/app51602327"
-          : "https://vk.com/app51692825",
-      })
-      .then((data) => {
-        console.log(data);
-      });
+    bridge.send("VKWebAppShare").then((data) => {
+      console.log(data);
+    });
   };
 
   const getAppLink = () => {

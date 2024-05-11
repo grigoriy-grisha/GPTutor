@@ -126,7 +126,7 @@ export abstract class ChatGptTemplate {
     this.isBlockActions$.set(false);
   };
 
-  send = async (content: string) => {
+  public send = async (content: string) => {
     if (!this.subscriptionGPT.$isAllowSendMessage.get()) return;
 
     try {

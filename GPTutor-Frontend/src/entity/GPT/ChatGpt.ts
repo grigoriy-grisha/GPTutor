@@ -10,6 +10,7 @@ import { ChatGptLeetCode } from "$/entity/GPT/ChatGptLeetCode";
 import { interviews } from "$/entity/interview";
 import { ChatGptTrainer } from "$/entity/GPT/ChatGptTrainer";
 import { VkStorageService } from "$/services/VkStorageService";
+import { ChatGptAnecdote } from "$/entity/GPT/ChatGptAnecdote";
 
 export class ChatGpt {
   storageService = new VkStorageService();
@@ -39,6 +40,8 @@ export class ChatGpt {
   chatGptLeetCode = new ChatGptLeetCode();
 
   chatGptTrainer = new ChatGptTrainer();
+
+  chatGptAnecdote = new ChatGptAnecdote();
 
   currentChatGpt$ = sig<ChatGptTemplate>(this.chatGptFree);
 

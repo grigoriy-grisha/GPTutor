@@ -1,6 +1,7 @@
 import bridge from "@vkontakte/vk-bridge";
 import { snackbarNotify } from "$/entity/notify";
 import { groupsIsMember } from "$/api/vk";
+import { appService } from "$/services/AppService";
 
 class CommunicationService {
   private isRequested = false;
@@ -21,7 +22,9 @@ class CommunicationService {
         });
         return true;
       }
-      await bridge.send("VKWebAppJoinGroup", { group_id: 220371433 });
+      await bridge.send("VKWebAppJoinGroup", {
+        group_id: appService.getGroupId(),
+      });
       return true;
     } catch (error) {
       snackbarNotify.notify({
@@ -56,7 +59,7 @@ class CommunicationService {
 
     const urlParams = this.getSearchParams();
     const userId = urlParams.get("vk_user_id")!;
-    const groupId = "220371433"; // ID группы
+    const groupId = String(appService.getGroupId()); // ID группы
     this.isRequested = true;
 
     return await groupsIsMember({ groupId, userId });

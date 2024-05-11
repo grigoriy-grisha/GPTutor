@@ -105,6 +105,12 @@ const routes = {
     Panels.additionalRequest,
     Views.viewMain
   ),
+  [RoutingPages.mainAnecdote]: new Page(Panels.mainAnecdote, Views.viewMain),
+  [RoutingPages.anecdoteGeneration]: new Page(
+    Panels.anecdoteGeneration,
+    Views.viewMain
+  ),
+  [RoutingPages.anecdoteNews]: new Page(Panels.anecdoteNews, Views.viewMain),
 };
 
 const router = new Router(routes);

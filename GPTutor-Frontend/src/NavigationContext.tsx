@@ -50,7 +50,11 @@ export type NavigationContextType = {
   goToGPTutorProfileReplace: () => void;
   goToGPTutorProfile: () => void;
   goToMermaidPage: () => void;
+  goToAnecdoteGeneration: () => void;
   goToAdditionalRequest: () => void;
+  openApplicationInfoHumor: () => void;
+  goToAnecdoteNews: () => void;
+  goToAnecdoteMain: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -76,12 +80,7 @@ export function NavigationContextProvider({
   const router = useRouter();
 
   useEffect(() => {
-    if (appService.isStableArt()) {
-      router.replacePage(RoutingPages.generationImages);
-      return;
-    }
-
-    router.replacePage(RoutingPages.home);
+    router.replacePage(appService.getBasePanel());
   }, []);
 
   const activePanel = location.getViewActivePanel(Views.viewMain)!;
@@ -184,6 +183,9 @@ export function NavigationContextProvider({
   const openApplicationInfoStableArt = () =>
     router.pushModal(Modals.applicationInfoStableArt);
 
+  const openApplicationInfoHumor = () =>
+    router.pushModal(Modals.applicationInfoHumor);
+
   const openAlert = (data: AlertType) => {
     setAlert(data);
     router.pushPopup(Modals.alert);
@@ -198,6 +200,17 @@ export function NavigationContextProvider({
 
   const goToAdditionalRequest = () => {
     router.pushPage(RoutingPages.additionalRequest);
+  };
+
+  const goToAnecdoteGeneration = () => {
+    router.pushPage(RoutingPages.anecdoteGeneration);
+  };
+  const goToAnecdoteNews = () => {
+    router.pushPage(RoutingPages.anecdoteNews);
+  };
+
+  const goToAnecdoteMain = () => {
+    router.pushPage(RoutingPages.mainAnecdote);
   };
 
   return (
@@ -237,6 +250,10 @@ export function NavigationContextProvider({
         goToGPTutorProfile,
         goToMermaidPage,
         goToAdditionalRequest,
+        goToAnecdoteGeneration,
+        openApplicationInfoHumor,
+        goToAnecdoteNews,
+        goToAnecdoteMain,
         alert,
         isForbidden,
       }}

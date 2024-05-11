@@ -1,5 +1,3 @@
-import { GPTutorProfile } from "$/panels/GPTutorProfile";
-
 export enum RoutingPages {
   home = "/",
   chapters = "/chapters",
@@ -31,6 +29,12 @@ export enum RoutingPages {
   gptutorProfile = "/gptutor-profile",
   mermaidPage = "/mermaid-page",
   additionalRequest = "/additional-request",
+
+  mainAnecdote = "/main-anecdote",
+
+  anecdoteGeneration = "/anecdote-generation",
+
+  anecdoteNews = "/anecdote-news",
 }
 
 export enum Views {
@@ -67,11 +71,18 @@ export enum Panels {
   chatSettings = "chat-settings",
 
   profile = "profile",
+
+  mainAnecdote = "main-anecdote",
+
+  anecdoteGeneration = "anecdote-generation",
+
+  anecdoteNews = "anecdote-news",
 }
 
 export enum Modals {
   applicationInfo = "application-info",
   applicationInfoStableArt = "application-info-stable-art",
+  applicationInfoHumor = "application-info-humor",
 
   interviewQuestions = "interview-questions",
   detailImage = "detail-image",
