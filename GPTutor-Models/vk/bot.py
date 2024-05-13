@@ -4,6 +4,7 @@ import vk_api
 from vk_api.keyboard import VkKeyboard
 from vk_api.longpoll import VkLongPoll, VkEventType
 
+print(os.environ.get('VK_COMMUNITY_TOKEN'))
 vk_session = vk_api.VkApi(token=os.environ.get('VK_COMMUNITY_TOKEN'))
 
 session_api = vk_session.get_api()
