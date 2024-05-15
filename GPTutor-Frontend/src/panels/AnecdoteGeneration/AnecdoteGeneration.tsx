@@ -82,7 +82,9 @@ function AnecdoteGeneration({ id }: IProps) {
           </Div>
         }
       >
+        <Spacing size={12} />
         <AnecdoteGenerationContent />
+        <Spacing size={12} />
       </AppContainer>
     </Panel>
   );
