@@ -43,6 +43,10 @@ class AppService {
 
     return RoutingPages.mainAnecdote;
   }
+
+  getAppId() {
+    return Number(new URLSearchParams(location.search).get("vk_app_id"));
+  }
 }
 
 export const appService = new AppService();

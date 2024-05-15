@@ -7,6 +7,7 @@ import com.chatgpt.entity.ImageLike;
 import com.chatgpt.services.ComplaintsService;
 import com.chatgpt.services.ImageLikeService;
 import com.chatgpt.services.ImagesService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,10 @@ public class ImagesController {
         return imagesService.generateImage((String) request.getAttribute("vkUserId"), prompt);
     }
 
+    @PostMapping(path = "/image/generate")
+    String[] generateImageWithoutCreate(@RequestBody GenerateImageRequest request) throws JsonProcessingException {
+        return imagesService.getGeneratedImage(request).getFirst();
+    }
 
     @GetMapping(path = "/image")
     Page<Image> getImages(HttpServletRequest request,
@@ -64,12 +69,12 @@ public class ImagesController {
     }
 
     @PostMapping(path = "/image/{id}/complaint")
-    ResponseEntity<ImageComplaint> createComplaint(@PathVariable("id") UUID imageId, HttpServletRequest request){
+    ResponseEntity<ImageComplaint> createComplaint(@PathVariable("id") UUID imageId, HttpServletRequest request) {
         return ResponseEntity.ok(complaintsService.createComplaint(imageId, (String) request.getAttribute("vkUserId")));
     }
 
     @PostMapping(path = "/image/{id}/like")
-    ResponseEntity<ImageLike> createImageLike(@PathVariable("id") UUID imageId, HttpServletRequest request){
+    ResponseEntity<ImageLike> createImageLike(@PathVariable("id") UUID imageId, HttpServletRequest request) {
         return ResponseEntity.ok(imageLikeService.createImageLike(imageId, (String) request.getAttribute("vkUserId")));
     }
 

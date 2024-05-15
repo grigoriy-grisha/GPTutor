@@ -61,7 +61,7 @@ public class ImagesService {
         }
 
         try {
-            var pair = generateImage(generateImageRequest);
+            var pair = getGeneratedImage(generateImageRequest);
 
             return Arrays
                     .stream(pair.getFirst())
@@ -98,7 +98,7 @@ public class ImagesService {
         return imageRepository.findAllByVkUserId(user.getId(), pageable);
     }
 
-    Pair<String[], String> generateImage(GenerateImageRequest generateImageRequest) throws JsonProcessingException {
+    public Pair<String[], String> getGeneratedImage(GenerateImageRequest generateImageRequest) throws JsonProcessingException {
         String urlGenerate = modelsUrl + "/image";
         HttpEntity<GenerateImageRequest> requestImage = new HttpEntity<>(generateImageRequest);
         var responseImage = restTemplate.postForEntity(urlGenerate, requestImage, String.class);
@@ -113,7 +113,6 @@ public class ImagesService {
 
         return Pair.of(imageResponse.getOutput(), seed != null ? seed.asText() : "-1");
     }
-
 
 
     public String getImageBase64(UUID id) {
@@ -153,7 +152,7 @@ public class ImagesService {
             int averageGreen = totalGreen / totalPixels;
             int averageBlue = totalBlue / totalPixels;
 
-            return  averageRed + ", " + averageGreen + ", " + averageBlue;
+            return averageRed + ", " + averageGreen + ", " + averageBlue;
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -10,7 +10,7 @@ class AuthService {
 
     await bridge
       .send("VKWebAppGetAuthToken", {
-        app_id: appService.isStableArt() ? 51692825 : 51602327,
+        app_id: appService.getAppId(),
         scope: this.scope.join(","),
       })
       .then((data) => {

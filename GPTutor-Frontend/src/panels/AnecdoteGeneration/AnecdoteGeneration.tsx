@@ -1,23 +1,12 @@
-import {
-  Button,
-  Div,
-  IconButton,
-  Panel,
-  PanelHeaderBack,
-  Platform,
-  Title,
-} from "@vkontakte/vkui";
+import { Button, Div, IconButton, Panel, Title } from "@vkontakte/vkui";
 import { AppContainer } from "$/components/AppContainer";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
-import PanelTitle from "$/components/PanelTitle";
 import React from "react";
 
-import classes from "./AnecdoteGeneration.module.css";
 import {
   Icon24MagicWandOutline,
   Icon28ServicesOutline,
 } from "@vkontakte/icons";
-import { imageGeneration } from "$/entity/image";
 import { chatGpt } from "$/entity/GPT";
 import { AnecdoteGenerationContent } from "$/panels/AnecdoteGeneration/AnecdoteGenerationContent";
 
@@ -25,11 +14,11 @@ import background from "./anecdoteGenerationBackground.png";
 import { useNavigationContext } from "$/NavigationContext";
 import { FullscreenButton } from "$/components/FullscreenButton";
 
+import classes from "./AnecdoteGeneration.module.css";
+
 interface IProps {
   id: string;
 }
-
-console.log(background);
 
 function AnecdoteGeneration({ id }: IProps) {
   const { openApplicationInfoHumor } = useNavigationContext();

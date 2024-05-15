@@ -41,3 +41,35 @@ export async function uploadPhoto(uploadUrl: string, imageId: string) {
 
   return await response.json();
 }
+
+export async function uploadPhotoUrl(uploadUrl: string, url: string) {
+  const response = await fetch(`${BACKEND_HOST}vk/upload-photo-url`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + location.href,
+    },
+    body: JSON.stringify({ uploadUrl, url }),
+  });
+
+  return await response.json();
+}
+
+export type WallPostGroupParams = {
+  message: string;
+  attachments: string;
+  ownerId: number;
+  groupId: number;
+};
+export async function wallPostGroup(params: WallPostGroupParams) {
+  const response = await fetch(`${BACKEND_HOST}vk/wall-post-group`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + location.href,
+    },
+    body: JSON.stringify(params),
+  });
+
+  return await response.json();
+}

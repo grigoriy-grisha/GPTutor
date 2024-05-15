@@ -1,6 +1,8 @@
 import { Placeholder, Spinner, Title } from "@vkontakte/vkui";
 import React from "react";
 import { chatGpt } from "$/entity/GPT";
+import { ImageGenerationBlock } from "$/components/ImageGenerationBlock";
+import { imageGeneration } from "$/entity/image";
 
 function AnecdoteGenerationContent() {
   const anecdoteMessage = chatGpt.chatGptAnecdote.getLastAssistantMessage();
@@ -17,14 +19,24 @@ function AnecdoteGenerationContent() {
     return <Spinner size="large" />;
   }
 
+  const image = chatGpt.chatGptAnecdote.image$.get();
+
   return (
-    <>
+    <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+      <ImageGenerationBlock
+        isEmpty={!image}
+        timer={chatGpt.chatGptAnecdote.timerImage}
+        widthView={imageGeneration.widthView$.get()}
+        heightView={imageGeneration.heightView$.get()}
+        url={image}
+        loading={!chatGpt.chatGptAnecdote.timerImage.isStopped$.get()}
+      />
       {anecdoteMessage && (
-        <Title level="3" weight="2">
+        <Title level="3" weight="2" style={{ marginTop: 28 }}>
           {anecdoteMessage.content$.get()}
         </Title>
       )}
-    </>
+    </div>
   );
 }
 

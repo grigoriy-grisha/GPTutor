@@ -1,0 +1,26 @@
+.image {
+    transition: 0.3s;
+    position: relative;
+    color: var(--vkui--color_text_accent_themed);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--vkui--color_field_border_alpha);
+    width: 100%;
+    border-radius: 8px;
+}
+
+.generatedImage {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.imagePlaceholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

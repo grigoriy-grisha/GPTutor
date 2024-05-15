@@ -342,7 +342,7 @@ class ImageGeneration {
           seed: this.getSeed(),
           expireTimestamp: datePlus30Days(),
           samples: this.samples$.get(),
-          originalPrompt: this.getPromptWithStyles(originalPrompt),
+          originalPrompt: "",
           scheduler: this.sampler$.get(),
           width: this.width$.get(),
           height: this.height$.get(),

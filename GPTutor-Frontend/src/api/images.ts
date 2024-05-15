@@ -23,6 +23,21 @@ export function generateImage(
   }).then((res) => res.json());
 }
 
+export function generateImageGet(
+  params: GenerateImageRequest,
+  controller: AbortController
+): Promise<string[] & ErrorResponseType> {
+  return fetch(`${BACKEND_HOST}image/generate`, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + location.href,
+      "Content-Type": "application/json",
+    },
+    signal: controller.signal,
+    body: JSON.stringify(params),
+  }).then((res) => res.json());
+}
+
 export async function getImageBase64(imageId: string): Promise<string> {
   const res = await fetch(`${BACKEND_HOST}image/${imageId}/base64`, {
     headers: {

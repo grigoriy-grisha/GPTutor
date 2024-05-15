@@ -2,8 +2,10 @@ package com.chatgpt.services;
 
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.chatgpt.entity.requests.UploadPhotoRequest;
+import com.chatgpt.entity.requests.WallPostRequest;
 import com.chatgpt.entity.responses.OrderSubscriptionByIdResponse;
 import com.chatgpt.entity.responses.OrderSubscriptionResponse;
+import com.chatgpt.entity.responses.SaveWallPhotoResponse;
 import com.chatgpt.entity.responses.UploadFileResponse;
 import com.chatgpt.repositories.ImageRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,6 +34,8 @@ public class VkService {
 
     @Autowired
     VkSecretesService vkSecretesService;
+
+    RestTemplate restTemplate = new RestTemplate();
 
 
     //todo вынести этот метод на фронт
@@ -63,22 +67,7 @@ public class VkService {
             throw new NotFoundException("Изображение не найдено");
         }
 
-        var file = fileService.downloadImage(fileService.downloadImageAsBase64(image.get().getUrl()));
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("photo", new FileSystemResource(file));
-
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-        String response = restTemplate.postForObject(uploadPhotoRequest.getUploadUrl(), requestEntity, String.class);
-
-        return new ObjectMapper().readValue(response, UploadFileResponse.class);
-
+        return uploadPhoto(image.get().getUrl(), uploadPhotoRequest.getUploadUrl());
     }
 
     public OrderSubscriptionResponse getUserSubscriptions(String userId) throws Exception {
@@ -119,5 +108,36 @@ public class VkService {
         System.out.println(response);
 
         return new ObjectMapper().readValue(response, OrderSubscriptionByIdResponse.class);
+    }
+
+    public UploadFileResponse uploadPhoto(String url, String uploadUrl) throws JsonProcessingException {
+        var file = fileService.downloadImage(fileService.downloadImageAsBase64(url));
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("photo", new FileSystemResource(file));
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        String response = restTemplate.postForObject(uploadUrl, requestEntity, String.class);
+
+        return new ObjectMapper().readValue(response, UploadFileResponse.class);
+    }
+
+    public String wallPostGroup(WallPostRequest wallPostRequest) {
+        MultiValueMap<String, String> postData = new LinkedMultiValueMap<>();
+        postData.add("owner_id", wallPostRequest.getGroupId());
+        postData.add("attachments", wallPostRequest.getAttachments());
+        postData.add("message", wallPostRequest.getMessage());
+        postData.add("access_token", vkSecretesService.getAiHumorKeyGroup());
+        postData.add("v", "5.199");
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(postData, new HttpHeaders());
+
+        return restTemplate.postForObject("https://api.vk.com/method/wall.post", entity, String.class);
     }
 }

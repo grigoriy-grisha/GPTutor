@@ -18,6 +18,7 @@ import anecdoteMain from "./anecdoteMain.png";
 import { chatGpt } from "$/entity/GPT";
 import { Icon28ServicesOutline } from "@vkontakte/icons";
 import { FullscreenButton } from "$/components/FullscreenButton";
+import { wallService } from "$/services/WallService";
 
 interface IProps {
   id: string;
