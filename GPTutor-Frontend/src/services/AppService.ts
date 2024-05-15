@@ -17,15 +17,15 @@ class AppService {
   }
 
   isStableArt() {
-    return false;
+    return this.appInstance === AppInstanceType.StableArt;
   }
 
   isGPTutor() {
-    return false;
+    return this.appInstance === AppInstanceType.GPTutor;
   }
 
   isAiHumor() {
-    return true;
+    return this.appInstance === AppInstanceType.AiHumor;
   }
 
   getGroupId() {
