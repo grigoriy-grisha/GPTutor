@@ -20,7 +20,6 @@ function AnecdoteNews({ id }: IProps) {
   const { openApplicationInfoHumor } = useNavigationContext();
 
   useEffect(() => {
-    console.log("123");
     humorNews.loadHistory();
   }, []);
 
