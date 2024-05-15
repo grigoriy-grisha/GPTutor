@@ -66,7 +66,7 @@ function AnecdoteMain({ id }: IProps) {
             </Button>
           }
         >
-          Сгенерируй уникальный анектод с помощью нейросети
+          Сгенерируй уникальный анекдот с помощью нейросети
         </Placeholder>
       </AppContainer>
     </Panel>
