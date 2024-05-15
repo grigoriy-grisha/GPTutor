@@ -26,6 +26,8 @@ public class HumorEntity {
 
     Timestamp createdAt;
 
+    private String imageUrl;
+
 
     @OneToMany(mappedBy = "humorEntity", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -77,5 +79,13 @@ public class HumorEntity {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

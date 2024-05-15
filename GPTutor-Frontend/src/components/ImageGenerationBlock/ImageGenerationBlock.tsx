@@ -17,7 +17,7 @@ interface IProps {
   widthView: number;
   url: string;
   rbg?: string;
-  timer: StopWatch;
+  timer?: StopWatch;
 }
 function ImageGenerationBlock({
   loading,
@@ -39,7 +39,7 @@ function ImageGenerationBlock({
         >
           <div className={classes.imagePlaceholder}>
             {loading ? (
-              <TimeLoading timer={timer} />
+              <>{timer ? <TimeLoading timer={timer} /> : null}</>
             ) : (
               <Icon48PictureOutline width={86} height={86} />
             )}

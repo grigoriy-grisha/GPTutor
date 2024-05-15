@@ -21,7 +21,6 @@ public class VkSecretesService {
     }
 
     String getAiHumorKeyGroup() {
-        return "vk1.a.X6zGIOS6VGe7nYHXCkNd-G5mJKBaW9bpGBfnCRg5SF8ppke6rUvzml30SE8pZU-eEdXt6y4QNelAWbYOgCyrk0y0DbW2HCpRtKLZI0bjDZmI967E7Pruv8TuLpn8IkgT4dSFGsp421Knwxz_yklOWZFvh6lbRvqwGr-dnqbX9KAlTmmk1hc9DL3DGCW_M9E1B6PkYbEw6ldy9hWCq47wrA";
+        return System.getenv("AI_HUMOR_GROUP_TOKEN");
     }
 }
-

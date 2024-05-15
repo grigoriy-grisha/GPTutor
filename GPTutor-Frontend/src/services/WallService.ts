@@ -1,7 +1,6 @@
 import bridge from "@vkontakte/vk-bridge";
 import { authService } from "$/services/AuthService";
 import { uploadPhoto, uploadPhotoUrl, wallPostGroup } from "$/api/vk";
-import { downloadService } from "$/services/DownloadService";
 
 class WallService {
   async createPost(imageId: string) {
@@ -27,7 +26,7 @@ class WallService {
     );
   }
 
-  async createPostGroup(imageUrl: string) {
+  async createPostGroup(message: string, imageUrl: string) {
     const resultWallUploadServer = await wallService.getWallUploadServer();
 
     const result = await uploadPhotoUrl(
@@ -44,9 +43,11 @@ class WallService {
     const [photoData] = resultSavePhoto.response;
 
     const hello = await wallService.postWallApi(
-      "asdasd",
+      message,
       photoData.owner_id,
       photoData.id,
+
+      //todo заменить
       -225849408
     );
 
@@ -105,6 +106,24 @@ class WallService {
       ownerId: owner_id,
       groupId,
     });
+  }
+
+  async getPosts(ownerId: number, offset: number) {
+    await authService.setupToken("wall");
+    return bridge
+      .send("VKWebAppCallAPIMethod", {
+        method: "wall.get",
+        params: {
+          ownerId,
+          offset,
+          v: "5.131",
+          count: 50,
+          access_token: authService.token,
+        },
+      })
+      .catch((s) => {
+        console.log(s);
+      });
   }
 }
 

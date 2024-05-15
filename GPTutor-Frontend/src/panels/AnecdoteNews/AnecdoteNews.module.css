@@ -21,15 +21,25 @@
 .share {
     width: fit-content;
     padding: 8px;
+    color: var(--vkui--color_text_subhead);
 }
 
 .like {
     width: fit-content;
     padding: 8px;
     display: grid;
+    align-items: center;
     grid-template-columns: max-content max-content;
     gap: 8px;
 
+}
+
+.likedText {
+    color: var(--vkui--color_text_negative);
+}
+
+.unlikedText {
+    color: var(--vkui--color_text_subhead);
 }
 
 .likeActiveCard {

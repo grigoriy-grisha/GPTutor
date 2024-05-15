@@ -6,8 +6,13 @@ import { datePlus30Days } from "$/utility/date";
 import { generateImageGet } from "$/api/images";
 import { sig } from "dignals";
 import { translationService } from "$/services/TranslationService";
+import { wallService } from "$/services/WallService";
+import { createHumor } from "$/api/humor";
+import { HumorTypes } from "$/entity/humor";
 
 export class ChatGptAnecdote extends ChatGptTemplate {
+  value$ = sig("");
+
   systemMessage = new GptMessage(
     "Отвечай, как обычно, только чуть-чуть прикалывайся, немного матерись, обращайся к пользователю на ты, прикидывайся придурком",
     GPTRoles.system
@@ -17,13 +22,17 @@ export class ChatGptAnecdote extends ChatGptTemplate {
 
   image$ = sig("");
 
-  abortController = new AbortController();
+  abortControllerImage = new AbortController();
 
   send = async () => {
     this.image$.set("");
     this.messages$.set([]);
 
-    const content = "Сгенерируй смешной и безумный анекдот ебать блять";
+    const jokeType = this.value$.get()
+      ? `Вот тебе тема: ${this.value$.get()}`
+      : "";
+
+    const content = `Сгенерируй смешной и безумный анекдот ебать блять. ${jokeType}`;
 
     try {
       this.sendCompletions$.loading.set(true);
@@ -38,15 +47,18 @@ export class ChatGptAnecdote extends ChatGptTemplate {
     }
   };
 
+  setValue(value: string) {
+    this.value$.set(value);
+  }
+
   async generateImage() {
     this.timerImage.run();
 
-    this.abortController = new AbortController();
+    this.abortControllerImage = new AbortController();
 
     const humorContent = await translationService.translate(
       `${this.getLastMessage().content$.get()}, Шутка, смешная карикатура, шарж`
     );
-
     console.log(humorContent);
 
     const result = await generateImageGet(
@@ -67,7 +79,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
         loraModel: "",
         negativePrompt: "",
       },
-      this.abortController!
+      this.abortControllerImage!
     );
 
     if (result.error) {
@@ -77,5 +89,24 @@ export class ChatGptAnecdote extends ChatGptTemplate {
 
     this.image$.set(result[0]);
     this.timerImage.stop();
+
+    await this.createPost();
   }
+
+  async createPost() {
+    const content = this.getLastMessage().content$.get();
+    const image = this.image$.get();
+
+    if (!content || !image) return;
+
+    await wallService.createPostGroup(content, image);
+    await createHumor({ type: HumorTypes.anecdote, content, imageUrl: image });
+  }
+
+  abortSend = () => {
+    this.abortController.abort();
+    this.abortControllerImage.abort();
+    this.timerImage.stop();
+    this.closeDelay();
+  };
 }

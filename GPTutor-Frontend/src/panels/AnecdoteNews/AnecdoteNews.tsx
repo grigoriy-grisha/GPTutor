@@ -1,26 +1,16 @@
-import React, { useState } from "react";
-import {
-  Card,
-  classNames,
-  Div,
-  IconButton,
-  Panel,
-  Tappable,
-  Title,
-} from "@vkontakte/vkui";
+import React, { useEffect } from "react";
+import { Div, IconButton, Panel, Title } from "@vkontakte/vkui";
 
 import { AppContainer } from "$/components/AppContainer";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
 
 import classes from "./AnecdoteNews.module.css";
-import {
-  Icon20LikeCircleFillGray,
-  Icon20LikeCircleFillRed,
-  Icon28ServicesOutline,
-  Icon28ShareOutline,
-} from "@vkontakte/icons";
+import { Icon28ServicesOutline } from "@vkontakte/icons";
 import { FullscreenButton } from "$/components/FullscreenButton";
 import { useNavigationContext } from "$/NavigationContext";
+import { humorNews } from "$/entity/humor/HumorNews";
+import { useInfinityScroll } from "$/hooks/useInfinityScroll";
+import { AnecdoteItem } from "$/panels/AnecdoteNews/AnecdoteItem";
 
 interface IProps {
   id: string;
@@ -29,10 +19,24 @@ interface IProps {
 function AnecdoteNews({ id }: IProps) {
   const { openApplicationInfoHumor } = useNavigationContext();
 
-  const [s, ss] = useState(false);
+  useEffect(() => {
+    console.log("123");
+    humorNews.loadHistory();
+  }, []);
+
+  const hasNextPage = humorNews.hasNextHistory$.get();
+  const loading = humorNews.getHumors$.loading.get();
+
+  const setScrollableElement = useInfinityScroll({
+    onLoadMore: () => humorNews.nextLoadHistory(),
+    hasNextPage,
+    loading,
+  });
+
   return (
     <Panel id={id}>
       <AppContainer
+        containerRef={setScrollableElement}
         headerChildren={
           <AppPanelHeader
             isMiddle
@@ -51,52 +55,9 @@ function AnecdoteNews({ id }: IProps) {
         }
       >
         <Div className={classes.container}>
-          <Card mode="shadow" className={classes.card}>
-            <Div>
-              <Title level="3" weight="2">
-                Сидим в компании одноклассников, отмечаем 10-летний юбилей
-                расставания со школой и друг с другом. Один из нас, по жизни
-                холостой, пытает давно замужнюю одноклассницу, есть ли у неё
-                симпатичная незамужняя подруга для встреч и дальнейшей жизни.Та
-                его пытает:- а ты её любить будешь? - буду- а подарки дарить? -
-                будr- а трахать ее будешь? - буду!- а квартира у тебя есть? -
-                есть - да бери меня, зачем тебе моя подруга!В общем, уже 20 лет
-                вместе, трое детей и внук.
-              </Title>
-
-              <div className={classes.actionsContainer}>
-                <Card
-                  className={classNames(classes.likeCard, {
-                    [classes.likeActiveCard]: s,
-                  })}
-                >
-                  <Tappable
-                    onClick={() => {
-                      ss(!s);
-                    }}
-                    className={classes.like}
-                  >
-                    {s ? (
-                      <Icon20LikeCircleFillRed className={classes.likeActive} />
-                    ) : (
-                      <Icon20LikeCircleFillGray />
-                    )}
-                    123
-                  </Tappable>
-                </Card>
-                <Card style={{ marginLeft: 12 }}>
-                  <Tappable
-                    className={classes.share}
-                    onClick={() => {
-                      ss(!s);
-                    }}
-                  >
-                    <Icon28ShareOutline width={20} height={20} />
-                  </Tappable>
-                </Card>
-              </div>
-            </Div>
-          </Card>
+          {humorNews.humors$.get().map((humorItem) => (
+            <AnecdoteItem key={humorItem.id} humorItem={humorItem} />
+          ))}
         </Div>
       </AppContainer>
     </Panel>

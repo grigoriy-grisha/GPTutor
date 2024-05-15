@@ -38,6 +38,7 @@ public class HumorService {
         humorEntity.setContent(humorRequest.getContent());
         humorEntity.setType(humorRequest.getType());
         humorEntity.setCreatedAt(Timestamp.from(new Date().toInstant()));
+        humorEntity.setImageUrl(humorRequest.getImageUrl());
 
         humorEntityRepository.save(humorEntity);
 

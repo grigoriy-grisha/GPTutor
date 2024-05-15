@@ -7,6 +7,8 @@ public class HumorRequest {
 
     HumorType type;
 
+    String imageUrl;
+
     public String getContent() {
         return content;
     }
@@ -21,5 +23,13 @@ public class HumorRequest {
 
     public void setType(HumorType type) {
         this.type = type;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

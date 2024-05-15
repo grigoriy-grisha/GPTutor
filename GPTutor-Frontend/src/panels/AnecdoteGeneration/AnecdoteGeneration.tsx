@@ -1,4 +1,12 @@
-import { Button, Div, IconButton, Panel, Title } from "@vkontakte/vkui";
+import {
+  Button,
+  Div,
+  IconButton,
+  Panel,
+  Spacing,
+  Textarea,
+  Title,
+} from "@vkontakte/vkui";
 import { AppContainer } from "$/components/AppContainer";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
 import React from "react";
@@ -23,7 +31,10 @@ interface IProps {
 function AnecdoteGeneration({ id }: IProps) {
   const { openApplicationInfoHumor } = useNavigationContext();
 
-  const isLoading = chatGpt.chatGptAnecdote.sendCompletions$.loading.get();
+  const isLoadingText = chatGpt.chatGptAnecdote.sendCompletions$.loading.get();
+  const isLoadingImage = !chatGpt.chatGptAnecdote.timerImage.isStopped$.get();
+
+  const isLoading = isLoadingImage || isLoadingText;
 
   return (
     <Panel id={id}>
@@ -48,15 +59,20 @@ function AnecdoteGeneration({ id }: IProps) {
         }
         fixedBottomContent={
           <Div>
+            <Textarea
+              value={chatGpt.chatGptAnecdote.value$.get()}
+              onChange={(e) => chatGpt.chatGptAnecdote.setValue(e.target.value)}
+              disabled={isLoading}
+              placeholder="Про что анекдот"
+            />
+            <Spacing size={12} />
             <Button
               mode={isLoading ? "outline" : "primary"}
-              onClick={() => {
-                if (isLoading) {
-                  chatGpt.chatGptAnecdote.abortSend();
-                  return;
-                }
-                chatGpt.chatGptAnecdote.send();
-              }}
+              onClick={() =>
+                isLoading
+                  ? chatGpt.chatGptAnecdote.abortSend()
+                  : chatGpt.chatGptAnecdote.send()
+              }
               size="m"
               style={{ width: "100%" }}
               after={<Icon24MagicWandOutline />}
