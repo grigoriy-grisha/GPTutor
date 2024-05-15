@@ -1,5 +1,4 @@
 import { Card, classNames, Div, Tappable, Title } from "@vkontakte/vkui";
-import classes from "$/panels/AnecdoteNews/AnecdoteNews.module.css";
 import {
   Icon20LikeCircleFillGray,
   Icon20LikeCircleFillRed,
@@ -8,6 +7,8 @@ import React from "react";
 import { HumorItem } from "$/entity/humor";
 import { ImageGenerationBlock } from "$/components/ImageGenerationBlock";
 import { humorNews } from "$/entity/humor/HumorNews";
+
+import classes from "../AnecdoteNews.module.css";
 
 interface IProps {
   humorItem: HumorItem;
@@ -23,16 +24,8 @@ function AnecdoteItem({ humorItem }: IProps) {
           {humorItem.content}
         </Title>
         {humorItem.imageUrl && (
-          <div
-            style={{
-              marginTop: 16,
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div style={{ width: "50%" }}>
+          <div className={classes.imageContainer}>
+            <div className={classes.imageNormalize}>
               <ImageGenerationBlock
                 loading={false}
                 widthView={512}

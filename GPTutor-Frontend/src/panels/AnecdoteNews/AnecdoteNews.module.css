@@ -61,3 +61,21 @@
 .likeActive {
     animation: scaleAnimation 1s;
 }
+
+.imageContainer {
+    margin-top: 16px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imageNormalize {
+    width: 50%;
+}
+
+@media screen and (max-width: 728px) {
+    .imageNormalize {
+        width: 80%;
+    }
+}
