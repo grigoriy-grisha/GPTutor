@@ -112,7 +112,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
 
     if (!content || !image) return;
 
-    await wallService.createPostGroup(content, image);
+    // await wallService.createPostGroup(content, image);
     await createHumor({ type: HumorTypes.anecdote, content, imageUrl: image });
   }
 

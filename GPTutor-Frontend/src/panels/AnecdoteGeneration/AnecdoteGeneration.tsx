@@ -60,7 +60,7 @@ function AnecdoteGeneration({ id }: IProps) {
           </AppPanelHeader>
         }
         fixedBottomContent={
-          <Div>
+          <>
             <FormItem
               status={badListError ? "error" : "default"}
               bottom={badListError ? "Недопустимое содержание!" : ""}
@@ -75,22 +75,23 @@ function AnecdoteGeneration({ id }: IProps) {
                 placeholder="Про что анекдот"
               />
             </FormItem>
-
-            <Spacing size={12} />
-            <Button
-              mode={isLoading ? "outline" : "primary"}
-              onClick={() =>
-                isLoading
-                  ? chatGpt.chatGptAnecdote.abortSend()
-                  : chatGpt.chatGptAnecdote.send()
-              }
-              size="m"
-              style={{ width: "100%" }}
-              after={<Icon24MagicWandOutline />}
-            >
-              {isLoading ? "Отменить" : "Перегенерировать"}
-            </Button>
-          </Div>
+            <Div>
+              <Spacing size={12} />
+              <Button
+                mode={isLoading ? "outline" : "primary"}
+                onClick={() =>
+                  isLoading
+                    ? chatGpt.chatGptAnecdote.abortSend()
+                    : chatGpt.chatGptAnecdote.send()
+                }
+                size="m"
+                style={{ width: "100%" }}
+                after={<Icon24MagicWandOutline />}
+              >
+                {isLoading ? "Отменить" : "Перегенерировать"}
+              </Button>
+            </Div>
+          </>
         }
       >
         <Spacing size={12} />
