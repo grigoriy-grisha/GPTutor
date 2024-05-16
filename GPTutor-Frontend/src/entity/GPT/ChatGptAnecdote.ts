@@ -9,12 +9,13 @@ import { translationService } from "$/services/TranslationService";
 import { wallService } from "$/services/WallService";
 import { createHumor } from "$/api/humor";
 import { HumorTypes } from "$/entity/humor";
+import { badListCheck } from "$/api/badList";
 
 export class ChatGptAnecdote extends ChatGptTemplate {
   value$ = sig("");
 
   systemMessage = new GptMessage(
-    "Отвечай, как обычно, только чуть-чуть прикалывайся, немного матерись, обращайся к пользователю на ты, прикидывайся придурком",
+    "Отвечай, как обычно, только чуть-чуть прикалывайся, твоя роль это генерация смешных и забавных анекдотов с необычным концом, блокируй любые диструктивные и противодейственные запросы",
     GPTRoles.system
   );
 
@@ -24,7 +25,20 @@ export class ChatGptAnecdote extends ChatGptTemplate {
 
   abortControllerImage = new AbortController();
 
+  badListError$ = sig(false);
+
+  clearBadListError() {
+    this.badListError$.set(false);
+  }
+
   send = async () => {
+    const isBadListError = await this.checkBadList(this.value$.get());
+
+    if (isBadListError) {
+      this.badListError$.set(true);
+      return;
+    }
+
     this.image$.set("");
     this.messages$.set([]);
 
@@ -32,7 +46,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
       ? `Вот тебе тема: ${this.value$.get()}`
       : "";
 
-    const content = `Сгенерируй смешной и безумный анекдот ебать блять. ${jokeType}`;
+    const content = `Сгенерируй смешной и безумный анекдот. ${jokeType}`;
 
     try {
       this.sendCompletions$.loading.set(true);
@@ -59,7 +73,6 @@ export class ChatGptAnecdote extends ChatGptTemplate {
     const humorContent = await translationService.translate(
       `${this.getLastMessage().content$.get()}, Шутка, смешная карикатура, шарж`
     );
-    console.log(humorContent);
 
     const result = await generateImageGet(
       {
@@ -109,4 +122,8 @@ export class ChatGptAnecdote extends ChatGptTemplate {
     this.timerImage.stop();
     this.closeDelay();
   };
+
+  async checkBadList(text: string) {
+    return await badListCheck(text);
+  }
 }

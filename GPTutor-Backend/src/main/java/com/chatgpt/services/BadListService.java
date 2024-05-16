@@ -27,7 +27,7 @@ public class BadListService {
         pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
     }
 
-    boolean checkText(String text) {
+    public boolean checkText(String text) {
         return pattern.matcher(text).find();
     }
 

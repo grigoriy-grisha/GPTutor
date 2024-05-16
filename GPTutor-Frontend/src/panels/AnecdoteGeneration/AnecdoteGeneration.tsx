@@ -1,6 +1,7 @@
 import {
   Button,
   Div,
+  FormItem,
   IconButton,
   Panel,
   Spacing,
@@ -36,6 +37,7 @@ function AnecdoteGeneration({ id }: IProps) {
 
   const isLoading = isLoadingImage || isLoadingText;
 
+  const badListError = chatGpt.chatGptAnecdote.badListError$.get();
   return (
     <Panel id={id}>
       <AppContainer
@@ -59,12 +61,21 @@ function AnecdoteGeneration({ id }: IProps) {
         }
         fixedBottomContent={
           <Div>
-            <Textarea
-              value={chatGpt.chatGptAnecdote.value$.get()}
-              onChange={(e) => chatGpt.chatGptAnecdote.setValue(e.target.value)}
-              disabled={isLoading}
-              placeholder="Про что анекдот"
-            />
+            <FormItem
+              status={badListError ? "error" : "default"}
+              bottom={badListError ? "Недопустимое содержание!" : ""}
+              onFocus={() => chatGpt.chatGptAnecdote.clearBadListError()}
+            >
+              <Textarea
+                value={chatGpt.chatGptAnecdote.value$.get()}
+                onChange={(e) =>
+                  chatGpt.chatGptAnecdote.setValue(e.target.value)
+                }
+                disabled={isLoading}
+                placeholder="Про что анекдот"
+              />
+            </FormItem>
+
             <Spacing size={12} />
             <Button
               mode={isLoading ? "outline" : "primary"}
