@@ -7,8 +7,7 @@ import requests
 from g4f import Messages, AsyncResult
 
 jwt_tokens = [
-    "Bearer jwt:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnaDo2MzQ2Nzc1MCIsImV4cCI6MTcxNzYzMDg0NX0.6Y8VSQde8a06h100_Cr_APAThpWPIA1BFJozpBc6eoc",
-    "Bearer jwt:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnaDo2NzMzNDcwNiIsImV4cCI6MTcxNzUxMTA3OH0.WVzIaSFVI4khMcPCG0ivmWL7PA4Cx9Xo0ZgER6Uu4Dw",
+    "Bearer jwt:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnaDo2NzMzNDcwNiIsImV4cCI6MTcxODU5NDgxMH0.SKBRE3gqXbdKuxZGDQK2JA_QrQo4siUny3G_M-5x7Q4",
 ]
 
 
