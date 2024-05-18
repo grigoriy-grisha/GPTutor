@@ -76,8 +76,8 @@ llama3_8b_instruct = Model(
     best_provider=RetryProvider([DeepInfra])
 )
 
-codellama_70b_instruct = Model(
-    name="codellama/CodeLlama-70b-Instruct-hf",
+codellama_34b_v2 = Model(
+    name="Phind/Phind-CodeLlama-34B-v2",
     base_provider="meta",
     best_provider=RetryProvider([DeepInfra])
 )
@@ -127,9 +127,9 @@ models_dict = {
         "stream": True,
         "model": blackbox,
     },
-    "codellama_70b_instruct": {
+    "codellama_34b_v2": {
         "stream": True,
-        "model": codellama_70b_instruct
+        "model": codellama_34b_v2
     },
     "llama3_70b": {
         "stream": True,
@@ -250,10 +250,10 @@ models = [
         "active": True,
     },
     {
-        "model": "codellama_70b_instruct",
+        "model": "codellama_34b_v2",
         "description":
             "Аналог GPT-4. Улучшенная модель llama-2 70b заточенная специально под программирование.",
-        "lang": "Имеется поддержка Русского языка",
+        "lang": "Имеется частичная поддержка Русского языка",
         "free": False,
         "active": True,
     },
