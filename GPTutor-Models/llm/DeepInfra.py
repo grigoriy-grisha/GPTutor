@@ -7,7 +7,7 @@ import requests
 from g4f import Messages, AsyncResult
 
 jwt_tokens = [
-    "Bearer jwt:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnaDo2NzMzNDcwNiIsImV4cCI6MTcxODU5NDgxMH0.SKBRE3gqXbdKuxZGDQK2JA_QrQo4siUny3G_M-5x7Q4",
+    "Bearer dChpwTq4VSmDBI8yxa3MVZzapqQNapNx",
 ]
 
 
@@ -25,13 +25,6 @@ class DeepInfra(g4f.Provider.Openai):
         'dbrx-instruct': 'databricks/dbrx-instruct',
     }
 
-    @classmethod
-    def get_models(cls):
-        if not cls.models:
-            url = 'https://api.deepinfra.com/models/featured'
-            models = requests.get(url).json()
-            cls.models = [model['model_name'] for model in models if model["type"] == "text-generation"]
-        return cls.models
 
     @classmethod
     def create_async_generator(
