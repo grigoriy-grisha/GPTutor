@@ -43,9 +43,9 @@ public class ConversationsService {
 
         Pair<ApiKey, String> apiKey = apiKeysService.getKey();
 
-        if (conversationRequest.getModel().startsWith("gpt_35")) {
-            conversationRequest.setModel("gpt-3.5-turbo-0125");
-        }
+//        if (conversationRequest.getModel().startsWith("gpt_35")) {
+//            conversationRequest.setModel("gpt-3.5-turbo-0125");
+//        }
 
         ChatGptRequest chatGptRequest = new ChatGptRequest(
                 conversationRequest.getModel(),
