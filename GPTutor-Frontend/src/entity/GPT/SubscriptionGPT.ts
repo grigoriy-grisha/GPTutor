@@ -5,7 +5,7 @@ import { communicationService } from "$/services/CommunicationService";
 export class SubscriptionGPT {
   storageService = new VkStorageService();
   $attempts = sig(0);
-  isSubscribe$ = sig(true);
+  isSubscribe$ = sig(false);
 
   constructor() {
     this.$initAttempts();
