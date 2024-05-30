@@ -5,6 +5,7 @@ import {
   Caption,
   classNames,
   Div,
+  IconButton,
   Platform,
   Separator,
   Title,
@@ -14,6 +15,8 @@ import {
 import classes from "./SubscriptionBlock.module.css";
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
 import { plural } from "$/utility/strings";
+import { Icon28Cancel } from "@vkontakte/icons";
+import { tgService } from "$/services/TgService";
 
 interface IProps {
   chatGpt: ChatGptTemplate;
@@ -30,6 +33,31 @@ function SubscriptionBlock({ chatGpt }: IProps) {
 
   return (
     <div>
+      {!tgService.isSeeTg$.get() && (
+        <>
+          <Separator wide />
+          <Div className={classes.container}>
+            <div className={classes.text}>
+              <Title level="3" className={classes.title} Component="h3">
+                Попробуйте наш бот в телеграм!
+              </Title>
+              <Caption>Бесплатный GPT-4o в интерфейсе телеграм!</Caption>
+            </div>
+            <div className={classes.container}>
+              <Button
+                target="_blank"
+                href="https://t.me/DeepGPTBot"
+                mode="outline"
+              >
+                Перейти
+              </Button>
+              <IconButton onClick={() => tgService.setSeeTg()}>
+                <Icon28Cancel className={classes.close} />
+              </IconButton>
+            </div>
+          </Div>
+        </>
+      )}
       <Separator wide />
       <Div className={classes.container}>
         <div className={classes.text}>
