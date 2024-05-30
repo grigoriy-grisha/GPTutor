@@ -5,6 +5,13 @@
     flex-shrink: 0;
 }
 
+.containerTg {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
 .stopGenerationContainer {
     display: flex;
     justify-content: center;

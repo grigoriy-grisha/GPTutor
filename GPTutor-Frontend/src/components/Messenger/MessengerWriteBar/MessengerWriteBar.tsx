@@ -53,14 +53,14 @@ function MessengerWriteBar({
           {!tgService.isSeeTg$.get() && (
             <>
               <Separator wide />
-              <Div className={classes.container}>
+              <Div className={classes.containerTg}>
                 <div className={classes.text}>
                   <Title level="3" className={classes.title} Component="h3">
                     Попробуйте наш бот в телеграм!
                   </Title>
                   <Caption>Бесплатный GPT-4o в интерфейсе телеграм!</Caption>
                 </div>
-                <div className={classes.container}>
+                <div className={classes.containerTg}>
                   <Button
                     target="_blank"
                     href="https://t.me/DeepGPTBot"
