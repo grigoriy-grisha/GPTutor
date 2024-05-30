@@ -3,15 +3,16 @@ import { getModels } from "$/api/models";
 
 const freeModels = [
   {
-    model: "gpt-3.5-turbo-0125",
-    description: "GPT-3.5. Основная модель. Обучена до 2021 года",
+    model: "wizardLM_2_7B",
+    description:
+      "Чуть-чуть слабее, чем GPT-3.5. Модель от microsoft. Хорошо подходит для обычного общения",
     lang: "Имеется поддержка Русского языка",
     active: true,
   },
 ];
 
 class GptModels {
-  currentModel$ = sig("gpt_35_turbo");
+  currentModel$ = sig("wizardLM_2_7B");
 
   freeModels = sig(freeModels);
   models = sig([

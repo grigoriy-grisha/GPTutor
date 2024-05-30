@@ -4,7 +4,7 @@ import time
 
 from g4f.Provider import Bing, You, OpenaiChat, ChatgptNext, Aichatos, Feedough, Koala
 from g4f.client import Client
-from g4f.models import blackbox, Model, claude_3_opus, pi
+from g4f.models import blackbox, Model, claude_3_opus, pi, gpt_4o
 from g4f.providers.retry_provider import RetryProvider
 
 from llm.DeepInfra import DeepInfra
@@ -214,6 +214,10 @@ models_dict = {
     "pi": {
         "stream": True,
         "model": pi
+    },
+    "gpt_4o": {
+        "stream": True,
+        "model": gpt_4o
     }
 }
 
