@@ -70,6 +70,7 @@ import { AnecdoteMain } from "$/panels/AnecdoteMain";
 import AnecdoteGeneration from "./panels/AnecdoteGeneration/AnecdoteGeneration";
 import { AnecdoteNews } from "$/panels/AnecdoteNews";
 import ApplicationInfoHumor from "./modals/ApplicationInfoHumor/ApplicationInfoHumor";
+import { BingPanel } from "$/panels/BingPanel";
 
 const App = () => {
   const location = useLocation();
@@ -170,6 +171,7 @@ const App = () => {
                 <AnecdoteMain id={Panels.mainAnecdote} />
                 <AnecdoteGeneration id={Panels.anecdoteGeneration} />
                 <AnecdoteNews id={Panels.anecdoteNews} />
+                <BingPanel id={Panels.bingPanel} />
               </View>
             )}
           </SplitLayout>

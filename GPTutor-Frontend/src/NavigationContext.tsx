@@ -55,6 +55,7 @@ export type NavigationContextType = {
   openApplicationInfoHumor: () => void;
   goToAnecdoteNews: () => void;
   goToAnecdoteMain: () => void;
+  goToBingPanel: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -213,6 +214,10 @@ export function NavigationContextProvider({
     router.pushPage(RoutingPages.mainAnecdote);
   };
 
+  const goToBingPanel = () => {
+    router.pushPage(RoutingPages.bingPanel);
+  };
+
   return (
     <NavigationContext.Provider
       value={{
@@ -254,6 +259,7 @@ export function NavigationContextProvider({
         openApplicationInfoHumor,
         goToAnecdoteNews,
         goToAnecdoteMain,
+        goToBingPanel,
         alert,
         isForbidden,
       }}

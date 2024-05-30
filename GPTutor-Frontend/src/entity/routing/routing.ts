@@ -35,6 +35,8 @@ export enum RoutingPages {
   anecdoteGeneration = "/anecdote-generation",
 
   anecdoteNews = "/anecdote-news",
+
+  bingPanel = "/bing-panel",
 }
 
 export enum Views {
@@ -77,6 +79,8 @@ export enum Panels {
   anecdoteGeneration = "anecdote-generation",
 
   anecdoteNews = "anecdote-news",
+
+  bingPanel = "bing-panel",
 }
 
 export enum Modals {

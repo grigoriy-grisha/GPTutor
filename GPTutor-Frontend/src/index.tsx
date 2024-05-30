@@ -111,6 +111,7 @@ const routes = {
     Views.viewMain
   ),
   [RoutingPages.anecdoteNews]: new Page(Panels.anecdoteNews, Views.viewMain),
+  [RoutingPages.bingPanel]: new Page(Panels.bingPanel, Views.viewMain),
 };
 
 const router = new Router(routes);

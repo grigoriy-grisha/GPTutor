@@ -5,6 +5,17 @@
     flex: 1 1 auto;
 }
 
+.placeholderContainer :global(.vkuiPlaceholder__action) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 12px;
+}
 
 
 .placeholder  {

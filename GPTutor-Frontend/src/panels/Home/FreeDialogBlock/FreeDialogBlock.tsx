@@ -7,12 +7,15 @@ import { ChatGPTLogo } from "$/icons";
 import { CardBlock } from "$/components/CardBlock";
 
 import classes from "./FreeDialogBlock.module.css";
+import { useNavigationContext } from "$/NavigationContext";
 
 interface IProps {
   goToFreeDialog: () => void;
 }
 
 function FreeDialogBlock({ goToFreeDialog }: IProps) {
+  const { goToBingPanel } = useNavigationContext();
+
   return (
     <CardBlock isBottom className={classes.placeholderContainer}>
       <Placeholder
@@ -20,14 +23,24 @@ function FreeDialogBlock({ goToFreeDialog }: IProps) {
         icon={<ChatGPTLogo size={60} />}
         header="Задай свой вопрос"
         action={
-          <Button
-            mode="outline"
-            size="m"
-            after={<Icon24ArrowRightSquareOutline />}
-            onClick={goToFreeDialog}
-          >
-            Начать диалог
-          </Button>
+          <div className={classes.actions}>
+            <Button
+              mode="outline"
+              size="m"
+              after={<Icon24ArrowRightSquareOutline />}
+              onClick={goToFreeDialog}
+            >
+              Начать диалог GPT
+            </Button>
+            <Button
+              mode="outline"
+              size="m"
+              after={<Icon24ArrowRightSquareOutline />}
+              onClick={goToBingPanel}
+            >
+              Начать диалог Bing
+            </Button>
+          </div>
         }
       >
         Взаимодействуй с Чат-ботом в формате диалога
