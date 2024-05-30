@@ -31,7 +31,7 @@ function BingPanel({ id }: IProps) {
             </AppPanelHeader>
           }
           childrenWithHeight={(height) => (
-            <div style={{ width: "100vh", height }}>
+            <div style={{ width: "100vw", height }}>
               <iframe
                 style={{ overflow: "hidden", height: "100%", width: "100%" }}
                 height="100%"
