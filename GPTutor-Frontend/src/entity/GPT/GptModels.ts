@@ -44,7 +44,7 @@ class GptModels {
         .filter((item) => !item.free)
         .sort((a, b) => Number(b.active) - Number(a.active))
     );
-    this.freeModels.set(models.filter((item) => item.free));
+    // this.freeModels.set(models.filter((item) => item.free));
   }
 }
 
