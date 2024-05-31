@@ -21,6 +21,7 @@ function BingPanel({ id }: IProps) {
     <ConfigProvider appearance={Appearance.LIGHT}>
       <Panel id={id}>
         <AppContainer
+          withoutTabbar
           headerChildren={
             <AppPanelHeader
               isMiddle
