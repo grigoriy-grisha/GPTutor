@@ -420,8 +420,9 @@ def check_llm_models(scheduler=None):
 
 
 def run_check_models():
-    check_llm_models()
-
-    my_scheduler = sched.scheduler(time.time, time.sleep)
-    my_scheduler.enter(get_delay(), 1, check_llm_models, (my_scheduler,))
-    my_scheduler.run()
+    pass
+    # check_llm_models()
+    #
+    # my_scheduler = sched.scheduler(time.time, time.sleep)
+    # my_scheduler.enter(get_delay(), 1, check_llm_models, (my_scheduler,))
+    # my_scheduler.run()
