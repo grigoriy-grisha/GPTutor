@@ -229,14 +229,14 @@ models = [
         "free": True,
         "active": True,
     },
-    {
-        "model": "gpt-4-bing",
-        "description":
-            "GPT-4 от Бинг. Самая умная модель из всех существующих на данный момент. Имеет доступ в интернет, в ней всегда актуальные данные",
-        "lang": "Имеется поддержка Русского языка",
-        "free": False,
-        "active": True,
-    },
+    # {
+    #     "model": "gpt-4-bing",
+    #     "description":
+    #         "GPT-4 от Бинг. Самая умная модель из всех существующих на данный момент. Имеет доступ в интернет, в ней всегда актуальные данные",
+    #     "lang": "Имеется поддержка Русского языка",
+    #     "free": False,
+    #     "active": True,
+    # },
 
     {
         "model": "llama3_70b",
@@ -420,8 +420,9 @@ def check_llm_models(scheduler=None):
 
 
 def run_check_models():
-    check_llm_models()
-
-    my_scheduler = sched.scheduler(time.time, time.sleep)
-    my_scheduler.enter(get_delay(), 1, check_llm_models, (my_scheduler,))
-    my_scheduler.run()
+    pass
+    # check_llm_models()
+    #
+    # my_scheduler = sched.scheduler(time.time, time.sleep)
+    # my_scheduler.enter(get_delay(), 1, check_llm_models, (my_scheduler,))
+    # my_scheduler.run()

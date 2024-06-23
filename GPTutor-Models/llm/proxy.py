@@ -1,13 +1,10 @@
 import random
 
 proxies = [
-    "http://WGyGBM:ZZukJ8@38.170.121.59:9657",
-    "http://QjMjGe:mwZ9aM@38.170.95.87:9099",
-    "http://QjMjGe:mwZ9aM@181.177.103.79:9674",
-    "http://QjMjGe:mwZ9aM@131.108.17.84:9653",
-    "http://QjMjGe:mwZ9aM@95.164.111.84:9890",
-    "http://QjMjGe:mwZ9aM@95.164.110.128:9894",
-
+    "http://dXo2w0:Y7jJDd@38.170.124.149:9016",
+    "http://dXo2w0:Y7jJDd@38.170.121.94:9521",
+    "http://dXo2w0:Y7jJDd@38.170.121.148:9651",
+    "http://dXo2w0:Y7jJDd@138.219.122.242:9388",
 ]
 
 
