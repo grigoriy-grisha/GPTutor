@@ -8,6 +8,13 @@ const freeModels = [
     lang: "Имеется поддержка Русского языка",
     active: true,
   },
+  {
+    model: "wizardLM_2_7B",
+    description:
+      "Чуть-чуть слабее, чем GPT-3.5. Модель от microsoft. Хорошо подходит для обычного общения",
+    lang: "Имеется поддержка Русского языка",
+    active: true,
+  },
 ];
 
 class GptModels {
