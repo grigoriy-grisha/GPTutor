@@ -23,9 +23,9 @@ class GptModels {
   freeModels = sig(freeModels);
   models = sig([
     {
-      model: "gpt-4-bing",
+      model: "gpt-4o-plus",
       description:
-        "GPT-4 от Бинг. Самая умная модель из всех существующих на данный момент. Имеет доступ в интернет, в ней всегда актуальные данные",
+        "GPT-4o. Самая умная модель из всех существующих на данный момент. Имеет доступ в интернет, в ней всегда актуальные данные. Умеет генерировать изображения",
       lang: "Имеется поддержка Русского языка",
       active: true,
     },
@@ -45,12 +45,12 @@ class GptModels {
 
   async loadModels() {
     const models = await getModels();
-    this.models.set(
-      models
+    this.models.set([
+      ...this.models.get(),
+      ...models
         .filter((item) => !item.free)
-        .sort((a, b) => Number(b.active) - Number(a.active))
-    );
-    // this.freeModels.set(models.filter((item) => item.free));
+        .sort((a, b) => Number(b.active) - Number(a.active)),
+    ]);
   }
 }
 
