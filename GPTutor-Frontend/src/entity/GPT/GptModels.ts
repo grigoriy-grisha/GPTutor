@@ -3,7 +3,7 @@ import { getModels } from "$/api/models";
 
 const freeModels = [
   {
-    model: "gpt-auto",
+    model: "gpt-3.5-turbo",
     description: "GPT-3.5. Основная модель. Обучена до 2021 года",
     lang: "Имеется поддержка Русского языка",
     active: true,
@@ -18,7 +18,7 @@ const freeModels = [
 ];
 
 class GptModels {
-  currentModel$ = sig("gpt-auto");
+  currentModel$ = sig("gpt-3.5-turbo");
 
   freeModels = sig(freeModels);
   models = sig([
