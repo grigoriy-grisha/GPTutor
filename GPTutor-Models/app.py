@@ -41,7 +41,7 @@ def image():
 
 
 @app.post("/dalle")
-def image():
+def dalle():
     result = generate_dalle(
         prompt=request.json["prompt"],
     )
