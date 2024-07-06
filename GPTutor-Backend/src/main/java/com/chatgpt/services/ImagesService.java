@@ -99,7 +99,7 @@ public class ImagesService {
     }
 
     public Pair<String[], String> getGeneratedImage(GenerateImageRequest generateImageRequest) throws JsonProcessingException {
-        String urlGenerate = modelsUrl + "/image-dalle";
+        String urlGenerate = modelsUrl + "/dalle";
         HttpEntity<GenerateImageRequest> requestImage = new HttpEntity<>(generateImageRequest);
         var responseImage = restTemplate.postForEntity(urlGenerate, requestImage, String.class);
 

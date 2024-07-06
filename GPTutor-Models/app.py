@@ -5,7 +5,8 @@ from flask import Flask, Response, request
 from images.dalle3 import generate_dalle
 from images.prodia import txt2img
 from llm.index import create_completions
-from llm.models import models
+from llm.models import models, run_check_models
+from vk.bot import run_long_pool
 
 app = Flask(__name__)
 
@@ -39,7 +40,7 @@ def image():
     )
 
 
-@app.post("/image-dalle")
+@app.post("/dalle")
 def image():
     result = generate_dalle(
         prompt=request.json["prompt"],
