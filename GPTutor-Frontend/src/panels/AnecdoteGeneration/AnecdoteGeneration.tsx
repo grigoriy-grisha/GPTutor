@@ -61,20 +61,20 @@ function AnecdoteGeneration({ id }: IProps) {
         }
         fixedBottomContent={
           <>
-            <FormItem
-              status={badListError ? "error" : "default"}
-              bottom={badListError ? "Недопустимое содержание!" : ""}
-              onFocus={() => chatGpt.chatGptAnecdote.clearBadListError()}
-            >
-              <Textarea
-                value={chatGpt.chatGptAnecdote.value$.get()}
-                onChange={(e) =>
-                  chatGpt.chatGptAnecdote.setValue(e.target.value)
-                }
-                disabled={isLoading}
-                placeholder="Про что анекдот"
-              />
-            </FormItem>
+            {/*<FormItem*/}
+            {/*  status={badListError ? "error" : "default"}*/}
+            {/*  bottom={badListError ? "Недопустимое содержание!" : ""}*/}
+            {/*  onFocus={() => chatGpt.chatGptAnecdote.clearBadListError()}*/}
+            {/*>*/}
+            {/*<Textarea*/}
+            {/*  value={chatGpt.chatGptAnecdote.value$.get()}*/}
+            {/*  onChange={(e) =>*/}
+            {/*    chatGpt.chatGptAnecdote.setValue(e.target.value)*/}
+            {/*  }*/}
+            {/*  disabled={isLoading}*/}
+            {/*  placeholder="Про что анекдот"*/}
+            {/*/>*/}
+            {/*</FormItem>*/}
             <Div>
               <Spacing size={12} />
               <Button
