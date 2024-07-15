@@ -31,9 +31,9 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 print(os.path.join(script_dir, "faiss_vk_docs_index"))
 vectorstore_vk_docs_index = FAISS.load_local(os.path.join(script_dir, "faiss_vk_docs_index"), embeddings=embeddings,
                                              allow_dangerous_deserialization=True)
-vectorstore_vk_ui_docs_index = FAISS.load_local(os.path.join(script_dir, "faiss_vk_docs_index"), embeddings=embeddings,
+vectorstore_vk_ui_docs_index = FAISS.load_local(os.path.join(script_dir, "faiss_vk_ui_docs_index"), embeddings=embeddings,
                                                 allow_dangerous_deserialization=True)
-vectorstore_vk_videos_index = FAISS.load_local(os.path.join(script_dir, "faiss_vk_docs_index"), embeddings=embeddings,
+vectorstore_vk_videos_index = FAISS.load_local(os.path.join(script_dir, "faiss_vk_videos_index"), embeddings=embeddings,
                                                allow_dangerous_deserialization=True)
 
 # retriever = vectorstore.as_retriever(search_kwargs={"k": 6})
@@ -92,8 +92,17 @@ retrieval_grader = grade_prompt | llm | StrOutputParser()
 from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 
-# Prompt
-prompt = hub.pull("rlm/rag-prompt")
+
+system = """Вы являетесь профессионалом по экосистеме вконтакте, вы знаете все о документации вк апи и VKUI.
+Используйте следующие фрагменты полученного контекста, чтобы ответить на вопрос.
+Если вы не знаете ответа, просто скажите, что не знаете.
+Старайтесь подробно описывать и вдумываться в контекст, который был вам передам.
+\nВопрос: {question} \nКонтекст: {context} \nОтвет:
+"""
+
+prompt = ChatPromptTemplate.from_template(system)
+
+print(prompt)
 
 
 # Post-processing
