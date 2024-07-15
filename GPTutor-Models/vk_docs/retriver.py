@@ -26,11 +26,14 @@ embeddings = GigaChatEmbeddings(ssl_verify=False,
 llm = GigaChat(profanity_check=False, ssl_verify=False,
                verify_ssl_certs=False, temperature=0.1)
 
-vectorstore_vk_docs_index = FAISS.load_local("./vk_docs/faiss_vk_docs_index", embeddings=embeddings,
+script_dir = os.path.dirname(os.path.realpath(__file__))
+
+print(os.path.join(script_dir, "faiss_vk_docs_index"))
+vectorstore_vk_docs_index = FAISS.load_local(os.path.join(script_dir, "faiss_vk_docs_index"), embeddings=embeddings,
                                              allow_dangerous_deserialization=True)
-vectorstore_vk_ui_docs_index = FAISS.load_local("./vk_docs/faiss_vk_ui_docs_index", embeddings=embeddings,
+vectorstore_vk_ui_docs_index = FAISS.load_local(os.path.join(script_dir, "faiss_vk_docs_index"), embeddings=embeddings,
                                                 allow_dangerous_deserialization=True)
-vectorstore_vk_videos_index = FAISS.load_local("./vk_docs/faiss_vk_videos_index", embeddings=embeddings,
+vectorstore_vk_videos_index = FAISS.load_local(os.path.join(script_dir, "faiss_vk_docs_index"), embeddings=embeddings,
                                                allow_dangerous_deserialization=True)
 
 # retriever = vectorstore.as_retriever(search_kwargs={"k": 6})
