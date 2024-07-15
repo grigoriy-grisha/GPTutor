@@ -24,6 +24,7 @@ function VkDocQuestionRequest({ id }: IProps) {
   return (
     <Panel id={id}>
       <AppContainer
+        withoutTabbar
         headerChildren={
           <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
             Результат

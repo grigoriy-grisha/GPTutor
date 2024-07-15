@@ -14,8 +14,6 @@ import booksImage from "./images/books.png";
 
 import classes from "./VKDocQuestionPanel.module.css";
 import { Icon28MagicWandOutline } from "@vkontakte/icons";
-import { useEffect } from "react";
-import { conversationVKDoc } from "$/api/completions";
 import { vkDocClient } from "$/entity/GPT/VkDocClient";
 import { useNavigationContext } from "$/NavigationContext";
 
@@ -28,7 +26,10 @@ function VKDocQuestionPanel({ id }: IProps) {
 
   return (
     <Panel id={id}>
-      <AppContainer headerChildren={<PanelHeader>SmartDoc</PanelHeader>}>
+      <AppContainer
+        withoutTabbar
+        headerChildren={<PanelHeader>SmartDoc</PanelHeader>}
+      >
         <Div className={classes.container}>
           <div style={{ width: "60%", marginTop: "10%" }}>
             <Placeholder
