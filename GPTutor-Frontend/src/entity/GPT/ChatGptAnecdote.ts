@@ -46,7 +46,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
       ? `Вот тебе тема: ${this.value$.get()}`
       : "";
 
-    const content = `Сгенерируй смешной и безумный анекдот. ${jokeType}`;
+    const content = `Сгенерируй смешной и короткий анекдот. ${jokeType}`;
 
     try {
       this.sendCompletions$.loading.set(true);

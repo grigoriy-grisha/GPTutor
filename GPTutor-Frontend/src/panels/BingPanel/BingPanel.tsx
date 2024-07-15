@@ -37,7 +37,7 @@ function BingPanel({ id }: IProps) {
                 style={{ overflow: "hidden", height: "100%", width: "100%" }}
                 height="100%"
                 width="100%"
-                src="https://greff3-bingo.hf.space/"
+                src="https://gem-bingo.hf.space/"
               />
             </div>
           )}
