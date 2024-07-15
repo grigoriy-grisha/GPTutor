@@ -3,6 +3,12 @@ import { getModels } from "$/api/models";
 
 const freeModels = [
   {
+    model: "gpt-3.5-turbo",
+    description: "GPT-3.5. Основная модель. Обучена до 2021 года",
+    lang: "Имеется поддержка Русского языка",
+    active: true,
+  },
+  {
     model: "wizardLM_2_7B",
     description:
       "Чуть-чуть слабее, чем GPT-3.5. Модель от microsoft. Хорошо подходит для обычного общения",
@@ -12,14 +18,14 @@ const freeModels = [
 ];
 
 class GptModels {
-  currentModel$ = sig("wizardLM_2_7B");
+  currentModel$ = sig("gpt-3.5-turbo");
 
   freeModels = sig(freeModels);
   models = sig([
     {
-      model: "gpt-4-bing",
+      model: "gpt-4o-plus",
       description:
-        "GPT-4 от Бинг. Самая умная модель из всех существующих на данный момент. Имеет доступ в интернет, в ней всегда актуальные данные",
+        "GPT-4o. Самая умная модель из всех существующих на данный момент. Имеет доступ в интернет, в ней всегда актуальные данные. Умеет генерировать изображения",
       lang: "Имеется поддержка Русского языка",
       active: true,
     },
@@ -39,12 +45,12 @@ class GptModels {
 
   async loadModels() {
     const models = await getModels();
-    this.models.set(
-      models
+    this.models.set([
+      ...this.models.get(),
+      ...models
         .filter((item) => !item.free)
-        .sort((a, b) => Number(b.active) - Number(a.active))
-    );
-    // this.freeModels.set(models.filter((item) => item.free));
+        .sort((a, b) => Number(b.active) - Number(a.active)),
+    ]);
   }
 }
 

@@ -2,6 +2,7 @@ import threading
 
 from flask import Flask, Response, request
 
+from images.dalle3 import generate_dalle
 from images.prodia import txt2img
 from llm.index import create_completions
 from llm.models import models, run_check_models
@@ -37,6 +38,28 @@ def image():
         seed=request.json["seed"],
         steps=request.json["numInferenceSteps"],
     )
+
+
+@app.post("/dalle")
+def dalle():
+    result = generate_dalle(
+        prompt=request.json["prompt"],
+    )
+
+    if result['image'] is None:
+        return txt2img(
+            prompt=request.json["prompt"],
+            model=request.json["modelId"],
+            negative_prompt=request.json["negativePrompt"],
+            scheduler=request.json["scheduler"],
+            guidance_scale=request.json["guidanceScale"],
+            seed=request.json["seed"],
+            steps=request.json["numInferenceSteps"],
+        )
+
+    return {
+        "output": [result['image']]
+    }
 
 
 def run_flask():

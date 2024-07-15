@@ -5,10 +5,6 @@ import { StopWatch } from "$/entity/stopWatch";
 import { datePlus30Days } from "$/utility/date";
 import { generateImageGet } from "$/api/images";
 import { sig } from "dignals";
-import { translationService } from "$/services/TranslationService";
-import { wallService } from "$/services/WallService";
-import { createHumor } from "$/api/humor";
-import { HumorTypes } from "$/entity/humor";
 import { badListCheck } from "$/api/badList";
 
 export class ChatGptAnecdote extends ChatGptTemplate {
@@ -70,14 +66,10 @@ export class ChatGptAnecdote extends ChatGptTemplate {
 
     this.abortControllerImage = new AbortController();
 
-    const humorContent = await translationService.translate(
-      `${this.getLastMessage().content$.get()}, Шутка, смешная карикатура, шарж`
-    );
-
     const result = await generateImageGet(
       {
         modelId: "ICantBelieveItsNotPhotography_seco.safetensors [4e7a3dfd]",
-        prompt: humorContent,
+        prompt: `Сгенерируй картинку основываясь на этом анекдоте ${this.getLastMessage().content$.get()} в стиле шарж и юмор`,
         createdAt: new Date(),
         guidanceScale: 7,
         seed: "-1",
@@ -113,7 +105,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
     if (!content || !image) return;
 
     // await wallService.createPostGroup(content, image);
-    await createHumor({ type: HumorTypes.anecdote, content, imageUrl: image });
+    // await createHumor({ type: HumorTypes.anecdote, content, imageUrl: image });
   }
 
   abortSend = () => {
