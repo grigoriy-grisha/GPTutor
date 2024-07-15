@@ -297,13 +297,14 @@ def grade_generation_v_documents_and_question(state):
     documents = state["documents"]
     generation = state["generation"]
 
-    grade = "yes"
+    grade = hallucination_grader.invoke({"documents": documents, "generation": generation})
+    print(grade)
     # Check hallucination
     if grade.lower() == "yes":
         print("---DECISION: GENERATION IS GROUNDED IN DOCUMENTS---")
         # Check question-answering
         print("---GRADE GENERATION vs QUESTION---")
-        grade = "yes"
+        grade = answer_grader.invoke({"question": question, "generation": generation})
         if grade.lower() == "yes":
             print("---DECISION: GENERATION ADDRESSES QUESTION---")
             return "useful"
