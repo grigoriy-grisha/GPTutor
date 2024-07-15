@@ -5,6 +5,7 @@ export enum AppInstanceType {
   StableArt = "Stable Art",
   GPTutor = "GPTutor",
   AiHumor = "AiHumor",
+  SmartVkDoc = "SmartVkDoc",
 }
 
 class AppService {
@@ -28,6 +29,10 @@ class AppService {
     return this.appInstance === AppInstanceType.AiHumor;
   }
 
+  isSmartVkDoc() {
+    return this.appInstance === AppInstanceType.SmartVkDoc;
+  }
+
   getGroupId() {
     return this.isAiHumor() ? 201104273 : 220371433;
   }
@@ -39,6 +44,10 @@ class AppService {
 
     if (this.isStableArt()) {
       return RoutingPages.generationImages;
+    }
+
+    if (this.isSmartVkDoc()) {
+      return RoutingPages.vkDocQuestionPanel;
     }
 
     return RoutingPages.mainAnecdote;

@@ -44,3 +44,23 @@ export type GPTModeration = {
     }
   ];
 };
+
+interface DocumentVKDocMetadata {
+  description?: string;
+  language?: string;
+  source?: string;
+  title?: string;
+  link?: string;
+  time?: number;
+}
+
+interface DocumentVKDoc {
+  metadata: DocumentVKDocMetadata;
+  page_content: string;
+}
+
+export interface VkDocsResponse {
+  documents: DocumentVKDoc[];
+  generation: string;
+  question: string;
+}

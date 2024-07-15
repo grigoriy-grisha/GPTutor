@@ -112,6 +112,14 @@ const routes = {
   ),
   [RoutingPages.anecdoteNews]: new Page(Panels.anecdoteNews, Views.viewMain),
   [RoutingPages.bingPanel]: new Page(Panels.bingPanel, Views.viewMain),
+  [RoutingPages.vkDocQuestionPanel]: new Page(
+    Panels.vkDocQuestionPanel,
+    Views.viewMain
+  ),
+  [RoutingPages.vkDocQuestionRequest]: new Page(
+    Panels.vkDocQuestionRequest,
+    Views.viewMain
+  ),
 };
 
 const router = new Router(routes);

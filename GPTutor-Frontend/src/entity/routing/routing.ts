@@ -37,6 +37,10 @@ export enum RoutingPages {
   anecdoteNews = "/anecdote-news",
 
   bingPanel = "/bing-panel",
+
+  vkDocQuestionPanel = "/vk-doc-question-panel",
+
+  vkDocQuestionRequest = "/vk-doc-question-request",
 }
 
 export enum Views {
@@ -81,6 +85,10 @@ export enum Panels {
   anecdoteNews = "anecdote-news",
 
   bingPanel = "bing-panel",
+
+  vkDocQuestionPanel = "vk-doc-question-panel",
+
+  vkDocQuestionRequest = "vk-doc-question-request",
 }
 
 export enum Modals {

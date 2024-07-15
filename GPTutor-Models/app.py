@@ -5,8 +5,8 @@ from flask import Flask, Response, request
 from images.dalle3 import generate_dalle
 from images.prodia import txt2img
 from llm.index import create_completions
-from llm.models import models, run_check_models
-from vk.bot import run_long_pool
+from llm.models import models
+from vk_docs.index import create_question_vk_doc
 
 app = Flask(__name__)
 
@@ -39,6 +39,11 @@ def image():
         steps=request.json["numInferenceSteps"],
     )
 
+@app.post("/vk-doc-question")
+def vk_doc_question():
+    return create_question_vk_doc(
+        question=request.json["question"]
+    )
 
 @app.post("/dalle")
 def dalle():
@@ -67,10 +72,5 @@ def run_flask():
 
 
 if __name__ == '__main__':
-    flask_thread = threading.Thread(target=run_flask)
-    check_models_thread = threading.Thread(target=run_check_models)
-    run_long_pool_thread = threading.Thread(target=run_long_pool)
+    run_flask()
 
-    flask_thread.start()
-    check_models_thread.start()
-    run_long_pool_thread.start()

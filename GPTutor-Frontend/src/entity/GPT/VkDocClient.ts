@@ -1,0 +1,35 @@
+import { sig } from "dignals";
+import { conversationVKDoc } from "$/api/completions";
+import { VkDocsResponse } from "$/entity/GPT/types";
+
+class VkDocClient {
+  loading$ = sig(false);
+  searchValue$ = sig("");
+  result$ = sig<VkDocsResponse | null>(null);
+
+  async getResult() {
+    if (this.searchValue$.get() == "") {
+      return;
+    }
+
+    this.loading$.set(true);
+    const result = await conversationVKDoc(this.searchValue$.get());
+
+    const docs = result.documents
+      .map((doc) => doc.metadata.link || doc.metadata.source)
+      .join("\n");
+
+    result.generation =
+      result.generation +
+      `
+      
+ Источники:     
+ ${docs}`;
+
+    this.result$.set(result);
+    this.loading$.set(false);
+    this.searchValue$.set("");
+  }
+}
+
+export const vkDocClient = new VkDocClient();

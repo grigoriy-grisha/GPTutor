@@ -71,6 +71,8 @@ import AnecdoteGeneration from "./panels/AnecdoteGeneration/AnecdoteGeneration";
 import { AnecdoteNews } from "$/panels/AnecdoteNews";
 import ApplicationInfoHumor from "./modals/ApplicationInfoHumor/ApplicationInfoHumor";
 import { BingPanel } from "$/panels/BingPanel";
+import VKDocQuestionPanel from "./panels/VKDocQuestionPanel/VKDocQestionPanel";
+import { VkDocQuestionRequest } from "$/panels/VkDocQuestionRequest";
 
 const App = () => {
   const location = useLocation();
@@ -172,6 +174,8 @@ const App = () => {
                 <AnecdoteGeneration id={Panels.anecdoteGeneration} />
                 <AnecdoteNews id={Panels.anecdoteNews} />
                 <BingPanel id={Panels.bingPanel} />
+                <VKDocQuestionPanel id={Panels.vkDocQuestionPanel} />
+                <VkDocQuestionRequest id={Panels.vkDocQuestionRequest} />
               </View>
             )}
           </SplitLayout>

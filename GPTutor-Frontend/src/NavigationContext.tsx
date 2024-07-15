@@ -56,6 +56,7 @@ export type NavigationContextType = {
   goToAnecdoteNews: () => void;
   goToAnecdoteMain: () => void;
   goToBingPanel: () => void;
+  goToVkDocQuestionRequest: () => void;
   openAlert: (data: AlertType) => void;
   alert: AlertType;
   isForbidden: boolean;
@@ -218,6 +219,10 @@ export function NavigationContextProvider({
     router.pushPage(RoutingPages.bingPanel);
   };
 
+  const goToVkDocQuestionRequest = () => {
+    router.pushPage(RoutingPages.vkDocQuestionRequest);
+  };
+
   return (
     <NavigationContext.Provider
       value={{
@@ -259,6 +264,7 @@ export function NavigationContextProvider({
         openApplicationInfoHumor,
         goToAnecdoteNews,
         goToAnecdoteMain,
+        goToVkDocQuestionRequest,
         goToBingPanel,
         alert,
         isForbidden,

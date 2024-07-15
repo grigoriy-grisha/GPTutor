@@ -58,6 +58,24 @@ services:
     networks:
       - trfk
 
+  frontend-smart-vk-doc:
+    env_file:
+      - .env
+    build:
+      context: GPTutor-Frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP: 'SmartVkDoc'
+        REACT_APP_BACKEND_HOST: 'https://stage.${HOST}/'
+        REACT_APP_BACKEND_HOST_WS: "wss://stage.${HOST}/websocket/"
+    container_name: frontend-smart-vk-doc
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.smart-vk-doc-stage.rule=Host(`smart-vk-doc.stage.${HOST}`)"
+      - "traefik.http.routers.smart-vk-doc-stage.entrypoints=websecure"
+      - "traefik.http.routers.smart-vk-doc-stage.tls.certresolver=myresolver"
+    networks:
+      - trfk
 
   backend-stage:
     env_file:
