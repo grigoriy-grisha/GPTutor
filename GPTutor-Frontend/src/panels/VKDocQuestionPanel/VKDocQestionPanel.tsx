@@ -32,8 +32,8 @@ function VKDocQuestionPanel({ id }: IProps) {
         headerChildren={
           <PanelHeader>
             <PanelTitle
-              title="Умная документация VK Docs"
-              mobileTitle="Умная документация VK Docs"
+              title="Умная документация"
+              mobileTitle="Умная документация"
             />
           </PanelHeader>
         }
@@ -43,7 +43,7 @@ function VKDocQuestionPanel({ id }: IProps) {
             <Placeholder
               style={{ width: "100%" }}
               icon={<img src={booksImage} />}
-              header="Умный поиск по документации Вконтакте"
+              header="Умный поиск по документации"
             />
             <Textarea
               value={vkDocClient.searchValue$.get()}
@@ -56,14 +56,13 @@ function VKDocQuestionPanel({ id }: IProps) {
               loading={vkDocClient.loading$.get()}
               size="l"
               mode="outline"
-              after={<Icon28MagicWandOutline />}
               style={{ width: "100%" }}
               onClick={async () => {
                 await vkDocClient.getResult();
                 goToVkDocQuestionRequest();
               }}
             >
-              Получить ответ
+              Получить ответ ✨
             </Button>
           </div>
         </Div>

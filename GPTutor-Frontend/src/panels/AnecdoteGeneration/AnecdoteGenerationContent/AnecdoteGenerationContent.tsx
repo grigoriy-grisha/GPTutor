@@ -23,14 +23,17 @@ function AnecdoteGenerationContent() {
 
   return (
     <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
-      <ImageGenerationBlock
-        isEmpty={!image}
-        timer={chatGpt.chatGptAnecdote.timerImage}
-        widthView={imageGeneration.widthView$.get()}
-        heightView={imageGeneration.heightView$.get()}
-        url={image}
-        loading={!chatGpt.chatGptAnecdote.timerImage.isStopped$.get()}
-      />
+      <div style={{ maxWidth: "450px", maxHeight: "450px" }}>
+        <ImageGenerationBlock
+          isEmpty={!image}
+          timer={chatGpt.chatGptAnecdote.timerImage}
+          widthView={imageGeneration.widthView$.get()}
+          heightView={imageGeneration.heightView$.get()}
+          url={image}
+          loading={!chatGpt.chatGptAnecdote.timerImage.isStopped$.get()}
+        />
+      </div>
+
       {anecdoteMessage && (
         <Title level="3" weight="2" style={{ marginTop: 28 }}>
           {anecdoteMessage.content$.get()}
