@@ -22,8 +22,15 @@ function AnecdoteGenerationContent() {
   const image = chatGpt.chatGptAnecdote.image$.get();
 
   return (
-    <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
-      <div style={{ maxWidth: "450px", maxHeight: "450px" }}>
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <div style={{ maxWidth: "450px", maxHeight: "450px", width: "100%" }}>
         <ImageGenerationBlock
           isEmpty={!image}
           timer={chatGpt.chatGptAnecdote.timerImage}

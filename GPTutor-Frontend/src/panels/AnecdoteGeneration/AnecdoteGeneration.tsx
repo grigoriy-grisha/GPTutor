@@ -1,11 +1,9 @@
 import {
   Button,
   Div,
-  FormItem,
   IconButton,
   Panel,
   Spacing,
-  Textarea,
   Title,
 } from "@vkontakte/vkui";
 import { AppContainer } from "$/components/AppContainer";
