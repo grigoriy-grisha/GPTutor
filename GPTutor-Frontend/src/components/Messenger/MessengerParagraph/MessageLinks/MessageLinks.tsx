@@ -51,7 +51,6 @@ function MessageLinks({ containerRef, html }: IProps) {
     [html],
     300
   );
-  console.log(elements);
 
   if (elements.length === 0) return null;
 

@@ -15,17 +15,6 @@ class VkDocClient {
     this.loading$.set(true);
     const result = await conversationVKDoc(this.searchValue$.get());
 
-    const docs = result.documents
-      .map((doc) => doc.metadata.link || doc.metadata.source)
-      .join("\n");
-
-    result.generation =
-      result.generation +
-      `
-      
- Источники:     
- ${docs}`;
-
     this.result$.set(result);
     this.loading$.set(false);
     this.searchValue$.set("");

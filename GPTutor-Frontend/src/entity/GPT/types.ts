@@ -54,7 +54,7 @@ interface DocumentVKDocMetadata {
   time?: number;
 }
 
-interface DocumentVKDoc {
+export interface DocumentVKDoc {
   metadata: DocumentVKDocMetadata;
   page_content: string;
 }

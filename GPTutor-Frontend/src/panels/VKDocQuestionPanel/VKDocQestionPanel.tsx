@@ -16,6 +16,7 @@ import classes from "./VKDocQuestionPanel.module.css";
 import { Icon28MagicWandOutline } from "@vkontakte/icons";
 import { vkDocClient } from "$/entity/GPT/VkDocClient";
 import { useNavigationContext } from "$/NavigationContext";
+import PanelTitle from "$/components/PanelTitle";
 
 interface IProps {
   id: string;
@@ -28,7 +29,14 @@ function VKDocQuestionPanel({ id }: IProps) {
     <Panel id={id}>
       <AppContainer
         withoutTabbar
-        headerChildren={<PanelHeader>SmartDoc</PanelHeader>}
+        headerChildren={
+          <PanelHeader>
+            <PanelTitle
+              title="Умная документация VK Docs"
+              mobileTitle="Умная документация VK Docs"
+            />
+          </PanelHeader>
+        }
       >
         <Div className={classes.container}>
           <div style={{ width: "60%", marginTop: "10%" }}>

@@ -13,6 +13,8 @@ import { vkDocClient } from "$/entity/GPT/VkDocClient";
 import { MessengerParagraph } from "$/components/Messenger/MessengerParagraph";
 import { GptMessage, GPTRoles } from "$/entity/GPT";
 import { useNavigationContext } from "$/NavigationContext";
+import PanelTitle from "$/components/PanelTitle";
+import { AnswerSources } from "$/panels/VkDocQuestionRequest/AnswerSources";
 
 interface IProps {
   id: string;
@@ -27,16 +29,19 @@ function VkDocQuestionRequest({ id }: IProps) {
         withoutTabbar
         headerChildren={
           <PanelHeader before={<PanelHeaderBack onClick={goBack} />}>
-            Результат
+            <PanelTitle title="Результат" mobileTitle="Результат" />
           </PanelHeader>
         }
       >
         <Div>
-          <Title>Запрос: {vkDocClient.result$.get()?.question}</Title>
-          <Spacing size={8} />
-          <Separator />
+          <Title>Вопрос:</Title>
+          <Spacing size={4} />
+          <Title level="2">{vkDocClient.result$.get()?.question}</Title>
           <Spacing size={12} />
-          <Title level="2">Ответ:</Title>
+          <Separator wide />
+          <Spacing size={12} />
+          <Title level="2">Ответ | GigaChat:</Title>
+          <Spacing size={18} />
           <MessengerParagraph
             message={
               new GptMessage(
@@ -44,6 +49,14 @@ function VkDocQuestionRequest({ id }: IProps) {
                 GPTRoles.assistant
               )
             }
+          />
+          <Spacing size={12} />
+          <Separator wide />
+          <Spacing size={8} />
+          <Title level="2">Источники:</Title>
+          <Spacing size={18} />
+          <AnswerSources
+            documents={vkDocClient.result$.get()?.documents || []}
           />
         </Div>
       </AppContainer>

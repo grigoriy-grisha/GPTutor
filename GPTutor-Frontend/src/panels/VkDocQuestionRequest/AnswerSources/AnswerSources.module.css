@@ -1,0 +1,27 @@
+.link {
+    display: flex;
+    text-decoration: none;
+}
+
+.title {
+    color: var(--vkui--color_text_primary);
+    text-decoration: none;
+}
+
+.link img {
+    border-radius: 30%;
+    margin-right: 8px;
+    margin-top: 3px;
+    text-decoration: none;
+}
+
+.url {
+    text-decoration: none;
+    color: var(--vkui_internal--link-color, var(--vkui--color_text_link));
+    cursor: pointer;
+}
+
+.iframe {
+    border: none;
+    border-radius: 12px;
+}
