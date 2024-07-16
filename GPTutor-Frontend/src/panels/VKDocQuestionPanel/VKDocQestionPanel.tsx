@@ -43,7 +43,7 @@ function VKDocQuestionPanel({ id }: IProps) {
             <Placeholder
               style={{ width: "100%" }}
               icon={<img src={booksImage} />}
-              header="Умный поиск по документации"
+              header="Умный поиск по документации Вконтакте!"
             />
             <Textarea
               value={vkDocClient.searchValue$.get()}
