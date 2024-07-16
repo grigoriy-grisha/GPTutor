@@ -39,7 +39,7 @@ function VKDocQuestionPanel({ id }: IProps) {
         }
       >
         <Div className={classes.container}>
-          <div style={{ width: "75%", marginTop: "10%" }}>
+          <div className={classes.containerWidth}>
             <Placeholder
               style={{ width: "100%" }}
               icon={<img src={booksImage} />}

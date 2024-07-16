@@ -4,3 +4,17 @@
     align-content: center;
     width: 100vw;
 }
+
+.containerWidth {
+    margin-top: 10%;
+    width: 65%;
+}
+
+@media screen and (max-width: 728px) {
+    .containerWidth {
+        width: 100%;
+    }
+}
+
+
+
