@@ -41,7 +41,7 @@ function VkDocQuestionRequest({ id }: IProps) {
           <Separator wide />
           <Spacing size={12} />
           <Title level="2">Ответ | GigaChat:</Title>
-          <Spacing size={18} />
+          <Spacing size={12} />
           <MessengerParagraph
             message={
               new GptMessage(
