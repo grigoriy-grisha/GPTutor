@@ -1,11 +1,16 @@
 .link {
     display: flex;
     text-decoration: none;
+    width: 100%;
 }
 
 .title {
     color: var(--vkui--color_text_primary);
     text-decoration: none;
+}
+
+.link :global(.vkuiTappable__stateLayer) {
+    width: 100%;
 }
 
 .link img {
@@ -16,9 +21,15 @@
 }
 
 .url {
+    display: block;
+    width: 100%;
     text-decoration: none;
     color: var(--vkui_internal--link-color, var(--vkui--color_text_link));
     cursor: pointer;
+}
+
+.url :global(.vkuiTappable__stateLayer) {
+    width: 100%;
 }
 
 .iframe {

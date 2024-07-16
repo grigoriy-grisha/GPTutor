@@ -21,7 +21,7 @@ function AnswerSource({ document }: IAnswerSourceProps) {
     const videoLink = `${link}?t=${time}`;
 
     return (
-      <div>
+      <div style={{ width: "100%" }}>
         <Tappable
           className={classes.link}
           href={`${link}?t=${time}`}
@@ -33,7 +33,7 @@ function AnswerSource({ document }: IAnswerSourceProps) {
             src={faviconFetch({ uri: link, fallbackText: "G" })}
             alt=""
           />
-          <div>
+          <div style={{ width: "100%" }}>
             <span className={classes.url}>{videoLink}</span>
             <Spacing size={6} />
             <iframe
@@ -63,14 +63,14 @@ function AnswerSource({ document }: IAnswerSourceProps) {
           })}
           alt=""
         />
-        <div>
+        <div style={{ width: "100%" }}>
           <Tappable
             className={classes.url}
             href={document.metadata.source}
             target="_blank"
           >
             <Title level="3" className={classes.title}>
-              {document.metadata.title || "VK Docs"}
+              {document.metadata.title || "VKUI"}
             </Title>
             <Spacing size={6} />
             {new URL(document.metadata.source!).host}

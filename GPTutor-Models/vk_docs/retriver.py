@@ -2,7 +2,7 @@
 import os
 from pprint import pprint
 
-from langchain.retrievers import MultiVectorRetriever, MergerRetriever
+from langchain.retrievers import MergerRetriever
 from langchain_community.embeddings import GigaChatEmbeddings
 from langchain_community.llms.gigachat import GigaChat
 from langchain_community.vectorstores import FAISS
@@ -40,7 +40,7 @@ vectorstore_vk_videos_index = FAISS.load_local(os.path.join(script_dir, "faiss_v
 
 retrievers = [
     vector.as_retriever(
-        search_kwargs={"k": 4},
+        search_kwargs={"k": 5},
     )
     for vector in [vectorstore_vk_docs_index, vectorstore_vk_ui_docs_index, vectorstore_vk_videos_index]
 ]
@@ -89,11 +89,11 @@ grade_prompt = ChatPromptTemplate.from_messages(
 
 retrieval_grader = grade_prompt | llm | StrOutputParser()
 
-from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 
 
-system = """Вы являетесь профессионалом по экосистеме вконтакте, вы знаете все о документации вк апи и VKUI.
+system = """Вы являетесь профессионалом по экосистеме вконтакте, вы знаете все о документации VK API и VKUI c React, VK Bridge.
+Все, что касается VKUI и Рекат компонентов должно быть реализовано в реакте.
 Используйте следующие фрагменты полученного контекста, чтобы ответить на вопрос.
 Если вы не знаете ответа, просто скажите, что не знаете.
 Старайтесь подробно описывать и вдумываться в контекст, который был вам передам.

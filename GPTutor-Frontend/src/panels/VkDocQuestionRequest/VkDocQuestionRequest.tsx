@@ -33,7 +33,7 @@ function VkDocQuestionRequest({ id }: IProps) {
           </PanelHeader>
         }
       >
-        <Div>
+        <Div style={{ maxWidth: "calc(100vw - 16px - 16px)" }}>
           <Title level="2">
             Вопрос | {vkDocClient.result$.get()?.question}
           </Title>
