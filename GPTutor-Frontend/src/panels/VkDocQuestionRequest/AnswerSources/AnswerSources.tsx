@@ -38,7 +38,7 @@ function AnswerSource({ document }: IAnswerSourceProps) {
             <Spacing size={6} />
             <iframe
               className={classes.iframe}
-              width="70%"
+              width="30%"
               src={videoLink}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
