@@ -8,6 +8,7 @@ class VkDocClient {
   result$ = sig<VkDocsResponse | null>(null);
 
   async getResult() {
+    this.result$.set(null);
     if (this.searchValue$.get() == "") {
       return;
     }

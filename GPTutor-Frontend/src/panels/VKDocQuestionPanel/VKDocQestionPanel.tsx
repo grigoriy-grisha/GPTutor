@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   Button,
   Div,
+  Link,
   Panel,
   PanelHeader,
   Placeholder,
@@ -13,7 +14,7 @@ import { AppContainer } from "$/components/AppContainer";
 import booksImage from "./images/books.png";
 
 import classes from "./VKDocQuestionPanel.module.css";
-import { Icon28MagicWandOutline } from "@vkontakte/icons";
+import { Icon24ExternalLinkOutline } from "@vkontakte/icons";
 import { vkDocClient } from "$/entity/GPT/VkDocClient";
 import { useNavigationContext } from "$/NavigationContext";
 import PanelTitle from "$/components/PanelTitle";
@@ -43,13 +44,37 @@ function VKDocQuestionPanel({ id }: IProps) {
             <Placeholder
               style={{ width: "100%" }}
               icon={<img src={booksImage} />}
-              header="Умный поиск по документации Вконтакте!"
-            />
+              header="Умный поиск по документации ВКонтакте!"
+            >
+              <div>
+                — Поиск по плейлисту{" "}
+                <Link
+                  href="https://www.youtube.com/playlist?list=PLrCZzMib1e9oEYXY8gwFh4jmLtaJbyehF"
+                  target="_blank"
+                >
+                  курса разработки мини-приложений{" "}
+                  <Icon24ExternalLinkOutline width={16} height={16} />
+                </Link>
+              </div>
+              <div>
+                — Поиск по документации{" "}
+                <Link href="https://dev.vk.com/ru" target="_blank">
+                  dev.vk.com{" "}
+                  <Icon24ExternalLinkOutline width={16} height={16} />
+                </Link>
+              </div>
+              <div>
+                — Поиск по документации{" "}
+                <Link href="https://vkcom.github.io/VKUI/" target="_blank">
+                  VKUI <Icon24ExternalLinkOutline width={16} height={16} />
+                </Link>
+              </div>
+            </Placeholder>
             <Textarea
               value={vkDocClient.searchValue$.get()}
               onChange={(e) => vkDocClient.searchValue$.set(e.target.value)}
               style={{ width: "100%" }}
-              placeholder="Задайте ваш вопрос!"
+              placeholder="Как монетизировать мини приложение?"
             />
             <Spacing size={20} />
             <Button
@@ -59,7 +84,9 @@ function VKDocQuestionPanel({ id }: IProps) {
               style={{ width: "100%" }}
               onClick={async () => {
                 await vkDocClient.getResult();
-                goToVkDocQuestionRequest();
+                if (vkDocClient.result$.get()) {
+                  goToVkDocQuestionRequest();
+                }
               }}
             >
               Получить ответ ✨
