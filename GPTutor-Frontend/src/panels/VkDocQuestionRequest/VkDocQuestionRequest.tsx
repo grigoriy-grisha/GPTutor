@@ -34,9 +34,9 @@ function VkDocQuestionRequest({ id }: IProps) {
         }
       >
         <Div>
-          <Title>Вопрос:</Title>
-          <Spacing size={4} />
-          <Title level="2">{vkDocClient.result$.get()?.question}</Title>
+          <Title level="2">
+            Вопрос | {vkDocClient.result$.get()?.question}
+          </Title>
           <Spacing size={12} />
           <Separator wide />
           <Spacing size={12} />
