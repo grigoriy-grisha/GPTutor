@@ -23,7 +23,7 @@ embeddings = GigaChatEmbeddings(ssl_verify=False,
                                 verify_ssl_certs=False,
                                 scope="GIGACHAT_API_PERS")
 
-llm = GigaChat(profanity_check=False, ssl_verify=False,
+llm = GigaChat(model="GigaChat-Plus", profanity_check=False, ssl_verify=False,
                verify_ssl_certs=False, temperature=0.1)
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -110,7 +110,7 @@ def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 
-llm_generate = GigaChat(profanity_check=False, ssl_verify=False,
+llm_generate = GigaChat(model="GigaChat-Plus", profanity_check=False, ssl_verify=False,
                         verify_ssl_certs=False, temperature=1)
 
 # Chain
