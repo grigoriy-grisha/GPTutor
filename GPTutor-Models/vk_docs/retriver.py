@@ -40,7 +40,7 @@ vectorstore_vk_videos_index = FAISS.load_local(os.path.join(script_dir, "faiss_v
 
 retrievers = [
     vector.as_retriever(
-        search_kwargs={"k": 5},
+        search_kwargs={"k": 3},
     )
     for vector in [vectorstore_vk_docs_index, vectorstore_vk_ui_docs_index, vectorstore_vk_videos_index]
 ]
