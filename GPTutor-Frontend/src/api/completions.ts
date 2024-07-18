@@ -28,7 +28,11 @@ export async function sendChatCompletions(
       }
 
       const eventData = JSON.parse(event.data);
-      const delta = eventData.choices[0].delta;
+      if (!eventData.choices) return;
+
+      const delta = eventData.choices[0]?.delta;
+
+      if (!delta) return;
 
       if (!Object.keys(delta).length) return;
 
@@ -51,13 +55,19 @@ export async function sendChatCompletions(
   return isHasError;
 }
 
-export function conversationVKDoc(question: string): Promise<VkDocsResponse> {
+interface IConversationVKDocParams {
+  question: string;
+  source: string;
+}
+export function conversationVKDoc(
+  params: IConversationVKDocParams
+): Promise<VkDocsResponse> {
   return fetch(`${BACKEND_HOST}vk-doc/conversation`, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + location.href,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ question }),
+    body: JSON.stringify(params),
   }).then((res) => res.json());
 }

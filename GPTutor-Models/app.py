@@ -39,11 +39,14 @@ def image():
         steps=request.json["numInferenceSteps"],
     )
 
+
 @app.post("/vk-doc-question")
 def vk_doc_question():
     return create_question_vk_doc(
-        question=request.json["question"]
+        question=request.json["question"],
+        source=request.json["source"]
     )
+
 
 @app.post("/dalle")
 def dalle():
@@ -73,4 +76,3 @@ def run_flask():
 
 if __name__ == '__main__':
     run_flask()
-

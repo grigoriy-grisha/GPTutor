@@ -58,6 +58,10 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             return 10;
         }
 
+        if (uri.startsWith("/vk-doc/conversation")) {
+            return 10;
+        }
+
         return 100;
     }
 }

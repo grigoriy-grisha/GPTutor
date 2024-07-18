@@ -5,6 +5,12 @@ export class StopWatch {
   isStopped$: Signal<boolean> = sig(true);
   startDate = new Date();
 
+  listener: ((value: number) => void) | null = null;
+
+  listenOnChange(fn: (value: number) => void) {
+    this.listener = fn;
+  }
+
   private intervalId: NodeJS.Timeout | undefined;
 
   constructor() {
@@ -17,6 +23,7 @@ export class StopWatch {
     this.isStopped$.set(false);
     this.intervalId = setInterval(() => {
       this.processTime();
+      this.listener && this.listener(this.time$.get());
     }, 10);
   }
 

@@ -5,6 +5,16 @@
     width: 100vw;
 }
 
+.container :global(.vkuiPlaceholder--withPadding) {
+    padding: 48px 10px;
+}
+
+.container :global(.vkuiFormItem--withPadding) {
+    padding: 0;
+}
+
+
+
 .containerWidth {
     margin-top: 10%;
     width: 65%;
@@ -12,6 +22,7 @@
 
 @media screen and (max-width: 728px) {
     .containerWidth {
+        margin-top: 0%;
         width: 100%;
     }
 }

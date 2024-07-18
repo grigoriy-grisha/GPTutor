@@ -6,12 +6,13 @@ import { datePlus30Days } from "$/utility/date";
 import { generateImageGet } from "$/api/images";
 import { sig } from "dignals";
 import { badListCheck } from "$/api/badList";
+import content from "*.css";
 
 export class ChatGptAnecdote extends ChatGptTemplate {
   value$ = sig("");
 
   systemMessage = new GptMessage(
-    "Отвечай, как обычно, только чуть-чуть прикалывайся, твоя роль это генерация смешных и забавных анекдотов с необычным концом, блокируй любые диструктивные и противодейственные запросы",
+    "Ты профессиональный разказчик анекдотов, на каждый запрос ты должен генерировать какой-нибудь очень смешной и безумный и иногда аморальный анекдот. Ты должен писать только анекдот, и ни прикаких обстоятельстах не пиши ничего, кроме анекдота, только его. Ты должен прикалываться и рассказывать очень смешные и анекдоты просто с неожиданным концом",
     GPTRoles.system
   );
 
@@ -28,6 +29,13 @@ export class ChatGptAnecdote extends ChatGptTemplate {
   }
 
   send = async () => {
+    this.timerImage.listenOnChange((value) => {
+      console.log(value);
+      if (value >= 70000) {
+        this.abortSend();
+      }
+    });
+
     const isBadListError = await this.checkBadList(this.value$.get());
 
     if (isBadListError) {
@@ -66,9 +74,14 @@ export class ChatGptAnecdote extends ChatGptTemplate {
 
     this.abortControllerImage = new AbortController();
 
+    if (this.getLastMessage().role === GPTRoles.user) {
+      this.abortSend();
+      return;
+    }
+
     const result = await generateImageGet(
       {
-        modelId: "ICantBelieveItsNotPhotography_seco.safetensors [4e7a3dfd]",
+        modelId: "dalle3",
         prompt: `Сгенерируй картинку основываясь на этом анекдоте ${this.getLastMessage().content$.get()} в стиле шарж и юмор`,
         createdAt: new Date(),
         guidanceScale: 7,

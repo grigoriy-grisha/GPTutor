@@ -1,8 +1,8 @@
-from vk_docs.retriver import app_vk_docs
+from vk_docs.retriver import create_retriever_app
 
 
-def create_question_vk_doc(question):
-    for output in app_vk_docs.stream({"question": question}):
+def create_question_vk_doc(question, source):
+    for output in create_retriever_app(source).stream({"question": question}):
         if "generate" in output:
             def get_document(document):
                 print(document)

@@ -2,10 +2,12 @@ import * as React from "react";
 import {
   Button,
   Div,
+  FormItem,
   Link,
   Panel,
   PanelHeader,
   Placeholder,
+  SegmentedControl,
   Spacing,
   Textarea,
 } from "@vkontakte/vkui";
@@ -76,7 +78,15 @@ function VKDocQuestionPanel({ id }: IProps) {
               style={{ width: "100%" }}
               placeholder="Как монетизировать мини приложение?"
             />
-            <Spacing size={20} />
+            <Spacing size={12} />
+            <FormItem top="Источник данных">
+              <SegmentedControl
+                value={vkDocClient.selectedSource$.get()}
+                onChange={vkDocClient.setSource}
+                options={vkDocClient.sources}
+              />
+            </FormItem>
+            <Spacing size={18} />
             <Button
               loading={vkDocClient.loading$.get()}
               size="l"
