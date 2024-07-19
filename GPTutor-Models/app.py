@@ -50,11 +50,18 @@ def vk_doc_question():
 
 @app.post("/dalle")
 def dalle():
-    result = generate_dalle(
-        prompt=request.json["prompt"],
-    )
+    try:
+        result = generate_dalle(
+            prompt=request.json["prompt"],
+        )
 
-    if result['image'] is None:
+        if result['image'] is None:
+            raise Exception()
+
+        return {"output": [result['image']]}
+
+    except Exception as e:
+        print(e)
         return txt2img(
             prompt=request.json["prompt"],
             model=request.json["modelId"],
@@ -64,10 +71,6 @@ def dalle():
             seed=request.json["seed"],
             steps=request.json["numInferenceSteps"],
         )
-
-    return {
-        "output": [result['image']]
-    }
 
 
 def run_flask():

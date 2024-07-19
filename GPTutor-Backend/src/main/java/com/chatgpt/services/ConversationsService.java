@@ -57,7 +57,7 @@ public class ConversationsService {
 
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(conversationRequest.getModel().startsWith("gpt") ? "https://api.goapi.xyz/v1/chat/completions" : modelsUrl + "/llm"))
+                .uri(URI.create(conversationRequest.getModel().startsWith("gpt") || conversationRequest.getModel().startsWith("uncensored") ? "https://api.goapi.xyz/v1/chat/completions" : modelsUrl + "/llm"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + apiKey.getFirst().getKey())
                 .POST(HttpRequest.BodyPublishers.ofString(input))
@@ -66,8 +66,6 @@ public class ConversationsService {
         HttpClient.newHttpClient().sendAsync(request, respInfo ->
         {
             System.out.println(respInfo.statusCode());
-            apiRequestsService.addApiRequest("OfficialGPT", respInfo.statusCode());
-
             if (respInfo.statusCode() == 200) {
                 return new SseSubscriber((data) -> {
                     SseEmitter.SseEventBuilder event = SseEmitter.event()

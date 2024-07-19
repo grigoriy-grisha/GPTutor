@@ -13,6 +13,7 @@ import classes from "./ImageGenerationBlock.module.css";
 interface IProps {
   isEmpty: boolean;
   loading: boolean;
+  isDisableHover?: boolean;
   heightView: number;
   widthView: number;
   url: string;
@@ -24,6 +25,7 @@ function ImageGenerationBlock({
   isEmpty,
   heightView,
   widthView,
+  isDisableHover,
   url,
   rbg,
   timer,
@@ -47,9 +49,9 @@ function ImageGenerationBlock({
         </div>
       ) : (
         <Tappable
-          style={{ width: "100%" }}
-          hoverMode="opacity"
-          activeMode="opacity"
+          style={{ width: "100%", cursor: isDisableHover ? "none" : "pointer" }}
+          hoverMode={isDisableHover ? "none" : "opacity"}
+          activeMode={isDisableHover ? "none" : "opacity"}
           onClick={() => imageService.openImages([url])}
         >
           <div

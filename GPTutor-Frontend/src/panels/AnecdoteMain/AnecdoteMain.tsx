@@ -1,14 +1,6 @@
 import { AppContainer } from "$/components/AppContainer";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
-import {
-  Button,
-  IconButton,
-  Panel,
-  PanelHeaderBack,
-  Placeholder,
-  Title,
-} from "@vkontakte/vkui";
-import PanelTitle from "$/components/PanelTitle";
+import { Button, IconButton, Panel, Placeholder, Title } from "@vkontakte/vkui";
 import React from "react";
 import { useNavigationContext } from "$/NavigationContext";
 
@@ -18,7 +10,6 @@ import anecdoteMain from "./anecdoteMain.png";
 import { chatGpt } from "$/entity/GPT";
 import { Icon28ServicesOutline } from "@vkontakte/icons";
 import { FullscreenButton } from "$/components/FullscreenButton";
-import { wallService } from "$/services/WallService";
 
 interface IProps {
   id: string;

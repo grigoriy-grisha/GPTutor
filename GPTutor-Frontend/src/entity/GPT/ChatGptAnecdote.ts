@@ -6,7 +6,7 @@ import { datePlus30Days } from "$/utility/date";
 import { generateImageGet } from "$/api/images";
 import { sig } from "dignals";
 import { badListCheck } from "$/api/badList";
-import content from "*.css";
+import { gptModels } from "$/entity/GPT/GptModels";
 
 export class ChatGptAnecdote extends ChatGptTemplate {
   value$ = sig("");
@@ -56,6 +56,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
       this.sendCompletions$.loading.set(true);
       const message = new GptMessage(content, GPTRoles.user);
       this.addMessage(message);
+      gptModels.selectModel("uncensored-small-32k-20240717");
 
       await this.sendCompletions$.run();
 
