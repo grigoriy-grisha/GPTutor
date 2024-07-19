@@ -56,7 +56,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
       this.sendCompletions$.loading.set(true);
       const message = new GptMessage(content, GPTRoles.user);
       this.addMessage(message);
-      gptModels.selectModel("uncensored-small-32k-20240717");
+      // gptModels.selectModel("uncensored-small-32k-20240717");
 
       await this.sendCompletions$.run();
 
