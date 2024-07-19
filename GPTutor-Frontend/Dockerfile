@@ -1,10 +1,10 @@
 FROM node:18 as builder
 
-WORKDIR /app
-
 COPY package.json package-lock.json ./
 
 RUN npm install --force && mkdir /app && mv ./node_modules ./app
+
+WORKDIR /app
 
 COPY . .
 
