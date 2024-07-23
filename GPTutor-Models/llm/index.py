@@ -39,7 +39,6 @@ def handle_llm(messages, model, stream):
         model=models_dict[model]["model"],
         stream=stream,
         messages=normalize_messages(model, messages),
-        proxy=get_proxy(),
         web_search=True
     )
 
@@ -52,7 +51,6 @@ def handle_gpt_35(messages):
             model=models_dict["gpt_35_turbo"]["model"],
             stream=models_dict["gpt_35_turbo"]["stream"],
             messages=messages,
-            proxy=get_proxy()
         )
 
     except Exception:
@@ -60,7 +58,6 @@ def handle_gpt_35(messages):
             model=models_dict["mixtral_8x22b"]["model"],
             stream=models_dict["mixtral_8x22b"]["stream"],
             messages=messages,
-            proxy=get_proxy()
         )
 
 

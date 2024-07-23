@@ -383,7 +383,6 @@ def check_model(model, attempts):
             api_key="1r_x8Y1GaZoHnUtZeRXYaTVyjPkmPEEPNBMOA0rLZmA7t2l2PyxjIBi0oNuhPCZz0hLT8szD6EtmrKAA1f5bgHtTvyk82l6dw_GoSO8VQpuoXJDDcacvWnCE5a3e6JW7OzLz43zpyuSuI49yawY9IUMt5I9dRaPgFYXtyOTvwIzUfJMXLln18Y3EcrZr-AolskGMND04GZfq-HsaCOFTl_OUOc2w9ZA5N7gWmxvftLdaJN6m4YxSSS9Cwx08oudfb",
             model=models_dict[model_name]["model"],
             messages=[{"role": "user", "content": random.randint(0, 10000000)}],
-            proxy=get_proxy()
         )
 
         print(response.choices[0].message.content)
