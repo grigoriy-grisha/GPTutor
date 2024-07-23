@@ -22,6 +22,7 @@ import { useNavigationContext } from "$/NavigationContext";
 import { FullscreenButton } from "$/components/FullscreenButton";
 
 import classes from "./AnecdoteGeneration.module.css";
+import Time from "$/components/Time";
 
 interface IProps {
   id: string;
@@ -36,6 +37,9 @@ function AnecdoteGeneration({ id }: IProps) {
   const isLoading = isLoadingImage || isLoadingText;
 
   const badListError = chatGpt.chatGptAnecdote.badListError$.get();
+
+  const isStopped = chatGpt.chatGptAnecdote.timer.isStopped$.get();
+  const time = chatGpt.chatGptAnecdote.timer.time$.get();
   return (
     <Panel id={id}>
       <AppContainer
@@ -76,7 +80,8 @@ function AnecdoteGeneration({ id }: IProps) {
             <Div>
               <Spacing size={12} />
               <Button
-                mode={isLoading ? "outline" : "primary"}
+                disabled={!isStopped}
+                mode={!isStopped || isLoading ? "outline" : "primary"}
                 onClick={() =>
                   isLoading
                     ? chatGpt.chatGptAnecdote.abortSend()
@@ -86,7 +91,15 @@ function AnecdoteGeneration({ id }: IProps) {
                 style={{ width: "100%" }}
                 after={<Icon24MagicWandOutline />}
               >
-                {isLoading ? "Отменить" : "Перегенерировать"}
+                {isStopped ? (
+                  isLoading ? (
+                    "Отменить"
+                  ) : (
+                    "Перегенерировать"
+                  )
+                ) : (
+                  <Time className={classes.time} seconds={time} />
+                )}
               </Button>
             </Div>
           </>

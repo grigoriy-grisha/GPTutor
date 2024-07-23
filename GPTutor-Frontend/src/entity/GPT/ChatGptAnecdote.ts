@@ -6,7 +6,7 @@ import { datePlus30Days } from "$/utility/date";
 import { generateImageGet } from "$/api/images";
 import { sig } from "dignals";
 import { badListCheck } from "$/api/badList";
-import { gptModels } from "$/entity/GPT/GptModels";
+import { Timer } from "$/entity/GPT/Timer";
 
 export class ChatGptAnecdote extends ChatGptTemplate {
   value$ = sig("");
@@ -17,6 +17,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
   );
 
   timerImage = new StopWatch();
+  timer = new Timer(30, 0, "decrement");
 
   image$ = sig("");
 
@@ -50,7 +51,8 @@ export class ChatGptAnecdote extends ChatGptTemplate {
       ? `Вот тебе тема: ${this.value$.get()}`
       : "";
 
-    const content = `Сгенерируй смешной и короткий анекдот. ${jokeType}`;
+    const content =
+      "Сгенерируй смешной и безумный анекдот. Не пиши никакх вводных слов или пояснений. Пиши только придуманный тобой анекдот";
 
     try {
       this.sendCompletions$.loading.set(true);
@@ -62,6 +64,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
 
       await this.generateImage();
     } finally {
+      this.timer.run();
       this.allowActions();
     }
   };
