@@ -5,12 +5,7 @@ import { appService } from "$/services/AppService";
 
 class CommunicationService {
   private isRequested = false;
-  private isFavorite: string = "0";
   private isMember = false;
-
-  constructor() {
-    this.isFavorite = this.getSearchParams().get("vk_is_favorite")!;
-  }
 
   async addToSubscribe() {
     try {
@@ -36,15 +31,7 @@ class CommunicationService {
     }
   }
   async addToFavorite() {
-    if (this.isFavorite === "1") {
-      snackbarNotify.notify({
-        type: "success",
-        message: "Приложение уже в избранном",
-      });
-    }
-
     await bridge.send("VKWebAppAddToFavorites");
-    this.isFavorite = "1";
   }
 
   async getIsMember() {
