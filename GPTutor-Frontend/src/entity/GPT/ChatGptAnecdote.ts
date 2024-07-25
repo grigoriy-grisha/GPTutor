@@ -7,6 +7,7 @@ import { generateImageGet } from "$/api/images";
 import { sig } from "dignals";
 import { badListCheck } from "$/api/badList";
 import { Timer } from "$/entity/GPT/Timer";
+import { gptModels } from "./GptModels";
 
 export class ChatGptAnecdote extends ChatGptTemplate {
   value$ = sig("");
@@ -58,7 +59,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
       this.sendCompletions$.loading.set(true);
       const message = new GptMessage(content, GPTRoles.user);
       this.addMessage(message);
-      // gptModels.selectModel("uncensored-small-32k-20240717");
+      gptModels.selectModel("meta-llama/Meta-Llama-3.1-70B");
 
       await this.sendCompletions$.run();
 

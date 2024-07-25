@@ -1,4 +1,12 @@
-import { Button, Placeholder, Spacing, Spinner, Title } from "@vkontakte/vkui";
+import {
+  Button,
+  Placeholder,
+  Platform,
+  Spacing,
+  Spinner,
+  Title,
+  useConfigProvider,
+} from "@vkontakte/vkui";
 import React from "react";
 import { chatGpt } from "$/entity/GPT";
 import { ImageGenerationBlock } from "$/components/ImageGenerationBlock";
@@ -8,6 +16,7 @@ import { downloadService } from "$/services/DownloadService";
 
 function AnecdoteGenerationContent() {
   const anecdoteMessage = chatGpt.chatGptAnecdote.getLastAssistantMessage();
+  const { isWebView, platform } = useConfigProvider();
 
   const loading = chatGpt.chatGptAnecdote.sendCompletions$.loading.get();
 
@@ -51,7 +60,17 @@ function AnecdoteGenerationContent() {
           mode="outline"
           after={<Icon28ArrowDownToSquareOutline />}
           onClick={async () => {
-            downloadService.downloadBase64(image, "anecdote-image.png");
+            if (!isWebView) {
+              downloadService.downloadBase64(image, "anecdote-image.png");
+
+              return;
+            }
+
+            downloadService.appDownloadLink(
+              isWebView ? platform : Platform.VKCOM,
+              image,
+              "anecdote-image.png"
+            );
           }}
         >
           Скачать

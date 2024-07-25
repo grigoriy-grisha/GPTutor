@@ -57,7 +57,7 @@ public class ConversationsService {
 
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(conversationRequest.getModel().startsWith("gpt") ? "https://api.deep-foundation.tech/v1/chat/completions" : modelsUrl + "/llm"))
+                .uri(URI.create(conversationRequest.getModel().startsWith("gpt") || conversationRequest.getModel().startsWith("meta-llama") ? "https://api.deep-foundation.tech/v1/chat/completions" : modelsUrl + "/llm"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + apiKey.getFirst().getKey())
                 .POST(HttpRequest.BodyPublishers.ofString(input))
