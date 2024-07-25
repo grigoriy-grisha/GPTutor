@@ -49,7 +49,10 @@ function ImageGenerationBlock({
         </div>
       ) : (
         <Tappable
-          style={{ width: "100%", cursor: isDisableHover ? "none" : "pointer" }}
+          style={{
+            width: "100%",
+            cursor: isDisableHover ? "default" : "pointer",
+          }}
           hoverMode={isDisableHover ? "none" : "opacity"}
           activeMode={isDisableHover ? "none" : "opacity"}
           onClick={() => imageService.openImages([url])}
