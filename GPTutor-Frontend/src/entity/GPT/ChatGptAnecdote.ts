@@ -59,7 +59,7 @@ export class ChatGptAnecdote extends ChatGptTemplate {
       this.sendCompletions$.loading.set(true);
       const message = new GptMessage(content, GPTRoles.user);
       this.addMessage(message);
-      gptModels.selectModel("meta-llama/Meta-Llama-3.1-70B");
+      gptModels.selectModel("meta-llama/Meta-Llama-3.1-405B");
 
       await this.sendCompletions$.run();
 
