@@ -1,5 +1,6 @@
 import {
   Button,
+  Link,
   Placeholder,
   Platform,
   Spacing,
@@ -51,7 +52,15 @@ function AnecdoteGenerationContent() {
           url={image}
           loading={!chatGpt.chatGptAnecdote.timerImage.isStopped$.get()}
         />
-        <Spacing size={14} />
+        <Spacing size={6} />
+        <Link
+          style={{ fontSize: 14 }}
+          target="_blank"
+          href="https://t.me/DeepGPTBot"
+        >
+          Сгенерировать любую картинку можно у нас в боте!
+        </Link>
+        <Spacing size={10} />
         <Button
           loading={chatGpt.chatGptAnecdote.sendCompletions$.loading.get()}
           disabled={!image}
@@ -79,7 +88,7 @@ function AnecdoteGenerationContent() {
       </div>
 
       {anecdoteMessage && (
-        <Title level="3" weight="2" style={{ marginTop: 64 }}>
+        <Title level="3" weight="2" style={{ marginTop: 90 }}>
           {anecdoteMessage.content$.get()}
         </Title>
       )}
