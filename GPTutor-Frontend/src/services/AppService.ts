@@ -34,8 +34,7 @@ class AppService {
   }
 
   getGroupId() {
-    // return this.isAiHumor() ? 201104273 : 220371433;
-    return 220371433;
+    return this.isAiHumor() ? 201104273 : 220371433;
   }
 
   getBasePanel() {

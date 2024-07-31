@@ -11,12 +11,27 @@
     text-align: center;
 }
 
+.subscription {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
 @media screen and (max-width: 728px) {
     .container {
         padding: 0 10%;
     }
+
+    .subscription {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
+
 
 .time {
     color: var(--vkui--color_button_text);
 }
+
+

@@ -1,7 +1,9 @@
 import {
   Button,
+  Card,
   Div,
   IconButton,
+  Link,
   Panel,
   Spacing,
   Title,
@@ -40,6 +42,8 @@ function AnecdoteGeneration({ id }: IProps) {
 
   const isStopped = chatGpt.chatGptAnecdote.timer.isStopped$.get();
   const time = chatGpt.chatGptAnecdote.timer.time$.get();
+  const subscriptionGPT = chatGpt.chatGptAnecdote.subscriptionGPT;
+
   return (
     <Panel id={id}>
       <AppContainer
@@ -63,22 +67,28 @@ function AnecdoteGeneration({ id }: IProps) {
         }
         fixedBottomContent={
           <>
-            {/*<FormItem*/}
-            {/*  status={badListError ? "error" : "default"}*/}
-            {/*  bottom={badListError ? "Недопустимое содержание!" : ""}*/}
-            {/*  onFocus={() => chatGpt.chatGptAnecdote.clearBadListError()}*/}
-            {/*>*/}
-            {/*<Textarea*/}
-            {/*  value={chatGpt.chatGptAnecdote.value$.get()}*/}
-            {/*  onChange={(e) =>*/}
-            {/*    chatGpt.chatGptAnecdote.setValue(e.target.value)*/}
-            {/*  }*/}
-            {/*  disabled={isLoading}*/}
-            {/*  placeholder="Про что анекдот"*/}
-            {/*/>*/}
-            {/*</FormItem>*/}
             <Div>
-              <Spacing size={12} />
+              {!subscriptionGPT.isSubscribe$.get() && (
+                <>
+                  <Card mode="outline">
+                    <Div className={classes.subscription}>
+                      <span>
+                        <Title level="2">Наш паблик 🤡</Title>
+                        <Link href="https://vk.com/nuuchetam" target="_blank">
+                          <Spacing size={4} />
+                          Подпишитесь на наше юмористическое сообщестово!
+                          <Spacing size={10} />
+                        </Link>
+                      </span>
+                      <Button size="m" onClick={subscriptionGPT.$subscribe}>
+                        Подписаться
+                      </Button>
+                    </Div>
+                  </Card>
+                  <Spacing size={12} />
+                </>
+              )}
+
               <Button
                 disabled={!isStopped}
                 mode={!isStopped || isLoading ? "outline" : "primary"}
