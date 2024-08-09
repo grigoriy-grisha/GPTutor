@@ -27,6 +27,9 @@ public class ConversationsService {
     @Value("${models.url}")
     String modelsUrl;
 
+    @Value("${rag.url}")
+    String ragUrl;
+
     @Autowired
     ApiRequestsService apiRequestsService;
 
@@ -101,7 +104,7 @@ public class ConversationsService {
     public String getConversationVKDoc(QuestionRequest questionRequest) {
         RestTemplate restTemplate = new RestTemplate();
 
-        String url =  modelsUrl + "/vk-doc-question";
+        String url = ragUrl + "/doc-question";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");

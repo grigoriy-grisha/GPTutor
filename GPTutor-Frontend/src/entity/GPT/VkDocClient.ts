@@ -40,7 +40,7 @@ class VkDocClient {
       source: this.selectedSource$.get(),
     });
 
-    this.result$.set(result);
+    this.result$.set({ ...result, question: this.searchValue$.get() });
     this.loading$.set(false);
     this.searchValue$.set("");
   }
