@@ -20,6 +20,15 @@ services:
     ports:
       - "1337:1337"
 
+  rag-dev:
+    env_file:
+      - .env-dev
+    container_name: rag-dev
+    build:
+      context: ./GPTutor-Rag
+    ports:
+      - "5001:5000"
+
   postgresql-dev:
     image: 'postgres:13.1-alpine'
     container_name: postgresql-dev

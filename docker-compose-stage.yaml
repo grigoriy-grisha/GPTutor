@@ -92,6 +92,19 @@ services:
       - "traefik.http.routers.backend-stage.tls.certresolver=myresolver"
     networks:
       - trfk
+
+  rag-stage:
+    env_file:
+      - .env
+      - .env-stage
+    container_name: rag-stage
+    build:
+      context: ./GPTutor-Rag
+    ports:
+      - "5001:5000"
+    networks:
+      - trfk
+
   models-stage:
     env_file:
       - .env-stage
