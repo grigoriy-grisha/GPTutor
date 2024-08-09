@@ -7,6 +7,7 @@ import { createWorkflow } from "./graph/buildWorkflow";
 import { EnsembleRetriever } from "langchain/retrievers/ensemble";
 import dotenv from "dotenv";
 dotenv.config();
+import "web-streams-polyfill/es6";
 
 const app = express();
 
