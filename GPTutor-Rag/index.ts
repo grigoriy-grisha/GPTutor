@@ -6,6 +6,7 @@ import * as bodyParser from "body-parser";
 import { createWorkflow } from "./graph/buildWorkflow";
 import { EnsembleRetriever } from "langchain/retrievers/ensemble";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const app = express();
@@ -52,9 +53,12 @@ app.use(bodyParser.json());
   }
 
   app.post("/doc-question", async (req, res) => {
-    console.log(req.body);
-    const { question, source } = req.body;
-    res.send(await createWorkflow(question, createRetriever(source)));
+    try {
+      const { question, source } = req.body;
+      res.send(await createWorkflow(question, createRetriever(source)));
+    } catch (e) {
+      res.send("Что-то пошло не так");
+    }
   });
 
   app.listen(5000, () => {
