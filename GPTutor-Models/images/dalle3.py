@@ -36,8 +36,8 @@ def format_image_from_request(text: str):
 
 def download_by_url(url):
     proxies = {
-        'http': 'http://yNEUrz:zNX2S1@168.196.239.33:9650',
-        'https': 'http://yNEUrz:zNX2S1@168.196.239.33:9650',
+        'http': 'http://KBPfMh:cvtK90@94.131.19.8:9372',
+        'https': 'http://KBPfMh:cvtK90@94.131.19.8:9372',
     }
 
     response = requests.get(url, proxies=proxies)
@@ -49,9 +49,12 @@ def download_by_url(url):
         return None
 
 
+
+
+
 def generate_dalle(prompt: str):
     openai = OpenAI(
-        api_key=os.environ.get('GO_API_KEY'),
+        api_key="aa58e75ae01021c884068d3f5cc34e24f1ced26ddae85ed3d73f4aaa5b55fef8",
         base_url="https://api.goapi.xyz/v1/",
     )
 
@@ -71,7 +74,7 @@ def generate_dalle(prompt: str):
     formatted_response = format_image_from_request(chat_completion.choices[0].message.content)
 
     return {
-        "image": download_by_url(formatted_response["image"]),
+        "image": formatted_response["image"],
         "text": formatted_response["text"],
         "total_tokens": chat_completion.usage.total_tokens
     }
