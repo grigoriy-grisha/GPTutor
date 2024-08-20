@@ -18,12 +18,7 @@ import { SubscriptionGPT } from "$/entity/GPT/SubscriptionGPT";
 import { getBannerName } from "$/entity/history/utils";
 import { gptModels } from "$/entity/GPT/GptModels";
 
-const initialSystemContent = `
-Если ты пишешь блоки кода, то обязательно помечай язык в этом блоке кода, всегда, это очень важно!.
-
-Пиши формулы и решения уравнений katex формате, оборачивай вместо [] в $ выражения, это важно!!! чтобы можно было обработать  в markdown
-
-Все уравнения и выражения должны быть обернуты в $ в начале и конце, ни при каких обстоятельствах не оборачивай выражения в квадратные скобки ([]), оборачивай в доллары ($$)`;
+const initialSystemContent = `Тебя зовут Deep.GPT, будь полезным помощником.`;
 
 const subscriptionGPT = new SubscriptionGPT();
 
