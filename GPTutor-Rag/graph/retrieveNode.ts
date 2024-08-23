@@ -8,9 +8,15 @@ export function createRetrieveNode(retriever: any) {
   ) {
     console.log("---RETRIEVE---");
 
-    const documents = await retriever
-      .withConfig({ runName: "FetchRelevantDocuments" })
-      .invoke(question, config);
+    const documents = [];
+
+    for (const item of question) {
+      const retrieveDocuments = await retriever
+        .withConfig({ runName: "FetchRelevantDocuments" })
+        .invoke(item, config);
+
+      documents.push(...retrieveDocuments);
+    }
 
     return { documents };
   };

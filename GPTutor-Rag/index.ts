@@ -19,8 +19,8 @@ app.use(bodyParser.json());
     new GigaChatEmbeddings({ clientSecretKey: process.env.CLIENT_SECRET_KEY })
   );
 
-  const vectorStoreVKDoc = await FaissStore.loadFromPython(
-    "./faiss_vk_docs_index",
+  const vectorStoreVKDoc = await FaissStore.load(
+    "./faiss_vk_docs_index_js",
     new GigaChatEmbeddings({ clientSecretKey: process.env.CLIENT_SECRET_KEY })
   );
 
@@ -33,23 +33,25 @@ app.use(bodyParser.json());
     if (source === "all") {
       return new EnsembleRetriever({
         retrievers: [
-          vectorStoreVKUIDoc.asRetriever({ k: 3 }),
-          vectorStoreVKDoc.asRetriever({ k: 3 }),
-          vectorStoreVideos.asRetriever({ k: 3 }),
+          vectorStoreVKUIDoc.asRetriever({ k: 2 }),
+          vectorStoreVKDoc.asRetriever({ k: 2 }),
+          vectorStoreVideos.asRetriever({ k: 2 }),
         ],
         weights: [0.33, 0.33, 0.33],
       });
     }
 
     if (source == "vk_api_docs") {
-      return vectorStoreVKDoc.asRetriever({ k: 6 });
+      return new EnsembleRetriever({
+        retrievers: [vectorStoreVKDoc.asRetriever({ k: 3 })],
+      });
     }
 
     if (source == "vk_ui") {
-      return vectorStoreVKUIDoc.asRetriever({ k: 6 });
+      return vectorStoreVKUIDoc.asRetriever({ k: 3 });
     }
 
-    return vectorStoreVideos.asRetriever({ k: 6 });
+    return vectorStoreVideos.asRetriever({ k: 3 });
   }
 
   app.post("/doc-question", async (req, res) => {

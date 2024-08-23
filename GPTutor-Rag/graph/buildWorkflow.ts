@@ -61,7 +61,7 @@ export function buildWorkFlow(retriever: any) {
 export async function createWorkflow(question: string, retriever: any) {
   const appStream = buildWorkFlow(retriever)
     .compile()
-    .stream({ question }, { recursionLimit: 30 });
+    .stream({ initQuestion: question }, { recursionLimit: 30 });
 
   let finalGeneration;
 

@@ -6,7 +6,7 @@ export function createGradeGenerationVDocuments() {
 
     const grade = state.generationVDocumentsGrade;
 
-    if (grade?.toLowerCase().includes("да")) {
+    if (grade?.toLowerCase().includes("yes")) {
       console.log("---DECISION: SUPPORTED, MOVE TO FINAL GRADE---");
       return "supported";
     }

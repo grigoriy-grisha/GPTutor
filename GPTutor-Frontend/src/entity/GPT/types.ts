@@ -49,14 +49,15 @@ interface DocumentVKDocMetadata {
   description?: string;
   language?: string;
   source?: string;
-  title?: string;
+  pageTitle?: string;
   link?: string;
   time?: number;
+  url?: string;
 }
 
 export interface DocumentVKDoc {
   metadata: DocumentVKDocMetadata;
-  page_content: string;
+  pageContent: string;
 }
 
 export interface VkDocsResponse {

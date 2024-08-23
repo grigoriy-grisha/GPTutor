@@ -6,7 +6,7 @@ export function createGradeGenerationVQuestion() {
 
     const grade = state.generationVQuestionGrade;
 
-    if (grade?.toLowerCase().includes("да")) {
+    if (grade?.toLowerCase().includes("yes")) {
       console.log("---DECISION: USEFUL---");
       return "useful";
     }

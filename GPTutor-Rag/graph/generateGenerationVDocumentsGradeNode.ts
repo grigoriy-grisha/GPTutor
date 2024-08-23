@@ -15,15 +15,13 @@ export function createGenerateGenerationVDocumentsGrade() {
     });
 
     const prompt = ChatPromptTemplate.fromTemplate(
-      `Вы должны оценивать документы:
-   Если документ содержит правильные слова и смысл, которые относятся к сгенерированном ответу и содержат нужные части информации, оцени документ двумя значениями.
-   Это важно, это очень поможет пользователю получить валидные данные. 
-  Дай два значения 'да' или 'нет', которые сигнализируют, что документ подходит к сгенерированном ответу или нет.
-  
-  {documents}
-  
-  Сгенерированный ответ: {generation}
- `
+      `You are a grader assessing whether an answer is grounded in / supported by a set of facts.
+      Here are the facts:
+      \n ------- \n
+      {documents} 
+      \n ------- \n
+      Here is the answer: {generation}
+      Give a binary score 'yes' or 'no' to indicate whether the answer is grounded in / supported by a set of facts.`
     );
 
     const chain = prompt.pipe(model).pipe(new StringOutputParser());

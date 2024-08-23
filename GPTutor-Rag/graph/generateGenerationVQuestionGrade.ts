@@ -14,22 +14,25 @@ export function createGenerateGenerationVQuestionGrade() {
     });
 
     const prompt = ChatPromptTemplate.fromTemplate(
-      `Вы профессиональный оценщик, который оценивать сгенерированный ответ и проверяет соответствие его к вопросу.
-      Дай два значения 'да' или 'нет', которые будут обозначать, что сгенерироавнный ответ соответствует вопросу.
-      Это важно, это очень поможет пользователю получить валидные данные. 
-      Тут сгенерированный ответ:
-      \n ------- \n
-      {generation} 
-      \n ------- \n
-      Вот вопрос: {question}`
+      `You are a grader assessing whether an answer is useful to resolve a question.
+              Here is the answer:
+              \\n ------- \\n
+              {generation} 
+              \\n ------- \\n
+              Here is the question: {question}
+              Give a binary score 'yes' or 'no' to indicate whether the answer is useful to resolve a question.`
     );
 
     const chain = prompt.pipe(model).pipe(new StringOutputParser());
 
+    console.log({ generation });
+    console.log({ questions: question.join("\n") });
     const score = await chain.invoke({
-      question,
+      question: question.join("\n"),
       generation: generation ?? "",
     });
+
+    console.log({ score });
 
     return { generationVQuestionGrade: score };
   };

@@ -78,7 +78,7 @@ export abstract class ChatGptTemplate {
   }
 
   updateMaxContentWords() {
-    this.maxContentWords = 4000;
+    this.maxContentWords = 2000;
   }
 
   closeDelay() {
