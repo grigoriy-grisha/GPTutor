@@ -12,7 +12,7 @@ class AppService {
   loading = sig(true);
 
   appInstance = (window as any).env.REACT_APP;
-  appPlatform = "TG";
+  appPlatform = (window as any).env.REACT_PLATFORM;
 
   isTG() {
     return this.appPlatform === "TG";
