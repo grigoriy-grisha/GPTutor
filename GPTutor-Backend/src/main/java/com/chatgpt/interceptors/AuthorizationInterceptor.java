@@ -72,6 +72,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
                 System.out.println(authorization);
 
                 boolean isSignSuccess = authCheckerService.tgAuthCheck(authorization);
+                System.out.println(isSignSuccess);
 
                 if (isSignSuccess) {
                     request.setAttribute(
