@@ -1,5 +1,6 @@
 import { VkStorageService } from "$/services/VkStorageService";
 import { sig } from "dignals";
+import { appService } from "$/services/AppService";
 
 class TgService {
   storage = new VkStorageService();
@@ -7,6 +8,11 @@ class TgService {
   isSeeTg$ = sig(false);
 
   constructor() {
+    if (appService.isTG()) {
+      this.isSeeTg$.set(true);
+      return;
+    }
+
     this.initHasNewModel();
   }
 

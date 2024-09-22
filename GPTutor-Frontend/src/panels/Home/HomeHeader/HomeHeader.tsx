@@ -8,6 +8,7 @@ import { AppPanelHeader } from "$/components/AppPanelHeader";
 import { FullscreenButton } from "$/components/FullscreenButton";
 
 import classes from "./HomeHeader.module.css";
+import { appService } from "$/services/AppService";
 
 function HomeHeader() {
   const { openApplicationInfo } = useNavigationContext();
@@ -26,7 +27,7 @@ function HomeHeader() {
     >
       <div className={classes.wrapper}>
         <Title level="1" Component="h1">
-          GPTutor
+          {appService.getGPTName()}
         </Title>
       </div>
     </AppPanelHeader>

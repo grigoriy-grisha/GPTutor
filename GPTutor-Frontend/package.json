@@ -20,6 +20,7 @@
         "@happysanta/router": "0.3.1",
         "@mdit/plugin-footnote": "^0.8.0",
         "@monaco-editor/react": "^4.5.1",
+        "@telegram-apps/sdk": "^1.1.3",
         "@types/node": "^12.0.0",
         "@types/react": "^18.0.0",
         "@types/react-dom": "^18.0.0",

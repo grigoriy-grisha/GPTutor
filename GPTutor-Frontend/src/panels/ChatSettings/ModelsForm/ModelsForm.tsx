@@ -22,6 +22,7 @@ import { gptModels } from "$/entity/GPT/GptModels";
 import { subscriptionsController } from "$/entity/subscriptions";
 import { useNavigationContext } from "$/NavigationContext";
 import { ModelCard } from "$/panels/ChatSettings/ModelsForm/ModelCard";
+import { appService } from "$/services/AppService";
 
 function ModelsForm() {
   const isDisableSubscription = subscriptionsController.isDisable();
@@ -30,6 +31,26 @@ function ModelsForm() {
   useEffect(() => {
     gptModels.loadModels();
   }, []);
+
+  if (appService.isTG()) {
+    return (
+      <Div className={classes.container}>
+        <Title Component="h1">Модели ✨</Title>
+        {gptModels.tgModels.map((model) => (
+          <ModelCard
+            disable={!model.active}
+            key={model.model}
+            title={model.model}
+            description={model.description}
+            checked={gptModels.selectedCurrentModel(model.model)}
+            lang={model.lang}
+            onClick={() => gptModels.selectModel(model.model)}
+          />
+        ))}
+      </Div>
+    );
+  }
+
   return (
     <Div className={classes.container}>
       {isDisableSubscription && (

@@ -48,22 +48,42 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader != null) {
-            var authorization = authCheckerService.splitBearer(authorizationHeader);
 
-            boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(authorization);
+            if (authorizationHeader.startsWith("Bearer")) {
+                var authorization = authCheckerService.splitBearer(authorizationHeader);
 
-            if (isSignSuccess) {
-                request.setAttribute(
-                        "vkUserId",
-                        authCheckerService.getVkUserId(authorization)
-                );
+                boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(authorization);
 
-                request.setAttribute(
-                        "vkAppId",
-                        authCheckerService.getVkAppId(authorization)
-                );
+                if (isSignSuccess) {
+                    request.setAttribute(
+                            "vkUserId",
+                            authCheckerService.getVkUserId(authorization)
+                    );
 
-                return true;
+                    request.setAttribute(
+                            "vkAppId",
+                            authCheckerService.getVkAppId(authorization)
+                    );
+
+                    return true;
+                }
+            } else if (authorizationHeader.startsWith("tma")) {
+                var authorization = authCheckerService.splitTMA(authorizationHeader);
+                System.out.println(authorization);
+
+                boolean isSignSuccess = authCheckerService.tgAuthCheck(authorization);
+
+                if (isSignSuccess) {
+                    request.setAttribute(
+                            "vkUserId",
+                            "tg" + authCheckerService.getUserIdFromUrl(authorization)
+                    );
+
+                    request.setAttribute("vkAppId",   "tg"   );
+                    request.setAttribute("isTG", true);
+
+                    return true;
+                }
             }
         }
 
@@ -71,4 +91,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
         return false;
     }
+
+
 }

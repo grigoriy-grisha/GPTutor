@@ -15,6 +15,7 @@ import { WarningTooltip } from "./WarningTooltip";
 import classes from "./Message.module.css";
 import { Copy } from "$/components/Copy";
 import { ChatGptTemplate } from "$/entity/GPT/ChatGptTemplate";
+import { appService } from "$/services/AppService";
 
 interface IProps {
   chatGpt: ChatGptTemplate;
@@ -53,7 +54,7 @@ function Message({ chatGpt, message }: IProps) {
           <div className={classes.topBlock}>
             <Text weight="2" className={classes.normalize}>
               {message.role === "assistant"
-                ? "GPTutor"
+                ? appService.getGPTName()
                 : vkUser?.first_name || "Вы"}
             </Text>
             <div className={classes.iconsBlock}>

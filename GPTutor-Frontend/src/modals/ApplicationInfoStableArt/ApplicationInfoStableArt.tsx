@@ -22,6 +22,7 @@ import {
 } from "@vkontakte/icons";
 import { ChatGPTLogo } from "$/icons";
 import React from "react";
+import { appService } from "$/services/AppService";
 
 interface IProps {
   id: string;
@@ -109,7 +110,7 @@ function ApplicationInfoStableArt({ id, settlingHeight }: IProps) {
           }
           subtitle="Бесплатный ChatGPT ВКонтакте!"
         >
-          <Text weight="2">GPTutor</Text>
+          <Text weight="2">{appService.getGPTName()}</Text>
         </SimpleCell>
       </Group>
       <Spacing size={12} />

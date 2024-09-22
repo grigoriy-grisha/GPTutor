@@ -21,6 +21,7 @@ import {
 } from "@vkontakte/icons";
 import { ChatGPTLogo, StableArtLogo } from "$/icons";
 import React from "react";
+import { appService } from "$/services/AppService";
 
 interface IProps {
   id: string;
@@ -99,7 +100,7 @@ function ApplicationInfoHumor({ id, settlingHeight }: IProps) {
           }
           subtitle="Бесплатный ChatGPT ВКонтакте!"
         >
-          <Text weight="2">GPTutor</Text>
+          <Text weight="2">{appService.getGPTName()}</Text>
         </SimpleCell>
         <SimpleCell
           href="https://vk.com/app51692825"

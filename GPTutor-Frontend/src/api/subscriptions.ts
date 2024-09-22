@@ -1,4 +1,5 @@
 import { Subscription } from "$/entity/subscriptions/types";
+import { httpService } from "$/services/HttpService";
 
 const BACKEND_HOST = env.REACT_APP_BACKEND_HOST;
 export async function getSubscription(
@@ -8,7 +9,7 @@ export async function getSubscription(
     `${BACKEND_HOST}purchase/subscription/${subscriptionName}`,
     {
       headers: {
-        Authorization: "Bearer " + location.href,
+        Authorization: httpService.authorization,
       },
     }
   );
@@ -23,7 +24,7 @@ export async function updateSubscription(
     {
       method: "POST",
       headers: {
-        Authorization: "Bearer " + location.href,
+        Authorization: httpService.authorization,
       },
     }
   );

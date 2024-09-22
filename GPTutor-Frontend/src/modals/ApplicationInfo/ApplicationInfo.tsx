@@ -25,6 +25,7 @@ import { useNavigationContext } from "$/NavigationContext";
 import { StableArtLogo } from "$/icons";
 import { AppDiv } from "$/components/AppDiv";
 import { useApplicationInfo } from "./hooks/useApplicationInfo";
+import { appService } from "$/services/AppService";
 
 interface IProps {
   id: string;
@@ -63,7 +64,8 @@ function ApplicationInfo({ id, settlingHeight }: IProps) {
               as="span"
               Component="h3"
             >
-              GPTutor{" — "}
+              {appService.getGPTName()}
+              {" — "}
             </Title>
             это образовательное приложение, которое предлагает уникальный подход
             к обучению вместе с чат-помощником ChatGPT.

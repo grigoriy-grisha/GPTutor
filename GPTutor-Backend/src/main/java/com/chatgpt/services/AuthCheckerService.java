@@ -1,6 +1,13 @@
 package com.chatgpt.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.codec.digest.HmacAlgorithms;
+import org.apache.commons.codec.digest.HmacUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
@@ -10,13 +17,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Base64;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class AuthCheckerService {
+
+    @Value("${tg-token}")
+    private String botToken;
 
     @Autowired
     VkSecretesService vkSecretesService;
@@ -27,6 +36,11 @@ public class AuthCheckerService {
         return header.substring(7);
     }
 
+    public String splitTMA(String header) {
+        return header.substring(4);
+    }
+
+
     public String getVkUserId(String url) throws Exception {
         return getVkUserIdFromParams(getQueryParams(new URL(url)));
     }
@@ -35,7 +49,7 @@ public class AuthCheckerService {
         return getQueryParams(new URL(url)).get("vk_app_id");
     }
 
-    public String getVkUserIdFromParams( Map<String, String> params) {
+    public String getVkUserIdFromParams(Map<String, String> params) {
         return params.getOrDefault("vk_user_id", "0");
     }
 
@@ -108,5 +122,57 @@ public class AuthCheckerService {
 
     public Boolean isUrlCheck(String url) throws MalformedURLException {
         return !getQueryParams(new URL(url)).get("vk_app_id").isEmpty();
+    }
+
+    public Boolean tgAuthCheck(String initData) {
+        List<NameValuePair> params = URLEncodedUtils.parse(initData, StandardCharsets.UTF_8);
+        System.out.println(params);
+        List<NameValuePair> preparedData = new java.util.ArrayList<>(params
+                .stream()
+                .filter(e -> !e.getName().equals("hash"))
+                .toList());
+
+        preparedData
+                .sort(Comparator.comparing(NameValuePair::getName));
+
+        String dataCheckString = String.join("\n", preparedData
+                .stream()
+                .map(e -> e.getName() + "=" + e.getValue())
+                .toList());
+
+        String botTokenData = "WebAppData";
+        byte[] hmacSecret = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, botTokenData).hmac(this.botToken);
+
+        String calculatedHash = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, hmacSecret).hmacHex(dataCheckString);
+        String presentedHash = params.get(4).getValue();
+
+        return calculatedHash.equals(presentedHash);
+    }
+
+    public String getUserIdFromUrl(String encodedUrl) {
+        try {
+            String[] params = encodedUrl.split("&");
+            String userParam = null;
+
+            for (String param : params) {
+                if (param.startsWith("user=")) {
+                    userParam = param.substring(5); // Убираем "user="
+                    break;
+                }
+            }
+
+            if (userParam != null) {
+                String decodedUser = URLDecoder.decode(userParam, StandardCharsets.UTF_8);
+                System.out.println(decodedUser);
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode response = objectMapper.readTree(decodedUser);
+
+                return response.get("id").asText();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "0";
     }
 }

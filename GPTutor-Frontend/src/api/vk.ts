@@ -1,5 +1,6 @@
 import { GroupsIsMemberRequest } from "$/entity/vk";
 import { OrderSubscriptionResponseData } from "$/entity/subscriptions/types";
+import { httpService } from "$/services/HttpService";
 
 const BACKEND_HOST = env.REACT_APP_BACKEND_HOST;
 
@@ -11,7 +12,7 @@ export async function groupsIsMember({
     `${BACKEND_HOST}vk/groups-is-member?groupId=${groupId}&userId=${userId}`,
     {
       headers: {
-        Authorization: "Bearer " + location.href,
+        Authorization: httpService.authorization,
       },
     }
   );
@@ -22,7 +23,7 @@ export async function groupsIsMember({
 export async function getUserSubscriptions(): Promise<OrderSubscriptionResponseData> {
   const response = await fetch(`${BACKEND_HOST}vk/user-subscriptions`, {
     headers: {
-      Authorization: "Bearer " + location.href,
+      Authorization: httpService.authorization,
     },
   });
 
@@ -34,7 +35,7 @@ export async function uploadPhoto(uploadUrl: string, imageId: string) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + location.href,
+      Authorization: httpService.authorization,
     },
     body: JSON.stringify({ uploadUrl, imageId }),
   });
@@ -47,7 +48,7 @@ export async function uploadPhotoUrl(uploadUrl: string, url: string) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + location.href,
+      Authorization: httpService.authorization,
     },
     body: JSON.stringify({ uploadUrl, url }),
   });
@@ -66,7 +67,7 @@ export async function wallPostGroup(params: WallPostGroupParams) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + location.href,
+      Authorization: httpService.authorization,
     },
     body: JSON.stringify(params),
   });

@@ -1,6 +1,7 @@
 import { HistoryCreate } from "$/entity/history/types";
 import { History } from "$/entity/history";
 import { Pageable } from "$/entity/common";
+import { httpService } from "$/services/HttpService";
 
 const BACKEND_HOST = env.REACT_APP_BACKEND_HOST;
 
@@ -8,7 +9,7 @@ export function createHistory(params: HistoryCreate): Promise<History> {
   return fetch(`${BACKEND_HOST}history`, {
     method: "POST",
     headers: {
-      Authorization: "Bearer " + location.href,
+      Authorization: httpService.authorization,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
@@ -24,7 +25,7 @@ export function getHistoryById(
     {
       method: "GET",
       headers: {
-        Authorization: "Bearer " + location.href,
+        Authorization: httpService.authorization,
         "Content-Type": "application/json",
       },
     }
@@ -35,7 +36,7 @@ export function deleteHistory(id: string) {
   return fetch(`${BACKEND_HOST}history/` + id, {
     method: "DELETE",
     headers: {
-      Authorization: "Bearer " + location.href,
+      Authorization: httpService.authorization,
     },
   }).then((res) => res.json());
 }
@@ -44,7 +45,7 @@ export function deleteAllHistory() {
   return fetch(`${BACKEND_HOST}history`, {
     method: "DELETE",
     headers: {
-      Authorization: "Bearer " + location.href,
+      Authorization: httpService.authorization,
     },
   }).then((res) => res.json());
 }
@@ -53,7 +54,7 @@ export function updateHistory(history: History) {
   return fetch(`${BACKEND_HOST}history`, {
     method: "PUT",
     headers: {
-      Authorization: "Bearer " + location.href,
+      Authorization: httpService.authorization,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(history),

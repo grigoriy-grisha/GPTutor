@@ -32,14 +32,6 @@ function FreeDialogBlock({ goToFreeDialog }: IProps) {
             >
               Начать диалог GPT
             </Button>
-            <Button
-              mode="outline"
-              size="m"
-              after={<Icon24ArrowRightSquareOutline />}
-              onClick={goToBingPanel}
-            >
-              Начать диалог Bing
-            </Button>
           </div>
         }
       >

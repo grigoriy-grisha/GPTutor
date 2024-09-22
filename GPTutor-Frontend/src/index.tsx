@@ -3,7 +3,6 @@ import "./env.js";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import bridge from "@vkontakte/vk-bridge";
 import { Page, Router, RouterContext } from "@happysanta/router";
 import "react-virtualized/styles.css";
 
@@ -19,6 +18,7 @@ import "react-lazy-load-image-component/src/effects/black-and-white.css";
 import { userAgreement } from "$/entity/user/UserAgreement";
 import { listenResize } from "./resizeWindow";
 import { additionalRequests } from "$/entity/additionalRequest/AdditionalRequests";
+import { platformAdapter } from "$/services/PlatformAdapterService";
 
 const isFirstVisitFlagName = "isFirstVisit";
 
@@ -26,29 +26,35 @@ const storageService = new VkStorageService();
 
 listenResize(800, 900);
 
-bridge
-  .send("VKWebAppInit")
+async function VKInit() {
+  if (process.env.NODE_ENV === "development") {
+    import("./eruda");
+  }
+
+  storageService.get(isFirstVisitFlagName).then((value) => {
+    if (value) return;
+
+    const onboardingService = new OnboardingService();
+    onboardingService.runOnBoarding();
+    storageService.set(isFirstVisitFlagName, String(true));
+  });
+
+  if (appService.isStableArt()) {
+    await userAgreement.getUserImageAgreement();
+  }
+  await adService.showBannerAd();
+  if (appService.isGPTutor()) {
+    await subscriptionsController.getSubscription("subscription_2");
+  }
+  await additionalRequests.init();
+}
+
+platformAdapter
+  .webAppInit()
   .then(async () => {
-    if (process.env.NODE_ENV === "development") {
-      import("./eruda");
+    if (appService.isVK()) {
+      await VKInit();
     }
-
-    storageService.get(isFirstVisitFlagName).then((value) => {
-      if (value) return;
-
-      const onboardingService = new OnboardingService();
-      onboardingService.runOnBoarding();
-      storageService.set(isFirstVisitFlagName, String(true));
-    });
-
-    if (appService.isStableArt()) {
-      await userAgreement.getUserImageAgreement();
-    }
-    await adService.showBannerAd();
-    if (appService.isGPTutor()) {
-      await subscriptionsController.getSubscription("subscription_2");
-    }
-    await additionalRequests.init();
   })
   .catch(console.log)
   .finally(() => {

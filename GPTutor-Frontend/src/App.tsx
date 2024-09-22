@@ -8,6 +8,7 @@ import {
   View,
 } from "@vkontakte/vkui";
 import bridge, {
+  AppearanceType,
   parseURLSearchParamsForGetLaunchParams,
 } from "@vkontakte/vk-bridge";
 import { useLocation } from "@happysanta/router";
@@ -73,6 +74,9 @@ import ApplicationInfoHumor from "./modals/ApplicationInfoHumor/ApplicationInfoH
 import { BingPanel } from "$/panels/BingPanel";
 import VKDocQuestionPanel from "./panels/VKDocQuestionPanel/VKDocQestionPanel";
 import { VkDocQuestionRequest } from "$/panels/VkDocQuestionRequest";
+import { retrieveLaunchParams } from "@telegram-apps/sdk";
+
+const initParams = retrieveLaunchParams();
 
 const App = () => {
   const location = useLocation();
@@ -100,16 +104,35 @@ const App = () => {
     window.location.search
   );
 
+  console.log(vkBridgeAppearance);
+
+  function getPlatform() {
+    if (appService.isTG()) {
+      return "vkcom";
+    }
+
+    return vk_platform === "desktop_web" ? "vkcom" : undefined;
+  }
+
+  function getAppearance(): AppearanceType | undefined {
+    if (appService.isTG()) {
+      return initParams.themeParams.bgColor === "#ffffff" ? "light" : "dark";
+    }
+
+    return vkBridgeAppearance;
+  }
+
+  const appearance = getAppearance();
   return (
     <ConfigProvider
-      appearance={vkBridgeAppearance}
-      platform={vk_platform === "desktop_web" ? "vkcom" : undefined}
+      appearance={appearance}
+      platform={getPlatform()}
       isWebView={bridge.isWebView()}
       hasCustomPanelHeaderAfter={true}
     >
       <AdaptivityProvider {...adaptivity}>
         <AppRoot mode="full" safeAreaInsets={vkBridgeInsets}>
-          {vkBridgeAppearance === "dark" ? <OneDark /> : <OneLight />}
+          {appearance === "dark" ? <OneDark /> : <OneLight />}
           <SplitLayout
             popout={
               <>

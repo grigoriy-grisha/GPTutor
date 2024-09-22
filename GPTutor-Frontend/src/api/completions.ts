@@ -1,5 +1,6 @@
 import { EventSourceMessage, fetchEventSource } from "$/utility";
 import { VkDocsResponse } from "$/entity/GPT";
+import { httpService } from "$/services/HttpService";
 
 const BACKEND_HOST = env.REACT_APP_BACKEND_HOST;
 
@@ -17,7 +18,7 @@ export async function sendChatCompletions(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + location.href,
+      Authorization: httpService.authorization,
     },
     body: JSON.stringify(body),
     signal: controller.signal,
@@ -65,7 +66,7 @@ export function conversationVKDoc(
   return fetch(`${BACKEND_HOST}vk-doc/conversation`, {
     method: "POST",
     headers: {
-      Authorization: "Bearer " + location.href,
+      Authorization: httpService.authorization,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),

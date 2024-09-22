@@ -7,6 +7,13 @@ class CommunicationService {
   private isRequested = false;
   private isMember = false;
 
+  constructor() {
+    if (appService.isTG()) {
+      this.isRequested = true;
+      this.isMember = true;
+    }
+  }
+
   async addToSubscribe() {
     try {
       const isMember = await this.getIsMember();

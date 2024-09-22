@@ -12,6 +12,15 @@ class AppService {
   loading = sig(true);
 
   appInstance = (window as any).env.REACT_APP;
+  appPlatform = "TG";
+
+  isTG() {
+    return this.appPlatform === "TG";
+  }
+
+  isVK() {
+    return this.appPlatform === "VK";
+  }
 
   toggleLoading() {
     this.loading.set(!this.loading.get());
@@ -55,6 +64,10 @@ class AppService {
 
   getAppId() {
     return Number(new URLSearchParams(location.search).get("vk_app_id"));
+  }
+
+  getGPTName() {
+    return this.isTG() ? "Deep.GPT" : "GPTutor";
   }
 }
 

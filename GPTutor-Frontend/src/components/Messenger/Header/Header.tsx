@@ -18,6 +18,7 @@ import { IsTypingLoader } from "$/components/IsTypingLoader";
 
 import classes from "./Header.module.css";
 import { AppPanelHeader } from "$/components/AppPanelHeader";
+import { appService } from "$/services/AppService";
 
 interface IProps {
   goBack: () => void;
@@ -63,7 +64,7 @@ function Header({ goBack, isTyping }: IProps) {
           </div>
         }
       >
-        <Text weight="1">GPTutor</Text>
+        <Text weight="1">{appService.getGPTName()}</Text>
       </SimpleCell>
     </AppPanelHeader>
   );
