@@ -10,14 +10,14 @@ services:
       args:
         REACT_PLATFORM: "TG"
         REACT_APP: 'GPTutor'
-        REACT_APP_BACKEND_HOST: 'https://stage-tg.${HOST}/'
-        REACT_APP_BACKEND_HOST_WS: "wss://stage-tg.${HOST}/websocket/"
+        REACT_APP_BACKEND_HOST: 'https://stage.${HOST}/'
+        REACT_APP_BACKEND_HOST_WS: "wss://stage.${HOST}/websocket/"
     container_name: frontend-gptutor-stage-tg
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-gptutor-stage.rule=Host(`gptutor.stage.${HOST}`)"
-      - "traefik.http.routers.frontend-gptutor-stage.entrypoints=websecure"
-      - "traefik.http.routers.frontend-gptutor-stage.tls.certresolver=myresolver"
+      - "traefik.http.routers.frontend-gptutor-stage-tg.rule=Host(`deep-gpt.stage.${HOST}`)"
+      - "traefik.http.routers.frontend-gptutor-stage-tg.entrypoints=websecure"
+      - "traefik.http.routers.frontend-gptutor-stage-tg.tls.certresolver=myresolver"
     networks:
       - trfk
 
