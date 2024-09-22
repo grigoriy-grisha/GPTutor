@@ -8,6 +8,8 @@ export enum AppInstanceType {
   SmartVkDoc = "SmartVkDoc",
 }
 
+console.log(window);
+
 class AppService {
   loading = sig(true);
 
