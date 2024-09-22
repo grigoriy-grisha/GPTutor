@@ -145,12 +145,12 @@ services:
     env_file:
       - .env-stage
     volumes:
-      - db-postgres-stage:/var/lib/postgresql/data
+      - db-data-stage:/var/lib/postgresql/data
     networks:
       - trfk
 
 volumes:
-  db-postgres-stage:
+  db-data-stage:
 
 networks:
   trfk:
