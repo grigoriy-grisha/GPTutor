@@ -3,14 +3,19 @@ import { retrieveLaunchParams } from "@telegram-apps/sdk";
 
 const BACKEND_HOST = env.REACT_APP_BACKEND_HOST;
 
-const { initDataRaw } = retrieveLaunchParams();
+function getInitDataTg() {
+  if (appService.isTG()) {
+    const { initDataRaw } = retrieveLaunchParams();
+    return initDataRaw;
+  }
 
-console.log(initDataRaw);
+  return "";
+}
 
 class HttpService {
   authorization = appService.isVK()
     ? `Bearer ${location.href}`
-    : `tma ${initDataRaw}`;
+    : `tma ${getInitDataTg()}`;
 
   post<T extends object>(path: string, body: T) {
     return fetch(`${BACKEND_HOST}${path}`, {

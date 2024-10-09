@@ -76,8 +76,6 @@ import VKDocQuestionPanel from "./panels/VKDocQuestionPanel/VKDocQestionPanel";
 import { VkDocQuestionRequest } from "$/panels/VkDocQuestionRequest";
 import { retrieveLaunchParams } from "@telegram-apps/sdk";
 
-const initParams = retrieveLaunchParams();
-
 const App = () => {
   const location = useLocation();
   const { goBack, goToForbidden } = useNavigationContext();
@@ -116,6 +114,7 @@ const App = () => {
 
   function getAppearance(): AppearanceType | undefined {
     if (appService.isTG()) {
+      const initParams = retrieveLaunchParams();
       return initParams.themeParams.bgColor === "#ffffff" ? "light" : "dark";
     }
 
