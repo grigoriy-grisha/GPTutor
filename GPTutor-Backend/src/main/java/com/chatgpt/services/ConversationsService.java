@@ -118,6 +118,9 @@ public class ConversationsService {
                 true
         );
 
+        System.out.println(this.getCompletionUrl(conversationRequest.getModel()));
+
+        System.out.println(this.getAPIToken());
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(this.getCompletionUrl(conversationRequest.getModel())))
