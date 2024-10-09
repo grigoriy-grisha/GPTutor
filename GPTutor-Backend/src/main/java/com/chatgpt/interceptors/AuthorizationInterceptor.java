@@ -55,6 +55,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
                 boolean isSignSuccess = authCheckerService.checkAuthorizationHeader(authorization);
 
                 if (isSignSuccess) {
+                   request.setAttribute("isTG", false);
+
                     request.setAttribute(
                             "vkUserId",
                             authCheckerService.getVkUserId(authorization)

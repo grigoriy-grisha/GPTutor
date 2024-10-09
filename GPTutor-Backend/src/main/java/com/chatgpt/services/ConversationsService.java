@@ -72,7 +72,6 @@ public class ConversationsService {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
 
-        System.out.println(request.getAttribute("isTG"));
         if (request.getAttribute("isTG").equals(true)) {
             return this.getUserToken();
         }
@@ -118,7 +117,7 @@ public class ConversationsService {
                 conversationRequest.getMessages(),
                 true
         );
-        System.out.println(this.getAPIToken());
+
         String input = mapper.writeValueAsString(chatGptRequest);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(this.getCompletionUrl(conversationRequest.getModel())))
