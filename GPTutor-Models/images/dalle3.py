@@ -49,13 +49,11 @@ def download_by_url(url):
         return None
 
 
-
-
-
 def generate_dalle(prompt: str):
+    print(os.environ.get('API_KEYS_120'))
     openai = OpenAI(
-        api_key="aa58e75ae01021c884068d3f5cc34e24f1ced26ddae85ed3d73f4aaa5b55fef8",
-        base_url="https://api.goapi.xyz/v1/",
+        api_key=os.environ.get('API_KEYS_120'),
+        base_url="https://api.deep-foundation.tech/v1/",
     )
 
     chat_completion = openai.chat.completions.create(
@@ -70,6 +68,7 @@ def generate_dalle(prompt: str):
         ],
         stream=False,
     )
+    print(chat_completion)
 
     formatted_response = format_image_from_request(chat_completion.choices[0].message.content)
 
