@@ -57,6 +57,8 @@ def dalle():
             prompt=request.json["prompt"],
         )
 
+        print(result)
+
         if result['image'] is None:
             raise Exception()
 
