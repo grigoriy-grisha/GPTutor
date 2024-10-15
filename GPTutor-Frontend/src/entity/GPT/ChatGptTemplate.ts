@@ -17,6 +17,7 @@ import { leetCode } from "$/entity/leetCode/LeetCode";
 import { SubscriptionGPT } from "$/entity/GPT/SubscriptionGPT";
 import { getBannerName } from "$/entity/history/utils";
 import { gptModels } from "$/entity/GPT/GptModels";
+import { userInfo } from "$/entity/user/UserInfo";
 
 const initialSystemContent = `Тебя зовут Deep.GPT, будь полезным помощником.`;
 
@@ -153,10 +154,13 @@ export abstract class ChatGptTemplate {
   }
 
   async sendChatCompletions(message: GptMessage) {
-    console.log(this.getMessages());
     const result = await sendChatCompletions(
       { messages: this.getMessages(), model: gptModels.getModel() },
       this.onMessage(message),
+      (energy) => {
+        message.setEnergy(energy);
+        userInfo.subtractBalance(energy);
+      },
       () => {
         this.closeDelay();
         this.addMessage(
@@ -192,9 +196,6 @@ export abstract class ChatGptTemplate {
     (value: string, isFirst: boolean, isSecond: boolean) => {
       this.closeDelay();
 
-      console.log(value);
-      console.log(isFirst, "isFirst");
-      console.log(isSecond, "isSecond");
       if (isFirst) {
         message.onSetMessageContent(value);
         this.addMessage(message);

@@ -1,4 +1,4 @@
-import { userAgreement } from "$/entity/user/UserAgreement";
+import { userInfo } from "$/entity/user/UserInfo";
 import { useNavigationContext } from "$/NavigationContext";
 import { imageGeneration } from "$/entity/image";
 
@@ -6,9 +6,9 @@ export function useGenerateImage() {
   const { openWeakRequest } = useNavigationContext();
 
   return (ignoreWeak = true) => {
-    if (!userAgreement.isHasImageAgreement.get()) {
-      if (userAgreement.viewUserAgreement.get()) {
-        userAgreement.setUserImageAgreement();
+    if (!userInfo.isHasImageAgreement.get()) {
+      if (userInfo.viewUserAgreement.get()) {
+        userInfo.setUserImageAgreement();
         imageGeneration.generate();
         return true;
       }

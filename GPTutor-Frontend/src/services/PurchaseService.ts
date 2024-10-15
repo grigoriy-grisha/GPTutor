@@ -1,18 +1,18 @@
 import bridge from "@vkontakte/vk-bridge";
 
 class PurchaseService {
-  showOrderBox(item: string) {
-    bridge
+  async showOrderBox(item: string) {
+    return await bridge
       .send("VKWebAppShowOrderBox", {
         type: "item",
         item: item,
       })
-      .then((data) => {
-        console.log(data);
+      .then((data: any) => {
+        return data.success;
       })
       .catch((error) => {
-        // Ошибка
         console.log(error);
+        return false;
       });
   }
 }

@@ -15,7 +15,7 @@ import { appService } from "$/services/AppService";
 import { subscriptionsController } from "$/entity/subscriptions";
 import { VkStorageService } from "$/services/VkStorageService";
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
-import { userAgreement } from "$/entity/user/UserAgreement";
+import { userInfo } from "$/entity/user/UserInfo";
 import { listenResize } from "./resizeWindow";
 import { additionalRequests } from "$/entity/additionalRequest/AdditionalRequests";
 import { platformAdapter } from "$/services/PlatformAdapterService";
@@ -40,7 +40,7 @@ async function VKInit() {
   });
 
   if (appService.isStableArt()) {
-    await userAgreement.getUserImageAgreement();
+    await userInfo.getUserImageAgreement();
   }
   await adService.showBannerAd();
   if (appService.isGPTutor()) {
@@ -52,6 +52,8 @@ async function VKInit() {
 platformAdapter
   .webAppInit()
   .then(async () => {
+    await userInfo.getUserBalance();
+
     if (appService.isVK()) {
       await VKInit();
     }

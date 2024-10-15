@@ -23,8 +23,11 @@ public class PurchaseService {
     Map<String, PurchaseItem> items = new HashMap<>();
 
     PurchaseService() {
-        items.put("subscription_1", new PurchaseItem("Расширение функционала на месяц", 12));
-        items.put("subscription_2", new PurchaseItem("Отключение ограничений на месяц", 12));
+        items.put("energy_100000", new PurchaseItem("Покупка 100,000 energy ⚡", 30));
+        items.put("energy_200000", new PurchaseItem("Покупка 200,000 energy ⚡", 60));
+        items.put("energy_400000", new PurchaseItem("Покупка 400,000 energy ⚡", 120));
+        items.put("energy_1000000", new PurchaseItem("Покупка 1,000,000 energy ⚡", 300));
+        items.put("energy_5000000", new PurchaseItem("Покупка 5,000,000 energy ⚡", 1500));
     }
 
     public PurchaseItem getItem(String itemName) {

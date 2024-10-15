@@ -3,13 +3,10 @@ import React from "react";
 import {
   Button,
   Card,
-  Checkbox,
   Div,
   FormItem,
   Spacing,
   Textarea,
-  Text,
-  Link,
 } from "@vkontakte/vkui";
 import { Icon24MagicWandOutline } from "@vkontakte/icons";
 import classes from "$/panels/ImageGeneration/ImageGeneration.module.css";
@@ -18,7 +15,6 @@ import { PromptStyles } from "$/panels/ImageGeneration/PromptStyles";
 import { useNavigationContext } from "$/NavigationContext";
 import { attempts } from "$/entity/attempts";
 import { useGenerateImage } from "$/hooks/useGenerateImage";
-import { userAgreement } from "$/entity/user/UserAgreement";
 import { AgreementBlock } from "$/panels/ImageGeneration/AgreementBlock";
 
 function MainControls() {

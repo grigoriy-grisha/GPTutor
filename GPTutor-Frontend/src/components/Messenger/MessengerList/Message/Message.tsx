@@ -1,6 +1,13 @@
 import React, { memo } from "react";
 
-import { classNames, Div, IconButton, Text } from "@vkontakte/vkui";
+import {
+  classNames,
+  Div,
+  IconButton,
+  Spacing,
+  Text,
+  Title,
+} from "@vkontakte/vkui";
 import { Icon24CheckCircleOutline } from "@vkontakte/icons";
 
 import { GptMessage } from "$/entity/GPT";
@@ -71,6 +78,10 @@ function Message({ chatGpt, message }: IProps) {
             </div>
           </div>
           <MessengerParagraph message={message} />
+          <Spacing size={12} />
+          {!!message.energy.get() && (
+            <Title level="3">Затрачено {message.energy} ⚡</Title>
+          )}
         </div>
       </Div>
     </div>

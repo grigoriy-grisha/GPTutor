@@ -1,6 +1,7 @@
 import bridge from "@vkontakte/vk-bridge";
 
 import ReactivePromise from "./ReactivePromise";
+import { appService } from "$/services/AppService";
 
 function fallbackCopyTextToClipboard(text: string) {
   const textArea = document.createElement("textarea");
@@ -20,11 +21,13 @@ function fallbackCopyTextToClipboard(text: string) {
 }
 
 export class CopyService {
-  copyToClickBoard$ = ReactivePromise.create((text: string) =>
-    this.onCopy(text)
-  );
+  copyToClickBoard$ = ReactivePromise.create(this.onCopy);
 
   onCopy(text: string) {
+    if (appService.isTG()) {
+      fallbackCopyTextToClipboard(text);
+      return Promise.resolve({ result: true });
+    }
     return bridge.send("VKWebAppCopyText", { text });
   }
 }

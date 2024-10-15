@@ -18,6 +18,9 @@ import {
   Title,
 } from "@vkontakte/vkui";
 import { Icon28Cancel } from "@vkontakte/icons";
+import { useNavigationContext } from "$/NavigationContext";
+import { userInfo } from "$/entity/user/UserInfo";
+import { appService } from "$/services/AppService";
 
 interface IProps {
   chatGpt: ChatGptTemplate;
@@ -42,6 +45,9 @@ function MessengerWriteBar({
 }: IProps) {
   const hasSelectedMessages = chatGpt.hasSelectedMessages$.get();
 
+  const { goToGPTutorProfile } = useNavigationContext();
+  const isAvailableBalance = userInfo.isAvailableBalance();
+
   return (
     <div className={classes.container}>
       <div style={{ width: "100%" }}>
@@ -49,6 +55,47 @@ function MessengerWriteBar({
         <div style={{ display: hasSelectedMessages ? "block" : "none" }}>
           <SelectedMessagesBar chatGpt={chatGpt} />
         </div>
+        {!isAvailableBalance && (
+          <>
+            <Separator wide />
+            <Div className={classes.containerTg}>
+              <div>
+                <Title level="3" className={classes.title} Component="h3">
+                  У вас закончился баланс!
+                </Title>
+                <span>
+                  Приходите завтра, через сутки, пополним вам баланс на 10,000
+                  ⚡!
+                </span>
+              </div>
+
+              {appService.isTG() ? (
+                <Button
+                  href="https://t.me/DeepGPTBot/"
+                  target="_blank"
+                  size="m"
+                  style={{
+                    background: "var(--vkui--color_accent_orange--active)",
+                    color: "#FF8C00 !important",
+                  }}
+                >
+                  Пополнить баланс
+                </Button>
+              ) : (
+                <Button
+                  size="m"
+                  style={{
+                    background: "var(--vkui--color_accent_orange--active)",
+                    color: "#FF8C00 !important",
+                  }}
+                  onClick={goToGPTutorProfile}
+                >
+                  Пополнить баланс
+                </Button>
+              )}
+            </Div>
+          </>
+        )}
         <div style={{ display: !hasSelectedMessages ? "block" : "none" }}>
           {!tgService.isSeeTg$.get() && (
             <>

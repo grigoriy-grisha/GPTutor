@@ -2,6 +2,7 @@ package com.chatgpt.services;
 
 import com.chatgpt.Exceptions.NotAFoundException;
 import com.chatgpt.entity.SubscriptionImages;
+import com.chatgpt.entity.responses.OrderChangeResponse;
 import com.chatgpt.entity.responses.SubscriptionsChangeResponse;
 import com.chatgpt.repositories.SubscriptionsImagesRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,9 @@ import java.util.Objects;
 
 @Service
 public class SubscriptionsImagesService {
+
+    @Autowired
+    DeepService deepService;
 
     @Autowired
     SubscriptionsImagesRepository subscriptionsImagesRepository;
@@ -48,7 +52,17 @@ public class SubscriptionsImagesService {
         return new SubscriptionsChangeResponse(
                 Integer.parseInt(allRequestParams.get("subscription_id"))
         );
+    }
 
+    public OrderChangeResponse orderStatusChange(Map<String, String> allRequestParams) throws Exception {
+        var energy = allRequestParams.get("item").replace("energy_", "");
+
+
+        deepService.updateUserToken("add", Integer.parseInt(energy));
+
+        return new OrderChangeResponse(
+                Integer.parseInt(allRequestParams.get("order_id"))
+        );
     }
 
     public SubscriptionImages getOrCreateSubscriptions(String vkUser, String subscriptionName) {
@@ -133,5 +147,24 @@ public class SubscriptionsImagesService {
             System.out.println(e.toString());
             return subscription;
         }
+    }
+
+    public String getUserBalance() {
+        System.out.println("hasUser");
+        System.out.println(deepService.hasUser());
+        if (deepService.hasUser()) {
+            deepService.getAward();
+            return deepService.getUserToken();
+        }
+
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        String userId = (String) request.getAttribute("vkUserId");
+
+        if (isAvailableSubscription(userId, "subscription_2")) {
+            deepService.updateUserToken("add", 100000);
+        }
+
+        return deepService.getUserToken();
     }
 }

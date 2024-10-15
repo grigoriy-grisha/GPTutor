@@ -28,6 +28,7 @@ function MessengerList({
   const messages = chatGpt.messages$.get();
   const isStopped = chatGpt.timer.isStopped$.get();
   const isDisableUsing = !chatGpt.subscriptionGPT.$isAllowSendMessage.get();
+  const blockActions = chatGpt.isBlockActions$.get();
 
   if (messages.length === 0) {
     return (
@@ -36,7 +37,9 @@ function MessengerList({
           header={placeholderHeader || "Начните диалог"}
           action={
             <Button
-              disabled={startIsDisabled || !isStopped || isDisableUsing}
+              disabled={
+                startIsDisabled || !isStopped || isDisableUsing || blockActions
+              }
               aria-label={startText || "Начать"}
               mode="outline"
               size="m"

@@ -2,32 +2,18 @@ import { sig } from "dignals";
 import { getModels } from "$/api/models";
 import { appService } from "$/services/AppService";
 
-const freeModels = [
-  {
-    model: "gpt-3.5-turbo",
-    description: "GPT-3.5. Основная модель. Обучена до 2021 года",
-    lang: "Имеется поддержка Русского языка",
-    active: true,
-  },
-  {
-    model: "wizardLM_2_7B",
-    description:
-      "Чуть-чуть слабее, чем GPT-3.5. Модель от microsoft. Хорошо подходит для обычного общения",
-    lang: "Имеется поддержка Русского языка",
-    active: true,
-  },
-];
-
 const tgModels = [
   {
     model: "gpt-4o-mini",
     description:
       "GPT-4o-mini. Младшая модель GPT-4o. Мощная и очень дешевая и быстрая, обучена до 2023 года.",
     lang: "Имеется поддержка Русского языка",
+    amount: 70,
     active: true,
   },
   {
     model: "gpt-4o-plus",
+    amount: 1000,
     description:
       "GPT-4o. Очень умная модель, очень умная, обучена до 2023 года.",
     lang: "Имеется поддержка Русского языка",
@@ -35,6 +21,7 @@ const tgModels = [
   },
   {
     model: "o1-preview",
+    amount: 5000,
     description:
       "O1-Preview. Самая умная модель на данный момент, умеет 'размышлять' перед генерацией ответа, пишет очень развернутые ответы, очень дорогая модель, обучена до 2024 года.",
     lang: "Имеется поддержка Русского языка",
@@ -42,27 +29,39 @@ const tgModels = [
   },
   {
     model: "o1-mini",
+    amount: 800,
     description:
       "O1-Mini. Младшая модель o1, меет 'размышлять' перед генерацией ответа, пишет очень развернутые ответы, стоит, как gpt-4o. Обучена до 2024 года.",
     lang: "Имеется поддержка Русского языка",
     active: true,
   },
   {
-    model: "claude-3",
+    model: "claude-3-opus",
+    amount: 6000,
     description:
-      "Сlaude-3. Мощная модель, отлично пишет тексты, вживается в роли, которые ей предоставят и великолепно работает с художественным текстом. Обучена до 2023 года.",
+      "claude-3-opus. Мощная модель, отлично пишет тексты, вживается в роли, которые ей предоставят и великолепно работает с художественным текстом. Обучена до 2023 года.",
     lang: "Имеется поддержка Русского языка",
     active: true,
   },
   {
-    model: "claude-3.5",
+    model: "claude-3-5-sonnet",
+    amount: 1000,
     description:
-      "Сlaude-3.5. Очень Мощная модель, гораздо умнее, чем Сlaude-3. Отлично пишет тексты, вживается в роли, которые ей предоставят и великолепно работает с художественным текстом. Обучена до 2023 года.",
+      "Сlaude-3.5-sonnet .Самая мощная модель мощная модель Сlaude, отлично пишет тексты, вживается в роли, которые ей предоставят и великолепно работает с художественным текстом. Обучена до 2023 года.",
+    lang: "Имеется поддержка Русского языка",
+    active: true,
+  },
+  {
+    model: "claude-3-haiku",
+    amount: 100,
+    description:
+      "Сlaude-3-haiku. Легковесная быстрая модель Сlaude, отлично пишет тексты, вживается в роли, которые ей предоставят и великолепно работает с художественным текстом. Обучена до 2023 года.",
     lang: "Имеется поддержка Русского языка",
     active: true,
   },
   {
     model: "gpt-3.5-turbo",
+    amount: 50,
     description:
       "GPT-3.5. Самая базовая модель. Очень дешевая и быстрая. Обучена до 2021 года",
     lang: "Имеется поддержка Русского языка",
@@ -70,6 +69,7 @@ const tgModels = [
   },
   {
     model: "meta-llama/Meta-Llama-3.1-405B",
+    amount: 500,
     description:
       "Самая крупная LLama модель. Очень Мощная модель, аналог GPT-4. Обучена до 2024 года.",
     lang: "Имеется частичная поддержка Русского языка",
@@ -77,17 +77,17 @@ const tgModels = [
   },
   {
     model: "meta-llama/Meta-Llama-3.1-8B",
+    amount: 20,
     description:
       "Самая слабая Llama, но почти бесплатная модель, подойдет для самых простых вещей. Обучена до 2024 года.",
     lang: "Имеется поддержка Русского языка",
     active: true,
   },
-];
+].sort((a, b) => a.amount - b.amount);
 
 class GptModels {
-  currentModel$ = sig("gpt-3.5-turbo");
+  currentModel$ = sig("gpt-4o-mini");
 
-  freeModels = sig(freeModels);
   models = sig([
     {
       model: "gpt-4o-mini",
@@ -115,20 +115,6 @@ class GptModels {
 
   getModel() {
     return this.currentModel$.get();
-  }
-
-  async loadModels() {
-    if (appService.isTG()) {
-      return;
-    }
-
-    const models = await getModels();
-    this.models.set([
-      ...this.models.get(),
-      ...models
-        .filter((item) => !item.free)
-        .sort((a, b) => Number(b.active) - Number(a.active)),
-    ]);
   }
 }
 

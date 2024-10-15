@@ -46,7 +46,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         String authorizationHeader = request.getHeader("Authorization");
-
+        System.out.println(authorizationHeader);
         if (authorizationHeader != null) {
 
             if (authorizationHeader.startsWith("Bearer")) {

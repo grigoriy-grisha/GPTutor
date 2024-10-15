@@ -13,6 +13,7 @@ import {
 import {
   Icon24TreeNodesOutline,
   Icon28HieroglyphCharacterOutline,
+  Icon28MoneyCircleOutline,
 } from "@vkontakte/icons";
 
 import classes from "$/panels/ChatSettings/ModelsForm/ModelsForm.module.css";
@@ -26,6 +27,7 @@ interface IProps {
   description: string;
   lang: string;
   disable: boolean;
+  amount: number;
 }
 
 function ModelCard({
@@ -36,6 +38,7 @@ function ModelCard({
   description,
   lang,
   disable,
+  amount,
 }: IProps) {
   return (
     <Card
@@ -69,6 +72,10 @@ function ModelCard({
         <Separator />
         <SimpleCell before={<Icon28HieroglyphCharacterOutline />}>
           {lang}
+        </SimpleCell>
+        <Separator />
+        <SimpleCell before={<Icon28MoneyCircleOutline />}>
+          1000 Токенов = {amount} ⚡
         </SimpleCell>
       </Div>
     </Card>

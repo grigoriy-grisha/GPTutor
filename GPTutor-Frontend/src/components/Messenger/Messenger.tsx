@@ -11,6 +11,7 @@ import { AppContainer } from "../AppContainer";
 
 import { useMessenger } from "./hooks/useMessenger";
 import ScrollDown from "./ScrollDown";
+import { userInfo } from "$/entity/user/UserInfo";
 
 interface IProps {
   hideDeleteDialog?: boolean;
@@ -47,15 +48,19 @@ function Messenger({
   const { isTyping, scrollRef, showScrollDown, handlerSend, scrollToBottom } =
     useMessenger({ chatGpt });
 
-  const isDisableSubscription = subscriptionsController.isDisable();
+  useEffect(() => {
+    chatGpt.disableTimer();
+    chatGpt.updateMaxContentWords();
+    return () => chatGpt.closeDelay();
+  }, []);
+
+  const isAvailableBalance = userInfo.isAvailableBalance();
+
+  console.log({ isAvailableBalance });
 
   useEffect(() => {
-    if (!isDisableSubscription) {
-      chatGpt.disableTimer();
-      chatGpt.updateMaxContentWords();
-    }
-    return () => chatGpt.closeDelay();
-  }, [isDisableSubscription]);
+    chatGpt.isBlockActions$.set(!isAvailableBalance);
+  }, [isAvailableBalance]);
 
   return (
     <AppContainer

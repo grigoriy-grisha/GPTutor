@@ -4,6 +4,7 @@ import { GPTRoles } from "./types";
 let id = 0;
 
 export class GptMessage {
+  energy = sig(0);
   content$: Signal<string>;
   isSelected$ = sig<boolean>(false);
 
@@ -42,4 +43,8 @@ export class GptMessage {
   toggleRunOutOff() {
     this.isRunOutOfContext.set(true);
   }
+
+  setEnergy = (energy: number) => {
+    this.energy.set(energy);
+  };
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Banner,
   Card,
   Div,
   Headline,
@@ -10,15 +9,17 @@ import {
   Spacing,
   Title,
 } from "@vkontakte/vkui";
-import { Icon32DonutCircleFillYellow } from "@vkontakte/icons";
 
 import { vkUser } from "$/entity/user";
-import { subscriptionsController } from "$/entity/subscriptions";
-
-import { SubscriptionAction } from "./SubscriptionAction";
-import { SubscriptionText } from "./SubscriptionText";
 
 import classes from "../GPTutorProfile.module.css";
+import { userInfo } from "$/entity/user/UserInfo";
+import ProductItem from "$/panels/GPTutorProfile/Subscription/ProductItem";
+import { appService } from "$/services/AppService";
+import { subscriptionsController } from "$/entity/subscriptions";
+import { Icon32DonutCircleFillYellow } from "@vkontakte/icons";
+import { SubscriptionAction } from "$/panels/GPTutorProfile/Subscription/SubscriptionAction";
+import { SubscriptionText } from "$/panels/Profile/Subscription/SubscriptionText";
 
 function Subscription() {
   const expireDate = subscriptionsController.getExpireDate();
@@ -36,38 +37,18 @@ function Subscription() {
             >{`${vkUser.first_name} ${vkUser.last_name}`}</Title>
             <div className={classes.subtitleText}>
               <div>
-                Подписка:{" "}
+                Ваш баланс:{" "}
                 <Headline
                   style={{ display: "inline" }}
-                  level="2"
+                  level="1"
                   weight="1"
                   Component="h4"
                 >
-                  {subscriptionsController.isDisable()
-                    ? "Неактивна"
-                    : "Активна"}
+                  {Intl.NumberFormat("en").format(userInfo.balance.get())} ⚡
                 </Headline>
               </div>
-              {!subscriptionsController.isDisable() && (
-                <div>
-                  Срок подписки до:{" "}
-                  <Headline
-                    style={{ display: "inline" }}
-                    level="2"
-                    weight="1"
-                    Component="h4"
-                  >
-                    {expireDate?.toLocaleDateString()}
-                  </Headline>
-                </div>
-              )}
               <div>
-                <Link
-                  target="_blank"
-                  href="https://vk.com/settings?act=payments&section=subscriptions"
-                >
-                  Управление подписками
-                </Link>
+                Баланс автоматически пополняется раз в сутки на 10,000 ⚡
               </div>
             </div>
           </div>
@@ -76,15 +57,48 @@ function Subscription() {
       <Spacing size={12} />
       <Card mode="shadow">
         <Div>
-          <Placeholder
-            icon={<Icon32DonutCircleFillYellow width={56} height={56} />}
-            header="Пользуйтесь без ограничений!"
-            action={<SubscriptionAction />}
-          >
-            <SubscriptionText />
-          </Placeholder>
+          <Title className={classes.cardName} level="2">
+            Хотите скидку 50%?{" "}
+            <Link href="https://t.me/+VMrsvzEcp2czOWJi" target="_blank">
+              Напишите нам в ТГ! ⚡⚡⚡
+            </Link>
+          </Title>
         </Div>
       </Card>
+      {!appService.isTG() && (
+        <>
+          <Spacing size={12} />
+          <Title Component="h1">Пополнение баланса ⚡</Title>
+          <Spacing size={12} />
+          <div className={classes.productContainer}>
+            <ProductItem
+              description=" Хватит на 2-3 недели использования недорогих моделей: gpt-4o-mini, claude-3-haiku, Llama-3.1."
+              amount={100000}
+              value={30}
+            />
+            <ProductItem
+              description="Хватит на 2-3 недели использования средних моделей: o1-mini, gpt-4o, claude-3.5-sonnet"
+              amount={200000}
+              value={60}
+            />
+            <ProductItem
+              description="Хватит на несколько месяцев использования недорогих моделей: gpt-4o-mini, claude-3-haiku, Llama-3.1."
+              amount={400000}
+              value={120}
+            />
+            <ProductItem
+              description="Хватит на несколько месяцев использования средних моделей: o1-mini, gpt-4o, claude-3.5-sonnet"
+              amount={1000000}
+              value={300}
+            />
+            <ProductItem
+              description="Хватит на месяц использования самых мощных и дорогих моделей: o1-preview, claude-3-opus"
+              amount={5000000}
+              value={1500}
+            />
+          </div>
+        </>
+      )}
     </Div>
   );
 }

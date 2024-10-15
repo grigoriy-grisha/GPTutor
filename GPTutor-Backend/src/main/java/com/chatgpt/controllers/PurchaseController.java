@@ -39,6 +39,16 @@ public class PurchaseController {
         }
 
         if (
+                Objects.equals(allRequestParams.get("notification_type"), "get_item") ||
+                        Objects.equals(allRequestParams.get("notification_type"), "get_item_test")
+        ) {
+            System.out.println("get_item");
+            purchaseService.isAccessSig(allRequestParams);
+
+            return new PurchaseResponse<>(purchaseService.getItem(allRequestParams.get("item")));
+        }
+
+        if (
                 Objects.equals(allRequestParams.get("notification_type"), "subscription_status_change") ||
                         Objects.equals(allRequestParams.get("notification_type"), "subscription_status_change_test")
         ) {
@@ -50,6 +60,19 @@ public class PurchaseController {
             System.out.println("subscription_status_change");
 
             return new PurchaseResponse<>(subscriptionsImagesService.subscriptionStatusChange(allRequestParams));
+        }
+
+        if (
+                Objects.equals(allRequestParams.get("notification_type"), "order_status_change") ||
+                        Objects.equals(allRequestParams.get("notification_type"), "order_status_change_test")
+        ) {
+            purchaseService.isAccessSig(allRequestParams);
+
+            request.setAttribute("vkAppId", allRequestParams.get("app_id"));
+            request.setAttribute("isTG", false);
+            request.setAttribute("vkUserId", allRequestParams.get("user_id"));
+
+            return new PurchaseResponse<>(subscriptionsImagesService.orderStatusChange(allRequestParams));
         }
 
         return null;
