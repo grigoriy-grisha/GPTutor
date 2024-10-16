@@ -1,6 +1,26 @@
 version: '3.9'
 
 services:
+  frontend-gptutor-prod-tg:
+    env_file:
+      - .env
+    build:
+      context: GPTutor-Frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_PLATFORM: "TG"
+        REACT_APP: 'GPTutor'
+        REACT_APP_BACKEND_HOST: 'https://prod.${HOST}/'
+        REACT_APP_BACKEND_HOST_WS: "wss://prod.${HOST}/websocket/"
+    container_name: frontend-gptutor-prod-tg
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend-gptutor-prod-tg.rule=Host(`deep-gpt.prod.${HOST}`)"
+      - "traefik.http.routers.frontend-gptutor-prod-tg.entrypoints=websecure"
+      - "traefik.http.routers.frontend-gptutor-prod-tg.tls.certresolver=myresolver"
+    networks:
+      - trfk
+
   frontend-gptutor-prod:
     env_file:
       - .env
@@ -8,6 +28,7 @@ services:
       context: GPTutor-Frontend
       dockerfile: Dockerfile
       args:
+        REACT_APP_PLATFORM: "VK"
         REACT_APP: 'GPTutor'
         REACT_APP_BACKEND_HOST: 'https://prod.${HOST}/'
         REACT_APP_BACKEND_HOST_WS: "wss://prod.${HOST}/websocket/"
@@ -27,6 +48,7 @@ services:
       context: GPTutor-Frontend
       dockerfile: Dockerfile
       args:
+        REACT_APP_PLATFORM: "VK"
         REACT_APP: 'Stable Art'
         REACT_APP_BACKEND_HOST: 'https://prod.${HOST}/'
         REACT_APP_BACKEND_HOST_WS: "wss://prod.${HOST}/websocket/"
