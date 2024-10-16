@@ -31,7 +31,7 @@ const tgModels = [
     model: "o1-mini",
     amount: 800,
     description:
-      "O1-Mini. Младшая модель o1, меет 'размышлять' перед генерацией ответа, пишет очень развернутые ответы, стоит, как gpt-4o. Обучена до 2024 года.",
+      "O1-Mini. Младшая модель o1, умеет 'размышлять' перед генерацией ответа, пишет очень развернутые ответы, стоит, как gpt-4o. Обучена до 2024 года.",
     lang: "Имеется поддержка Русского языка",
     active: true,
   },
@@ -83,7 +83,7 @@ const tgModels = [
     lang: "Имеется поддержка Русского языка",
     active: true,
   },
-].sort((a, b) => a.amount - b.amount);
+].sort((a, b) => b.amount - a.amount);
 
 class GptModels {
   currentModel$ = sig("gpt-4o-mini");

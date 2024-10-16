@@ -28,7 +28,8 @@ function Subscription() {
     <Div style={{ width: "100vw" }}>
       <Card mode="shadow">
         <Div className={classes.cardContainer}>
-          <Image src={vkUser.photo_200} size={96} />
+          {appService.isVK() && <Image src={vkUser.photo_200} size={96} />}
+
           <div className={classes.cardText}>
             <Title
               className={classes.cardName}
@@ -58,7 +59,7 @@ function Subscription() {
       <Card mode="shadow">
         <Div>
           <Title className={classes.cardName} level="2">
-            Хотите скидку 50%?{" "}
+            Хочешь скидку 50%?{" "}
             <Link href="https://t.me/+VMrsvzEcp2czOWJi" target="_blank">
               Напишите нам в ТГ! ⚡⚡⚡
             </Link>

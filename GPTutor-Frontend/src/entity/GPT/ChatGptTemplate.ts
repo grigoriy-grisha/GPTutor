@@ -222,6 +222,13 @@ export abstract class ChatGptTemplate {
       ).map(this.toApiMessage);
     }
 
+    if (gptModels.currentModel$.get().startsWith("o1")) {
+      return this.filterInMemoryMessages([
+        new GptMessage(this.systemMessage.content$.get(), GPTRoles.user),
+        ...this.getIsNotRunOutOfContextMessages$.get(),
+      ]).map(this.toApiMessage);
+    }
+
     return this.filterInMemoryMessages([
       this.systemMessage,
       ...this.getIsNotRunOutOfContextMessages$.get(),
