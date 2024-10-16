@@ -5,7 +5,6 @@ import {
   Headline,
   Image,
   Link,
-  Placeholder,
   Spacing,
   Title,
 } from "@vkontakte/vkui";
@@ -17,9 +16,6 @@ import { userInfo } from "$/entity/user/UserInfo";
 import ProductItem from "$/panels/GPTutorProfile/Subscription/ProductItem";
 import { appService } from "$/services/AppService";
 import { subscriptionsController } from "$/entity/subscriptions";
-import { Icon32DonutCircleFillYellow } from "@vkontakte/icons";
-import { SubscriptionAction } from "$/panels/GPTutorProfile/Subscription/SubscriptionAction";
-import { SubscriptionText } from "$/panels/Profile/Subscription/SubscriptionText";
 
 function Subscription() {
   const expireDate = subscriptionsController.getExpireDate();
@@ -52,6 +48,19 @@ function Subscription() {
                 Баланс автоматически пополняется раз в сутки на 10,000 ⚡
               </div>
             </div>
+            <div className={classes.subtitleText}>
+              <div>
+                Ваш ID:
+                <Headline
+                  style={{ display: "inline" }}
+                  level="1"
+                  weight="1"
+                  Component="h4"
+                >
+                  {vkUser.id}
+                </Headline>
+              </div>
+            </div>
           </div>
         </Div>
       </Card>
@@ -61,7 +70,7 @@ function Subscription() {
           <Title className={classes.cardName} level="2">
             Хочешь скидку 50%?{" "}
             <Link href="https://t.me/+VMrsvzEcp2czOWJi" target="_blank">
-              Напишите нам в ТГ! ⚡⚡⚡
+              Напишите нам! ⚡⚡⚡
             </Link>
           </Title>
         </Div>
