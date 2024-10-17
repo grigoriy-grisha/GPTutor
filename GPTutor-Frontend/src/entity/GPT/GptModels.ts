@@ -76,11 +76,27 @@ const tgModels = [
     active: true,
   },
   {
+    model: "microsoft/WizardLM-2-7B",
+    amount: 20,
+    description:
+      "WizardLM простая и быстрая модель, почти бесплатная модель. Обучена до 2023 года.",
+    lang: "Имеется поддержка Русского языка",
+    active: true,
+  },
+  {
+    model: "microsoft/WizardLM-2-8x22B",
+    amount: 200,
+    description:
+      "WizardLM простая и быстрая модель, анлог GPT-3.5, почти бесплатная модель, подойдет для самых простых вещей. Обучена до 2023 года.",
+    lang: "Имеется частичная поддержка Русского языка",
+    active: true,
+  },
+  {
     model: "meta-llama/Meta-Llama-3.1-8B",
     amount: 20,
     description:
       "Самая слабая Llama, но почти бесплатная модель, подойдет для самых простых вещей. Обучена до 2024 года.",
-    lang: "Имеется поддержка Русского языка",
+    lang: "Имеется частичная поддержка Русского языка",
     active: true,
   },
 ].sort((a, b) => b.amount - a.amount);
