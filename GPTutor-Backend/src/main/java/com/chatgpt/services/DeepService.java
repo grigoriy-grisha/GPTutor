@@ -27,7 +27,7 @@ public class DeepService {
             return request.getAttribute("vkUserId").toString().substring(2);
         }
 
-        return request.getAttribute("vkUserId").toString();
+        return "VK" + request.getAttribute("vkUserId").toString();
     }
 
     public void updateUserToken(String operation, int amount) {
