@@ -53,6 +53,7 @@ def vk_doc_question():
 @app.post("/dalle")
 def dalle():
     try:
+        print(request.json)
         result = generate_dalle(
             prompt=request.json["prompt"],
         )
