@@ -54,33 +54,33 @@ def vk_doc_question():
 def dalle():
     print(request.json)
 
-    # try:
-    #     result = generate_dalle(
-    #         prompt=request.json["prompt"],
-    #     )
-    #
-    #     print(result)
-    #
-    #     if result['image'] is None:
-    #         raise Exception()
-    #
-    #     return {"output": [result['image']]}
-    # 
-    # except Exception as e:
-    #     print(e)
-    #     return txt2img(
-    #         prompt=request.json["prompt"],
-    #         model=request.json["modelId"],
-    #         negative_prompt=request.json["negativePrompt"],
-    #         scheduler=request.json["scheduler"],
-    #         guidance_scale=request.json["guidanceScale"],
-    #         seed=request.json["seed"],
-    #         steps=request.json["numInferenceSteps"],
-    #     )
+    try:
+        result = generate_dalle(
+            prompt=request.json["prompt"],
+        )
+
+        print(result)
+
+        if result['image'] is None:
+            raise Exception()
+
+        return {"output": [result['image']]}
+
+    except Exception as e:
+        print(e)
+        return txt2img(
+            prompt=request.json["prompt"],
+            model=request.json["modelId"],
+            negative_prompt=request.json["negativePrompt"],
+            scheduler=request.json["scheduler"],
+            guidance_scale=request.json["guidanceScale"],
+            seed=request.json["seed"],
+            steps=request.json["numInferenceSteps"],
+        )
 
 
 def run_flask():
-    app.run(debug=False, port=1337, host="0.0.0.0")
+    app.run(debug=True, port=1337, host="0.0.0.0")
 
 
 if __name__ == '__main__':
