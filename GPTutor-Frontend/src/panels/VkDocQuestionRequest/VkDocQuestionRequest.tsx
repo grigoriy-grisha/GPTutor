@@ -50,7 +50,6 @@ function VkDocQuestionRequest({ id }: IProps) {
               )
             }
           />
-          <Spacing size={12} />
           <Separator wide />
           <Spacing size={8} />
           <Title level="2">Источники:</Title>

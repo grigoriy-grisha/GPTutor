@@ -74,7 +74,10 @@ function AnecdoteGeneration({ id }: IProps) {
                     <Div className={classes.subscription}>
                       <span>
                         <Title level="2">Наш паблик 🤡</Title>
-                        <Link href="https://vk.com/nuuchetam" target="_blank">
+                        <Link
+                          href="https://vk.com/club228051112"
+                          target="_blank"
+                        >
                           <Spacing size={4} />
                           Подпишитесь на наше юмористическое сообщестово!
                           <Spacing size={10} />

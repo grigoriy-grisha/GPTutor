@@ -150,10 +150,7 @@ public class SubscriptionsImagesService {
     }
 
     public String getUserBalance() {
-        System.out.println("hasUser");
-        System.out.println(deepService.hasUser());
         if (deepService.hasUser()) {
-            deepService.getAward();
             return deepService.getUserToken();
         }
 

@@ -33,7 +33,7 @@ public class DeepService {
     public void updateUserToken(String operation, int amount) {
         String userId = this.getUserId();
 
-        String url = String.format(deepUrl + "/token/user?userId=%s&masterToken=%s", userId, this.masterToken);
+        String url = String.format(deepUrl + "/token?userId=%s&masterToken=%s", userId, this.masterToken);
         System.out.println(url);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -52,7 +52,7 @@ public class DeepService {
         String userId = this.getUserId();
         System.out.println(userId);
 
-        String url = String.format(deepUrl + "/token/user?userId=%s&masterToken=%s", userId, this.masterToken);
+        String url = String.format(deepUrl + "/token?userId=%s&masterToken=%s", userId, this.masterToken);
         System.out.println(url);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -64,7 +64,7 @@ public class DeepService {
     public boolean hasUser() {
         String userId = this.getUserId();
 
-        String url = String.format(deepUrl + "/token/user/has?userId=%s&masterToken=%s", userId, this.masterToken);
+        String url = String.format(deepUrl + "/token/has?userId=%s&masterToken=%s", userId, this.masterToken);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -85,7 +85,7 @@ public class DeepService {
     String getAdminToken() {
         String userId = this.getUserId();
 
-        String url = String.format(deepUrl + "/token/admin?userId=%s&masterToken=%s", userId, this.masterToken);
+        String url = String.format(deepUrl + "/token?userId=%s&masterToken=%s", userId, this.masterToken);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -101,28 +101,6 @@ public class DeepService {
             return jsonMap.get("id").asText();
         } catch (Exception e) {
             return "";
-        }
-    }
-
-    void getAward() {
-        String userId = this.getUserId();
-
-        String url = String.format(deepUrl + "/referral/award?userId=%s&masterToken=%s", userId, this.masterToken);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
-
-        String responseBody = responseEntity.getBody();
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            JsonNode jsonMap = mapper.readTree(responseBody);
-            System.out.println("award");
-            System.out.println(jsonMap.get("isAward").asBoolean());
-            jsonMap.get("isAward").asBoolean();
-        } catch (Exception e) {
         }
     }
 }
