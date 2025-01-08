@@ -2,10 +2,7 @@ package com.chatgpt.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -120,34 +116,64 @@ public class AuthCheckerService {
         return value;
     }
 
-    public Boolean isUrlCheck(String url) throws MalformedURLException {
-        return !getQueryParams(new URL(url)).get("vk_app_id").isEmpty();
+    public Boolean tgAuthCheck(String telegramInitData) throws UnsupportedEncodingException {
+       Pair<String, String> result = parseInitData(telegramInitData);
+       String hash = result.getFirst();
+       String initData = result.getSecond();
+       byte[] secretKey = new HmacUtils("HmacSHA256", "WebAppData").hmac(botToken);
+       String initDataHash = new HmacUtils("HmacSHA256", secretKey).hmacHex(initData);
+
+       return initDataHash.equals(hash);
     }
 
-    public Boolean tgAuthCheck(String initData) {
-        List<NameValuePair> params = URLEncodedUtils.parse(initData, StandardCharsets.UTF_8);
-        System.out.println(params);
-        List<NameValuePair> preparedData = new java.util.ArrayList<>(params
-                .stream()
-                .filter(e -> !e.getName().equals("hash"))
-                .toList());
+     private static Pair<String, String> parseInitData(String telegramInitData) throws UnsupportedEncodingException {
+            Map<String, String> initData = parseQueryString(telegramInitData);
+            initData = sortMap(initData);
+            String hash = initData.remove("hash");
 
-        preparedData
-                .sort(Comparator.comparing(NameValuePair::getName));
+            List<String> separatedData = initData.entrySet().stream()
+                    .map((v) -> v.getKey() + "=" + v.getValue())
+                    .collect(Collectors.toList());
+            return new Pair<>(hash, String.join("\n", separatedData));
+        }
 
-        String dataCheckString = String.join("\n", preparedData
-                .stream()
-                .map(e -> e.getName() + "=" + e.getValue())
-                .toList());
+        private static Map<String, String> parseQueryString(String queryString) throws UnsupportedEncodingException {
+            Map<String, String> parameters = new TreeMap<>();
+            String[] pairs = queryString.split("&");
+            for (String pair : pairs) {
+                int idx = pair.indexOf("=");
+                String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), StandardCharsets.UTF_8) : pair;
+                String value = idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), StandardCharsets.UTF_8) : null;
+                parameters.put(key, value);
+            }
+            return parameters;
+        }
 
-        String botTokenData = "WebAppData";
-        byte[] hmacSecret = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, botTokenData).hmac(this.botToken);
+        private static Map<String, String> sortMap(Map<String, String> map) {
+            return new TreeMap<>(map);
+        }
 
-        String calculatedHash = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, hmacSecret).hmacHex(dataCheckString);
-        String presentedHash = params.get(4).getValue();
+        public static class Pair<F, S> {
+            private final F first;
+            private final S second;
 
-        return calculatedHash.equals(presentedHash);
-    }
+            public Pair(F first, S second) {
+                this.first = first;
+                this.second = second;
+            }
+
+            public F getFirst() {
+                return first;
+            }
+
+            public S getSecond() {
+                return second;
+            }
+
+            public static <F, S> Pair<F, S> of(F first, S second) {
+                return new Pair<>(first, second);
+            }
+        }
 
     public String getUserIdFromUrl(String encodedUrl) {
         try {
