@@ -1,13 +1,9 @@
-import asyncio
-from concurrent import futures
-
 from flask import Flask, Response, request
 
 from images.dalle3 import generate_dalle
 from images.prodia import txt2img
 from llm.index import create_completions
 from llm.models import models
-from vk.bot import run_long_pool
 from vk_docs.index import create_question_vk_doc
 
 app = Flask(__name__)
@@ -80,10 +76,8 @@ def dalle():
 
 
 def run_flask():
-    app.run(debug=True, port=1337, host="0.0.0.0")
+    app.run(debug=False, port=1337, host="0.0.0.0")
 
 
 if __name__ == '__main__':
-    with futures.ThreadPoolExecutor(max_workers=2) as executor:
-        future1 = executor.submit(run_long_pool)
-        future2 = executor.submit(run_flask)
+    run_flask()
