@@ -1,8 +1,7 @@
-from flask import Flask, Response, request
+from flask import Flask, request
 
 from images.dalle3 import generate_dalle
 from images.prodia import txt2img
-from llm.index import create_completions
 from vk_docs.index import create_question_vk_doc
 
 app = Flask(__name__)
@@ -10,13 +9,7 @@ app = Flask(__name__)
 
 @app.post('/llm')
 def llm_post():
-    return Response(
-        create_completions(
-            request.json["model"],
-            request.json["messages"]
-        ),
-        mimetype='text/event-stream;charset=UTF-8'
-    )
+    return None
 
 
 @app.get('/llm')
