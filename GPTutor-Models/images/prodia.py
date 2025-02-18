@@ -9,7 +9,7 @@ def txt2img(prompt, negative_prompt, model, scheduler, guidance_scale, steps, se
         client = Client()
         response = client.images.generate(
             model="flux",
-            prompt="a white siamese cat",
+            prompt=prompt,
             response_format="url"
         )
 
