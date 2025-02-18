@@ -5,7 +5,7 @@ from requests.exceptions import RequestException
 
 def txt2img(prompt, negative_prompt, model, scheduler, guidance_scale, steps, seed=randint(1, 10000)):
     try:
-        response = client.images.generate(
+        response = client.Images.generate(
             model="flux",
             prompt=prompt,
             response_format="url"
