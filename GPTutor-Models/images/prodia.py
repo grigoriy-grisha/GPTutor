@@ -1,13 +1,15 @@
-from g4f import client
 from random import randint
+
+from g4f import Client
 from requests.exceptions import RequestException
 
 
 def txt2img(prompt, negative_prompt, model, scheduler, guidance_scale, steps, seed=randint(1, 10000)):
     try:
-        response = client.Images.generate(
+        client = Client()
+        response = client.images.generate(
             model="flux",
-            prompt=prompt,
+            prompt="a white siamese cat",
             response_format="url"
         )
 
