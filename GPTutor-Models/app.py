@@ -3,7 +3,6 @@ from flask import Flask, Response, request
 from images.dalle3 import generate_dalle
 from images.prodia import txt2img
 from llm.index import create_completions
-from llm.models import models
 from vk_docs.index import create_question_vk_doc
 
 app = Flask(__name__)
@@ -22,7 +21,7 @@ def llm_post():
 
 @app.get('/llm')
 def llm_get():
-    return models
+    return []
 
 
 @app.post("/image")
