@@ -1,12 +1,13 @@
 from random import randint
 
 from g4f import Client
+from g4f.Provider import PollinationsAI
 from requests.exceptions import RequestException
 
 
 def txt2img(prompt, negative_prompt, model, scheduler, guidance_scale, steps, seed=randint(1, 10000)):
     try:
-        client = Client()
+        client = Client(provider=PollinationsAI)
         response = client.images.generate(
             model="dall-e-3",
             prompt=prompt,
