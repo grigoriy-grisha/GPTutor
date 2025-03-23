@@ -59,8 +59,7 @@ services:
 
 networks:
   trfk:
-    driver: overlay
-    external: true
+    driver: bridge
 
 volumes:
   desktop_volume:

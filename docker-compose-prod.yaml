@@ -122,5 +122,4 @@ volumes:
 
 networks:
   trfk:
-    driver: overlay
-    external: true
+    driver: bridge
