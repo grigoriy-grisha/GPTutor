@@ -43,16 +43,15 @@ def dalle():
     print(request.json)
 
     try:
-        result = generate_dalle(
+        return txt2img(
             prompt=request.json["prompt"],
+            model=request.json["modelId"],
+            negative_prompt=request.json["negativePrompt"],
+            scheduler=request.json["scheduler"],
+            guidance_scale=request.json["guidanceScale"],
+            seed=request.json["seed"],
+            steps=request.json["numInferenceSteps"],
         )
-
-        print(result)
-
-        if result['image'] is None:
-            raise Exception()
-
-        return {"output": [result['image']]}
 
     except Exception as e:
         print(e)

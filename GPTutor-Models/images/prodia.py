@@ -8,7 +8,7 @@ def txt2img(prompt, negative_prompt, model, scheduler, guidance_scale, steps, se
     try:
         client = Client()
         response = client.images.generate(
-            model="flux",
+            model="dall-e-3",
             prompt=prompt,
             response_format="url"
         )

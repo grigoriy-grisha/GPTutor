@@ -61,6 +61,26 @@ services:
     networks:
       - trfk
 
+  frontend-ai-humor-prod:
+    env_file:
+      - .env
+    build:
+      context: GPTutor-Frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_PLATFORM: "VK"
+        REACT_APP: 'AiHumor'
+        REACT_APP_BACKEND_HOST: 'https://prod.${HOST}/'
+        REACT_APP_BACKEND_HOST_WS: "wss://prod.${HOST}/websocket/"
+    container_name: frontend-ai-humor-prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ai-humor-stage.rule=Host(`ai-humor.prod.${HOST}`)"
+      - "traefik.http.routers.ai-humor-stage.entrypoints=websecure"
+      - "traefik.http.routers.ai-humor-stage.tls.certresolver=myresolver"
+    networks:
+      - trfk
+
   backend-prod:
     env_file:
       - .env
