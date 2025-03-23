@@ -9,7 +9,7 @@ def txt2img(prompt, negative_prompt, model, scheduler, guidance_scale, steps, se
     try:
         client = Client(provider=PollinationsAI)
         response = client.images.generate(
-            model="dall-e-3",
+            model="flux-pro",
             prompt=prompt,
             response_format="url"
         )
