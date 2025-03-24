@@ -54,11 +54,11 @@ function AnecdoteGenerationContent() {
         />
         <Spacing size={6} />
         <Link
-          style={{ fontSize: 14 }}
+          style={{ fontSize: 16 }}
           target="_blank"
-          href="https://t.me/DeepGPTBot"
+          href="https://tinysrc.me/go/nuSFxIoHg"
         >
-          Сгенерировать любую картинку можно у нас в боте!
+          Сгенерировать любую картинку можно у нас в приложении!
         </Link>
         <Spacing size={10} />
         <Button
