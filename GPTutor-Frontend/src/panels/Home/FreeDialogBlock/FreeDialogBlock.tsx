@@ -8,6 +8,7 @@ import { CardBlock } from "$/components/CardBlock";
 
 import classes from "./FreeDialogBlock.module.css";
 import { useNavigationContext } from "$/NavigationContext";
+import { appService } from "$/services/AppService";
 
 interface IProps {
   goToFreeDialog: () => void;
@@ -32,6 +33,17 @@ function FreeDialogBlock({ goToFreeDialog }: IProps) {
             >
               Начать диалог GPT
             </Button>
+            {appService.isVK() && (
+              <Button
+                href="https://tinysrc.me/go/nuSFxIoHg"
+                mode="outline"
+                size="m"
+                target="_blank"
+                after={<Icon24ArrowRightSquareOutline />}
+              >
+                Начать диалог DeepSeek
+              </Button>
+            )}
           </div>
         }
       >
