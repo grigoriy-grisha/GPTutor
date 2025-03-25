@@ -17,12 +17,12 @@ class TgService {
   }
 
   async initHasNewModel() {
-    const isSeeTg = await this.storage.get("isSeeTg");
+    const isSeeTg = await this.storage.get("isSeeIISet");
     this.isSeeTg$.set(!!isSeeTg);
   }
 
   setSeeTg() {
-    this.storage.set("isSeeTg", String(true));
+    this.storage.set("isSeeIISet", String(true));
     this.isSeeTg$.set(true);
   }
 }

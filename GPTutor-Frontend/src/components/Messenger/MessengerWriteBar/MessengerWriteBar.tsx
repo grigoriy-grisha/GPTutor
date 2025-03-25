@@ -105,12 +105,12 @@ function MessengerWriteBar({
                   <Title level="3" className={classes.title} Component="h3">
                     Попробуйте наш бот в телеграм!
                   </Title>
-                  <Caption>Бесплатный GPT-4o в интерфейсе телеграм!</Caption>
+                  <Caption>Попробуй DeepSeek на нашем сайте!</Caption>
                 </div>
                 <div className={classes.containerTg}>
                   <Button
                     target="_blank"
-                    href="https://t.me/DeepGPTBot"
+                    href="https://iiset.io/chat"
                     mode="outline"
                   >
                     Перейти
