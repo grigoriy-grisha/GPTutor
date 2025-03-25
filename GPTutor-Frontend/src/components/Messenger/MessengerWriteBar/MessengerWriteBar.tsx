@@ -103,9 +103,9 @@ function MessengerWriteBar({
               <Div className={classes.containerTg}>
                 <div className={classes.text}>
                   <Title level="3" className={classes.title} Component="h3">
-                    Попробуйте наш бот в телеграм!
+                    Попробуйте DeepSeek в отдельном сайте!
                   </Title>
-                  <Caption>Попробуй DeepSeek на нашем сайте!</Caption>
+                  <Caption>Даем пробный период и бесплатный баланс!</Caption>
                 </div>
                 <div className={classes.containerTg}>
                   <Button
