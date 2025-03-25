@@ -56,7 +56,7 @@ function AnecdoteGenerationContent() {
         <Link
           style={{ fontSize: 16 }}
           target="_blank"
-          href="https://tinysrc.me/go/nuSFxIoHg"
+          href="https://iiset.io/chat"
         >
           Сгенерировать любую картинку можно у нас в приложении!
         </Link>

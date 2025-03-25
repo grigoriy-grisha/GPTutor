@@ -35,7 +35,7 @@ function FreeDialogBlock({ goToFreeDialog }: IProps) {
             </Button>
             {appService.isVK() && (
               <Button
-                href="https://tinysrc.me/go/nuSFxIoHg"
+                href="https://iiset.io/chat"
                 mode="outline"
                 size="m"
                 target="_blank"
