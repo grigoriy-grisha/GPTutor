@@ -75,6 +75,7 @@ import { BingPanel } from "$/panels/BingPanel";
 import VKDocQuestionPanel from "./panels/VKDocQuestionPanel/VKDocQestionPanel";
 import { VkDocQuestionRequest } from "$/panels/VkDocQuestionRequest";
 import { retrieveLaunchParams } from "@telegram-apps/sdk";
+import DocQuestionPanel from "$/panels/DocQuestionPanel";
 
 const App = () => {
   const location = useLocation();
@@ -198,6 +199,7 @@ const App = () => {
                 <BingPanel id={Panels.bingPanel} />
                 <VKDocQuestionPanel id={Panels.vkDocQuestionPanel} />
                 <VkDocQuestionRequest id={Panels.vkDocQuestionRequest} />
+                <DocQuestionPanel id={Panels.docQuestion} />
               </View>
             )}
           </SplitLayout>

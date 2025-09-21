@@ -128,6 +128,7 @@ const routes = {
     Panels.vkDocQuestionRequest,
     Views.viewMain
   ),
+  [RoutingPages.docQuestion]: new Page(Panels.docQuestion, Views.viewMain),
 };
 
 const router = new Router(routes);

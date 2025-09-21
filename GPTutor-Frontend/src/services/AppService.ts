@@ -6,9 +6,8 @@ export enum AppInstanceType {
   GPTutor = "GPTutor",
   AiHumor = "AiHumor",
   SmartVkDoc = "SmartVkDoc",
+  DocQuestion = "DocQuestion",
 }
-
-console.log(window);
 
 class AppService {
   loading = sig(true);
@@ -36,6 +35,10 @@ class AppService {
     return this.appInstance === AppInstanceType.GPTutor;
   }
 
+  isDocQuestion() {
+    return this.appInstance === AppInstanceType.DocQuestion;
+  }
+
   isAiHumor() {
     return this.appInstance === AppInstanceType.AiHumor;
   }
@@ -59,6 +62,10 @@ class AppService {
 
     if (this.isSmartVkDoc()) {
       return RoutingPages.vkDocQuestionPanel;
+    }
+
+    if (this.isDocQuestion()) {
+      return RoutingPages.docQuestion;
     }
 
     return RoutingPages.mainAnecdote;
