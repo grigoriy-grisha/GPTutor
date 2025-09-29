@@ -21,16 +21,16 @@ export class AuthController extends BaseController {
   registerRoutes(): void {
     const vkAuthMiddleware = createVkAuthMiddleware(this.authService);
     
-    const vkTestRateLimit = createRateLimitMiddleware(getRateLimitConfig('/vk-test')!);
+    const userRateLimit = createRateLimitMiddleware(getRateLimitConfig('/user')!);
     
     const updateTokenRateLimit = createRateLimitMiddleware(getRateLimitConfig('/update-token')!);
     
     this.fastify.get(
-      '/vk-test',
+      '/user',
       { 
-        preHandler: [vkTestRateLimit, vkAuthMiddleware] as any 
+        preHandler: [userRateLimit, vkAuthMiddleware] as any 
       },
-      this.vkTest.bind(this)
+      this.getUser.bind(this)
     );
 
     this.fastify.post(
@@ -42,16 +42,16 @@ export class AuthController extends BaseController {
     );
   }
 
-  private async vkTest(request: any, reply: FastifyReply) {
-    this.logInfo('VK test endpoint accessed', {
+  private async getUser(request: any, reply: FastifyReply) {
+    this.logInfo('User data requested', {
       vkId: request.dbUser.vkId,
       balance: request.dbUser.balance
     }, request);
 
     return this.sendSuccess(reply, {
-      message: "VK authorization successful!",
+      message: "User data retrieved successfully!",
       vkData: request.vkUser,
-      dbUser: {
+      user: {
         id: request.dbUser.id,
         vkId: request.dbUser.vkId,
         balance: request.dbUser.balance,

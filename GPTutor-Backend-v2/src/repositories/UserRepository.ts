@@ -9,16 +9,14 @@ export class UserRepository {
   }
 
   private generateApiKey(): string {
-    // Generate a random string similar to OpenAI API keys
-    // Format: sk- + 48 characters (mix of letters and numbers)
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = 'sk-';
-    
-    // Generate 48 random characters
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "sk-";
+
     for (let i = 0; i < 48; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    
+
     return result;
   }
 
@@ -62,7 +60,7 @@ export class UserRepository {
       throw new Error("User not found");
     }
 
-    const newBalance = user.balance - amount * 2;
+    const newBalance = user.balance - amount;
     if (newBalance < 0) {
       throw new Error("Insufficient balance");
     }

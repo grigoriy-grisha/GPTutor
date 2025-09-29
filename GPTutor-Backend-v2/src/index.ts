@@ -8,28 +8,21 @@ import { LLMCostEvaluate } from "./services/LLMCostEvaluate";
 import { OpenRouterService } from "./services/OpenRouterService";
 import { logger } from "./services/LoggerService";
 import { registerControllers } from "./controllers";
-import {
-  createLoggingMiddleware,
-  createErrorLoggingMiddleware,
-} from "./middleware/loggingMiddleware";
-import { createRateLimitMiddleware, getRateLimitConfig, cleanupRateLimitStore } from "./middleware/rateLimitMiddleware";
 
 const prisma = new PrismaClient();
 const userRepository = new UserRepository(prisma);
 const fileRepository = new FileRepository(prisma);
 
-// VK App credentials
-const VK_APP_ID = "51602327";
-const VK_SECRET_KEY = "7JnZrfRn0LOp9mN1CHIF";
-
-// OpenRouter credentials
-const OPENROUTER_API_KEY =
-  "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";
-
-const authService = new AuthService(userRepository, VK_APP_ID, VK_SECRET_KEY);
+const authService = new AuthService(
+  userRepository,
+  process.env.VK_APP_ID!!,
+  process.env.VK_SECRET_KEY!
+);
 const filesService = new FilesService();
-const llmCostService = new LLMCostEvaluate(90); // 90 рублей за доллар
-const openRouterService = new OpenRouterService(OPENROUTER_API_KEY);
+const llmCostService = new LLMCostEvaluate(100);
+const openRouterService = new OpenRouterService(
+  process.env.OPENROUTER_API_KEY!
+);
 
 const fastify = Fastify({
   logger: true,
@@ -52,32 +45,31 @@ fastify.register(require("@fastify/cors"), {
 
 fastify.register(require("@fastify/helmet"));
 
-// Register rate limiting
 fastify.register(require("@fastify/rate-limit"), {
-  max: 100, // дефолтный лимит
-  timeWindow: 60 * 1000, // 1 минута
+  max: 100,
+  timeWindow: 60 * 1000,
   keyGenerator: (request: any) => {
     const ip = request.ip;
-    const userId = request.userId || 'anonymous';
+    const userId = request.userId || "anonymous";
     return `rate_limit:${ip}:${userId}`;
   },
   errorResponseBuilder: (request: any, context: any) => {
     return {
-      error: 'Too Many Requests',
-      message: `Rate limit exceeded. Maximum ${context.max} requests per ${context.timeWindow / 1000} seconds.`,
-      retryAfter: Math.ceil(context.after / 1000)
+      error: "Too Many Requests",
+      message: `Rate limit exceeded. Maximum ${context.max} requests per ${
+        context.timeWindow / 1000
+      } seconds.`,
+      retryAfter: Math.ceil(context.after / 1000),
     };
-  }
-});
-
-// Register multipart support for file uploads
-fastify.register(require("@fastify/multipart"), {
-  limits: {
-    fileSize: 50 * 1024 * 1024, // 50MB limit
   },
 });
 
-// Register simple logging
+fastify.register(require("@fastify/multipart"), {
+  limits: {
+    fileSize: 50 * 1024 * 1024,
+  },
+});
+
 fastify.addHook("preHandler", async (request: any, reply) => {
   request.requestId = require("uuid").v4();
   request.startTime = Date.now();
@@ -113,7 +105,6 @@ fastify.setErrorHandler(async (error, request: any, reply) => {
   throw error;
 });
 
-// Register all controllers
 registerControllers(fastify, {
   authService,
   userRepository,
@@ -123,16 +114,11 @@ registerControllers(fastify, {
   openRouterService,
 });
 
-// Rate limiting уже настроен в middleware с автоматической очисткой
-
 const start = async () => {
   try {
     logger.info("Starting GPTutor Backend v2...");
 
     await llmCostService.initialize();
-    logger.info("LLM Cost Service initialized", {
-      totalModels: llmCostService.getStats().totalModels,
-    });
 
     await fastify.listen({
       port: Number(process.env.PORT) || 3001,

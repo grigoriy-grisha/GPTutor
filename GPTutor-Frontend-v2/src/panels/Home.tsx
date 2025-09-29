@@ -68,7 +68,12 @@ export const Home: FC<HomeProps> = ({ id }) => {
               Без ВПН и зарубежных карт!
             </Headline>
           </Div>
-          <Separator style={{ height: 3 }} />
+          <Separator
+            style={{
+              height: 3,
+              background: "var(--vkui--color_separator_primary)",
+            }}
+          />
           <WriteBar
             style={{
               borderBottomLeftRadius:
@@ -77,7 +82,7 @@ export const Home: FC<HomeProps> = ({ id }) => {
                 "var(--vkui--size_border_radius_paper--regular)",
             }}
             value=""
-            onChange={(e) => {}}
+            // onChange={(e) => {}}
             after={
               <>
                 <WriteBarIcon mode="send" />
@@ -85,7 +90,6 @@ export const Home: FC<HomeProps> = ({ id }) => {
             }
             placeholder="Что ты умеешь?"
           />
-          <Separator />
         </Card>
         <ContentCard
           onClick={handleModelsClick}
@@ -238,8 +242,7 @@ export const Home: FC<HomeProps> = ({ id }) => {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "50%",
-                        background:
-                          "var(--vkui--color_background_accent_themed)",
+                        background: "var(--vkui--color_background_secondary)",
                       }}
                     >
                       <img
@@ -256,8 +259,7 @@ export const Home: FC<HomeProps> = ({ id }) => {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "50%",
-                        background:
-                          "var(--vkui--color_background_accent_themed)",
+                        background: "var(--vkui--color_background_secondary)",
                       }}
                     >
                       <img
@@ -274,8 +276,7 @@ export const Home: FC<HomeProps> = ({ id }) => {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "50%",
-                        background:
-                          "var(--vkui--color_background_accent_themed)",
+                        background: "var(--vkui--color_background_secondary)",
                       }}
                     >
                       <img

@@ -39,62 +39,8 @@ export class LLMCostEvaluate {
     return this.models;
   }
 
-  getModelById(modelId: string): OpenRouterModel | null {
-    return this.models.find((model) => model.id === modelId) || null;
-  }
-
-  searchModelsByName(searchTerm: string): OpenRouterModel[] {
-    const term = searchTerm.toLowerCase();
-    return this.models.filter(
-      (model) =>
-        model.name.toLowerCase().includes(term) ||
-        model.id.toLowerCase().includes(term)
-    );
-  }
-
   calculateCost(cost: number): number {
-    return Math.round(cost * this.usdToRubRate * 10000) / 10000;
-  }
-
-  getOpenAIModels(): OpenRouterModel[] {
-    return this.models.filter((model) => model.id.startsWith("openai/"));
-  }
-
-  getAnthropicModels(): OpenRouterModel[] {
-    return this.models.filter((model) => model.id.startsWith("anthropic/"));
-  }
-
-  getGoogleModels(): OpenRouterModel[] {
-    return this.models.filter((model) => model.id.startsWith("google/"));
-  }
-
-  setUsdToRubRate(rate: number): void {
-    this.usdToRubRate = rate;
-    console.log(`💱 USD to RUB rate updated: ${rate}`);
-  }
-
-  getUsdToRubRate(): number {
-    return this.usdToRubRate;
-  }
-
-  getStats(): any {
-    const totalModels = this.models.length;
-    const openaiCount = this.getOpenAIModels().length;
-    const anthropicCount = this.getAnthropicModels().length;
-    const googleCount = this.getGoogleModels().length;
-    const otherCount = totalModels - openaiCount - anthropicCount - googleCount;
-
-    return {
-      totalModels,
-      providers: {
-        openai: openaiCount,
-        anthropic: anthropicCount,
-        google: googleCount,
-        other: otherCount,
-      },
-      lastUpdated: new Date().toISOString(),
-      usdToRubRate: this.usdToRubRate,
-    };
+    return cost * this.usdToRubRate * 2;
   }
 
   getModelsWithRubPricing(searchTerm?: string, provider?: string): any[] {
@@ -110,14 +56,12 @@ export class LLMCostEvaluate {
       );
     }
 
-    // Фильтрация по провайдеру
     if (provider) {
       filteredModels = filteredModels.filter((model) =>
         model.id.toLowerCase().startsWith(`${provider.toLowerCase()}/`)
       );
     }
 
-    // Преобразование цен в рубли
     return filteredModels.map((model) => ({
       ...model,
       pricing: {
@@ -139,29 +83,6 @@ export class LLMCostEvaluate {
     }));
   }
 
-  getCheapestModels(
-    limit: number = 10,
-    tokenType: "prompt" | "completion" = "prompt"
-  ): any[] {
-    const modelsWithRubPricing = this.getModelsWithRubPricing();
-
-    return modelsWithRubPricing
-      .sort((a, b) => a.pricing_rub[tokenType] - b.pricing_rub[tokenType])
-      .slice(0, limit);
-  }
-
-  getModelsInPriceRange(
-    minPrice: number,
-    maxPrice: number,
-    tokenType: "prompt" | "completion" = "prompt"
-  ): any[] {
-    return this.getModelsWithRubPricing().filter(
-      (model) =>
-        model.pricing_rub[tokenType] >= minPrice &&
-        model.pricing_rub[tokenType] <= maxPrice
-    );
-  }
-
   getModelsByProviders(providers: string[]): any[] {
     return this.getModelsWithRubPricing().filter((model) =>
       providers.some((provider) =>
@@ -181,8 +102,8 @@ export class LLMCostEvaluate {
       "openai",
     ];
 
-    return this.getModelsByProviders(popularProviders).filter(model => 
-      !model.name.toLowerCase().includes(':free')
+    return this.getModelsByProviders(popularProviders).filter(
+      (model) => !model.id.toLowerCase().includes(":free")
     );
   }
 }
