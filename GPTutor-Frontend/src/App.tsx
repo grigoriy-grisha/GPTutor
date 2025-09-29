@@ -68,14 +68,14 @@ import { transformVKBridgeAdaptivity } from "$/utility/strings";
 import { MermaidPage } from "$/panels/MermaidPage";
 import { AdditionalRequests } from "$/panels/AdditionalRequests";
 import { AnecdoteMain } from "$/panels/AnecdoteMain";
-import AnecdoteGeneration from "./panels/AnecdoteGeneration/AnecdoteGeneration";
 import { AnecdoteNews } from "$/panels/AnecdoteNews";
-import ApplicationInfoHumor from "./modals/ApplicationInfoHumor/ApplicationInfoHumor";
 import { BingPanel } from "$/panels/BingPanel";
-import VKDocQuestionPanel from "./panels/VKDocQuestionPanel/VKDocQestionPanel";
 import { VkDocQuestionRequest } from "$/panels/VkDocQuestionRequest";
+import AnecdoteGeneration from "./panels/AnecdoteGeneration/AnecdoteGeneration";
 import { retrieveLaunchParams } from "@telegram-apps/sdk";
-import DocQuestionPanel from "$/panels/DocQuestionPanel";
+import ApplicationInfoHumor from "./modals/ApplicationInfoHumor/ApplicationInfoHumor";
+import VKDocQuestionPanel from "./panels/VKDocQuestionPanel/VKDocQestionPanel";
+import DocQuestionPanel from "./panels/ApiLLMPanel";
 
 const App = () => {
   const location = useLocation();
@@ -102,8 +102,6 @@ const App = () => {
   const { vk_platform } = parseURLSearchParamsForGetLaunchParams(
     window.location.search
   );
-
-  console.log(vkBridgeAppearance);
 
   function getPlatform() {
     if (appService.isTG()) {

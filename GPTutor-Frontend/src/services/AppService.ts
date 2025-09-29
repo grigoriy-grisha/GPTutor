@@ -6,7 +6,7 @@ export enum AppInstanceType {
   GPTutor = "GPTutor",
   AiHumor = "AiHumor",
   SmartVkDoc = "SmartVkDoc",
-  DocQuestion = "DocQuestion",
+  API_LLM = "API LLM",
 }
 
 class AppService {
@@ -35,8 +35,8 @@ class AppService {
     return this.appInstance === AppInstanceType.GPTutor;
   }
 
-  isDocQuestion() {
-    return this.appInstance === AppInstanceType.DocQuestion;
+  isApiLLM() {
+    return this.appInstance === AppInstanceType.API_LLM;
   }
 
   isAiHumor() {
@@ -64,7 +64,7 @@ class AppService {
       return RoutingPages.vkDocQuestionPanel;
     }
 
-    if (this.isDocQuestion()) {
+    if (this.isApiLLM()) {
       return RoutingPages.docQuestion;
     }
 

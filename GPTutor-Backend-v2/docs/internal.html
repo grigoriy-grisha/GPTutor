@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPTutor Internal API Documentation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .warning {
+            background: #ff6b6b;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
+        }
+        
+        .warning::before {
+            content: "⚠️ ";
+            font-size: 1.2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+        
+        .info-box h2 {
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .info-box p {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .endpoints-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .endpoint-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .endpoint-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+        
+        .endpoint-method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .method-get {
+            background: #10b981;
+            color: white;
+        }
+        
+        .method-post {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .method-delete {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .endpoint-path {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .endpoint-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .scalar-container {
+            margin-top: 2rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .endpoints-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔧 GPTutor Internal API</h1>
+        <p>Внутренние административные endpoints</p>
+    </div>
+    
+    <div class="warning">
+        ВНИМАНИЕ: Этот API предназначен только для внутреннего использования администраторами системы
+    </div>
+    
+    <div class="container">
+        <div class="info-box">
+            <h2>📋 Обзор API</h2>
+            <p>Внутренний API GPTutor предоставляет административные endpoints для управления системой, мониторинга состояния и отладки.</p>
+            <p><strong>Базовый URL:</strong> <code>http://localhost:3001</code> (dev) / <code>https://api.gptutor.site</code> (prod)</p>
+            <p><strong>Версия:</strong> 2.0.0</p>
+        </div>
+        
+        <div class="info-box">
+            <h2>🔐 Авторизация</h2>
+            <p><strong>VK Auth:</strong> Для административных операций требуется VK подпись в заголовке Authorization</p>
+            <p><strong>API Key:</strong> Для пользовательских операций требуется API ключ в формате Bearer sk-...</p>
+        </div>
+        
+        <h2 style="color: #ffffff; margin: 2rem 0 1rem 0;">🚀 Доступные Endpoints</h2>
+        
+        <div class="endpoints-grid">
+            <div class="endpoint-card">
+                <div class="endpoint-method method-get">GET</div>
+                <div class="endpoint-path">/health</div>
+                <div class="endpoint-description">
+                    Проверка состояния сервера. Используется для мониторинга и health checks.
+                </div>
+            </div>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-method method-get">GET</div>
+                <div class="endpoint-path">/vk-test</div>
+                <div class="endpoint-description">
+                    Тест VK авторизации. Отладка VK подписи и получение информации о пользователе.
+                </div>
+            </div>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-method method-post">POST</div>
+                <div class="endpoint-path">/update-token</div>
+                <div class="endpoint-description">
+                    Обновление API токена пользователя. Генерирует новый ключ и делает старый недействительным.
+                </div>
+            </div>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-method method-get">GET</div>
+                <div class="endpoint-path">/v1/models</div>
+                <div class="endpoint-description">
+                    Получение списка доступных AI моделей с информацией о ценах и провайдерах.
+                </div>
+            </div>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-method method-post">POST</div>
+                <div class="endpoint-path">/v1/chat/completions</div>
+                <div class="endpoint-description">
+                    Создание chat completion с поддержкой streaming и автоматическим выбором модели.
+                </div>
+            </div>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-method method-post">POST</div>
+                <div class="endpoint-path">/upload</div>
+                <div class="endpoint-description">
+                    Загрузка файла в S3 с автоматической оптимизацией изображений и сжатием документов.
+                </div>
+            </div>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-method method-get">GET</div>
+                <div class="endpoint-path">/files</div>
+                <div class="endpoint-description">
+                    Получение списка всех файлов пользователя с метаданными.
+                </div>
+            </div>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-method method-delete">DELETE</div>
+                <div class="endpoint-path">/files/:fileId</div>
+                <div class="endpoint-description">
+                    Удаление файла из S3 и базы данных. Пользователь может удалять только свои файлы.
+                </div>
+            </div>
+        </div>
+        
+        <div class="scalar-container">
+            <script id="api-reference" data-url="./internal-api.yaml"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>GPTutor Internal API Documentation v2.0.0</p>
+        <p>© 2024 GPTutor. Все права защищены.</p>
+    </div>
+</body>
+</html>
