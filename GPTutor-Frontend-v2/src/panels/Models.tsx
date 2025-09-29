@@ -15,8 +15,10 @@ import {
   Title,
   Snackbar,
   Search,
+  IconButton,
 } from "@vkontakte/vkui";
-import { Icon16CopyOutline, Icon12Check, Icon12Cancel, Icon16Message } from "@vkontakte/icons";
+import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
+import { Icon16CopyOutline, Icon12Check, Icon12Cancel, Icon16Message, Icon16ArrowTriangleDown, Icon16ArrowTriangleUp, Icon20SortOutline } from "@vkontakte/icons";
 import responseData from "./response (4).json";
 
 export interface ModelsProps extends NavIdProps {}
@@ -49,21 +51,43 @@ interface ProcessedModel {
 }
 
 export const Models: FC<ModelsProps> = ({ id }) => {
+  const navigator = useRouteNavigator();
   const [models, setModels] = useState<ProcessedModel[]>([]);
   const [filteredModels, setFilteredModels] = useState<ProcessedModel[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [snackbar, setSnackbar] = useState<React.ReactNode>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  // Функция сортировки по цене
+  const sortModelsByPrice = (modelsToSort: ProcessedModel[], order: 'asc' | 'desc') => {
+    return [...modelsToSort].sort((a, b) => {
+      // Извлекаем числовое значение цены
+      const getPriceValue = (price: string) => {
+        if (price === "Бесплатно") return 0;
+        const match = price.match(/(\d+\.?\d*)/);
+        return match ? parseFloat(match[1]) : 0;
+      };
+      
+      const priceA = getPriceValue(a.price);
+      const priceB = getPriceValue(b.price);
+      
+      return order === 'asc' ? priceA - priceB : priceB - priceA;
+    });
+  };
 
   // Функция фильтрации моделей
   const filterModels = (query: string) => {
-    if (!query.trim()) {
-      setFilteredModels(models);
-      return;
+    let filtered = models;
+    
+    if (query.trim()) {
+      filtered = models.filter(model => 
+        model.name.toLowerCase().includes(query.toLowerCase())
+      );
     }
     
-    const filtered = models.filter(model => 
-      model.name.toLowerCase().includes(query.toLowerCase())
-    );
+    // Всегда применяем сортировку
+    filtered = sortModelsByPrice(filtered, sortOrder);
+    
     setFilteredModels(filtered);
   };
 
@@ -79,6 +103,16 @@ export const Models: FC<ModelsProps> = ({ id }) => {
     setSearchQuery(query);
     filterModels(query);
   };
+
+  // Обработчик переключения сортировки
+  const handleSortToggle = () => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
+
+  // Применяем сортировку при изменении sortOrder
+  useEffect(() => {
+    filterModels(searchQuery);
+  }, [sortOrder]);
 
 
   // Функция для получения иконки модели
@@ -581,6 +615,11 @@ export const Models: FC<ModelsProps> = ({ id }) => {
     <Panel id={id}>
       <style>
         {`
+          /* Убираем полосу прокрутки */
+          body, html {
+            overflow-x: hidden !important;
+          }
+          
           .vkuiButton__content {
             display: flex !important;
             flex-direction: row !important;
@@ -591,9 +630,11 @@ export const Models: FC<ModelsProps> = ({ id }) => {
           }
           
           .vkuiCard__host {
-            width: 100% !important;
+            width: calc(100% - 20px) !important;
             max-width: none !important;
             min-width: 0 !important;
+            margin-left: 10px !important;
+            margin-right: 10px !important;
           }
           
           .vkuiCard__modeOutline {
@@ -612,6 +653,10 @@ export const Models: FC<ModelsProps> = ({ id }) => {
             width: 100% !important;
             max-width: none !important;
             min-width: 0 !important;
+          }
+          
+          .vkuiList__host {
+            width: 96% !important;
           }
           
           @media (max-width: 460px) {
@@ -659,6 +704,21 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               justify-content: space-between !important;
               align-items: center !important;
             }
+            
+            .vkuiSimpleCell__children {
+              padding-left: 5px !important;
+              padding-right: 5px !important;
+            }
+            
+            .vkuiSimpleCell {
+              padding-left: 5px !important;
+              padding-right: 5px !important;
+            }
+            
+            .vkuiCard__modeOutline {
+              padding-left: 5px !important;
+              padding-right: 5px !important;
+            }
           }
           
           /* Десктопная версия (от 768px) - горизонтальная структура */
@@ -703,11 +763,26 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               font-size: 16px !important;
               margin-top: 9px !important; /* 4px + 5px = 9px */
             }
+            
+            .vkuiSimpleCell__children {
+              padding-left: 5px !important;
+              padding-right: 5px !important;
+            }
+            
+            .vkuiSimpleCell {
+              padding-left: 5px !important;
+              padding-right: 5px !important;
+            }
+            
+            .vkuiCard__modeOutline {
+              padding-left: 5px !important;
+              padding-right: 5px !important;
+            }
           }
         `}
       </style>
       <PanelHeader
-        before={<PanelHeaderBack onClick={() => window.history.back()} />}
+        before={<PanelHeaderBack onClick={() => navigator.push('/')} />}
       >
         Модели
       </PanelHeader>
@@ -722,37 +797,43 @@ export const Models: FC<ModelsProps> = ({ id }) => {
         </Div>
       </Group>
 
-      <Group>
-        <Card mode="outline">
-          <Div>
-            <Title level="3">Как использовать?</Title>
-            <Spacing size={8} />
-            <Text>
-              1. Выберите подходящую модель из списка
-            </Text>
-            <Spacing size={4} />
-            <Text>
-              2. Скопируйте API-ключ из настроек
-            </Text>
-            <Spacing size={4} />
-            <Text>
-              3. Используйте стандартный OpenAI SDK
-            </Text>
-            <Spacing size={12} />
-            <Button mode="primary" size="l" style={{ width: "100%" }}>
-              Получить API-ключ
-            </Button>
-          </Div>
-        </Card>
-      </Group>
 
         <Group style={{ padding: 0, margin: 0 }}>
-          <Search
-            value={searchQuery}
-            onChange={handleSearchChange}
-            placeholder="Поиск по названию модели..."
-            style={{ marginBottom: '16px' }}
-          />
+          <div style={{ 
+            display: 'flex', 
+            gap: '8px', 
+            marginBottom: '16px',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '80%',
+            margin: '10px auto 16px auto'
+          }}>
+            <Search
+              value={searchQuery}
+              onChange={handleSearchChange}
+              placeholder="Поиск по названию модели..."
+              style={{ flex: 1, maxWidth: '90%' }}
+            />
+            <IconButton
+              onClick={handleSortToggle}
+            >
+               {sortOrder === 'asc' ? <Icon16ArrowTriangleUp /> : <Icon16ArrowTriangleDown />}
+            </IconButton>
+            {/* <Button
+              size="s"
+              mode="primary"
+              style={{ 
+                minWidth: '32px',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '0'
+              }}
+            >
+            </Button> */}
+          </div>
           
           {/* Плашки для быстрого поиска */}
           <div           style={{ 
@@ -914,10 +995,36 @@ export const Models: FC<ModelsProps> = ({ id }) => {
             }}>
               {getModelIcon(model.name)}
               <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
-                <div>
-                  <Title level="3" className="model-name" style={{ margin: 0, fontSize: '18px', color: 'var(--vkui--color_text_primary)' }}>
-                    {model.name}
-                  </Title>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <Title level="3" className="model-name" style={{ margin: 0, fontSize: '18px', color: 'var(--vkui--color_text_primary)' }}>
+                      {model.name}
+                    </Title>
+                    <button
+                      className="model-copy-button"
+                      onClick={() => copyModelId(model.id)}
+                      style={{ 
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '4px',
+                        borderRadius: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        opacity: 0.6,
+                        transition: 'opacity 0.2s'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                      onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}
+                    >
+                      <Icon16CopyOutline style={{ 
+                        color: 'var(--vkui--color_text_secondary)',
+                        width: '16px',
+                        height: '16px'
+                      }} />
+                    </button>
+                  </div>
                   {/* Контекст и модальности под названием */}
                   <Text className="model-context-info" style={{ 
                     color: 'var(--vkui--color_text_secondary)',
@@ -928,30 +1035,6 @@ export const Models: FC<ModelsProps> = ({ id }) => {
                     {formatContextLength(model.contextLength)} context • {formatModalities(model.inputModalities)}
                   </Text>
                 </div>
-                <button
-                  className="model-copy-button"
-                  onClick={() => copyModelId(model.id)}
-                  style={{ 
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    padding: '4px',
-                    borderRadius: '4px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    opacity: 0.6,
-                    transition: 'opacity 0.2s'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                  onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}
-                >
-                  <Icon16CopyOutline style={{ 
-                    color: 'var(--vkui--color_text_secondary)',
-                    width: '16px',
-                    height: '16px'
-                  }} />
-                </button>
               </div>
             </div>
 
