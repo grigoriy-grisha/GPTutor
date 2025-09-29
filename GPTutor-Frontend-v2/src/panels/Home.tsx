@@ -17,6 +17,8 @@ import {
   WriteBar,
   WriteBarIcon,
 } from "@vkontakte/vkui";
+import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
+import { DEFAULT_VIEW_PANELS } from "../routes";
 import {
   Icon12ArrowshapeRight,
   Icon16LinkOutline,
@@ -31,6 +33,12 @@ import {
 export interface HomeProps extends NavIdProps {}
 
 export const Home: FC<HomeProps> = ({ id }) => {
+  const navigator = useRouteNavigator();
+
+  const handleModelsClick = () => {
+    navigator.push(`/${DEFAULT_VIEW_PANELS.MODELS}`);
+  };
+
   return (
     <Panel id={id}>
       <PanelHeader>LLM API</PanelHeader>
@@ -80,7 +88,7 @@ export const Home: FC<HomeProps> = ({ id }) => {
           <Separator />
         </Card>
         <ContentCard
-          onClick={() => {}}
+          onClick={handleModelsClick}
           src="https://storage.yandexcloud.net/gptutor-bucket/Slide%204_3%20-%201%20(3).png"
           title={<DisplayTitle>Одно API для всех моделей!</DisplayTitle>}
           description={
@@ -91,8 +99,7 @@ export const Home: FC<HomeProps> = ({ id }) => {
           }
           caption={
             <Link
-              href="https://vkui.io"
-              target="_blank"
+              onClick={handleModelsClick}
               after={<Icon16LinkOutline />}
             >
               Посмотреть модели

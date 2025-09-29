@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { ScreenSpinner, SplitCol, SplitLayout, View } from "@vkontakte/vkui";
 import { useActiveVkuiLocation } from "@vkontakte/vk-mini-apps-router";
 
-import { Home, Persik } from "./panels";
+import { Home, Persik, Models } from "./panels";
 import { DEFAULT_VIEW_PANELS } from "./routes.ts";
 
 export const App = () => {
@@ -24,6 +24,7 @@ export const App = () => {
         <View activePanel={activePanel}>
           <Home id="home" />
           <Persik id="persik" />
+          <Models id="models" />
         </View>
       </SplitCol>
       {popout}
