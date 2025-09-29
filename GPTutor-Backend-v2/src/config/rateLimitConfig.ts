@@ -6,7 +6,7 @@ export const RATE_LIMIT_CONFIG: RateLimitOptions = {
     timeWindow: 60 * 1000,
   },
 
-  "/vk-test": {
+  "/user": {
     max: 30,
     timeWindow: 60 * 1000,
   },
@@ -45,3 +45,4 @@ export function getRateLimitForRoute(route: string) {
     }
   );
 }
+

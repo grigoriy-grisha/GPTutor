@@ -380,19 +380,19 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 
-  /vk-test:
+  /user:
     get:
       tags: [Authentication]
-      summary: Тест VK авторизации
+      summary: Получить данные пользователя
       description: |
-        Тестирует VK авторизацию и возвращает информацию о пользователе.
+        Получает информацию о пользователе, включая баланс, API ключ и данные VK.
         
         Требует VK подпись в заголовке Authorization.
       security:
         - VkAuth: []
       responses:
         '200':
-          description: Успешная авторизация
+          description: Данные пользователя получены успешно
           content:
             application/json:
               schema:
@@ -406,7 +406,7 @@ paths:
                     properties:
                       message:
                         type: string
-                        example: "VK authorization successful!"
+                        example: "User data retrieved successfully!"
                       vkData:
                         type: object
                         description: "Данные от VK"
