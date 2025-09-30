@@ -1,3 +1,58 @@
 .vkuiPanelHeader__in {
     background: var(--vkui--color_background_contrast_themed)
 }
+
+
+.code-block {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--vkui--color_separator_primary);
+
+}
+
+.code-block pre {
+    margin: 0;
+    padding: 16px;
+    background: transparent;
+    overflow-x: auto;
+}
+
+.code-block code {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+    color: inherit;
+}
+
+/* Code buttons */
+.code-buttons {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+[data-pre-container]:hover .code-buttons {
+    opacity: 1;
+}
+
+.code-buttons button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #d4d4d4;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.code-buttons button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}

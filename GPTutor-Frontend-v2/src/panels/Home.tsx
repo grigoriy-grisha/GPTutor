@@ -38,7 +38,7 @@ export const Home: FC<HomeProps> = ({ id }) => {
         style={{
           display: "grid",
           gridTemplateRows: "0.5fr 1fr 1fr",
-          maxHeight: "calc(100vh - 48px)",
+          maxHeight: "calc(100vh - 48px - 48px)",
           gap: "16px",
         }}
       >
