@@ -1,5 +1,6 @@
 import sharp from "sharp";
 import { compress } from "compress-pdf";
+//@ts-ignore
 import EasyYandexS3 from "easy-yandex-s3";
 import crypto from "crypto";
 import { S3 } from "aws-sdk";

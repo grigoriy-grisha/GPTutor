@@ -12,7 +12,6 @@
     "deploy": "vite build && vk-miniapps-deploy"
   },
   "dependencies": {
-    "@types/prismjs": "^1.26.5",
     "@vkontakte/icons": "^3.1.1",
     "@vkontakte/vk-bridge": "^2.13.0",
     "@vkontakte/vk-bridge-react": "^1.0.1",
@@ -26,6 +25,7 @@
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
+    "@types/prismjs": "^1.26.5",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",

@@ -18,7 +18,7 @@ import { OneDark } from "./themes/OneDark";
 import { OneLight } from "./themes/OneLight";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
-import { Home, Persik, Profile, Chat } from "./panels";
+import { Home, Persik, Models, Profile, Chat } from "./panels";
 import { DEFAULT_VIEW_PANELS } from "./routes.ts";
 import {
   Icon28HomeOutline,
@@ -82,6 +82,7 @@ export const App = () => {
             <View id="home" activePanel={activePanel}>
               <Home id="home" />
               <Persik id="persik" />
+              <Models id="models" />
             </View>
             <View id="profile" activePanel={activePanel}>
               <Profile id="profile" />
