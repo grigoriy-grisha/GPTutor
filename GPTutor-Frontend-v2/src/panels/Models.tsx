@@ -15,11 +15,13 @@ import {
   Title,
   Snackbar,
   Search,
+  Spinner,
 } from "@vkontakte/vkui";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
-import responseData from "./response (4).json";
 
-export interface ModelsProps extends NavIdProps {}import { Icon16CopyOutline, Icon12Check, Icon12Cancel, Icon16Message, Icon16ArrowTriangleDown, Icon16ArrowTriangleUp, Icon20SortOutline } from "@vkontakte/icons";
+import { Icon16CopyOutline, Icon12Check, Icon12Cancel, Icon16Message, Icon16ArrowTriangleDown, Icon16ArrowTriangleUp } from "@vkontakte/icons";
+
+export interface ModelsProps extends NavIdProps {}
 
 
 interface ModelData {
@@ -29,13 +31,25 @@ interface ModelData {
   pricing: {
     prompt: number;
     completion: number;
+    request: number;
+    image: number;
+    web_search: number;
+    internal_reasoning: number;
   };
   context_length: number;
   architecture: {
     modality: string;
     input_modalities: string[];
     output_modalities: string[];
+    tokenizer: string;
+    instruct_type: string | null;
   };
+  top_provider: {
+    context_length: number;
+    max_completion_tokens: number;
+    is_moderated: boolean;
+  };
+  supported_parameters: string[];
 }
 
 interface ProcessedModel {
@@ -56,6 +70,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [snackbar, setSnackbar] = useState<React.ReactNode>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Функция сортировки по цене
   const sortModelsByPrice = (modelsToSort: ProcessedModel[], order: 'asc' | 'desc') => {
@@ -503,6 +518,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
           <Snackbar
             onClose={() => setSnackbar(null)}
             before={<Icon12Check />}
+            style={{ marginBottom: '60px' }}
           >
             ID скопирован: {modelId}
           </Snackbar>
@@ -516,6 +532,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
         <Snackbar
           onClose={() => setSnackbar(null)}
           before={<Icon12Cancel />}
+          style={{ marginBottom: '60px' }}
         >
           Не удалось скопировать
         </Snackbar>
@@ -530,6 +547,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       <Snackbar
         onClose={() => setSnackbar(null)}
         before={<div>🚀</div>}
+        style={{ marginBottom: '60px' }}
       >
         Попробовать модель: {modelId}
       </Snackbar>
@@ -573,41 +591,85 @@ export const Models: FC<ModelsProps> = ({ id }) => {
   };
 
   useEffect(() => {
-    if (responseData.success && responseData.data.models) {
-      const processedModels: ProcessedModel[] = responseData.data.models
-        .slice(0, 50) // Show first 50 models
-        .map((model: ModelData) => {
-          // Extract provider from name (e.g., "Google: Gemini 2.5" -> "Google")
-          const provider = model.name.split(':')[0] || 'Unknown';
-
-          // Format pricing in rubles per million tokens
-          const promptPrice = model.pricing.prompt;
-          const completionPrice = model.pricing.completion;
-          const priceText = formatPriceInRubles(promptPrice, completionPrice);
-
-          // Determine if popular (based on well-known models)
-          const isPopular = model.name.toLowerCase().includes('gpt-4') || 
-                           model.name.toLowerCase().includes('gpt-5') ||
-                           model.name.toLowerCase().includes('claude') ||
-                           model.name.toLowerCase().includes('gemini-2.5');
-
-          return {
-            id: model.id,
-            name: model.name,
-            provider,
-            description: model.description.length > 100 
-              ? model.description.substring(0, 100) + '...' 
-              : model.description,
-            price: priceText,
-            contextLength: model.context_length,
-            inputModalities: model.architecture.input_modalities,
-            isPopular,
-          };
+    const fetchModels = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/v1/models', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success && data.data.models) {
+          const processedModels: ProcessedModel[] = data.data.models
+            .slice(0, 50) // Show first 50 models
+            .map((model: ModelData) => {
+              // Extract provider from name (e.g., "Google: Gemini 2.5" -> "Google")
+              const provider = model.name.split(':')[0] || 'Unknown';
+
+              // Format pricing in rubles per million tokens
+              const promptPrice = model.pricing?.prompt || 0;
+              const completionPrice = model.pricing?.completion || 0;
+              const priceText = formatPriceInRubles(promptPrice, completionPrice);
+
+              // Determine if popular (based on well-known models)
+              const isPopular = model.name.toLowerCase().includes('gpt-4') || 
+                               model.name.toLowerCase().includes('gpt-5') ||
+                               model.name.toLowerCase().includes('claude') ||
+                               model.name.toLowerCase().includes('gemini-2.5');
+
+              return {
+                id: model.id,
+                name: model.name,
+                provider,
+                description: model.description?.length > 100 
+                  ? model.description.substring(0, 100) + '...' 
+                  : model.description || '',
+                price: priceText,
+                contextLength: model.context_length || 0,
+                inputModalities: model.architecture?.input_modalities || [],
+                isPopular,
+              };
+            });
 
           setModels(processedModels);
           setFilteredModels(processedModels);
-    }
+        } else {
+          setSnackbar(
+            <Snackbar
+              onClose={() => setSnackbar(null)}
+              before={<Icon12Cancel />}
+              style={{ marginBottom: '60px' }}
+            >
+              Неожиданная структура ответа API
+            </Snackbar>
+          );
+        }
+      } catch (error) {
+        console.error('Error fetching models:', error);
+        console.error('Error details:', error);
+        setSnackbar(
+          <Snackbar
+            onClose={() => setSnackbar(null)}
+            before={<Icon12Cancel />}
+            style={{ marginBottom: '60px' }}
+          >
+            Ошибка загрузки моделей: {error instanceof Error ? error.message : 'Неизвестная ошибка'}
+          </Snackbar>
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchModels();
   }, []);
 
   return (
@@ -809,6 +871,14 @@ export const Models: FC<ModelsProps> = ({ id }) => {
         Модели
       </PanelHeader>
       
+      {loading ? (
+        <Group>
+          <Div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
+            <Spinner size="m" />
+          </Div>
+        </Group>
+      ) : (
+        <>
       <Group>
         <Div>
           <Title level="1">Доступные модели</Title>
@@ -1130,6 +1200,8 @@ export const Models: FC<ModelsProps> = ({ id }) => {
           ))}
         </List>
       </Group>
+        </>
+      )}
       {snackbar}
     </Panel>
   );

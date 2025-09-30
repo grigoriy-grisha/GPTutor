@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "G:\\project\\GPTutor\\GPTutor-Backend-v2\\logs\\.7bd753b0e1ca4905c3b8c68319bdeb985d41567d-audit.json",
+    "files": [
+        {
+            "date": 1759226270955,
+            "name": "G:\\project\\GPTutor\\GPTutor-Backend-v2\\logs\\api-2025-09-30.log",
+            "hash": "c2dbf31bf19a2b6910b4967209fe721bed982f3fb4dc3b0d69e6b63ae32dca7b"
+        }
+    ],
+    "hashType": "sha256"
+}
