@@ -242,7 +242,7 @@ export const Home: FC<HomeProps> = ({ id }) => {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "50%",
-                        background: "var(--vkui--color_background_secondary)",
+                        background: "#f0f2f5",
                       }}
                     >
                       <img
@@ -259,7 +259,7 @@ export const Home: FC<HomeProps> = ({ id }) => {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "50%",
-                        background: "var(--vkui--color_background_secondary)",
+                        background: "#f0f2f5",
                       }}
                     >
                       <img
@@ -276,7 +276,7 @@ export const Home: FC<HomeProps> = ({ id }) => {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "50%",
-                        background: "var(--vkui--color_background_secondary)",
+                        background: "#f0f2f5",
                       }}
                     >
                       <img

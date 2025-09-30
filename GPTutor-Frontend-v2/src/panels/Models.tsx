@@ -15,13 +15,12 @@ import {
   Title,
   Snackbar,
   Search,
-  IconButton,
 } from "@vkontakte/vkui";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
-import { Icon16CopyOutline, Icon12Check, Icon12Cancel, Icon16Message, Icon16ArrowTriangleDown, Icon16ArrowTriangleUp, Icon20SortOutline } from "@vkontakte/icons";
 import responseData from "./response (4).json";
 
-export interface ModelsProps extends NavIdProps {}
+export interface ModelsProps extends NavIdProps {}import { Icon16CopyOutline, Icon12Check, Icon12Cancel, Icon16Message, Icon16ArrowTriangleDown, Icon16ArrowTriangleUp, Icon20SortOutline } from "@vkontakte/icons";
+
 
 interface ModelData {
   id: string;
@@ -620,6 +619,29 @@ export const Models: FC<ModelsProps> = ({ id }) => {
             overflow-x: hidden !important;
           }
           
+          /* Стили для иконок - как в Home.tsx */
+          .model-icon-container {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f0f2f5;
+            padding: 2px;
+          }
+          
+          .model-icon-container-large {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f0f2f5;
+            padding: 2px;
+          }
+          
           .vkuiButton__content {
             display: flex !important;
             flex-direction: row !important;
@@ -814,11 +836,19 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               placeholder="Поиск по названию модели..."
               style={{ flex: 1, maxWidth: '90%' }}
             />
-            <IconButton
+            <div
+              style={{
+                width: 32,
+                height: 32,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
               onClick={handleSortToggle}
             >
-               {sortOrder === 'asc' ? <Icon16ArrowTriangleUp /> : <Icon16ArrowTriangleDown />}
-            </IconButton>
+              {sortOrder === 'asc' ? <Icon16ArrowTriangleUp /> : <Icon16ArrowTriangleDown />}
+            </div>
             {/* <Button
               size="s"
               mode="primary"
@@ -861,7 +891,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
                 gap: '8px'
               }}
             >
-              {getModelIconSmall('gpt')}
+              <div className="model-icon-container">
+                {getModelIconSmall('gpt')}
+              </div>
               <span>GPT</span>
             </Button>
             <Button
@@ -881,7 +913,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
                 gap: '8px'
               }}
             >
-              {getModelIconSmall('deepseek')}
+              <div className="model-icon-container">
+                {getModelIconSmall('deepseek')}
+              </div>
               <span>DeepSeek</span>
             </Button>
             <Button
@@ -901,7 +935,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
                 gap: '8px'
               }}
             >
-              {getModelIconSmall('grok')}
+              <div className="model-icon-container">
+                {getModelIconSmall('grok')}
+              </div>
               <span>Grok</span>
             </Button>
             <Button
@@ -921,7 +957,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
                 gap: '8px'
               }}
             >
-              {getModelIconSmall('gemini')}
+              <div className="model-icon-container">
+                {getModelIconSmall('gemini')}
+              </div>
               <span>Gemini</span>
             </Button>
             <Button
@@ -941,7 +979,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
                 gap: '8px'
               }}
             >
-              {getModelIconSmall('mistral')}
+              <div className="model-icon-container">
+                {getModelIconSmall('mistral')}
+              </div>
               <span>Mistral</span>
             </Button>
             <Button
@@ -961,7 +1001,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
                 gap: '8px'
               }}
             >
-              {getModelIconSmall('qwen')}
+              <div className="model-icon-container">
+                {getModelIconSmall('qwen')}
+              </div>
               <span>Qwen</span>
             </Button>
             <Button
@@ -993,7 +1035,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               alignItems: 'center', 
               gap: '12px'
             }}>
-              {getModelIcon(model.name)}
+              <div className="model-icon-container-large">
+                {getModelIcon(model.name)}
+              </div>
               <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
