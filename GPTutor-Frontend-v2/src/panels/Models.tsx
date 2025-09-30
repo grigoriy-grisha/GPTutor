@@ -22,6 +22,7 @@ import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 import { Icon16CopyOutline, Icon12Check, Icon12Cancel, Icon16Message, Icon16ArrowTriangleDown, Icon16ArrowTriangleUp } from "@vkontakte/icons";
 import { GeminiIcon, QwenIcon, DeepSeekIcon, GrokIcon, OpenAIIcon, MistralIcon } from "../components/icons";
 import { modelsApi, ProcessedModel, formatContextLength, formatModalities, processModelData } from "../api";
+import "./module.css";
 
 export interface ModelsProps extends NavIdProps {}
 
@@ -133,10 +134,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
     try {
       const textArea = document.createElement('textarea');
       textArea.value = modelId;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      textArea.style.top = '-999999px';
-      textArea.style.opacity = '0';
+      textArea.className = 'hidden-textarea';
       document.body.appendChild(textArea);
       
       textArea.focus();
@@ -148,11 +146,11 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       
       if (successful) {
         setSnackbar(
-          <Snackbar
-            onClose={() => setSnackbar(null)}
-            before={<Icon12Check />}
-            style={{ marginBottom: '60px' }}
-          >
+        <Snackbar
+          onClose={() => setSnackbar(null)}
+          before={<Icon12Check />}
+          className="snackbar-margin"
+        >
             ID скопирован: {modelId}
           </Snackbar>
         );
@@ -165,7 +163,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
         <Snackbar
           onClose={() => setSnackbar(null)}
           before={<Icon12Cancel />}
-          style={{ marginBottom: '60px' }}
+          className="snackbar-margin"
         >
           Не удалось скопировать
         </Snackbar>
@@ -180,7 +178,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       <Snackbar
         onClose={() => setSnackbar(null)}
         before={<div>🚀</div>}
-        style={{ marginBottom: '60px' }}
+        className="snackbar-margin"
       >
         Попробовать модель: {modelId}
       </Snackbar>
@@ -203,11 +201,11 @@ export const Models: FC<ModelsProps> = ({ id }) => {
           setFilteredModels(processedModels);
         } else {
           setSnackbar(
-            <Snackbar
-              onClose={() => setSnackbar(null)}
-              before={<Icon12Cancel />}
-              style={{ marginBottom: '60px' }}
-            >
+          <Snackbar
+            onClose={() => setSnackbar(null)}
+            before={<Icon12Cancel />}
+            className="snackbar-margin"
+          >
               Неожиданная структура ответа API
             </Snackbar>
           );
@@ -218,7 +216,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
           <Snackbar
             onClose={() => setSnackbar(null)}
             before={<Icon12Cancel />}
-            style={{ marginBottom: '60px' }}
+            className="snackbar-margin"
           >
             Ошибка загрузки моделей: {error instanceof Error ? error.message : 'Неизвестная ошибка'}
           </Snackbar>
@@ -233,197 +231,6 @@ export const Models: FC<ModelsProps> = ({ id }) => {
 
   return (
     <Panel id={id}>
-      <style>
-        {`
-          /* Убираем полосу прокрутки */
-          body, html {
-            overflow-x: hidden !important;
-          }
-          
-          /* Стили для иконок - как в Home.tsx */
-          .model-icon-container {
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: #f0f2f5;
-            padding: 2px;
-          }
-          
-          .model-icon-container-large {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: #f0f2f5;
-            padding: 2px;
-          }
-          
-          .vkuiButton__content {
-            display: flex !important;
-            flex-direction: row !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 8px !important;
-            width: 100% !important;
-          }
-          
-          .vkuiCard__host {
-            width: calc(100% - 20px) !important;
-            max-width: none !important;
-            min-width: 0 !important;
-            margin-left: 10px !important;
-            margin-right: 10px !important;
-          }
-          
-          .vkuiCard__modeOutline {
-            width: 100% !important;
-            max-width: none !important;
-            min-width: 0 !important;
-          }
-          
-          .vkuiCard__withBorder {
-            width: 100% !important;
-            max-width: none !important;
-            min-width: 0 !important;
-          }
-          
-          .vkuiSimpleCell__children {
-            width: 100% !important;
-            max-width: none !important;
-            min-width: 0 !important;
-          }
-          
-          .vkuiList__host {
-            width: 96% !important;
-          }
-          
-          @media (max-width: 460px) {
-            .model-name {
-              white-space: nowrap !important;
-              overflow: hidden !important;
-              text-overflow: ellipsis !important;
-              max-width: 200px !important;
-            }
-          }
-          
-          @media (min-width: 461px) {
-            .model-name {
-              white-space: normal !important;
-              overflow: visible !important;
-              text-overflow: unset !important;
-              max-width: none !important;
-            }
-          }
-          
-          /* Мобильная и планшетная версия (до 768px) - вертикальная структура */
-          @media (max-width: 767px) {
-            .model-card {
-              display: flex !important;
-              flex-direction: column !important;
-              gap: 12px !important;
-            }
-            
-            .model-card-top {
-              display: flex !important;
-              align-items: center !important;
-              gap: 12px !important;
-            }
-            
-            .model-context-info {
-              display: none !important;
-            }
-            
-            .model-context-mobile {
-              display: block !important;
-            }
-            
-            .model-card-bottom {
-              display: flex !important;
-              justify-content: space-between !important;
-              align-items: center !important;
-            }
-            
-            .vkuiSimpleCell__children {
-              padding-left: 5px !important;
-              padding-right: 5px !important;
-            }
-            
-            .vkuiSimpleCell {
-              padding-left: 5px !important;
-              padding-right: 5px !important;
-            }
-            
-            .vkuiCard__modeOutline {
-              padding-left: 5px !important;
-              padding-right: 5px !important;
-            }
-          }
-          
-          /* Десктопная версия (от 768px) - горизонтальная структура */
-          @media (min-width: 768px) {
-            .model-card {
-              display: flex !important;
-              flex-direction: row !important;
-              align-items: flex-start !important;
-              gap: 16px !important;
-            }
-            
-            .model-card-top {
-              display: flex !important;
-              align-items: flex-start !important;
-              gap: 12px !important;
-              flex: 1 !important;
-            }
-            
-            
-            .model-card-bottom {
-              display: flex !important;
-              flex-direction: column !important;
-              align-items: flex-end !important;
-              gap: 8px !important;
-              justify-content: flex-end !important;
-              min-width: 200px !important;
-            }
-            
-            .model-price-section {
-              display: flex !important;
-              flex-direction: column !important;
-              align-items: flex-end !important;
-              text-align: right !important;
-            }
-            
-            .model-context-mobile {
-              display: none !important;
-            }
-            
-            .model-context-info {
-              display: block !important;
-              font-size: 16px !important;
-              margin-top: 9px !important; /* 4px + 5px = 9px */
-            }
-            
-            .vkuiSimpleCell__children {
-              padding-left: 5px !important;
-              padding-right: 5px !important;
-            }
-            
-            .vkuiSimpleCell {
-              padding-left: 5px !important;
-              padding-right: 5px !important;
-            }
-            
-            .vkuiCard__modeOutline {
-              padding-left: 5px !important;
-              padding-right: 5px !important;
-            }
-          }
-        `}
-      </style>
       <PanelHeader
         before={<PanelHeaderBack onClick={() => navigator.push('/')} />}
       >
@@ -432,7 +239,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       
       {loading ? (
         <Group>
-          <Div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
+          <Div className="loading-container">
             <Spinner size="m" />
           </Div>
         </Group>
@@ -449,76 +256,29 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       </Group>
 
 
-        <Group style={{ padding: 0, margin: 0 }}>
-          <div style={{ 
-            display: 'flex', 
-            gap: '8px', 
-            marginBottom: '16px',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '80%',
-            margin: '10px auto 16px auto'
-          }}>
+        <Group className="search-group">
+          <div className="search-container">
             <Search
               value={searchQuery}
               onChange={handleSearchChange}
               placeholder="Поиск по названию модели..."
-              style={{ flex: 1, maxWidth: '90%' }}
+              className="search-input"
             />
             <div
-              style={{
-                width: 32,
-                height: 32,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-              }}
+              className="sort-button"
               onClick={handleSortToggle}
             >
               {sortOrder === 'asc' ? <Icon16ArrowTriangleUp /> : <Icon16ArrowTriangleDown />}
             </div>
-            {/* <Button
-              size="s"
-              mode="primary"
-              style={{ 
-                minWidth: '32px',
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '0'
-              }}
-            >
-            </Button> */}
           </div>
           
           {/* Плашки для быстрого поиска */}
-          <div           style={{ 
-            display: 'flex', 
-            flexWrap: 'wrap', 
-            gap: '12px', 
-            marginBottom: '16px',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
+          <div className="quick-search-container">
             <Button
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('gpt')}
-              style={{ 
-                fontSize: '12px',
-                borderRadius: '20px',
-                padding: '8px 16px',
-                height: '36px',
-                minWidth: '80px',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
-              }}
+              className="quick-search-button"
             >
               <div className="model-icon-container">
                 {getModelIconSmall('gpt')}
@@ -529,18 +289,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('deepseek')}
-              style={{ 
-                fontSize: '12px',
-                borderRadius: '20px',
-                padding: '8px 16px',
-                height: '36px',
-                minWidth: '80px',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
-              }}
+              className="quick-search-button"
             >
               <div className="model-icon-container">
                 {getModelIconSmall('deepseek')}
@@ -551,18 +300,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('grok')}
-              style={{ 
-                fontSize: '12px',
-                borderRadius: '20px',
-                padding: '8px 16px',
-                height: '36px',
-                minWidth: '80px',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
-              }}
+              className="quick-search-button"
             >
               <div className="model-icon-container">
                 {getModelIconSmall('grok')}
@@ -573,18 +311,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('gemini')}
-              style={{ 
-                fontSize: '12px',
-                borderRadius: '20px',
-                padding: '8px 16px',
-                height: '36px',
-                minWidth: '80px',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
-              }}
+              className="quick-search-button"
             >
               <div className="model-icon-container">
                 {getModelIconSmall('gemini')}
@@ -595,18 +322,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('mistral')}
-              style={{ 
-                fontSize: '12px',
-                borderRadius: '20px',
-                padding: '8px 16px',
-                height: '36px',
-                minWidth: '80px',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
-              }}
+              className="quick-search-button"
             >
               <div className="model-icon-container">
                 {getModelIconSmall('mistral')}
@@ -617,18 +333,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('qwen')}
-              style={{ 
-                fontSize: '12px',
-                borderRadius: '20px',
-                padding: '8px 16px',
-                height: '36px',
-                minWidth: '80px',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
-              }}
+              className="quick-search-button"
             >
               <div className="model-icon-container">
                 {getModelIconSmall('qwen')}
@@ -639,72 +344,37 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('')}
-              style={{ 
-                fontSize: '10px',
-                borderRadius: '16px',
-                padding: '4px 12px',
-                height: '28px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
+              className="all-models-button"
             >
               Все модели
             </Button>
           </div>
           
-          <List style={{ width: '100%', padding: 0 }}>
+          <List className="models-list">
             {filteredModels.map((model) => (
-            <Card key={model.id} mode="outline" style={{ marginBottom: '8px', width: '100%', margin: '0 0 8px 0' }}>
-        <Cell style={{ padding: '16px', width: '100%', margin: 0 }}>
-          <div className="model-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <Card key={model.id} mode="outline" className="model-card-wrapper">
+        <Cell className="model-cell">
+          <div className="model-card model-card-inner">
             {/* Верхняя часть: иконка + название + кнопка копирования */}
-            <div className="model-card-top" style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '12px'
-            }}>
+            <div className="model-card-top model-card-top-inner">
               <div className="model-icon-container-large">
                 {getModelIcon(model.name)}
               </div>
-              <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <Title level="3" className="model-name" style={{ margin: 0, fontSize: '18px', color: 'var(--vkui--color_text_primary)' }}>
+              <div className="model-title-container">
+                <div className="model-title-block">
+                  <div className="model-title-row">
+                    <Title level="3" className="model-name model-title-text">
                       {model.name}
                     </Title>
                     <button
                       className="model-copy-button"
                       onClick={() => copyModelId(model.id)}
-                      style={{ 
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        padding: '4px',
-                        borderRadius: '4px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        opacity: 0.6,
-                        transition: 'opacity 0.2s'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                      onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}
                     >
-                      <Icon16CopyOutline style={{ 
-                        color: 'var(--vkui--color_text_secondary)',
-                        width: '16px',
-                        height: '16px'
-                      }} />
+                      <Icon16CopyOutline className="model-copy-icon" />
                     </button>
                   </div>
                   {/* Контекст и модальности под названием */}
-                  <Text className="model-context-info" style={{ 
-                    color: 'var(--vkui--color_text_secondary)',
-                    fontSize: '14px',
-                    lineHeight: '1.4',
-                    marginTop: '4px'
-                  }}>
+                  <Text className="model-context-info model-context-info-text">
                     {formatContextLength(model.contextLength)} context • {formatModalities(model.inputModalities)}
                   </Text>
                 </div>
@@ -712,34 +382,18 @@ export const Models: FC<ModelsProps> = ({ id }) => {
             </div>
 
             {/* Контекст и модальности для мобильной версии */}
-            <Text className="model-context-mobile" style={{ 
-              color: 'var(--vkui--color_text_secondary)',
-              fontSize: '14px',
-              lineHeight: '1.4'
-            }}>
+            <Text className="model-context-mobile model-context-mobile-text">
               {formatContextLength(model.contextLength)} context • {formatModalities(model.inputModalities)}
             </Text>
 
             {/* Нижняя часть: цена + кнопка */}
-            <div className="model-card-bottom" style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center' 
-            }}>
-              <div className="model-price-section" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                <Text weight="2" style={{ 
-                  color: model.price === "Бесплатно" 
-                    ? "var(--vkui--color_text_positive)" 
-                    : "var(--vkui--color_text_primary)",
-                  fontSize: '16px'
-                }}>
+            <div className="model-card-bottom model-card-bottom-inner">
+              <div className="model-price-section model-price-section-inner">
+                <Text weight="2" className={`model-price-text ${model.price === "Бесплатно" ? "free" : "paid"}`}>
                   {model.price}
                 </Text>
                 {model.price !== "Бесплатно" && (
-                  <Text style={{ 
-                    color: 'var(--vkui--color_text_secondary)',
-                    fontSize: '11px'
-                  }}>
+                  <Text className="model-price-unit">
                     за 1М токенов
                   </Text>
                 )}
