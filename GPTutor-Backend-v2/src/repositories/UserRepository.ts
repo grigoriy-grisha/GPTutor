@@ -34,7 +34,7 @@ export class UserRepository {
     return this.prisma.user.create({
       data: {
         vkId: data.vkId,
-        balance: data.balance ?? 0.0,
+        balance: data.balance,
         isActive: data.isActive ?? true,
         apiKey: this.generateApiKey(),
       },
