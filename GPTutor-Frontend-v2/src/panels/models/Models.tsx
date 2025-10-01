@@ -109,7 +109,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
   }, [sortOrder]);
 
   const getModelIconSmall = (modelName: string) => {
-    if (modelName.includes("google")) {
+    if (modelName.includes("gemini")) {
       return <GeminiIcon size={16} />;
     } else if (modelName.includes("qwen")) {
       return <QwenIcon size={16} />;
