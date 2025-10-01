@@ -241,6 +241,8 @@ export const Home: FC<HomeProps> = ({ id }) => {
                 </Flex>
                 <Spacing size={22} />
                 <Button
+                  target="_blank"
+                  href="https://docs.giga-router.ru/"
                   mode="outline"
                   size="m"
                   after={<Icon24DocumentTextOutline />}

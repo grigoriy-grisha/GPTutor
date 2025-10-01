@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  title: GPTutor Backend v2 API
-  version: 2.0.0
+  title: Giga Router API
+  version: 1.0.1
   description: |
-    # GPTutor API
+    # Giga Router API
 
-    GPTutor предоставляет единый API для доступа к различным AI-моделям через один endpoint. Автоматически обрабатывает fallback'и и выбирает наиболее экономичные варианты.
+    Giga Router API предоставляет единый API для доступа к различным AI-моделям через один endpoint. Автоматически обрабатывает fallback'и и выбирает наиболее экономичные варианты.
 
     ## Быстрый старт
 
@@ -156,17 +156,12 @@ info:
 
     Стоимость рассчитывается автоматически на основе токенов и списывается с баланса пользователя. Информация о стоимости включена в каждый ответ.
 
-  contact:
-    name: GPTutor Support
-    url: https://gptutor.site
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: http://localhost:3001
-    description: Development server
-  - url: https://api.openai.com/
+  - url: https://api.giga-router.ru/
     description: Production server
 
 tags:

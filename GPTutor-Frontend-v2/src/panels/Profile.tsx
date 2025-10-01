@@ -100,7 +100,7 @@ export const Profile: FC<ProfileProps> = ({ id }) => {
 
     switch (activeCodeExample) {
       case "curl":
-        code = `curl -X POST "${baseUrl}/chat/completions" \\
+        code = `curl -X POST "${baseUrl}/v1/chat/completions" \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer ${apiKey}" \\
   -d '{
@@ -115,7 +115,7 @@ export const Profile: FC<ProfileProps> = ({ id }) => {
       case "python":
         code = `import requests
 
-url = "${baseUrl}/chat/completions"
+url = "${baseUrl}/v1/chat/completions"
 headers = {
     "Content-Type": "application/json",
     "Authorization": "Bearer ${apiKey}"
@@ -133,7 +133,7 @@ print(response.json())`;
         break;
 
       case "js":
-        code = `const response = await fetch('${baseUrl}/chat/completions', {
+        code = `const response = await fetch('${baseUrl}/v1/chat/completions', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -165,7 +165,7 @@ console.log(data);`;
 
     switch (activeCodeExample) {
       case "curl":
-        return `curl -X POST "${baseUrl}/chat/completions" \\
+        return `curl -X POST "${baseUrl}/v1/chat/completions" \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer ${apiKey}" \\
   -d '{
@@ -178,7 +178,7 @@ console.log(data);`;
       case "python":
         return `import requests
 
-url = "${baseUrl}/chat/completions"
+url = "${baseUrl}/v1/chat/completions"
 headers = {
     "Content-Type": "application/json",
     "Authorization": "Bearer ${apiKey}"
@@ -194,7 +194,7 @@ response = requests.post(url, json=data, headers=headers)
 print(response.json())`;
 
       case "js":
-        return `const response = await fetch('${baseUrl}/chat/completions', {
+        return `const response = await fetch('${baseUrl}/v1/chat/completions', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -449,12 +449,11 @@ console.log(data);`;
               Копировать код
             </Button>
             <Button
+              target="_blank"
+              href="https://docs.giga-router.ru/"
               size="m"
               mode="outline"
               after={<Icon28LinkOutline />}
-              onClick={() =>
-                window.open("https://docs.openai.com/api", "_blank")
-              }
               style={{ width: "100%" }}
             >
               Документация
