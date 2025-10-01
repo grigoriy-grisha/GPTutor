@@ -6,7 +6,10 @@ import { OpenRouterService } from "../services/OpenRouterService";
 import { RequestWithLogging } from "../middleware/loggingMiddleware";
 import { logger } from "../services/LoggerService";
 import { authenticateUser } from "../utils/vkAuth";
-import { createRateLimitMiddleware, getRateLimitConfig } from "../middleware/rateLimitMiddleware";
+import {
+  createRateLimitMiddleware,
+  getRateLimitConfig,
+} from "../middleware/rateLimitMiddleware";
 
 interface CompletionRequest extends RequestWithLogging {
   body: {
@@ -37,10 +40,12 @@ export class CompletionController extends BaseController {
   }
 
   registerRoutes(): void {
-    const completionsRateLimit = createRateLimitMiddleware(getRateLimitConfig('/v1/chat/completions')!);
-    
+    const completionsRateLimit = createRateLimitMiddleware(
+      getRateLimitConfig("/v1/chat/completions")!
+    );
+
     this.fastify.post(
-      "/v1/chat/completions", 
+      "/v1/chat/completions",
       { preHandler: completionsRateLimit },
       this.chatCompletions.bind(this)
     );
@@ -55,6 +60,8 @@ export class CompletionController extends BaseController {
         this.vkSecretKey,
         this.userRepository
       );
+
+      console.log({ authResult });
 
       if (!authResult) {
         return this.sendUnauthorized(
@@ -77,7 +84,6 @@ export class CompletionController extends BaseController {
         if (!dbUser) {
           dbUser = await this.userRepository.create({
             vkId: vkData.vk_user_id,
-            balance: 0.0,
             isActive: true,
           });
         }
@@ -99,6 +105,8 @@ export class CompletionController extends BaseController {
           request
         );
       }
+
+      console.log({ user });
 
       request.userId = userId;
 

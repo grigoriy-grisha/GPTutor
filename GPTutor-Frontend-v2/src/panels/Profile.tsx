@@ -104,7 +104,7 @@ export const Profile: FC<ProfileProps> = ({ id }) => {
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer ${apiKey}" \\
   -d '{
-    "model": "gpt-3.5-turbo",
+    "model": "google/gemini-2.5-flash-lite",
     "messages": [
       {"role": "user", "content": "Привет!"}
     ]
@@ -121,7 +121,7 @@ headers = {
     "Authorization": "Bearer ${apiKey}"
 }
 data = {
-    "model": "gpt-3.5-turbo",
+    "model": "google/gemini-2.5-flash-lite",
     "messages": [
         {"role": "user", "content": "Привет!"}
     ]
@@ -140,7 +140,7 @@ print(response.json())`;
     'Authorization': 'Bearer ${apiKey}'
   },
   body: JSON.stringify({
-    model: 'gpt-3.5-turbo',
+    model: 'google/gemini-2.5-flash-lite',
     messages: [
       { role: 'user', content: 'Привет!' }
     ]
@@ -169,7 +169,7 @@ console.log(data);`;
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer ${apiKey}" \\
   -d '{
-    "model": "gpt-3.5-turbo",
+    "model": "google/gemini-2.5-flash-lite",
     "messages": [
       {"role": "user", "content": "Привет!"}
     ]
@@ -184,7 +184,7 @@ headers = {
     "Authorization": "Bearer ${apiKey}"
 }
 data = {
-    "model": "gpt-3.5-turbo",
+    "model": "google/gemini-2.5-flash-lite",
     "messages": [
         {"role": "user", "content": "Привет!"}
     ]
@@ -201,7 +201,7 @@ print(response.json())`;
     'Authorization': 'Bearer ${apiKey}'
   },
   body: JSON.stringify({
-    model: 'gpt-3.5-turbo',
+    model: 'google/gemini-2.5-flash-lite',
     messages: [
       { role: 'user', content: 'Привет!' }
     ]
