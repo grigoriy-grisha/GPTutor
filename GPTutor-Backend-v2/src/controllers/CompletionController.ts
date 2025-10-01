@@ -208,6 +208,7 @@ export class CompletionController extends BaseController {
         chunkCount++;
 
         if (chunk.usage) {
+          console.log({ usage: chunk.usage as any });
           totalCost = this.llmCostService.calculateCost(
             (chunk.usage as any)?.cost_details
               ?.upstream_inference_completions_cost || 0
@@ -305,6 +306,7 @@ export class CompletionController extends BaseController {
       stream: false,
     });
 
+    console.log({ usage: completion.usage as any });
     const originalCostUsd = (completion.usage as any)?.cost_details
       ?.upstream_inference_completions_cost;
     const cost = this.llmCostService.calculateCost(originalCostUsd);
