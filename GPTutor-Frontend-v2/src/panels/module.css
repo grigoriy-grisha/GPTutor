@@ -1,9 +1,7 @@
-/* Убираем полосу прокрутки */
 body, html {
   overflow-x: hidden !important;
 }
 
-/* Стили для иконок - как в Home.tsx */
 .model-icon-container {
   width: 20px;
   height: 20px;
@@ -35,13 +33,7 @@ body, html {
   width: 100% !important;
 }
 
-.vkuiCard__host {
-  width: calc(100% - 20px) !important;
-  max-width: none !important;
-  min-width: 0 !important;
-  margin-left: 10px !important;
-  margin-right: 10px !important;
-}
+
 
 .vkuiCard__modeOutline {
   width: 100% !important;
@@ -90,37 +82,37 @@ body, html {
     flex-direction: column !important;
     gap: 12px !important;
   }
-  
+
   .model-card-top {
     display: flex !important;
     align-items: center !important;
     gap: 12px !important;
   }
-  
+
   .model-context-info {
     display: none !important;
   }
-  
+
   .model-context-mobile {
     display: block !important;
   }
-  
+
   .model-card-bottom {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
   }
-  
+
   .vkuiSimpleCell__children {
     padding-left: 5px !important;
     padding-right: 5px !important;
   }
-  
+
   .vkuiSimpleCell {
     padding-left: 5px !important;
     padding-right: 5px !important;
   }
-  
+
   .vkuiCard__modeOutline {
     padding-left: 5px !important;
     padding-right: 5px !important;
@@ -135,14 +127,14 @@ body, html {
     align-items: flex-start !important;
     gap: 16px !important;
   }
-  
+
   .model-card-top {
     display: flex !important;
     align-items: flex-start !important;
     gap: 12px !important;
     flex: 1 !important;
   }
-  
+
   .model-card-bottom {
     display: flex !important;
     flex-direction: column !important;
@@ -151,34 +143,34 @@ body, html {
     justify-content: flex-end !important;
     min-width: 200px !important;
   }
-  
+
   .model-price-section {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-end !important;
     text-align: right !important;
   }
-  
+
   .model-context-mobile {
     display: none !important;
   }
-  
+
   .model-context-info {
     display: block !important;
     font-size: 16px !important;
     margin-top: 9px !important; /* 4px + 5px = 9px */
   }
-  
+
   .vkuiSimpleCell__children {
     padding-left: 5px !important;
     padding-right: 5px !important;
   }
-  
+
   .vkuiSimpleCell {
     padding-left: 5px !important;
     padding-right: 5px !important;
   }
-  
+
   .vkuiCard__modeOutline {
     padding-left: 5px !important;
     padding-right: 5px !important;
@@ -409,3 +401,4 @@ body, html {
   top: -999999px;
   opacity: 0;
 }
+

@@ -1,29 +1,32 @@
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   Button,
-  Card,
   Div,
+  Flex,
   Group,
+  IconButton,
   NavIdProps,
   Panel,
   PanelHeader,
+  Placeholder,
+  ScreenSpinner,
+  SegmentedControl,
+  Snackbar,
   Spacing,
   Title,
-  Snackbar,
-  ScreenSpinner,
-  Placeholder,
 } from "@vkontakte/vkui";
 import {
-  Icon28SettingsOutline,
   Icon28CopyOutline,
-  Icon28RefreshOutline,
-  Icon28MoneySendOutline,
-  Icon28OnOffOutline,
   Icon28LinkOutline,
+  Icon28MoneySendOutline,
+  Icon28RefreshOutline,
+  Icon28SettingsOutline,
 } from "@vkontakte/icons";
 import { profileApi, UserProfile, VkData } from "../api/profileApi";
 import { createCodeHTML, getCodeStyles } from "../utils/codeFormatter";
 import "../styles/prism.css";
+import bridge from "@vkontakte/vk-bridge";
+import { userViewModel } from "../viewModels/UserViewModel.ts";
 
 export interface ProfileProps extends NavIdProps {}
 
@@ -33,7 +36,6 @@ export const Profile: FC<ProfileProps> = ({ id }) => {
   const [loading, setLoading] = useState(true);
   const [updatingToken, setUpdatingToken] = useState(false);
   const [, setSnackbar] = useState<React.ReactNode>(null);
-  const [showApiKey, setShowApiKey] = useState(false);
   const [activeCodeExample, setActiveCodeExample] = useState<
     "curl" | "python" | "js"
   >("curl");
@@ -91,7 +93,7 @@ export const Profile: FC<ProfileProps> = ({ id }) => {
 
   const getCodeExample = () => {
     const apiKey = profile?.apiKey || "YOUR_API_KEY";
-    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+    const baseUrl = import.meta.env.VITE_API_URL;
 
     let code = "";
     let language = "";
@@ -272,190 +274,193 @@ console.log(data);`;
       <PanelHeader>Профиль</PanelHeader>
 
       <Group>
-        <Card mode="shadow">
-          <Div>
-            <Title level="3">Баланс</Title>
-            <Spacing size={12} />
+        <Div>
+          <Title level="3">Баланс</Title>
+          <Spacing size={12} />
+          <Flex
+            align="center"
+            style={{ flexWrap: "nowrap" }}
+            wrap="nowrap"
+            gap={6}
+          >
             <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                padding: "16px",
-                background: "var(--vkui--color_background_secondary)",
-                borderRadius: "8px",
+              style={{ width: "100%", fontWeight: 700 }}
+              className="code-block"
+              dangerouslySetInnerHTML={{
+                __html: createCodeHTML(
+                  `ID: ${userViewModel.getUserId()}`,
+                  "python"
+                ),
+              }}
+            />
+            <IconButton
+              onClick={() => {
+                bridge.send("VKWebAppCopyText", {
+                  text: String(userViewModel.getUserId()),
+                });
               }}
             >
-              <Icon28MoneySendOutline />
-              <div>
-                <Title level="1">{profile.balance}₽</Title>
-                <div style={{ color: "#9c9c9c", fontSize: "14px" }}>
-                  Доступно для использования
-                </div>
+              <Icon28CopyOutline
+                color="var(--vkui--color_background_accent_themed)"
+                width={24}
+                height={24}
+              />
+            </IconButton>
+          </Flex>
+          <Spacing size={12} />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              padding: "16px",
+              background: "var(--vkui--color_background_secondary)",
+              borderRadius: "8px",
+            }}
+          >
+            <Icon28MoneySendOutline />
+            <div>
+              <Title level="1">{profile.balance}₽</Title>
+              <div style={{ color: "#9c9c9c", fontSize: "14px" }}>
+                Доступно для использования
               </div>
             </div>
-            <Spacing size={16} />
-            <Button size="m" mode="outline" style={{ width: "100%" }}>
-              Пополнить баланс
-            </Button>
-          </Div>
-        </Card>
+          </div>
+
+          <Spacing size={16} />
+
+          <Button
+            size="m"
+            mode="outline"
+            style={{ width: "100%" }}
+            onClick={() => {
+              bridge
+                .send("VKWebAppShowOrderBox", {
+                  type: "item",
+                  item: "item_id_123456",
+                })
+                .then((data) => {
+                  console.log(data);
+                })
+                .catch((error) => {
+                  // Ошибка
+                  console.log(error);
+                });
+            }}
+          >
+            Пополнить баланс
+          </Button>
+        </Div>
       </Group>
 
-      {/* API Key */}
       <Group>
-        <Card mode="shadow">
-          <Div>
+        <Div>
+          <Title level="3">API Ключ</Title>
+          <Spacing size={12} />
+          <Flex
+            align="center"
+            style={{ flexWrap: "nowrap" }}
+            wrap="nowrap"
+            gap={6}
+          >
             <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Title level="3">API Ключ</Title>
-              <Button
-                size="s"
-                mode="tertiary"
-                before={<Icon28OnOffOutline />}
-                onClick={() => setShowApiKey(!showApiKey)}
-              >
-                {showApiKey ? "Скрыть" : "Показать"}
-              </Button>
-            </div>
-            <Spacing size={12} />
-            <div
-              style={{
-                padding: "16px",
-                background: "var(--vkui--color_background_secondary)",
-                borderRadius: "8px",
-                fontFamily: "monospace",
-                fontSize: "14px",
-                wordBreak: "break-all",
-                border: "1px solid var(--vkui--color_separator_primary)",
-                position: "relative",
-              }}
-            >
-              {showApiKey ? profile.apiKey : "•".repeat(profile.apiKey.length)}
-            </div>
-            <Spacing size={12} />
-            <div style={{ display: "flex", gap: "8px" }}>
-              <Button
-                size="m"
-                mode="outline"
-                before={<Icon28CopyOutline />}
-                onClick={() => {
-                  navigator.clipboard.writeText(profile.apiKey);
-                  setSnackbar(
-                    <Snackbar
-                      onClose={() => setSnackbar(null)}
-                      before={<Icon28CopyOutline />}
-                    >
-                      API ключ скопирован
-                    </Snackbar>
-                  );
-                }}
-              >
-                Копировать
-              </Button>
-              <Button
-                size="m"
-                mode="outline"
-                before={<Icon28RefreshOutline />}
-                loading={updatingToken}
-                onClick={handleUpdateToken}
-              >
-                Обновить
-              </Button>
-            </div>
-          </Div>
-        </Card>
-      </Group>
-
-      {/* Code Examples */}
-      <Group>
-        <Card mode="shadow">
-          <Div>
-            <Title level="3">Примеры использования</Title>
-            <Spacing size={12} />
-
-            {/* Language Tabs */}
-            <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-              <Button
-                size="s"
-                mode={activeCodeExample === "curl" ? "primary" : "outline"}
-                onClick={() => setActiveCodeExample("curl")}
-              >
-                cURL
-              </Button>
-              <Button
-                size="s"
-                mode={activeCodeExample === "python" ? "primary" : "outline"}
-                onClick={() => setActiveCodeExample("python")}
-              >
-                Python
-              </Button>
-              <Button
-                size="s"
-                mode={activeCodeExample === "js" ? "primary" : "outline"}
-                onClick={() => setActiveCodeExample("js")}
-              >
-                JavaScript
-              </Button>
-            </div>
-
-            {/* Code Block */}
-            <div
+              style={{ width: "100%", fontWeight: 700 }}
               className="code-block"
-              style={{
-                overflow: "auto",
+              dangerouslySetInnerHTML={{
+                __html: createCodeHTML(profile.apiKey, "python"),
               }}
-              dangerouslySetInnerHTML={{ __html: getCodeExample() }}
             />
+            <IconButton
+              onClick={() => {
+                bridge.send("VKWebAppCopyText", {
+                  text: profile.apiKey,
+                });
+              }}
+            >
+              <Icon28CopyOutline
+                color="var(--vkui--color_background_accent_themed)"
+                width={24}
+                height={24}
+              />
+            </IconButton>
+          </Flex>
+          <Spacing size={16} />
+          <Button
+            style={{ width: "100%" }}
+            size="m"
+            align="center"
+            mode="outline"
+            after={<Icon28RefreshOutline width={24} height={24} />}
+            loading={updatingToken}
+            onClick={handleUpdateToken}
+          >
+            Перегенерировать
+          </Button>
+        </Div>
+      </Group>
 
-            {/* Add CSS styles */}
-            <style>{getCodeStyles()}</style>
+      <Group>
+        <Div>
+          <Title level="3">Примеры использования</Title>
+          <Spacing size={12} />
+          <SegmentedControl
+            value={activeCodeExample}
+            onChange={(value) => setActiveCodeExample(value as any)}
+            options={[
+              {
+                label: "Curl",
+                value: "curl",
+              },
+              {
+                label: "Python",
+                value: "python",
+              },
+              {
+                label: "JavaScript",
+                value: "js",
+              },
+            ]}
+          />
+          <Spacing size={16} />
+          <div
+            className="code-block"
+            style={{
+              overflow: "auto",
+            }}
+            dangerouslySetInnerHTML={{ __html: getCodeExample() }}
+          />
 
-            <Spacing size={12} />
+          <style>{getCodeStyles()}</style>
 
-            {/* Copy Code Button */}
+          <Spacing size={16} />
+
+          <Flex align="center" gap={12} style={{ flexWrap: "nowrap" }}>
             <Button
               size="m"
               mode="outline"
-              before={<Icon28CopyOutline />}
               onClick={() => {
-                navigator.clipboard.writeText(getRawCodeExample());
-                setSnackbar(
-                  <Snackbar
-                    onClose={() => setSnackbar(null)}
-                    before={<Icon28CopyOutline />}
-                  >
-                    Код скопирован
-                  </Snackbar>
-                );
+                bridge.send("VKWebAppCopyText", {
+                  text: getRawCodeExample(),
+                });
               }}
+              after={<Icon28CopyOutline />}
               style={{ width: "100%" }}
             >
               Копировать код
             </Button>
-
-            <Spacing size={12} />
-
-            {/* Documentation Link */}
-            <div style={{ textAlign: "center" }}>
-              <Button
-                size="s"
-                mode="tertiary"
-                before={<Icon28LinkOutline />}
-                onClick={() =>
-                  window.open("https://docs.openai.com/api", "_blank")
-                }
-              >
-                Открыть документацию
-              </Button>
-            </div>
-          </Div>
-        </Card>
+            <Button
+              size="m"
+              mode="outline"
+              after={<Icon28LinkOutline />}
+              onClick={() =>
+                window.open("https://docs.openai.com/api", "_blank")
+              }
+              style={{ width: "100%" }}
+            >
+              Документация
+            </Button>
+          </Flex>
+        </Div>
       </Group>
     </Panel>
   );

@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './config.js';
+import { API_BASE_URL } from "./config.js";
 
 export interface UserProfile {
   id: number;
@@ -27,7 +27,7 @@ export interface ProfileResponse {
 export interface UpdateTokenResponse {
   message: string;
   newApiKey: string;
-  user: Omit<UserProfile, 'apiKey'>;
+  user: Omit<UserProfile, "apiKey">;
   timestamp: string;
 }
 
@@ -37,11 +37,10 @@ class ProfileApiService {
     options: RequestInit = {}
   ): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
-    
+
     const response = await fetch(url, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${window.location.href}`,
+        Authorization: `Bearer ${window.location}`,
         ...options.headers,
       },
       ...options,
@@ -49,19 +48,21 @@ class ProfileApiService {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        errorData.message || `HTTP error! status: ${response.status}`
+      );
     }
 
     return response.json();
   }
 
   async getProfile(): Promise<ProfileResponse> {
-    return this.makeRequest<ProfileResponse>('/user');
+    return this.makeRequest<ProfileResponse>("/user");
   }
 
   async updateToken(): Promise<UpdateTokenResponse> {
-    return this.makeRequest<UpdateTokenResponse>('/update-token', {
-      method: 'POST',
+    return this.makeRequest<UpdateTokenResponse>("/update-token", {
+      method: "POST",
     });
   }
 }

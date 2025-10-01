@@ -1,0 +1,26 @@
+import bridge, { UserInfo } from "@vkontakte/vk-bridge";
+import { makeAutoObservable } from "mobx";
+
+class UserViewModel {
+  loading = false;
+  user: UserInfo = {} as UserInfo;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+
+  async getUser() {
+    try {
+      this.loading = true;
+      this.user = await bridge.send("VKWebAppGetUserInfo");
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  getUserId() {
+    return this.user.id;
+  }
+}
+
+export const userViewModel = new UserViewModel();

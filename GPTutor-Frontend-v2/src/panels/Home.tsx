@@ -2,25 +2,26 @@ import { FC } from "react";
 import {
   Button,
   Card,
+  CardScroll,
   ContentCard,
   Counter,
   DisplayTitle,
   Div,
   Flex,
+  Group,
   Headline,
   Link,
   NavIdProps,
   Panel,
   PanelHeader,
-  Separator,
   Spacing,
+  useAdaptivityWithJSMediaQueries,
   WriteBar,
   WriteBarIcon,
 } from "@vkontakte/vkui";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 import { DEFAULT_VIEW_PANELS } from "../routes";
 import {
-  Icon12ArrowshapeRight,
   Icon16LinkOutline,
   Icon24BracketsSlashOutline,
   Icon24DocumentTextOutline,
@@ -34,6 +35,7 @@ export interface HomeProps extends NavIdProps {}
 
 export const Home: FC<HomeProps> = ({ id }) => {
   const navigator = useRouteNavigator();
+  const { isDesktop } = useAdaptivityWithJSMediaQueries();
 
   const handleModelsClick = () => {
     navigator.push(`/${DEFAULT_VIEW_PANELS.MODELS}`);
@@ -42,44 +44,28 @@ export const Home: FC<HomeProps> = ({ id }) => {
   return (
     <Panel id={id}>
       <PanelHeader>LLM API</PanelHeader>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateRows: "0.5fr 1fr 1fr",
-          maxHeight: "calc(100vh - 48px - 48px)",
-          gap: "16px",
-        }}
-      >
-        <Card
-          mode="shadow"
-          style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-        >
-          <Div>
-            <DisplayTitle level="1">
-              Единый API интерфейс нейросетей <br /> в одном сервисе!
-            </DisplayTitle>
-            <Spacing size={8} />
-            <Headline
-              level="1"
-              style={{
-                color: "#9c9c9c",
-              }}
-            >
-              Без ВПН и зарубежных карт!
-            </Headline>
-          </Div>
-          <Separator
+
+      <Group>
+        <Div>
+          <DisplayTitle level="1">
+            Единый API интерфейс нейросетей <br /> в одном сервисе!
+          </DisplayTitle>
+          <Spacing size={8} />
+          <Headline
+            level="1"
             style={{
-              height: 3,
-              background: "var(--vkui--color_separator_primary)",
+              color: "#9c9c9c",
             }}
-          />
+          >
+            Без ВПН и зарубежных карт!
+          </Headline>
+        </Div>
+
+        <Div>
           <WriteBar
             style={{
-              borderBottomLeftRadius:
-                "var(--vkui--size_border_radius_paper--regular)",
-              borderBottomRightRadius:
-                "var(--vkui--size_border_radius_paper--regular)",
+              border: "1px solid var(--vkui--color_separator_primary)",
+              borderRadius: "var(--vkui--size_border_radius_paper--regular)",
             }}
             value=""
             // onChange={(e) => {}}
@@ -90,40 +76,14 @@ export const Home: FC<HomeProps> = ({ id }) => {
             }
             placeholder="Что ты умеешь?"
           />
-        </Card>
-        <ContentCard
-          onClick={handleModelsClick}
-          src="https://storage.yandexcloud.net/gptutor-bucket/Slide%204_3%20-%201%20(3).png"
-          title={<DisplayTitle>Одно API для всех моделей!</DisplayTitle>}
-          description={
-            <Headline weight="2">
-              Доступ ко всем основным моделям осуществляется через единый
-              интерфейс. OpenAI SDK работает "из коробки".
-            </Headline>
-          }
-          caption={
-            <Link
-              onClick={handleModelsClick}
-              after={<Icon16LinkOutline />}
-            >
-              Посмотреть модели
-            </Link>
-          }
-          maxHeight={200}
-        />
-
-        <Card
-          mode="shadow"
-          style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
-        >
-          <Div>
-            <Flex
-              style={{ paddingTop: "4%" }}
-              justify="space-between"
-              align="center"
-            >
+        </Div>
+      </Group>
+      <Group>
+        <Div>
+          <CardScroll size={isDesktop ? "s" : "l"}>
+            <Card mode="shadow" style={{ minWidth: "320px" }}>
               <Div>
-                <Flex align="center" gap={12}>
+                <Flex align="center" gap={6}>
                   <Counter
                     mode="primary"
                     style={{
@@ -134,9 +94,9 @@ export const Home: FC<HomeProps> = ({ id }) => {
                   >
                     <DisplayTitle level="2">1</DisplayTitle>
                   </Counter>
-                  <DisplayTitle level="1">Пополни баланс</DisplayTitle>
+                  <DisplayTitle level="2">Пополни баланс</DisplayTitle>
                 </Flex>
-                <Spacing size={13} />
+                <Spacing size={8} />
                 <Flex align="center" gap={12}>
                   <Icon28MoneySendOutline style={{ marginLeft: 4 }} />
                   <DisplayTitle level="2">—</DisplayTitle>
@@ -147,6 +107,9 @@ export const Home: FC<HomeProps> = ({ id }) => {
                 </Flex>
                 <Spacing size={22} />
                 <Button
+                  onClick={() =>
+                    navigator.push(`/${DEFAULT_VIEW_PANELS.PROFILE}`)
+                  }
                   mode="outline"
                   size="m"
                   after={<Icon28PaymentCardAddOutline width={24} height={24} />}
@@ -155,17 +118,10 @@ export const Home: FC<HomeProps> = ({ id }) => {
                   Посмотреть баланс
                 </Button>
               </Div>
+            </Card>
+            <Card mode="shadow" style={{ minWidth: "320px" }}>
               <Div>
-                <Icon12ArrowshapeRight
-                  style={{
-                    color: "var(--vkui--color_background_accent_themed)",
-                  }}
-                  height={28}
-                  width={28}
-                />
-              </Div>
-              <Div>
-                <Flex align="center" gap={12}>
+                <Flex align="center" gap={8}>
                   <Counter
                     mode="primary"
                     style={{
@@ -176,9 +132,9 @@ export const Home: FC<HomeProps> = ({ id }) => {
                   >
                     <DisplayTitle level="2">2</DisplayTitle>
                   </Counter>
-                  <DisplayTitle level="1">Получи API-ключ</DisplayTitle>
+                  <DisplayTitle level="2">Получи API-ключ</DisplayTitle>
                 </Flex>
-                <Spacing size={13} />
+                <Spacing size={8} />
                 <Flex align="center" gap={12}>
                   <Icon28KeyOutline
                     style={{
@@ -191,6 +147,9 @@ export const Home: FC<HomeProps> = ({ id }) => {
                 </Flex>
                 <Spacing size={22} />
                 <Button
+                  onClick={() =>
+                    navigator.push(`/${DEFAULT_VIEW_PANELS.PROFILE}`)
+                  }
                   mode="outline"
                   size="m"
                   after={<Icon28KeySquareOutline width={24} height={24} />}
@@ -199,17 +158,10 @@ export const Home: FC<HomeProps> = ({ id }) => {
                   Получить ключ
                 </Button>
               </Div>
+            </Card>
+            <Card mode="shadow" style={{ minWidth: "320px" }}>
               <Div>
-                <Icon12ArrowshapeRight
-                  style={{
-                    color: "var(--vkui--color_background_accent_themed)",
-                  }}
-                  height={28}
-                  width={28}
-                />
-              </Div>
-              <Div>
-                <Flex align="center" gap={12}>
+                <Flex align="center" gap={8}>
                   <Counter
                     mode="primary"
                     style={{
@@ -220,9 +172,9 @@ export const Home: FC<HomeProps> = ({ id }) => {
                   >
                     <DisplayTitle level="2">3</DisplayTitle>
                   </Counter>
-                  <DisplayTitle level="1">Используй API</DisplayTitle>
+                  <DisplayTitle level="2">Используй API</DisplayTitle>
                 </Flex>
-                <Spacing size={13} />
+                <Spacing size={8} />
                 <Flex align="center" gap={12}>
                   <Icon24BracketsSlashOutline
                     width={28}
@@ -297,10 +249,39 @@ export const Home: FC<HomeProps> = ({ id }) => {
                   Документация
                 </Button>
               </Div>
-            </Flex>
-          </Div>
-        </Card>
-      </div>
+            </Card>
+          </CardScroll>
+        </Div>
+      </Group>
+      <Group>
+        <Div className="forceCardStyle">
+          <ContentCard
+            mode="outline"
+            onClick={handleModelsClick}
+            src={
+              isDesktop
+                ? "https://storage.yandexcloud.net/gptutor-bucket/Desktop.webp"
+                : "https://storage.yandexcloud.net/gptutor-bucket/Mobile.webp"
+            }
+            title={<DisplayTitle>Одно API для всех моделей!</DisplayTitle>}
+            description={
+              <Headline
+                weight="3"
+                style={{ color: "var(--vkui--color_text_secondary)" }}
+              >
+                Доступ ко всем основным моделям осуществляется через единый
+                интерфейс. OpenAI SDK работает "из коробки".
+              </Headline>
+            }
+            caption={
+              <Link onClick={handleModelsClick} after={<Icon16LinkOutline />}>
+                Посмотреть модели
+              </Link>
+            }
+            maxHeight={200}
+          />
+        </Div>
+      </Group>
     </Panel>
   );
 };

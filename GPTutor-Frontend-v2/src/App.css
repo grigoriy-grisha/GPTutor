@@ -56,3 +56,20 @@
     background: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.3);
 }
+
+code {
+    font-size: 15px !important;
+}
+
+.forceCardStyle .vkuiCard__host {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.forceCardStyle .vkuiCard__modeOutline {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
