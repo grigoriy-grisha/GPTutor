@@ -27,6 +27,8 @@ services:
     build:
       context: ./GPTutor-Backend-v2
       dockerfile: Dockerfile
+      args:
+        DATABASE_URL: 'file:./prod.db'
     container_name: backend-prod
     environment:
       - NODE_ENV=production

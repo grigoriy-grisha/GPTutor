@@ -13,6 +13,10 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Accept DATABASE_URL as build argument
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+
 # Generate Prisma client
 RUN npx prisma generate
 
@@ -33,6 +37,10 @@ RUN npm ci --only=production
 
 # Copy Prisma schema for runtime
 COPY --from=builder /app/prisma ./prisma
+
+# Accept DATABASE_URL as build argument for production
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 
 # Generate Prisma client in production
 RUN npx prisma generate
