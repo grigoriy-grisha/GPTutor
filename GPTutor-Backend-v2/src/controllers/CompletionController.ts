@@ -208,15 +208,15 @@ export class CompletionController extends BaseController {
         chunkCount++;
 
         if (chunk.usage) {
+          const responseUsage = chunk.usage as any;
           console.log({ usage: chunk.usage as any });
-          totalCost = this.llmCostService.calculateCost(
-            (chunk.usage as any)?.cost_details
-              ?.upstream_inference_completions_cost || 0
-          );
+          const cost = this.llmCostService.calculateCost(responseUsage?.cost);
 
           chunk.usage = {
-            ...chunk.usage,
-            cost_details: { upstream_inference_completions_cost: totalCost },
+            prompt_tokens: responseUsage?.prompt_tokens,
+            completion_tokens: responseUsage?.completion_tokens,
+            total_tokens: responseUsage?.total_tokens,
+            cost,
           } as any;
         }
 
@@ -306,9 +306,9 @@ export class CompletionController extends BaseController {
       stream: false,
     });
 
-    console.log({ usage: completion.usage as any });
-    const originalCostUsd = (completion.usage as any)?.cost_details
-      ?.upstream_inference_completions_cost;
+    const responseUsage = completion.usage;
+    console.log({ usage: responseUsage });
+    const originalCostUsd = (completion.usage as any)?.cost;
     const cost = this.llmCostService.calculateCost(originalCostUsd);
     const requestDuration = Date.now() - requestStartTime;
     const totalTokens = (completion.usage as any)?.total_tokens || 0;
@@ -346,15 +346,13 @@ export class CompletionController extends BaseController {
       }
     );
 
-    console.log({
-      ...completion.usage,
-      cost_details: { upstream_inference_completions_cost: cost },
-    });
     const responseWithCost = {
       ...completion,
       usage: {
-        ...completion.usage,
-        cost_details: { upstream_inference_completions_cost: cost },
+        prompt_tokens: responseUsage?.prompt_tokens,
+        completion_tokens: responseUsage?.completion_tokens,
+        total_tokens: responseUsage?.total_tokens,
+        cost,
       },
     };
 
