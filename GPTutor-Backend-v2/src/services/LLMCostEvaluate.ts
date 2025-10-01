@@ -58,7 +58,7 @@ export class LLMCostEvaluate {
 
     if (provider) {
       filteredModels = filteredModels.filter((model) =>
-        model.id.toLowerCase().startsWith(`${provider.toLowerCase()}/`)
+        model.id.toLowerCase().includes(provider.toLowerCase())
       );
     }
 

@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import {
   Button,
   Card,
@@ -34,6 +34,7 @@ import {
   GrokIcon,
   OpenAIIcon,
   MistralIcon,
+  PerplexityIcon,
 } from "../components/icons";
 import {
   modelsApi,
@@ -128,6 +129,8 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       return <OpenAIIcon size={16} />;
     } else if (modelName.includes("mistral")) {
       return <MistralIcon size={16} />;
+    } else if (modelName.includes("perplexity")) {
+      return <PerplexityIcon size={24} />;
     }
     return null;
   };
@@ -135,7 +138,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
   const getModelIcon = (modelName: string) => {
     const name = modelName.toLowerCase();
 
-    if (name.includes("gemini")) {
+    if (name.includes("gemini") || name.includes("gemma")) {
       return <GeminiIcon size={24} />;
     } else if (name.includes("qwen")) {
       return <QwenIcon size={24} />;
@@ -147,6 +150,8 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       return <OpenAIIcon size={24} />;
     } else if (name.includes("mistral")) {
       return <MistralIcon size={24} />;
+    } else if (name.includes("perplexity")) {
+      return <PerplexityIcon size={24} />;
     }
     return null;
   };
@@ -213,9 +218,8 @@ export const Models: FC<ModelsProps> = ({ id }) => {
         const data = await modelsApi.getModels();
 
         if (data.success && data.data.models) {
-          const processedModels: ProcessedModel[] = data.data.models
-            .slice(0, 50) // Show first 50 models
-            .map(processModelData);
+          const processedModels: ProcessedModel[] =
+            data.data.models.map(processModelData);
 
           setModels(processedModels);
           setFilteredModels(processedModels);
