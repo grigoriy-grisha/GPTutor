@@ -17,26 +17,15 @@ ENV VITE_VK_APP_ID=$VITE_VK_APP_ID
 
 RUN npm run build
 
-FROM nginx:alpine
+FROM nginx:latest
+
+COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
+
+RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=builder /app/build /usr/share/nginx/html
 
-RUN echo 'server { \
-    listen 80; \
-    server_name localhost; \
-    root /usr/share/nginx/html; \
-    index index.html; \
-    location / { \
-        try_files $uri $uri/ /index.html; \
-    } \
-    location /health { \
-        access_log off; \
-        return 200 "healthy\n"; \
-        add_header Content-Type text/plain; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
-
-EXPOSE 3000
+EXPOSE 80
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --quiet --tries=1 --spider http://localhost/health || exit 1
