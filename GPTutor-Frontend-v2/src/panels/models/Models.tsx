@@ -20,9 +20,9 @@ import {
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 
 import { Icon16CopyOutline, Icon12Check, Icon12Cancel, Icon16Message, Icon16ArrowTriangleDown, Icon16ArrowTriangleUp } from "@vkontakte/icons";
-import { GeminiIcon, QwenIcon, DeepSeekIcon, GrokIcon, OpenAIIcon, MistralIcon } from "../components/icons";
-import { modelsApi, ProcessedModel, formatContextLength, formatModalities, processModelData } from "../api";
-import "./module.css";
+import { GeminiIcon, QwenIcon, DeepSeekIcon, GrokIcon, OpenAIIcon, MistralIcon } from "../../components/icons";
+import { modelsApi, ProcessedModel, formatContextLength, formatModalities, processModelData } from "../../api";
+import classes from "./Models.module.css";
 
 export interface ModelsProps extends NavIdProps {}
 
@@ -35,10 +35,8 @@ export const Models: FC<ModelsProps> = ({ id }) => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Функция сортировки по цене
   const sortModelsByPrice = (modelsToSort: ProcessedModel[], order: 'asc' | 'desc') => {
     return [...modelsToSort].sort((a, b) => {
-      // Извлекаем числовое значение цены
       const getPriceValue = (price: string) => {
         if (price === "Бесплатно") return 0;
         const match = price.match(/(\d+\.?\d*)/);
@@ -52,7 +50,6 @@ export const Models: FC<ModelsProps> = ({ id }) => {
     });
   };
 
-  // Функция фильтрации моделей
   const filterModels = (query: string) => {
     let filtered = models;
     
@@ -62,37 +59,31 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       );
     }
     
-    // Всегда применяем сортировку
     filtered = sortModelsByPrice(filtered, sortOrder);
     
     setFilteredModels(filtered);
   };
 
-  // Обработчик изменения поиска
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchQuery(value);
     filterModels(value);
   };
 
-  // Функция быстрого поиска
   const handleQuickSearch = (query: string) => {
     setSearchQuery(query);
     filterModels(query);
   };
 
-  // Обработчик переключения сортировки
   const handleSortToggle = () => {
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
 
-  // Применяем сортировку при изменении sortOrder
   useEffect(() => {
     filterModels(searchQuery);
   }, [sortOrder]);
 
 
-  // Функция для получения иконки модели (маленькая)
   const getModelIconSmall = (modelName: string) => {
     if (modelName.includes('gemini')) {
       return <GeminiIcon size={16} />;
@@ -129,12 +120,11 @@ export const Models: FC<ModelsProps> = ({ id }) => {
     return null;
   };
 
-  // Функция для копирования ID модели
   const copyModelId = (modelId: string) => {
     try {
       const textArea = document.createElement('textarea');
       textArea.value = modelId;
-      textArea.className = 'hidden-textarea';
+      textArea.className = classes.hiddenTextarea;
       document.body.appendChild(textArea);
       
       textArea.focus();
@@ -149,7 +139,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
         <Snackbar
           onClose={() => setSnackbar(null)}
           before={<Icon12Check />}
-          className="snackbar-margin"
+          className={classes.snackbarMargin}
         >
             ID скопирован: {modelId}
           </Snackbar>
@@ -163,7 +153,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
         <Snackbar
           onClose={() => setSnackbar(null)}
           before={<Icon12Cancel />}
-          className="snackbar-margin"
+          className={classes.snackbarMargin}
         >
           Не удалось скопировать
         </Snackbar>
@@ -172,13 +162,12 @@ export const Models: FC<ModelsProps> = ({ id }) => {
   };
 
 
-  // Функция для попробовать модель
   const tryModel = (modelId: string) => {
     setSnackbar(
       <Snackbar
         onClose={() => setSnackbar(null)}
         before={<div>🚀</div>}
-        className="snackbar-margin"
+        className={classes.snackbarMargin}
       >
         Попробовать модель: {modelId}
       </Snackbar>
@@ -194,7 +183,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
         
         if (data.success && data.data.models) {
           const processedModels: ProcessedModel[] = data.data.models
-            .slice(0, 50) // Show first 50 models
+            .slice(0, 50) 
             .map(processModelData);
 
           setModels(processedModels);
@@ -204,7 +193,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
           <Snackbar
             onClose={() => setSnackbar(null)}
             before={<Icon12Cancel />}
-            className="snackbar-margin"
+            className={classes.snackbarMargin}
           >
               Неожиданная структура ответа API
             </Snackbar>
@@ -216,7 +205,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
           <Snackbar
             onClose={() => setSnackbar(null)}
             before={<Icon12Cancel />}
-            className="snackbar-margin"
+            className={classes.snackbarMargin}
           >
             Ошибка загрузки моделей: {error instanceof Error ? error.message : 'Неизвестная ошибка'}
           </Snackbar>
@@ -230,7 +219,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
   }, []);
 
   return (
-    <Panel id={id}>
+    <Panel id={id} className={classes.modelsPanel}>
       <PanelHeader
         before={<PanelHeaderBack onClick={() => navigator.push('/')} />}
       >
@@ -239,7 +228,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       
       {loading ? (
         <Group>
-          <Div className="loading-container">
+          <Div className={classes.loadingContainer}>
             <Spinner size="m" />
           </Div>
         </Group>
@@ -256,31 +245,30 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       </Group>
 
 
-        <Group className="search-group">
-          <div className="search-container">
+        <Group className={classes.searchGroup}>
+          <div className={classes.searchContainer}>
             <Search
               value={searchQuery}
               onChange={handleSearchChange}
               placeholder="Поиск по названию модели..."
-              className="search-input"
+              className={classes.searchInput}
             />
             <div
-              className="sort-button"
+              className={classes.sortButton}
               onClick={handleSortToggle}
             >
               {sortOrder === 'asc' ? <Icon16ArrowTriangleUp /> : <Icon16ArrowTriangleDown />}
             </div>
           </div>
           
-          {/* Плашки для быстрого поиска */}
-          <div className="quick-search-container">
+          <div className={classes.quickSearchContainer}>
             <Button
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('gpt')}
-              className="quick-search-button"
+              className={classes.quickSearchButton}
             >
-              <div className="model-icon-container">
+              <div className={classes.modelIconContainer}>
                 {getModelIconSmall('gpt')}
               </div>
               <span>GPT</span>
@@ -289,9 +277,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('deepseek')}
-              className="quick-search-button"
+              className={classes.quickSearchButton}
             >
-              <div className="model-icon-container">
+              <div className={classes.modelIconContainer}>
                 {getModelIconSmall('deepseek')}
               </div>
               <span>DeepSeek</span>
@@ -300,9 +288,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('grok')}
-              className="quick-search-button"
+              className={classes.quickSearchButton}
             >
-              <div className="model-icon-container">
+              <div className={classes.modelIconContainer}>
                 {getModelIconSmall('grok')}
               </div>
               <span>Grok</span>
@@ -311,9 +299,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('gemini')}
-              className="quick-search-button"
+              className={classes.quickSearchButton}
             >
-              <div className="model-icon-container">
+              <div className={classes.modelIconContainer}>
                 {getModelIconSmall('gemini')}
               </div>
               <span>Gemini</span>
@@ -322,9 +310,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('mistral')}
-              className="quick-search-button"
+              className={classes.quickSearchButton}
             >
-              <div className="model-icon-container">
+              <div className={classes.modelIconContainer}>
                 {getModelIconSmall('mistral')}
               </div>
               <span>Mistral</span>
@@ -333,9 +321,9 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('qwen')}
-              className="quick-search-button"
+              className={classes.quickSearchButton}
             >
-              <div className="model-icon-container">
+              <div className={classes.modelIconContainer}>
                 {getModelIconSmall('qwen')}
               </div>
               <span>Qwen</span>
@@ -344,56 +332,52 @@ export const Models: FC<ModelsProps> = ({ id }) => {
               size="s"
               mode="outline"
               onClick={() => handleQuickSearch('')}
-              className="all-models-button"
+              className={classes.allModelsButton}
             >
               Все модели
             </Button>
           </div>
           
-          <List className="models-list">
+          <List className={classes.modelsList}>
             {filteredModels.map((model) => (
-            <Card key={model.id} mode="outline" className="model-card-wrapper">
-        <Cell className="model-cell">
-          <div className="model-card model-card-inner">
-            {/* Верхняя часть: иконка + название + кнопка копирования */}
-            <div className="model-card-top model-card-top-inner">
-              <div className="model-icon-container-large">
+            <Card key={model.id} mode="outline" className={classes.modelCardWrapper}>
+        <Cell className={classes.modelCell}>
+          <div className={`${classes.modelCard} ${classes.modelCardInner}`}>
+            <div className={`${classes.modelCardTop} ${classes.modelCardTopInner}`}>
+              <div className={classes.modelIconContainerLarge}>
                 {getModelIcon(model.name)}
               </div>
-              <div className="model-title-container">
-                <div className="model-title-block">
-                  <div className="model-title-row">
-                    <Title level="3" className="model-name model-title-text">
+              <div className={classes.modelTitleContainer}>
+                <div className={classes.modelTitleBlock}>
+                  <div className={classes.modelTitleRow}>
+                    <Title level="3" className={`${classes.modelName} ${classes.modelTitleText}`}>
                       {model.name}
                     </Title>
                     <button
-                      className="model-copy-button"
+                      className={classes.modelCopyButton}
                       onClick={() => copyModelId(model.id)}
                     >
-                      <Icon16CopyOutline className="model-copy-icon" />
+                      <Icon16CopyOutline className={classes.modelCopyIcon} />
                     </button>
                   </div>
-                  {/* Контекст и модальности под названием */}
-                  <Text className="model-context-info model-context-info-text">
+                  <Text className={`${classes.modelContextInfo} ${classes.modelContextInfoText}`}>
                     {formatContextLength(model.contextLength)} context • {formatModalities(model.inputModalities)}
                   </Text>
                 </div>
               </div>
             </div>
 
-            {/* Контекст и модальности для мобильной версии */}
-            <Text className="model-context-mobile model-context-mobile-text">
+            <Text className={`${classes.modelContextMobile} ${classes.modelContextMobileText}`}>
               {formatContextLength(model.contextLength)} context • {formatModalities(model.inputModalities)}
             </Text>
 
-            {/* Нижняя часть: цена + кнопка */}
-            <div className="model-card-bottom model-card-bottom-inner">
-              <div className="model-price-section model-price-section-inner">
-                <Text weight="2" className={`model-price-text ${model.price === "Бесплатно" ? "free" : "paid"}`}>
+            <div className={`${classes.modelCardBottom} ${classes.modelCardBottomInner}`}>
+              <div className={`${classes.modelPriceSection} ${classes.modelPriceSectionInner}`}>
+                <Text weight="2" className={`${classes.modelPriceText} ${model.price === "Бесплатно" ? classes.free : classes.paid}`}>
                   {model.price}
                 </Text>
                 {model.price !== "Бесплатно" && (
-                  <Text className="model-price-unit">
+                  <Text className={classes.modelPriceUnit}>
                     за 1М токенов
                   </Text>
                 )}
