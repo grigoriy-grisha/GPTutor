@@ -44,6 +44,7 @@ ENV DATABASE_URL=$DATABASE_URL
 
 # Generate Prisma client in production
 RUN npx prisma generate
+# Apply migrations to create database schema
 RUN npx prisma migrate deploy
 
 # Copy built application from builder
