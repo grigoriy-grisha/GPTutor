@@ -28,12 +28,12 @@ services:
       context: ./GPTutor-Backend-v2
       dockerfile: Dockerfile
       args:
-        DATABASE_URL: 'file:./prisma/prod.db'
+        DATABASE_URL: 'file:/app/prisma/prod.db'
     container_name: backend-prod
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - DATABASE_URL=file:./prisma/prod.db
+      - DATABASE_URL=file:/app/prisma/prod.db
 
     volumes:
       - backend-db:/app/prisma

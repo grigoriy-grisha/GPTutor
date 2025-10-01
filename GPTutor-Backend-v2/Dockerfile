@@ -42,6 +42,9 @@ COPY --from=builder /app/prisma ./prisma
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 
+# Create prisma directory and ensure it exists
+RUN mkdir -p /app/prisma
+
 # Generate Prisma client in production
 RUN npx prisma generate
 # Apply migrations to create database schema
@@ -49,6 +52,10 @@ RUN npx prisma migrate deploy
 
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist
+
+# Copy initialization script
+COPY init-db.sh ./
+RUN chmod +x init-db.sh
 
 # Create logs directory
 RUN mkdir -p logs
@@ -60,6 +67,6 @@ EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3001/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-# Start application
-CMD ["npm", "start"]
+# Start application with database initialization
+CMD ["./init-db.sh"]
 
