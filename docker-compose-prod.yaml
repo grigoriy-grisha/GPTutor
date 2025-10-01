@@ -13,7 +13,7 @@ services:
     container_name: frontend-prod
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-prod.rule=Host(`${HOST}`)"
+      - "traefik.http.routers.frontend-prod.rule=Host(`front.${HOST}`)"
       - "traefik.http.routers.frontend-prod.entrypoints=websecure"
       - "traefik.http.routers.frontend-prod.tls.certresolver=myresolver"
     networks:
