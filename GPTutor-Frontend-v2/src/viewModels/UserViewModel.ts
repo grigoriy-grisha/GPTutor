@@ -10,9 +10,11 @@ class UserViewModel {
   }
 
   async getUser() {
+    console.log(bridge);
     try {
       this.loading = true;
       this.user = await bridge.send("VKWebAppGetUserInfo");
+      console.log(this.user);
     } finally {
       this.loading = false;
     }

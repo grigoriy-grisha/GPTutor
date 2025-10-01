@@ -89,7 +89,7 @@ export const App = () => {
             </View>
           </Epic>
         </SplitCol>
-        {userViewModel.loading ? <ScreenSpinner /> : null}
+        {/*{userViewModel.loading ? <ScreenSpinner /> : null}*/}
 
         {/* Code Themes */}
         {isDarkTheme ? <OneDark /> : <OneLight />}
