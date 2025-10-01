@@ -36,7 +36,7 @@ COPY --from=builder /app/prisma ./prisma
 
 # Generate Prisma client in production
 RUN npx prisma generate
-RUN npx prisma migrate prod
+RUN npx prisma migrate
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist
 
