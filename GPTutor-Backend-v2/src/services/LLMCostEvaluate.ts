@@ -100,6 +100,7 @@ export class LLMCostEvaluate {
       "perplexity",
       "mistralai",
       "openai",
+      "anthropic",
     ];
 
     return this.getModelsByProviders(popularProviders).filter(

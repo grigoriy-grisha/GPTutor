@@ -2,7 +2,10 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { BaseController } from "./BaseController";
 import { LLMCostEvaluate } from "../services/LLMCostEvaluate";
 import { RequestWithLogging } from "../middleware/loggingMiddleware";
-import { createRateLimitMiddleware, getRateLimitConfig } from "../middleware/rateLimitMiddleware";
+import {
+  createRateLimitMiddleware,
+  getRateLimitConfig,
+} from "../middleware/rateLimitMiddleware";
 
 export class ModelsController extends BaseController {
   constructor(protected fastify: any, private llmCostService: LLMCostEvaluate) {
@@ -11,10 +14,12 @@ export class ModelsController extends BaseController {
 
   registerRoutes(): void {
     // Rate limiting для models endpoint
-    const modelsRateLimit = createRateLimitMiddleware(getRateLimitConfig('/v1/models')!);
-    
+    const modelsRateLimit = createRateLimitMiddleware(
+      getRateLimitConfig("/v1/models")!
+    );
+
     this.fastify.get(
-      "/v1/models", 
+      "/v1/models",
       { preHandler: modelsRateLimit },
       this.getModels.bind(this)
     );
@@ -53,6 +58,7 @@ export class ModelsController extends BaseController {
           {},
           request as RequestWithLogging
         );
+
         return this.sendSuccess(reply, {
           success: true,
           data: {
@@ -66,6 +72,7 @@ export class ModelsController extends BaseController {
               "perplexity",
               "mistralai",
               "openai",
+              "anthropic",
             ],
             lastUpdated: new Date().toISOString(),
           },
@@ -126,6 +133,7 @@ export class ModelsController extends BaseController {
             "perplexity",
             "mistralai",
             "openai",
+            "anthropic",
           ],
           lastUpdated: new Date().toISOString(),
         },

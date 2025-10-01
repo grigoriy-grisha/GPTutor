@@ -5,3 +5,4 @@ export { GrokIcon } from "./GrokIcon";
 export { OpenAIIcon } from "./OpenAIIcon";
 export { MistralIcon } from "./MistralIcon";
 export { PerplexityIcon } from "./PerplexityIcon.tsx";
+export { ClaudeIcon } from "./ClaudeIcon.tsx";
