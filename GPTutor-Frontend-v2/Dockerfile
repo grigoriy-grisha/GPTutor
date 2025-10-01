@@ -46,10 +46,11 @@ RUN echo 'server { \
     gzip_min_length 1024; \
     gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json; \
     \
-    # Security headers \
-    add_header X-Frame-Options "SAMEORIGIN" always; \
+    # Security headers for VK Mini Apps (allow iframe embedding) \
     add_header X-Content-Type-Options "nosniff" always; \
     add_header X-XSS-Protection "1; mode=block" always; \
+    # Allow embedding in VK iframe \
+    add_header Content-Security-Policy "frame-ancestors 'self' https://vk.com https://*.vk.com https://vk.ru https://*.vk.ru" always; \
     \
     # Cache static assets \
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ { \
