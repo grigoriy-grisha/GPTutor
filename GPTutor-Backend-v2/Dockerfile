@@ -38,17 +38,8 @@ RUN npm ci --only=production
 # Copy Prisma schema for runtime
 COPY --from=builder /app/prisma ./prisma
 
-# Accept DATABASE_URL as build argument for production
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-
-# Create prisma directory and ensure it exists
-RUN mkdir -p /app/prisma
-
 # Generate Prisma client in production
 RUN npx prisma generate
-# Apply migrations to create database schema
-RUN npx prisma migrate deploy
 
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist

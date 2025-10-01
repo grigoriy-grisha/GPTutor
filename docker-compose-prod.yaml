@@ -27,8 +27,6 @@ services:
     build:
       context: ./GPTutor-Backend-v2
       dockerfile: Dockerfile
-      args:
-        DATABASE_URL: 'file:/app/prisma/prod.db'
     container_name: backend-prod
     environment:
       - NODE_ENV=production

@@ -3,13 +3,13 @@
 # Create prisma directory if it doesn't exist
 mkdir -p /app/prisma
 
-# Initialize database if it doesn't exist
+# Check if database exists
 if [ ! -f /app/prisma/prod.db ]; then
     echo "Creating new database..."
-    npx prisma migrate deploy
+    npx prisma db push
 else
-    echo "Database already exists, applying migrations..."
-    npx prisma migrate deploy
+    echo "Database exists, checking schema..."
+    npx prisma db push
 fi
 
 # Start the application
