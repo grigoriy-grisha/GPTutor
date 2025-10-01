@@ -16,7 +16,6 @@ services:
       - "traefik.http.routers.frontend-prod.rule=Host(`front.${HOST}`)"
       - "traefik.http.routers.frontend-prod.entrypoints=websecure"
       - "traefik.http.routers.frontend-prod.tls.certresolver=myresolver"
-      - "traefik.http.services.backend-prod.loadbalancer.server.port=3000"
     networks:
       - trfk
     restart: unless-stopped
