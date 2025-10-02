@@ -13,7 +13,7 @@ export class ModelsController extends BaseController {
   }
 
   registerRoutes(): void {
-    // Rate limiting для models endpoint
+    // Rate limiting для Models endpoint
     const modelsRateLimit = createRateLimitMiddleware(
       getRateLimitConfig("/v1/models")!
     );
@@ -28,7 +28,7 @@ export class ModelsController extends BaseController {
   private async getModels(request: FastifyRequest, reply: FastifyReply) {
     try {
       this.logInfo(
-        "Getting popular provider models",
+        "Getting popular provider Models",
         {},
         request as RequestWithLogging
       );
@@ -37,7 +37,7 @@ export class ModelsController extends BaseController {
       const allModels = this.llmCostService.getAllModels();
       if (!allModels || allModels.length === 0) {
         this.logWarn(
-          "LLM Cost Service not initialized or no models loaded",
+          "LLM Cost Service not initialized or no Models loaded",
           {},
           request as RequestWithLogging
         );
@@ -54,7 +54,7 @@ export class ModelsController extends BaseController {
       // Проверяем, что модели загружены корректно
       if (!models || models.length === 0) {
         this.logWarn(
-          "No models found from popular providers",
+          "No Models found from popular providers",
           {},
           request as RequestWithLogging
         );
@@ -79,7 +79,6 @@ export class ModelsController extends BaseController {
         });
       }
 
-      // Логируем информацию о моделях для отладки
       this.logInfo(
         `Found ${models.length} models from popular providers`,
         {
@@ -140,14 +139,14 @@ export class ModelsController extends BaseController {
       });
     } catch (error) {
       this.logError(
-        "Failed to get models",
+        "Failed to get Models",
         error,
         {},
         request as RequestWithLogging
       );
       return this.sendError(
         reply,
-        "Failed to retrieve models",
+        "Failed to retrieve Models",
         500,
         request as RequestWithLogging
       );
