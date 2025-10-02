@@ -1,0 +1,147 @@
+.messagesContainer {
+  height: calc(100vh - 150px);
+  overflow-y: auto;
+}
+
+.emptyChatContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.messageContainer {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.messageContainerUser {
+  justify-content: flex-start;
+}
+
+.messageContainerAI {
+  justify-content: flex-start;
+}
+
+.messageInner {
+  max-width: 70%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.messageInnerUser {
+  align-items: flex-start;
+}
+
+.messageInnerAI {
+  align-items: flex-start;
+}
+
+.messageContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.userName {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0;
+  color: var(--vkui--color_text_secondary);
+}
+
+.userNameUser {
+  color: var(--vkui--color_accent);
+}
+
+.userNameAI {
+  color: var(--vkui--color_text_accent);
+}
+
+.messageBubble {
+  padding: 0;
+  border-radius: 0;
+  word-break: break-word;
+  background: transparent;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.messageBubbleUser {
+  background: transparent;
+  color: var(--vkui--color_text_primary);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.messageBubbleAI {
+  background: transparent;
+  color: var(--vkui--color_text_primary);
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 0;
+  margin: 0;
+}
+
+.messageBubbleAI * {
+  padding: 0;
+  margin: 0;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+}
+
+.loadingInner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--vkui--color_background_secondary);
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+.inputContainer {
+  position: fixed;
+  width: 95%;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  z-index: 1000;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+
+}
+
+@media (max-width: 480px) {
+  .messagesContainer {
+    height: 100vh;
+    background-color: white;
+  }
+  
+  .inputContainer {
+    bottom: 50px;
+    padding: 8px 12px;
+  }
+  
+  .messageInner {
+    max-width: 85%;
+  }
+}
+
+@media (min-width: 481px) {
+  .messageInner {
+    max-width: 70%;
+  }
+}
+
+.chatPanel :global(.vkuiPanel__in) {
+  background: var(--vkui--color_background_content);
+}
