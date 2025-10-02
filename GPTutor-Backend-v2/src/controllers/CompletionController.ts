@@ -306,6 +306,7 @@ export class CompletionController extends BaseController {
       stream: false,
     });
 
+    console.log(completion);
     const responseUsage = completion.usage;
     console.log({ usage: responseUsage });
     const originalCostUsd = (completion.usage as any)?.cost;
