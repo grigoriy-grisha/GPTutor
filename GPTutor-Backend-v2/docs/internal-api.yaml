@@ -29,6 +29,10 @@ info:
     - `GET /files` - Получение списка файлов пользователя
     - `DELETE /files/:fileId` - Удаление файла
 
+    ### Usage Statistics
+    - `GET /v1/usage` - Получение пагинированного списка записей использования API
+    - `GET /v1/usage/stats` - Получение агрегированной статистики использования
+
     ## Безопасность
 
     Все endpoints требуют соответствующей авторизации:
@@ -745,6 +749,237 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 
+  /v1/usage:
+    get:
+      tags: [Usage Statistics]
+      summary: Получение пагинированного списка записей использования API
+      description: |
+        Возвращает пагинированный список всех записей использования LLM API с возможностью фильтрации и сортировки.
+        
+        **Использование:**
+        - Просмотр истории запросов к API
+        - Анализ использования различных моделей
+        - Контроль расходов по времени
+        - Фильтрация по датам и моделям
+        
+        **Особенности:**
+        - Пагинация с настраиваемым размером страницы
+        - Сортировка по различным полям
+        - Фильтрация по модели, дате, типу запроса
+        - Пользователи видят только свои записи
+        - Включает детальную информацию о каждом запросе
+      security:
+        - ApiKeyAuth: []
+        - VkAuth: []
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: "Номер страницы (начиная с 1)"
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+            example: 1
+        - name: limit
+          in: query
+          required: false
+          description: "Количество записей на странице (максимум 100)"
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+            example: 20
+        - name: sortBy
+          in: query
+          required: false
+          description: "Поле для сортировки"
+          schema:
+            type: string
+            enum: [createdAt, costRub, totalTokens]
+            default: createdAt
+            example: createdAt
+        - name: sortOrder
+          in: query
+          required: false
+          description: "Порядок сортировки"
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+            example: desc
+        - name: model
+          in: query
+          required: false
+          description: "Фильтр по модели"
+          schema:
+            type: string
+            example: "google/gemini-2.5-flash-lite"
+        - name: startDate
+          in: query
+          required: false
+          description: "Начальная дата (ISO 8601)"
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-01T00:00:00Z"
+        - name: endDate
+          in: query
+          required: false
+          description: "Конечная дата (ISO 8601)"
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-31T23:59:59Z"
+        - name: stream
+          in: query
+          required: false
+          description: "Фильтр по типу запроса (streaming/non-streaming)"
+          schema:
+            type: boolean
+            example: false
+      responses:
+        '200':
+          description: Список записей успешно получен
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      records:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UsageRecord'
+                        description: "Список записей использования"
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+              examples:
+                success:
+                  summary: Успешное получение списка
+                  value:
+                    success: true
+                    data:
+                      records:
+                        - id: "usage_abc123"
+                          model: "google/gemini-2.5-flash-lite"
+                          promptTokens: 150
+                          completionTokens: 75
+                          totalTokens: 225
+                          costRub: 0.045
+                          costUsd: 0.0005
+                          duration: 1250
+                          stream: false
+                          requestId: "req-123456"
+                          messagesCount: 3
+                          temperature: 0.7
+                          maxTokens: 1000
+                          topP: 0.9
+                          frequencyPenalty: 0.0
+                          presencePenalty: 0.0
+                          createdAt: "2024-01-15T10:30:00Z"
+                          user:
+                            id: "user_123"
+                            username: "john_doe"
+                            email: "john@example.com"
+                            vkId: "123456789"
+                      pagination:
+                        page: 1
+                        limit: 20
+                        total: 156
+                        totalPages: 8
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /v1/usage/stats:
+    get:
+      tags: [Usage Statistics]
+      summary: Получение агрегированной статистики использования
+      description: |
+        Возвращает агрегированную статистику использования LLM API за указанный период.
+        
+        **Использование:**
+        - Анализ общего объема использования
+        - Контроль расходов за период
+        - Статистика по моделям
+        - Планирование бюджета
+        
+        **Особенности:**
+        - Общая статистика по всем запросам
+        - Разбивка по моделям
+        - Фильтрация по датам
+        - Среднее время выполнения запросов
+        - Пользователи видят только свою статистику
+      security:
+        - ApiKeyAuth: []
+        - VkAuth: []
+      parameters:
+        - name: startDate
+          in: query
+          required: false
+          description: "Начальная дата (ISO 8601)"
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-01T00:00:00Z"
+        - name: endDate
+          in: query
+          required: false
+          description: "Конечная дата (ISO 8601)"
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-31T23:59:59Z"
+      responses:
+        '200':
+          description: Статистика успешно получена
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/UsageStats'
+              examples:
+                success:
+                  summary: Успешное получение статистики
+                  value:
+                    success: true
+                    data:
+                      totalRequests: 156
+                      totalTokens: 35100
+                      totalCostRub: 7.89
+                      totalCostUsd: 0.087
+                      averageDuration: 1250
+                      modelsUsed:
+                        - model: "google/gemini-2.5-flash-lite"
+                          requests: 89
+                          tokens: 20150
+                          costRub: 4.52
+                        - model: "openai/gpt-4"
+                          requests: 67
+                          tokens: 14950
+                          costRub: 3.37
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -931,6 +1166,175 @@ components:
           type: number
           description: "Стоимость запроса в рублях"
           example: 0.0000592
+
+    UsageRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Уникальный идентификатор записи"
+          example: "usage_abc123"
+        model:
+          type: string
+          description: "Использованная модель"
+          example: "google/gemini-2.5-flash-lite"
+        promptTokens:
+          type: integer
+          description: "Количество входных токенов"
+          example: 150
+        completionTokens:
+          type: integer
+          description: "Количество выходных токенов"
+          example: 75
+        totalTokens:
+          type: integer
+          description: "Общее количество токенов"
+          example: 225
+        costRub:
+          type: number
+          description: "Стоимость в рублях"
+          example: 0.045
+        costUsd:
+          type: number
+          nullable: true
+          description: "Стоимость в долларах"
+          example: 0.0005
+        duration:
+          type: integer
+          description: "Длительность запроса в миллисекундах"
+          example: 1250
+        stream:
+          type: boolean
+          description: "Был ли запрос streaming"
+          example: false
+        requestId:
+          type: string
+          nullable: true
+          description: "ID запроса для трассировки"
+          example: "req-123456"
+        messagesCount:
+          type: integer
+          nullable: true
+          description: "Количество сообщений в запросе"
+          example: 3
+        temperature:
+          type: number
+          nullable: true
+          description: "Параметр температуры"
+          example: 0.7
+        maxTokens:
+          type: integer
+          nullable: true
+          description: "Максимальное количество токенов"
+          example: 1000
+        topP:
+          type: number
+          nullable: true
+          description: "Параметр top_p"
+          example: 0.9
+        frequencyPenalty:
+          type: number
+          nullable: true
+          description: "Штраф за частоту"
+          example: 0.0
+        presencePenalty:
+          type: number
+          nullable: true
+          description: "Штраф за присутствие"
+          example: 0.0
+        createdAt:
+          type: string
+          format: date-time
+          description: "Время создания записи"
+          example: "2024-01-15T10:30:00Z"
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              description: "ID пользователя"
+              example: "user_123"
+            username:
+              type: string
+              nullable: true
+              description: "Имя пользователя"
+              example: "john_doe"
+            email:
+              type: string
+              nullable: true
+              description: "Email пользователя"
+              example: "john@example.com"
+            vkId:
+              type: string
+              nullable: true
+              description: "VK ID пользователя"
+              example: "123456789"
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: "Текущая страница"
+          example: 1
+        limit:
+          type: integer
+          description: "Количество записей на странице"
+          example: 20
+        total:
+          type: integer
+          description: "Общее количество записей"
+          example: 156
+        totalPages:
+          type: integer
+          description: "Общее количество страниц"
+          example: 8
+
+    UsageStats:
+      type: object
+      properties:
+        totalRequests:
+          type: integer
+          description: "Общее количество запросов"
+          example: 156
+        totalTokens:
+          type: integer
+          description: "Общее количество токенов"
+          example: 35100
+        totalCostRub:
+          type: number
+          description: "Общая стоимость в рублях"
+          example: 7.89
+        totalCostUsd:
+          type: number
+          description: "Общая стоимость в долларах"
+          example: 0.087
+        averageDuration:
+          type: integer
+          description: "Средняя длительность запросов в миллисекундах"
+          example: 1250
+        modelsUsed:
+          type: array
+          items:
+            type: object
+            properties:
+              model:
+                type: string
+                description: "Название модели"
+                example: "google/gemini-2.5-flash-lite"
+              requests:
+                type: integer
+                description: "Количество запросов к модели"
+                example: 89
+              tokens:
+                type: integer
+                description: "Количество токенов для модели"
+                example: 20150
+              costRub:
+                type: number
+                description: "Стоимость в рублях для модели"
+                example: 4.52
+          description: "Статистика по моделям"
 
     Error:
       type: object

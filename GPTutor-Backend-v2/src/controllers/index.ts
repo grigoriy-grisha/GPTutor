@@ -4,9 +4,11 @@ import { AuthController } from './AuthController';
 import { CompletionController } from './CompletionController';
 import { ModelsController } from './ModelsController';
 import { FilesController } from './FilesController';
+import { UsageController } from './UsageController';
 import { AuthService } from '../services/AuthService';
 import { UserRepository } from '../repositories/UserRepository';
 import { FileRepository } from '../repositories/FileRepository';
+import { UsageRepository } from '../repositories/UsageRepository';
 import { LLMCostEvaluate } from '../services/LLMCostEvaluate';
 import { OpenRouterService } from '../services/OpenRouterService';
 import { FilesService } from '../services/FilesService';
@@ -17,6 +19,7 @@ export function registerControllers(
     authService: AuthService;
     userRepository: UserRepository;
     fileRepository: FileRepository;
+    usageRepository: UsageRepository;
     filesService: FilesService;
     llmCostService: LLMCostEvaluate;
     openRouterService: OpenRouterService;
@@ -28,6 +31,7 @@ export function registerControllers(
     new CompletionController(
       fastify,
       dependencies.userRepository,
+      dependencies.usageRepository,
       dependencies.llmCostService,
       dependencies.openRouterService
     ),
@@ -39,7 +43,12 @@ export function registerControllers(
       fastify,
       dependencies.filesService,
       dependencies.fileRepository,
-      dependencies.authService
+      dependencies.userRepository
+    ),
+    new UsageController(
+      fastify,
+      dependencies.usageRepository,
+      dependencies.userRepository
     ),
   ];
 
@@ -52,3 +61,4 @@ export * from './AuthController';
 export * from './CompletionController';
 export * from './ModelsController';
 export * from './FilesController';
+export * from './UsageController';

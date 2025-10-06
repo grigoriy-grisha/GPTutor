@@ -24,6 +24,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   files File[]
+  usageRecords UsageRecord[]
 
   @@map("users")
 }
@@ -43,4 +44,30 @@ model File {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("files")
+}
+
+model UsageRecord {
+  id                String   @id @default(cuid())
+  userId            String
+  model             String
+  promptTokens      Int
+  completionTokens  Int
+  totalTokens       Int
+  costRub           Float
+  costUsd           Float?
+  duration          Int      // в миллисекундах
+  stream            Boolean  @default(false)
+  requestId         String?
+  messagesCount     Int?
+  temperature       Float?
+  maxTokens         Int?
+  topP              Float?
+  frequencyPenalty  Float?
+  presencePenalty   Float?
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("usage_records")
 }

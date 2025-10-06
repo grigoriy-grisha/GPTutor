@@ -3,8 +3,8 @@ import { BaseController } from "./BaseController";
 import { FilesService } from "../services/FilesService";
 import { FileRepository } from "../repositories/FileRepository";
 import { RequestWithLogging } from "../middleware/loggingMiddleware";
-import { createVkAuthMiddleware } from "../middleware/authMiddleware";
-import { AuthService } from "../services/AuthService";
+import { createUniversalAuthMiddleware, AuthenticatedRequest, getUserId } from "../middleware/universalAuthMiddleware";
+import { UserRepository } from "../repositories/UserRepository";
 import {
   createRateLimitMiddleware,
   getRateLimitConfig,
@@ -20,13 +20,17 @@ export class FilesController extends BaseController {
     fastify: any,
     private filesService: FilesService,
     private fileRepository: FileRepository,
-    private authService: AuthService
+    private userRepository: UserRepository,
+    private vkSecretKey: string = process.env.VK_SECRET_KEY || ""
   ) {
     super(fastify);
   }
 
   registerRoutes(): void {
-    const vkAuthMiddleware = createVkAuthMiddleware(this.authService);
+    const authMiddleware = createUniversalAuthMiddleware(
+      this.userRepository,
+      this.vkSecretKey
+    );
 
     const uploadRateLimit = createRateLimitMiddleware(
       getRateLimitConfig("/upload")!
@@ -35,7 +39,7 @@ export class FilesController extends BaseController {
     this.fastify.post(
       "/upload",
       {
-        preHandler: [uploadRateLimit, vkAuthMiddleware] as any,
+        preHandler: [authMiddleware, uploadRateLimit],
         config: {
           bodyLimit: 50 * 1024 * 1024,
         },
@@ -44,17 +48,19 @@ export class FilesController extends BaseController {
     );
   }
 
-  private async uploadFile(request: any, reply: FastifyReply) {
+  private async uploadFile(request: AuthenticatedRequest, reply: FastifyReply) {
     try {
+      const userId = getUserId(request);
+      
       this.logInfo("File upload requested", {
-        userId: request.dbUser.id,
-        vkId: request.dbUser.vkId,
+        userId: userId,
+        vkId: request.user?.vkId,
       });
 
       const data = await (request as any).file();
 
       if (!data) {
-        return this.sendError(reply, "No file provided", 400, request);
+        return this.sendError(reply, "No file provided", 400, request as any);
       }
 
       const maxSize = 50 * 1024 * 1024;
@@ -63,7 +69,7 @@ export class FilesController extends BaseController {
           reply,
           "File too large. Maximum size is 50MB",
           413,
-          request
+          request as any as any
         );
       }
 
@@ -85,7 +91,7 @@ export class FilesController extends BaseController {
       );
 
       const savedFile = await this.fileRepository.create({
-        userId: request.dbUser.id,
+        userId: userId,
         type: data.mimetype,
         name: data.filename,
         url: result.url,
@@ -96,7 +102,7 @@ export class FilesController extends BaseController {
         fileId: savedFile.id,
         fileName: savedFile.name,
         url: savedFile.url,
-        userId: request.dbUser.id,
+        userId: userId,
       });
 
       return this.sendSuccess(reply, {
@@ -116,14 +122,14 @@ export class FilesController extends BaseController {
 
       if (error instanceof Error) {
         if (error.message.includes("Unknown or unsupported file type")) {
-          return this.sendError(reply, "Unsupported file type", 400, request);
+          return this.sendError(reply, "Unsupported file type", 400, request as any);
         }
         if (error.message.includes("Invalid filename")) {
-          return this.sendError(reply, "Invalid filename", 400, request);
+          return this.sendError(reply, "Invalid filename", 400, request as any);
         }
       }
 
-      return this.sendError(reply, "Failed to upload file", 500, request);
+      return this.sendError(reply, "Failed to upload file", 500, request as any);
     }
   }
 }

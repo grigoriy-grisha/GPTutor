@@ -39,3 +39,4 @@ export const HeroSection: FC = () => {
     </Group>
   );
 };
+

@@ -1,11 +1,12 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { BaseController } from "./BaseController";
 import { UserRepository } from "../repositories/UserRepository";
+import { UsageRepository } from "../repositories/UsageRepository";
 import { LLMCostEvaluate } from "../services/LLMCostEvaluate";
 import { OpenRouterService } from "../services/OpenRouterService";
 import { RequestWithLogging } from "../middleware/loggingMiddleware";
 import { logger } from "../services/LoggerService";
-import { authenticateUser } from "../utils/vkAuth";
+import { createUniversalAuthMiddleware, AuthenticatedRequest, getUserId } from "../middleware/universalAuthMiddleware";
 import {
   createRateLimitMiddleware,
   getRateLimitConfig,
@@ -32,6 +33,7 @@ export class CompletionController extends BaseController {
   constructor(
     fastify: any,
     private userRepository: UserRepository,
+    private usageRepository: UsageRepository,
     private llmCostService: LLMCostEvaluate,
     private openRouterService: OpenRouterService,
     private vkSecretKey: string = process.env.VK_SECRET_KEY || ""
@@ -44,78 +46,31 @@ export class CompletionController extends BaseController {
       getRateLimitConfig("/v1/chat/completions")!
     );
 
+    const authMiddleware = createUniversalAuthMiddleware(
+      this.userRepository,
+      this.vkSecretKey
+    );
+
     this.fastify.post(
       "/v1/chat/completions",
-      { preHandler: completionsRateLimit },
+      { 
+        preHandler: [authMiddleware, completionsRateLimit] 
+      },
       this.chatCompletions.bind(this)
     );
   }
 
-  private async chatCompletions(request: any, reply: FastifyReply) {
+  private async chatCompletions(request: AuthenticatedRequest, reply: FastifyReply) {
     try {
-      const authHeader = request.headers.authorization;
+      const userId = getUserId(request);
+      const user = request.user!;
 
-      const authResult = await authenticateUser(
-        authHeader,
-        this.vkSecretKey,
-        this.userRepository
-      );
-
-      console.log({ authResult });
-
-      if (!authResult) {
-        return this.sendUnauthorized(
-          reply,
-          "Invalid authentication. Use Bearer token (sk-...) or VK authorization.",
-          request
-        );
-      }
-
-      let user;
-      let userId;
-
-      if (authResult.authType === "api_key") {
-        user = authResult.user;
-        userId = user.id.toString();
-      } else if (authResult.authType === "vk") {
-        const vkData = authResult.user;
-        let dbUser = await this.userRepository.findByVkId(vkData.vk_user_id);
-
-        if (!dbUser) {
-          dbUser = await this.userRepository.create({
-            vkId: vkData.vk_user_id,
-            isActive: true,
-          });
-        }
-
-        user = dbUser;
-        userId = user.id.toString();
-      } else {
-        return this.sendUnauthorized(
-          reply,
-          "Unknown authentication type",
-          request
-        );
-      }
-
-      if (!user.isActive) {
-        return this.sendUnauthorized(
-          reply,
-          "User account is inactive",
-          request
-        );
-      }
-
-      console.log({ user });
-
-      request.userId = userId;
-
-      const requestBody = request.body;
+      const requestBody = request.body as any;
       if (!requestBody.messages || !Array.isArray(requestBody.messages)) {
         return this.sendValidationError(
           reply,
           "messages array is required",
-          request
+          request as any as any
         );
       }
 
@@ -128,7 +83,7 @@ export class CompletionController extends BaseController {
           messagesCount: requestBody.messages.length,
           stream: requestBody.stream || false,
         },
-        request
+        request as any
       );
 
       const openRouterParams = {
@@ -148,7 +103,7 @@ export class CompletionController extends BaseController {
           user,
           model,
           openRouterParams,
-          request
+          request as any as any
         );
       }
 
@@ -156,21 +111,24 @@ export class CompletionController extends BaseController {
         reply,
         user,
         openRouterParams,
-        request
+        request as any
       );
     } catch (error) {
-      this.logError("Completion API error", error, {}, request);
+      this.logError("Completion API error", error, {}, request as any);
 
       if (error instanceof Error) {
         if (error.message === "User not found") {
-          return this.sendUnauthorized(reply, "Invalid API key", request);
+          return this.sendUnauthorized(reply, "Invalid API key", request as any);
         }
         if (error.message === "Insufficient balance") {
-          return this.sendInsufficientBalance(reply, request);
+          return this.sendInsufficientBalance(reply, request as any);
+        }
+        if (error.message === "User not authenticated") {
+          return this.sendUnauthorized(reply, "Authentication required", request as any);
         }
       }
 
-      return this.sendError(reply, "Internal server error", 500, request);
+      return this.sendError(reply, "Internal server error", 500, request as any);
     }
   }
 
@@ -227,7 +185,7 @@ export class CompletionController extends BaseController {
           this.logDebug(
             `Streaming progress: ${chunkCount} chunks sent`,
             {},
-            request
+            request as any as any
           );
         }
       }
@@ -253,6 +211,26 @@ export class CompletionController extends BaseController {
 
       await this.userRepository.decreaseBalance(user.id, totalCost);
 
+      // Сохраняем статистику использования
+      await this.saveUsageRecord({
+        userId: user.id,
+        model,
+        promptTokens: 0, // Для стриминга токены могут быть неизвестны
+        completionTokens: 0,
+        totalTokens: 0,
+        costRub: totalCost,
+        costUsd: undefined,
+        duration: streamDuration,
+        stream: true,
+        requestId: request.requestId,
+        messagesCount: openRouterParams.messages.length,
+        temperature: openRouterParams.temperature,
+        maxTokens: openRouterParams.max_tokens,
+        topP: openRouterParams.top_p,
+        frequencyPenalty: openRouterParams.frequency_penalty,
+        presencePenalty: openRouterParams.presence_penalty,
+      });
+
       return;
     } catch (streamError) {
       this.logError("Stream error", streamError, { model }, request);
@@ -274,7 +252,7 @@ export class CompletionController extends BaseController {
           "Error writing error response to stream",
           writeError,
           {},
-          request
+          request as any as any
         );
       }
 
@@ -347,6 +325,26 @@ export class CompletionController extends BaseController {
       }
     );
 
+    // Сохраняем статистику использования
+    await this.saveUsageRecord({
+      userId: user.id,
+      model: openRouterParams.model,
+      promptTokens: responseUsage?.prompt_tokens || 0,
+      completionTokens: responseUsage?.completion_tokens || 0,
+      totalTokens: responseUsage?.total_tokens || 0,
+      costRub: cost,
+      costUsd: originalCostUsd,
+      duration: requestDuration,
+      stream: false,
+      requestId: request.requestId,
+      messagesCount: openRouterParams.messages.length,
+      temperature: openRouterParams.temperature,
+      maxTokens: openRouterParams.max_tokens,
+      topP: openRouterParams.top_p,
+      frequencyPenalty: openRouterParams.frequency_penalty,
+      presencePenalty: openRouterParams.presence_penalty,
+    });
+
     const responseWithCost = {
       ...completion,
       usage: {
@@ -358,5 +356,50 @@ export class CompletionController extends BaseController {
     };
 
     return this.sendSuccess(reply, responseWithCost);
+  }
+
+  private async saveUsageRecord(data: {
+    userId: string;
+    model: string;
+    promptTokens: number;
+    completionTokens: number;
+    totalTokens: number;
+    costRub: number;
+    costUsd?: number;
+    duration: number;
+    stream: boolean;
+    requestId?: string;
+    messagesCount?: number;
+    temperature?: number;
+    maxTokens?: number;
+    topP?: number;
+    frequencyPenalty?: number;
+    presencePenalty?: number;
+  }) {
+    try {
+      await this.usageRepository.create(data);
+      this.logDebug(
+        `Usage record saved`,
+        {
+          userId: data.userId,
+          model: data.model,
+          totalTokens: data.totalTokens,
+          costRub: data.costRub,
+          duration: data.duration,
+        },
+        {} as any
+      );
+    } catch (error) {
+      this.logError(
+        "Failed to save usage record",
+        error,
+        {
+          userId: data.userId,
+          model: data.model,
+          requestId: data.requestId,
+        },
+        {} as any
+      );
+    }
   }
 }
