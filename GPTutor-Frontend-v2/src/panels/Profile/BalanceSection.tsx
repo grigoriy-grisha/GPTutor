@@ -1,0 +1,107 @@
+import { FC } from "react";
+import {
+  Button,
+  Div,
+  Flex,
+  Group,
+  IconButton,
+  Spacing,
+  Title,
+} from "@vkontakte/vkui";
+import {
+  Icon28CopyOutline,
+  Icon28MoneySendOutline,
+} from "@vkontakte/icons";
+import bridge from "@vkontakte/vk-bridge";
+import { createCodeHTML } from "../../utils/codeFormatter";
+import { userViewModel } from "../../viewModels/UserViewModel";
+
+interface BalanceSectionProps {
+  balance: number;
+}
+
+export const BalanceSection: FC<BalanceSectionProps> = ({ balance }) => {
+  const handleTopUp = () => {
+    bridge
+      .send("VKWebAppShowOrderBox", {
+        type: "item",
+        item: "item_id_123456",
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleCopyUserId = () => {
+    bridge.send("VKWebAppCopyText", {
+      text: String(userViewModel.getUserId()),
+    });
+  };
+
+  return (
+    <Group>
+      <Div>
+        <Title level="3">Баланс</Title>
+        <Spacing size={12} />
+        <Flex
+          align="center"
+          style={{ flexWrap: "nowrap" }}
+          wrap="nowrap"
+          gap={6}
+        >
+          <div
+            style={{ width: "100%", fontWeight: 700 }}
+            className="code-block"
+            dangerouslySetInnerHTML={{
+              __html: createCodeHTML(
+                `ID: ${userViewModel.getUserId()}`,
+                "python"
+              ),
+            }}
+          />
+          <IconButton onClick={handleCopyUserId}>
+            <Icon28CopyOutline
+              color="var(--vkui--color_background_accent_themed)"
+              width={24}
+              height={24}
+            />
+          </IconButton>
+        </Flex>
+        <Spacing size={12} />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            padding: "16px",
+            background: "var(--vkui--color_background_secondary)",
+            borderRadius: "8px",
+          }}
+        >
+          <Icon28MoneySendOutline />
+          <div>
+            <Title level="1">{balance}₽</Title>
+            <div style={{ color: "#9c9c9c", fontSize: "14px" }}>
+              Доступно для использования
+            </div>
+          </div>
+        </div>
+
+        <Spacing size={16} />
+
+        <Button
+          size="m"
+          mode="outline"
+          style={{ width: "100%" }}
+          onClick={handleTopUp}
+        >
+          Пополнить баланс
+        </Button>
+      </Div>
+    </Group>
+  );
+};
+

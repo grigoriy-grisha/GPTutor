@@ -3,9 +3,6 @@ import type {
   ChatCompletion,
   ChatCompletionCreateParams,
 } from "openai/resources/chat/completions";
-import { APIPromise } from "openai/src/core/api-promise";
-import { Stream } from "openai/src/core/streaming";
-import { ChatCompletionChunk } from "openai/src/resources/chat/completions/completions";
 
 export class OpenRouterService {
   private client: OpenAI;
@@ -58,7 +55,7 @@ export class OpenRouterService {
       const models = await this.client.models.list();
       return models;
     } catch (error) {
-      console.error("Failed to get models from OpenRouter:", error);
+      console.error("Failed to get Models from OpenRouter:", error);
       throw error;
     }
   }

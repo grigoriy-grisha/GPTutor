@@ -13,9 +13,11 @@ const prisma = new PrismaClient();
 const userRepository = new UserRepository(prisma);
 const fileRepository = new FileRepository(prisma);
 
+console.log(process.env);
+
 const authService = new AuthService(
   userRepository,
-  process.env.VK_APP_ID!!,
+  process.env.VK_APP_ID!,
   process.env.VK_SECRET_KEY!
 );
 const filesService = new FilesService();

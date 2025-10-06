@@ -16,7 +16,7 @@ export class LLMCostEvaluate {
 
   async initialize(): Promise<void> {
     try {
-      console.log("🔄 Loading OpenRouter models...");
+      console.log("🔄 Loading OpenRouter Models...");
 
       const response = await fetch(this.OPENROUTER_API_URL);
       if (!response.ok) {
@@ -30,7 +30,7 @@ export class LLMCostEvaluate {
 
       console.log(`✅ Loaded ${this.models.length} OpenRouter models`);
     } catch (error) {
-      console.error("❌ Failed to load OpenRouter models:", error);
+      console.error("❌ Failed to load OpenRouter Models:", error);
       throw error;
     }
   }
@@ -58,7 +58,7 @@ export class LLMCostEvaluate {
 
     if (provider) {
       filteredModels = filteredModels.filter((model) =>
-        model.id.toLowerCase().startsWith(`${provider.toLowerCase()}/`)
+        model.id.toLowerCase().includes(provider.toLowerCase())
       );
     }
 
@@ -100,6 +100,7 @@ export class LLMCostEvaluate {
       "perplexity",
       "mistralai",
       "openai",
+      "anthropic",
     ];
 
     return this.getModelsByProviders(popularProviders).filter(

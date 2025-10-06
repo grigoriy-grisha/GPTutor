@@ -1,0 +1,7 @@
+.copyButton {
+    height: 24px;
+}
+
+.copyButton :global(.vkuiIcon ){
+    padding: 4px;
+}

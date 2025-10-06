@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './config.js';
+import { API_BASE_URL } from "./config.js";
 
 export interface ModelData {
   id: string;
@@ -52,10 +52,10 @@ class ModelsApiService {
     options: RequestInit = {}
   ): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
-    
+
     const response = await fetch(url, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options.headers,
       },
       ...options,
@@ -63,14 +63,16 @@ class ModelsApiService {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        errorData.message || `HTTP error! status: ${response.status}`
+      );
     }
 
     return response.json();
   }
 
   async getModels(): Promise<ModelsResponse> {
-    return this.makeRequest<ModelsResponse>('/v1/models');
+    return this.makeRequest<ModelsResponse>("/v1/models");
   }
 }
 

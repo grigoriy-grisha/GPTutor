@@ -1,46 +1,42 @@
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
-  ScreenSpinner,
+  Epic,
   SplitCol,
   SplitLayout,
-  View,
-  Epic,
   Tabbar,
   TabbarItem,
+  View,
 } from "@vkontakte/vkui";
 import {
   useActiveVkuiLocation,
   useRouteNavigator,
 } from "@vkontakte/vk-mini-apps-router";
 import { useAppearance } from "@vkontakte/vk-bridge-react";
-import "./App.css";
 import { OneDark } from "./themes/OneDark";
 import { OneLight } from "./themes/OneLight";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
-import { Home, Persik, Models, Profile, Chat } from "./panels";
+import { Chat, Home, Models, Persik, Profile } from "./panels";
 import { DEFAULT_VIEW_PANELS } from "./routes.ts";
 import {
   Icon28HomeOutline,
-  Icon28UserCircleOutline,
   Icon28MessageOutline,
+  Icon28UserCircleOutline,
 } from "@vkontakte/icons";
+
+import "./App.css";
+import { userViewModel } from "./viewModels/UserViewModel.ts";
 
 export const App = () => {
   const { view: activeView, panel: activePanel = DEFAULT_VIEW_PANELS.HOME } =
     useActiveVkuiLocation();
-  const [popout, setPopout] = useState<ReactNode | null>(<ScreenSpinner />);
   const routeNavigator = useRouteNavigator();
-  
-  // Получаем тему от VK
+
   const vkAppearance = useAppearance();
-  const isDarkTheme = vkAppearance === 'dark';
+  const isDarkTheme = vkAppearance === "dark";
 
   useEffect(() => {
-    async function fetchData() {
-      setPopout(null);
-    }
-    fetchData();
+    userViewModel.getUser();
   }, []);
 
   return (
@@ -48,18 +44,18 @@ export const App = () => {
       <SplitLayout>
         <SplitCol>
           <Epic
-            activeStory={activeView || 'home'}
+            activeStory={activeView || "home"}
             tabbar={
               <Tabbar>
                 <TabbarItem
-                  selected={activeView === 'home' || !activeView}
-                  onClick={() => routeNavigator.push('/')}
+                  selected={activeView === "home" || !activeView}
+                  onClick={() => routeNavigator.push("/")}
                   label="Главная"
                 >
                   <Icon28HomeOutline />
                 </TabbarItem>
                 <TabbarItem
-                  selected={activeView === 'profile'}
+                  selected={activeView === "profile"}
                   onClick={() =>
                     routeNavigator.push(`/${DEFAULT_VIEW_PANELS.PROFILE}`)
                   }
@@ -68,7 +64,7 @@ export const App = () => {
                   <Icon28UserCircleOutline />
                 </TabbarItem>
                 <TabbarItem
-                  selected={activeView === 'chat'}
+                  selected={activeView === "chat"}
                   onClick={() =>
                     routeNavigator.push(`/${DEFAULT_VIEW_PANELS.CHAT}`)
                   }
@@ -92,8 +88,8 @@ export const App = () => {
             </View>
           </Epic>
         </SplitCol>
-        {popout}
-        
+        {/*{userViewModel.loading ? <ScreenSpinner /> : null}*/}
+
         {/* Code Themes */}
         {isDarkTheme ? <OneDark /> : <OneLight />}
       </SplitLayout>

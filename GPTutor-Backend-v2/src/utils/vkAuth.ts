@@ -5,6 +5,8 @@ export function validateVKSignature(
   queryString: string,
   secretKey: string
 ): boolean {
+  console.log({ queryString });
+  console.log({ secretKey });
   try {
     // Handle both full URL and query string
     let params: URLSearchParams;

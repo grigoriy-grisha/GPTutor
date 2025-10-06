@@ -2,7 +2,10 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { BaseController } from "./BaseController";
 import { LLMCostEvaluate } from "../services/LLMCostEvaluate";
 import { RequestWithLogging } from "../middleware/loggingMiddleware";
-import { createRateLimitMiddleware, getRateLimitConfig } from "../middleware/rateLimitMiddleware";
+import {
+  createRateLimitMiddleware,
+  getRateLimitConfig,
+} from "../middleware/rateLimitMiddleware";
 
 export class ModelsController extends BaseController {
   constructor(protected fastify: any, private llmCostService: LLMCostEvaluate) {
@@ -10,11 +13,13 @@ export class ModelsController extends BaseController {
   }
 
   registerRoutes(): void {
-    // Rate limiting для models endpoint
-    const modelsRateLimit = createRateLimitMiddleware(getRateLimitConfig('/v1/models')!);
-    
+    // Rate limiting для Models endpoint
+    const modelsRateLimit = createRateLimitMiddleware(
+      getRateLimitConfig("/v1/models")!
+    );
+
     this.fastify.get(
-      "/v1/models", 
+      "/v1/models",
       { preHandler: modelsRateLimit },
       this.getModels.bind(this)
     );
@@ -23,7 +28,7 @@ export class ModelsController extends BaseController {
   private async getModels(request: FastifyRequest, reply: FastifyReply) {
     try {
       this.logInfo(
-        "Getting popular provider models",
+        "Getting popular provider Models",
         {},
         request as RequestWithLogging
       );
@@ -32,7 +37,7 @@ export class ModelsController extends BaseController {
       const allModels = this.llmCostService.getAllModels();
       if (!allModels || allModels.length === 0) {
         this.logWarn(
-          "LLM Cost Service not initialized or no models loaded",
+          "LLM Cost Service not initialized or no Models loaded",
           {},
           request as RequestWithLogging
         );
@@ -49,10 +54,11 @@ export class ModelsController extends BaseController {
       // Проверяем, что модели загружены корректно
       if (!models || models.length === 0) {
         this.logWarn(
-          "No models found from popular providers",
+          "No Models found from popular providers",
           {},
           request as RequestWithLogging
         );
+
         return this.sendSuccess(reply, {
           success: true,
           data: {
@@ -66,13 +72,13 @@ export class ModelsController extends BaseController {
               "perplexity",
               "mistralai",
               "openai",
+              "anthropic",
             ],
             lastUpdated: new Date().toISOString(),
           },
         });
       }
 
-      // Логируем информацию о моделях для отладки
       this.logInfo(
         `Found ${models.length} models from popular providers`,
         {
@@ -126,20 +132,21 @@ export class ModelsController extends BaseController {
             "perplexity",
             "mistralai",
             "openai",
+            "anthropic",
           ],
           lastUpdated: new Date().toISOString(),
         },
       });
     } catch (error) {
       this.logError(
-        "Failed to get models",
+        "Failed to get Models",
         error,
         {},
         request as RequestWithLogging
       );
       return this.sendError(
         reply,
-        "Failed to retrieve models",
+        "Failed to retrieve Models",
         500,
         request as RequestWithLogging
       );
