@@ -15,7 +15,7 @@ import {
   messagesScrollContainerStyle,
   scrollArrowContainerStyle,
 } from "./styles";
-import { useSnackbar } from "../../hooks/useSnackbar";
+import { useSnackbar } from "../../hooks";
 
 export interface ChatProps extends NavIdProps {}
 

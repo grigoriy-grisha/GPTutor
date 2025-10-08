@@ -10,11 +10,11 @@ const autoScrollTimeValue = 50;
 export function useMessengerScroll(isTyping: boolean) {
   const [showScrollDown, setShowScrollDown] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const intervalId = useRef<NodeJS.Timeout>();
+  const intervalId = useRef<any>();
   const blockScrollBottom = useRef(false);
-  const afterTypingTimeout = useRef<NodeJS.Timeout | null>(null);
+  const afterTypingTimeout = useRef<any>(null);
 
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+  const scrollTimeout = useRef<any>(null);
 
   const scrollToBottom = useCallback(() => {
     if (!scrollRef.current) return;
