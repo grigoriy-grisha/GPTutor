@@ -15,6 +15,7 @@ import {
   messagesInnerContainerStyle,
   scrollArrowContainerStyle,
 } from "./styles";
+import { useSnackbar } from "../../hooks/useSnackbar";
 
 export interface ChatProps extends NavIdProps {}
 
@@ -35,11 +36,13 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
       scrollToBottom,
       onMessageChange: setMessage,
     });
+  const { showError } = useSnackbar();
 
-  // Инициализация пользователя
+  // Инициализация пользователя и snackbar callback
   useEffect(() => {
     userViewModel.getUser();
-  }, []);
+    chatViewModel.setSnackbarCallback(showError);
+  }, [showError]);
 
   // Получение имени пользователя
   const getUserName = useCallback(() => {
@@ -49,6 +52,27 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
   // Очистка сообщений
   const handleClearMessages = useCallback(() => {
     chatViewModel.clearMessages();
+  }, []);
+
+  // Обработчики файлов
+  const handleFileUpload = useCallback((file: File) => {
+    console.log('Starting file upload:', file.name);
+    // Не ждем завершения загрузки, чтобы можно было загружать несколько файлов параллельно
+    chatViewModel.uploadFile(file).catch((error) => {
+      console.error("Failed to upload file:", error);
+    });
+  }, []);
+
+  const handleFileRemove = useCallback((fileId: string) => {
+    chatViewModel.removeFile(fileId);
+  }, []);
+
+  const handleCancelUpload = useCallback((uploadId: string) => {
+    chatViewModel.cancelUpload(uploadId);
+  }, []);
+
+  const handleOnlineModeToggle = useCallback(() => {
+    chatViewModel.toggleOnlineMode();
   }, []);
 
   return (
@@ -69,6 +93,7 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
               getUserName={getUserName}
               onCopyMessage={handleCopyMessage}
               onStartChat={handleStartChat}
+              isUploadingFiles={chatViewModel.getUploadingFiles().length > 0}
             />
           </div>
         </div>
@@ -85,8 +110,15 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
           onSendMessage={() => handleSendMessage(message)}
           disabled={chatViewModel.isLoading}
           currentModel={chatViewModel.currentModel}
+          isOnlineMode={chatViewModel.isOnlineMode}
           onModelSelect={handleModelSelect}
+          onOnlineModeToggle={handleOnlineModeToggle}
           onClearMessages={handleClearMessages}
+          attachedFiles={chatViewModel.getAttachedFiles()}
+          uploadingFiles={chatViewModel.getUploadingFiles()}
+          onFileUpload={handleFileUpload}
+          onFileRemove={handleFileRemove}
+          onCancelUpload={handleCancelUpload}
         />
       </div>
     </Panel>

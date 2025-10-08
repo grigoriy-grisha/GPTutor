@@ -4,6 +4,7 @@ import { UserRepository } from "./repositories/UserRepository";
 import { FileRepository } from "./repositories/FileRepository";
 import { AuthService } from "./services/AuthService";
 import { FilesService } from "./services/FilesService";
+import { FileCleanupService } from "./services/FileCleanupService";
 import { LLMCostEvaluate } from "./services/LLMCostEvaluate";
 import { OpenRouterService } from "./services/OpenRouterService";
 import { logger } from "./services/LoggerService";
@@ -21,6 +22,7 @@ const authService = new AuthService(
   process.env.VK_SECRET_KEY!
 );
 const filesService = new FilesService();
+const fileCleanupService = new FileCleanupService(prisma, filesService);
 const llmCostService = new LLMCostEvaluate(100);
 const openRouterService = new OpenRouterService(
   process.env.OPENROUTER_API_KEY!
@@ -122,6 +124,8 @@ const start = async () => {
 
     await llmCostService.initialize();
 
+    fileCleanupService.start();
+
     await fastify.listen({
       port: Number(process.env.PORT) || 3001,
       host: "0.0.0.0",
@@ -141,6 +145,7 @@ const start = async () => {
 process.on("SIGINT", async () => {
   logger.info("Received SIGINT, shutting down gracefully...");
   try {
+    fileCleanupService.stop();
     await fastify.close();
     await prisma.$disconnect();
     logger.info("Server shut down successfully");
@@ -154,6 +159,7 @@ process.on("SIGINT", async () => {
 process.on("SIGTERM", async () => {
   logger.info("Received SIGTERM, shutting down gracefully...");
   try {
+    fileCleanupService.stop();
     await fastify.close();
     await prisma.$disconnect();
     logger.info("Server shut down successfully");

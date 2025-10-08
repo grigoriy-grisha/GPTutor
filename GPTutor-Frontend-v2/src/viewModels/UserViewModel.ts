@@ -1,7 +1,7 @@
 import bridge, { UserInfo } from "@vkontakte/vk-bridge";
 import { makeAutoObservable } from "mobx";
 
-class UserViewModel {
+export class UserViewModel {
   loading = false;
   user: UserInfo = {} as UserInfo;
 

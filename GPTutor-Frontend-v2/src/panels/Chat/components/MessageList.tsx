@@ -13,7 +13,7 @@ import {
  * Список сообщений чата с плейсхолдером для пустого состояния
  */
 export const MessageList = forwardRef<HTMLDivElement, MessageListProps>(
-  ({ messages, userViewModel, getUserName, onCopyMessage, onStartChat }, ref) => {
+  ({ messages, userViewModel, getUserName, onCopyMessage, onStartChat, isUploadingFiles }, ref) => {
     if (messages.length === 0) {
       return (
         <div
@@ -35,10 +35,11 @@ export const MessageList = forwardRef<HTMLDivElement, MessageListProps>(
               mode="outline"
               size="m"
               onClick={onStartChat}
+              disabled={isUploadingFiles}
               style={{ marginTop: "16px" }}
               after={<Icon28QuestionOutline />}
             >
-              {START_CHAT_BUTTON_TEXT}
+              {isUploadingFiles ? "Загрузка файлов..." : START_CHAT_BUTTON_TEXT}
             </Button>
           </Placeholder>
         </div>

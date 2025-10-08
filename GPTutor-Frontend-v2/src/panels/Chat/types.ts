@@ -1,5 +1,6 @@
 import { MessageModel } from "./models";
 import { UserViewModel } from "../../viewModels/UserViewModel";
+import { FileInfo } from "../../api/filesApi";
 
 /**
  * Типы для компонентов чата
@@ -8,7 +9,6 @@ import { UserViewModel } from "../../viewModels/UserViewModel";
 export interface ChatHeaderProps {
   isTyping: boolean;
   onBack: () => void;
-  currentModel: string;
 }
 
 export interface MessageListProps {
@@ -17,6 +17,7 @@ export interface MessageListProps {
   getUserName: () => string;
   onCopyMessage: (text: string) => void;
   onStartChat: () => void;
+  isUploadingFiles?: boolean;
 }
 
 export interface MessageItemProps {
@@ -26,12 +27,25 @@ export interface MessageItemProps {
   onCopyMessage: (text: string) => void;
 }
 
+export interface UploadingFile {
+  id: string;
+  file: File;
+  progress?: number;
+}
+
 export interface ChatInputProps {
   message: string;
   onMessageChange: (message: string) => void;
   onSendMessage: () => void;
   disabled?: boolean;
   currentModel: string;
+  isOnlineMode?: boolean;
   onModelSelect: () => void;
+  onOnlineModeToggle?: () => void;
   onClearMessages: () => void;
+  attachedFiles?: FileInfo[];
+  uploadingFiles?: UploadingFile[];
+  onFileUpload?: (file: File) => void;
+  onFileRemove?: (fileId: string) => void;
+  onCancelUpload?: (uploadId: string) => void;
 }

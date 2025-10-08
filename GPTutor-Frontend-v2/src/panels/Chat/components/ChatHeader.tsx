@@ -11,7 +11,7 @@ import { chatHeaderStyle } from "../styles";
 import { CHAT_TITLE, TYPING_TEXT, BOT_AVATAR_URL } from "../constants";
 
 export const ChatHeader: React.FC<ChatHeaderProps> = observer(
-  ({ isTyping, onBack, currentModel }) => {
+  ({ isTyping, onBack }) => {
     return (
       <div style={chatHeaderStyle}>
         <IconButton style={{ marginRight: "12px" }} onClick={onBack}>
@@ -66,7 +66,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = observer(
                     fontWeight: "500",
                   }}
                 >
-                  {currentModel}
+                  Онлайн
                 </Text>
                 <Icon12OnlineMobile
                   style={{

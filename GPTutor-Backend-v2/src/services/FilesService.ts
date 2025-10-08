@@ -4,6 +4,7 @@ import { compress } from "compress-pdf";
 import EasyYandexS3 from "easy-yandex-s3";
 import crypto from "crypto";
 import { S3 } from "aws-sdk";
+import { logger } from "./LoggerService";
 
 const s3 = new EasyYandexS3({
   auth: {
@@ -57,6 +58,7 @@ export class FilesService {
   ): Promise<ArrayBuffer | Buffer | string | Uint8Array> {
     const typeFile = this.determineFileType(fileName);
 
+    logger.info("TypeFile", typeFile);
     if (typeFile === "photo") {
       return await this.optimizePhotos(arrayBuffer, fileName);
     }
@@ -75,7 +77,7 @@ export class FilesService {
       return Buffer.from(arrayBuffer);
     }
 
-    return arrayBuffer;
+    return Buffer.from(arrayBuffer);
   }
 
   private determineFileType(filename: string): "photo" | "document" | "text" {
@@ -152,6 +154,10 @@ export class FilesService {
     arrayBuffer: ArrayBuffer | string | Buffer | Uint8Array,
     name: string
   ): Promise<S3.ManagedUpload.SendData> {
+    console.log(arrayBuffer);
+    logger.info("File Name", {
+      name: this.getFileWithExtension(crypto.randomUUID(), name),
+    });
     return (await s3.Upload(
       {
         //@ts-ignore
@@ -171,10 +177,32 @@ export class FilesService {
   }> {
     const optimizedData = await this.optimizeAttachment(arrayBuffer, fileName);
     const uploadResult = await this.uploadFile(optimizedData, fileName);
+    console.log(uploadResult);
+    logger.info("UploadResult", uploadResult);
 
     return {
       url: uploadResult.Location,
       optimizedData,
     };
+  }
+
+  /**
+   * Удаляет файл из S3 по URL
+   */
+  async deleteFile(fileUrl: string): Promise<void> {
+    try {
+      // Извлекаем имя файла из URL
+      const url = new URL(fileUrl);
+      const fileName = url.pathname.substring(1); // Убираем первый слеш
+
+      logger.info("Deleting file from S3", { fileName, fileUrl });
+
+      await s3.Remove(fileName);
+
+      logger.info("File deleted from S3 successfully", { fileName });
+    } catch (error) {
+      logger.error("Failed to delete file from S3", error, { fileUrl });
+      throw error;
+    }
   }
 }

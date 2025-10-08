@@ -79,6 +79,33 @@ export class FilesController extends BaseController {
         mimeType: data.mimetype,
       });
 
+      const existingFile = await this.fileRepository.findByNameAndSize(
+        data.filename,
+        data.file.bytesRead
+      );
+
+      if (existingFile) {
+        this.logInfo("File already exists, returning existing file", {
+          fileId: existingFile.id,
+          fileName: existingFile.name,
+          url: existingFile.url,
+        });
+
+        return this.sendSuccess(reply, {
+          message: "File already exists!",
+          file: {
+            id: existingFile.id,
+            name: existingFile.name,
+            type: existingFile.type,
+            url: existingFile.url,
+            size: existingFile.size,
+            createdAt: existingFile.createdAt,
+          },
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      // Если файл не найден, загужаем в S3
       const result = await this.filesService.optimizeAndUploadFile(
         arrayBuffer,
         data.filename

@@ -16,7 +16,21 @@ interface CompletionRequest extends RequestWithLogging {
     model?: string;
     messages: Array<{
       role: "system" | "user" | "assistant";
-      content: string;
+      content:
+        | string
+        | Array<{
+            type: "text" | "image_url" | "file";
+            text?: string;
+            image_url?: {
+              url: string;
+              detail?: "low" | "high" | "auto";
+            };
+            file?: {
+              filename: string;
+              file_data: string;
+              mimeType?: string;
+            };
+          }>;
     }>;
     max_tokens?: number;
     temperature?: number;
@@ -121,16 +135,20 @@ export class CompletionController extends BaseController {
 
       const model = requestBody.model || "google/gemini-2.5-flash-lite";
 
+      const hasFiles = this.hasFilesInMessages(requestBody.messages);
+
       this.logInfo(
         `LLM request initiated`,
         {
           model,
           messagesCount: requestBody.messages.length,
           stream: requestBody.stream || false,
+          hasFiles,
         },
         request
       );
 
+      //todo добавить отнимание баланса
       const openRouterParams = {
         model,
         messages: requestBody.messages,
@@ -140,6 +158,16 @@ export class CompletionController extends BaseController {
         frequency_penalty: requestBody.frequency_penalty,
         presence_penalty: requestBody.presence_penalty,
         stop: requestBody.stop,
+        ...(hasFiles && {
+          plugins: [
+            {
+              id: "file-parser",
+              pdf: {
+                engine: "native",
+              },
+            },
+          ],
+        }),
       };
 
       if (requestBody.stream) {
@@ -211,6 +239,7 @@ export class CompletionController extends BaseController {
           const responseUsage = chunk.usage as any;
           console.log({ usage: chunk.usage as any });
           const cost = this.llmCostService.calculateCost(responseUsage?.cost);
+          totalCost = cost;
 
           chunk.usage = {
             prompt_tokens: responseUsage?.prompt_tokens,
@@ -316,7 +345,6 @@ export class CompletionController extends BaseController {
 
     await this.userRepository.decreaseBalance(user.id, cost);
 
-    // Get updated user by ID instead of API key (since VK auth doesn't have API key)
     const updatedUser =
       (await this.userRepository.findByVkId(user.vkId || "")) ||
       (await this.userRepository.findByApiKey(
@@ -358,5 +386,46 @@ export class CompletionController extends BaseController {
     };
 
     return this.sendSuccess(reply, responseWithCost);
+  }
+
+  /**
+   * Проверяет наличие файлов в сообщениях
+   */
+  private hasFilesInMessages(
+    messages: Array<{
+      role: "system" | "user" | "assistant";
+      content:
+        | string
+        | Array<{
+            type: "text" | "image_url" | "file";
+            text?: string;
+            image_url?: {
+              url: string;
+              detail?: "low" | "high" | "auto";
+            };
+            file?: {
+              filename: string;
+              file_data: string;
+              mimeType?: string;
+            };
+          }>;
+    }>
+  ): boolean {
+    return messages.some((message) => {
+      // Если content это строка, файлов нет
+      if (typeof message.content === "string") {
+        return false;
+      }
+
+      // Если content это массив, проверяем каждый элемент
+      if (Array.isArray(message.content)) {
+        return message.content.some(
+          (contentItem) =>
+            contentItem.type === "image_url" || contentItem.type === "file"
+        );
+      }
+
+      return false;
+    });
   }
 }

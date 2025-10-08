@@ -99,4 +99,32 @@ export class FileRepository {
       filesByType,
     };
   }
+
+  /**
+   * Находит файлы старше указанной даты
+   */
+  async findOlderThan(date: Date) {
+    return this.prisma.file.findMany({
+      where: {
+        createdAt: {
+          lt: date,
+        },
+      },
+    });
+  }
+
+  /**
+   * Находит файл по названию и размеру
+   */
+  async findByNameAndSize(name: string, size: number) {
+    return this.prisma.file.findFirst({
+      where: {
+        name,
+        size,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }
 }

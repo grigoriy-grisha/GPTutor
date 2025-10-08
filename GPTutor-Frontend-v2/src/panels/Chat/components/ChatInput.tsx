@@ -6,10 +6,18 @@ import {
   Button,
   Div,
   Flex,
+  Switch,
+  Text,
 } from "@vkontakte/vkui";
-import { Icon28Send, Icon28SettingsOutline, Icon24DeleteOutline } from "@vkontakte/icons";
+import {
+  Icon28Send,
+  Icon28SettingsOutline,
+  Icon24DeleteOutline,
+} from "@vkontakte/icons";
 import { observer } from "mobx-react-lite";
 import { ChatInputProps } from "../types";
+import { AttachedFiles } from "./AttachedFiles";
+import { FileUpload } from "./FileUpload";
 
 export const ChatInput: React.FC<ChatInputProps> = observer(
   ({
@@ -18,13 +26,36 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
     onSendMessage,
     disabled = false,
     currentModel,
+    isOnlineMode = false,
     onModelSelect,
+    onOnlineModeToggle,
     onClearMessages,
+    attachedFiles = [],
+    uploadingFiles = [],
+    onFileUpload,
+    onFileRemove,
+    onCancelUpload,
   }) => {
     const handleKeyDown = (e: React.KeyboardEvent) => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
+        // Блокируем отправку если загружаются файлы
+        if (uploadingFiles && uploadingFiles.length > 0) {
+          return;
+        }
         onSendMessage();
+      }
+    };
+
+    const handleFileUpload = (file: File) => {
+      if (onFileUpload) {
+        onFileUpload(file);
+      }
+    };
+
+    const handleFileRemove = (fileId: string) => {
+      if (onFileRemove) {
+        onFileRemove(fileId);
       }
     };
 
@@ -39,9 +70,10 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
           style={{
             background: "var(--vkui--color_background_contrast_themed)",
             borderTop: "1px solid var(--vkui--color_separator_primary)",
+            borderBottom: "1px solid var(--vkui--color_separator_primary)",
           }}
         >
-          <Flex gap={8}>
+          <Flex gap={8} align="center" justify="space-between">
             <Button
               size="s"
               mode="outline"
@@ -55,11 +87,28 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
         </Div>
 
         <Separator />
+
+        <AttachedFiles
+          files={attachedFiles}
+          uploadingFiles={uploadingFiles}
+          onFileRemove={handleFileRemove}
+          onCancelUpload={onCancelUpload}
+          onFileSelect={handleFileUpload}
+          disabled={disabled}
+        />
+
         <WriteBar
           value={message}
           onChange={(e) => onMessageChange(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={disabled}
+          before={
+            <FileUpload
+              onFileSelect={handleFileUpload}
+              disabled={disabled}
+              accept="image/*,application/pdf,text/*,.doc,.docx,.xls,.xlsx,.csv,.js,.html,.css,.json,.xml,.md,.log,.py,.java,.c,.cpp,.sql"
+            />
+          }
           after={
             <>
               <WriteBarIcon
@@ -72,7 +121,16 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
               <WriteBarIcon
                 mode="send"
                 onClick={onSendMessage}
-                disabled={!message.trim() || disabled}
+                disabled={
+                  (!message.trim() && attachedFiles.length === 0) ||
+                  disabled ||
+                  (uploadingFiles && uploadingFiles.length > 0)
+                }
+                title={
+                  uploadingFiles && uploadingFiles.length > 0
+                    ? "Дождитесь загрузки файлов"
+                    : undefined
+                }
               >
                 <Icon28Send />
               </WriteBarIcon>

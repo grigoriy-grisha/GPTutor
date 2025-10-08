@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { FileInfo } from "../../../api";
 
 /**
  * Тип роли сообщения в чате
@@ -16,27 +17,98 @@ export interface MessageUsage {
 }
 
 /**
+ * Вложение изображения
+ */
+export interface ImageAttachment {
+  type: "image_url";
+  image_url: {
+    url: string;
+    detail?: "low" | "high" | "auto";
+  };
+}
+
+/**
+ * Вложение файла
+ */
+export interface FileAttachment {
+  type: "file";
+  file: {
+    filename: string;
+    file_data: string; // URL или base64
+    mimeType?: string;
+  };
+}
+
+/**
+ * Цитирование URL
+ */
+export interface UrlCitation {
+  type: "url_citation";
+  url_citation: {
+    start_index: number;
+    end_index: number;
+    title: string;
+    url: string;
+  };
+}
+
+/**
  * Модель сообщения в чате
  */
 export class MessageModel {
   id: string;
   role: MessageRole;
   content: string;
+  reasoning: string = ""; // Рассуждения модели (для моделей с reasoning)
+  citations: string[] = []; // Список URL цитирований
+  annotations: UrlCitation[] = []; // Аннотации с деталями цитирований
   isTyping: boolean;
   timestamp: Date;
   usage: MessageUsage | null = null;
+  images?: ImageAttachment[];
+  files?: FileAttachment[];
+  attachedFilesList?: FileInfo[]; // Список прикрепленных файлов для отображения
 
   constructor(
     id: string,
     role: MessageRole,
     content: string = "",
-    isTyping: boolean = false
+    isTyping: boolean = false,
+    attachedFiles?: FileInfo[]
   ) {
     this.id = id;
     this.role = role;
     this.content = content;
     this.isTyping = isTyping;
     this.timestamp = new Date();
+    this.attachedFilesList = attachedFiles;
+    
+    // Преобразуем attachedFiles в images и files для API
+    if (attachedFiles && attachedFiles.length > 0) {
+      this.images = [];
+      this.files = [];
+      
+      for (const file of attachedFiles) {
+        if (file.type.startsWith('image/')) {
+          this.images.push({
+            type: "image_url",
+            image_url: {
+              url: file.url,
+              detail: "high"
+            }
+          });
+        } else {
+          this.files.push({
+            type: "file",
+            file: {
+              filename: file.name,
+              file_data: file.url,
+              mimeType: file.type
+            }
+          });
+        }
+      }
+    }
 
     makeAutoObservable(this);
   }
@@ -53,6 +125,34 @@ export class MessageModel {
    */
   appendContent(content: string) {
     this.content += content;
+  }
+
+  /**
+   * Добавить текст к reasoning (для потоковой передачи)
+   */
+  appendReasoning(reasoning: string) {
+    this.reasoning += reasoning;
+  }
+
+  /**
+   * Установить reasoning
+   */
+  setReasoning(reasoning: string) {
+    this.reasoning = reasoning;
+  }
+
+  /**
+   * Установить citations
+   */
+  setCitations(citations: string[]) {
+    this.citations = citations;
+  }
+
+  /**
+   * Установить annotations
+   */
+  setAnnotations(annotations: UrlCitation[]) {
+    this.annotations = annotations;
   }
 
   /**
