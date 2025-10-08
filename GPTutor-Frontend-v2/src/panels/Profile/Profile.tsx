@@ -76,3 +76,4 @@ export const Profile: FC<ProfileProps> = ({ id }) => {
   );
 };
 
+

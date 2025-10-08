@@ -53,7 +53,7 @@ export const SearchSection: FC<SearchSectionProps> = ({
                   fontSize: "15px",
                 }}
               >
-                Сортировка по цене
+                Цена
               </Text>
             </Flex>
 

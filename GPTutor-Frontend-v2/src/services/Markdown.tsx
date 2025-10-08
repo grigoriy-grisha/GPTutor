@@ -96,4 +96,5 @@ export default class Markdown {
   renderHtml(markdown: string) {
     return this.markdownItHtml.render(markdown);
   }
+
 }

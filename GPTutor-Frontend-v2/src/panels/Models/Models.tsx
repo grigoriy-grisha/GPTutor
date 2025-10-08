@@ -37,6 +37,11 @@ export const Models: FC<ModelsProps> = ({ id }) => {
     loadModels,
   } = useModelsViewModel();
 
+  const handleTryModel = (modelId: string) => {
+    tryModel(modelId);
+    navigator.push("/chat");
+  };
+
   useEffect(() => {
     loadModels();
   }, [loadModels]);
@@ -44,7 +49,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
   return (
     <Panel id={id}>
       <PanelHeader
-        before={<PanelHeaderBack onClick={() => navigator.push("/")} />}
+        before={<PanelHeaderBack onClick={() => navigator.back()} />}
       >
         Модели
       </PanelHeader>
@@ -99,7 +104,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
             <ModelsList
               models={filteredModels}
               onCopyModelId={copyModelId}
-              onTryModel={tryModel}
+              onTryModel={handleTryModel}
             />
           </Group>
         </>

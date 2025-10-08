@@ -16,7 +16,7 @@ import { OneDark } from "./themes/OneDark";
 import { OneLight } from "./themes/OneLight";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
-import { Chat, Home, Models, Persik, Profile } from "./panels";
+import { Home, Models, Persik, Profile, Chat } from "./panels";
 import { DEFAULT_VIEW_PANELS } from "./routes.ts";
 import {
   Icon28HomeOutline,
@@ -46,33 +46,35 @@ export const App = () => {
           <Epic
             activeStory={activeView || "home"}
             tabbar={
-              <Tabbar>
-                <TabbarItem
-                  selected={activeView === "home" || !activeView}
-                  onClick={() => routeNavigator.push("/")}
-                  label="Главная"
-                >
-                  <Icon28HomeOutline />
-                </TabbarItem>
-                <TabbarItem
-                  selected={activeView === "profile"}
-                  onClick={() =>
-                    routeNavigator.push(`/${DEFAULT_VIEW_PANELS.PROFILE}`)
-                  }
-                  label="Профиль"
-                >
-                  <Icon28UserCircleOutline />
-                </TabbarItem>
-                <TabbarItem
-                  selected={activeView === "chat"}
-                  onClick={() =>
-                    routeNavigator.push(`/${DEFAULT_VIEW_PANELS.CHAT}`)
-                  }
-                  label="Чат"
-                >
-                  <Icon28MessageOutline />
-                </TabbarItem>
-              </Tabbar>
+              activeView !== "chat" ? (
+                <Tabbar>
+                  <TabbarItem
+                    selected={activeView === "home" || !activeView}
+                    onClick={() => routeNavigator.push("/")}
+                    label="Главная"
+                  >
+                    <Icon28HomeOutline />
+                  </TabbarItem>
+                  <TabbarItem
+                    selected={activeView === "profile"}
+                    onClick={() =>
+                      routeNavigator.push(`/${DEFAULT_VIEW_PANELS.PROFILE}`)
+                    }
+                    label="Профиль"
+                  >
+                    <Icon28UserCircleOutline />
+                  </TabbarItem>
+                  <TabbarItem
+                    selected={activeView === "chat"}
+                    onClick={() =>
+                      routeNavigator.push(`/${DEFAULT_VIEW_PANELS.CHAT}`)
+                    }
+                    label="Чат"
+                  >
+                    <Icon28MessageOutline />
+                  </TabbarItem>
+                </Tabbar>
+              ) : null
             }
           >
             <View id="home" activePanel={activePanel}>

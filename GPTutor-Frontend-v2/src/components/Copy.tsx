@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { Button } from "@vkontakte/vkui";
 import { Icon28CopyOutline } from "@vkontakte/icons";
+import bridge from "@vkontakte/vk-bridge";
 
 interface CopyProps {
   copyText: string;
@@ -19,7 +20,7 @@ export const Copy: FC<CopyProps> = ({
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(textToClickBoard);
+      await bridge.send("VKWebAppCopyText", { text: textToClickBoard });
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -46,6 +47,7 @@ export const Copy: FC<CopyProps> = ({
     </div>
   );
 };
+
 
 
 

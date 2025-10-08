@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import {
   DisplayTitle,
   Div,
@@ -8,8 +8,32 @@ import {
   WriteBar,
   WriteBarIcon,
 } from "@vkontakte/vkui";
+import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
+import { chatViewModel } from "../Chat/models";
+
+const DEFAULT_MESSAGE = "Что ты умеешь?";
 
 export const HeroSection: FC = () => {
+  const [message, setMessage] = useState("");
+  const routeNavigator = useRouteNavigator();
+
+  const handleSendMessage = () => {
+    const textToSend = message.trim() || DEFAULT_MESSAGE;
+    
+    // Отправляем сообщение
+    chatViewModel.sendMessage(textToSend);
+    
+    // Переходим в чат
+    routeNavigator.push("/chat");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   return (
     <Group>
       <Div>
@@ -26,16 +50,19 @@ export const HeroSection: FC = () => {
             border: "1px solid var(--vkui--color_separator_primary)",
             borderRadius: "var(--vkui--size_border_radius_paper--regular)",
           }}
-          value=""
-          // onChange={(e) => {}}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
           after={
-            <>
-              <WriteBarIcon mode="send" />
-            </>
+            <WriteBarIcon 
+              mode="send" 
+              onClick={handleSendMessage}
+            />
           }
-          placeholder="Что ты умеешь?"
+          placeholder={DEFAULT_MESSAGE}
         />
       </Div>
     </Group>
   );
 };
+

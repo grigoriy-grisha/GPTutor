@@ -1,5 +1,5 @@
 import React from "react";
-import { Snackbar } from "@vkontakte/vkui";
+import { Snackbar, Button } from "@vkontakte/vkui";
 import { Icon12Check, Icon12Cancel } from "@vkontakte/icons";
 import { modelsApi, ProcessedModel, processModelData } from "../api";
 
@@ -113,17 +113,33 @@ export class ModelsService {
 
   static createTryModelSnackbar(
     modelId: string,
-    onClose: () => void
+    onClose: () => void,
+    onTryModel?: (modelId: string) => void
   ): React.ReactNode {
     return (
       <Snackbar
         onClose={onClose}
         before={<div>🚀</div>}
         style={{ marginBottom: "60px" }}
+        action={
+          onTryModel ? (
+            <Button
+              size="s"
+              mode="primary"
+              onClick={() => {
+                onTryModel(modelId);
+                onClose();
+              }}
+            >
+              Попробовать
+            </Button>
+          ) : undefined
+        }
       >
-        Попробовать модель: {modelId}
+        Модель: {modelId}
       </Snackbar>
     );
   }
 }
+
 

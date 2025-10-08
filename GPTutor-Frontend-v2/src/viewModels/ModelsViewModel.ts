@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { ProcessedModel } from "../api";
 import { ModelsService } from "../services/ModelsService";
+import { chatViewModel } from "../panels/Chat/models";
 
 export interface ModelsViewModelState {
   models: ProcessedModel[];
@@ -22,20 +23,24 @@ export const useModelsViewModel = () => {
   });
 
   const setSnackbar = useCallback((snackbar: React.ReactNode | null) => {
-    setState(prev => ({ ...prev, snackbar }));
+    setState((prev) => ({ ...prev, snackbar }));
   }, []);
 
   const setSearchQuery = useCallback((searchQuery: string) => {
-    setState(prev => ({ ...prev, searchQuery }));
+    setState((prev) => ({ ...prev, searchQuery }));
   }, []);
 
   const setSortOrder = useCallback((sortOrder: "asc" | "desc") => {
-    setState(prev => ({ ...prev, sortOrder }));
+    setState((prev) => ({ ...prev, sortOrder }));
   }, []);
 
   const filterModels = useCallback((query: string) => {
-    setState(prev => {
-      const filtered = ModelsService.filterModels(prev.models, query, prev.sortOrder);
+    setState((prev) => {
+      const filtered = ModelsService.filterModels(
+        prev.models,
+        query,
+        prev.sortOrder
+      );
       return {
         ...prev,
         filteredModels: filtered,
@@ -43,53 +48,61 @@ export const useModelsViewModel = () => {
     });
   }, []);
 
-  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchQuery(value);
-    filterModels(value);
-  }, [filterModels, setSearchQuery]);
+  const handleSearchChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      setSearchQuery(value);
+      filterModels(value);
+    },
+    [filterModels, setSearchQuery]
+  );
 
-  const handleQuickSearch = useCallback((query: string) => {
-    setSearchQuery(query);
-    filterModels(query);
-  }, [filterModels, setSearchQuery]);
+  const handleQuickSearch = useCallback(
+    (query: string) => {
+      setSearchQuery(query);
+      filterModels(query);
+    },
+    [filterModels, setSearchQuery]
+  );
 
   const handleSortToggle = useCallback(() => {
     const newOrder = state.sortOrder === "asc" ? "desc" : "asc";
     setSortOrder(newOrder);
   }, [state.sortOrder, setSortOrder]);
 
-  const copyModelId = useCallback(async (modelId: string) => {
-    const success = await ModelsService.copyModelId(modelId);
-    
-    if (success) {
-      const successSnackbar = ModelsService.createSuccessSnackbar(
-        `ID скопирован: ${modelId}`,
-        () => setSnackbar(null)
-      );
-      setSnackbar(successSnackbar);
-    } else {
-      const errorSnackbar = ModelsService.createErrorSnackbar(
-        "Не удалось скопировать",
-        () => setSnackbar(null)
-      );
-      setSnackbar(errorSnackbar);
-    }
-  }, [setSnackbar]);
+  const copyModelId = useCallback(
+    async (modelId: string) => {
+      const success = await ModelsService.copyModelId(modelId);
 
-  const tryModel = useCallback((modelId: string) => {
-    const trySnackbar = ModelsService.createTryModelSnackbar(
-      modelId,
-      () => setSnackbar(null)
-    );
-    setSnackbar(trySnackbar);
-  }, [setSnackbar]);
+      if (success) {
+        const successSnackbar = ModelsService.createSuccessSnackbar(
+          `ID скопирован: ${modelId}`,
+          () => setSnackbar(null)
+        );
+        setSnackbar(successSnackbar);
+      } else {
+        const errorSnackbar = ModelsService.createErrorSnackbar(
+          "Не удалось скопировать",
+          () => setSnackbar(null)
+        );
+        setSnackbar(errorSnackbar);
+      }
+    },
+    [setSnackbar]
+  );
+
+  const tryModel = useCallback(
+    (modelId: string) => {
+      chatViewModel.setModel(modelId);
+    },
+    [setSnackbar]
+  );
 
   const loadModels = useCallback(async () => {
     try {
-      setState(prev => ({ ...prev, loading: true }));
+      setState((prev) => ({ ...prev, loading: true }));
       const models = await ModelsService.fetchModels();
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         models,
         filteredModels: models,
@@ -97,10 +110,12 @@ export const useModelsViewModel = () => {
       }));
     } catch (error) {
       const errorSnackbar = ModelsService.createErrorSnackbar(
-        `Ошибка загрузки моделей: ${error instanceof Error ? error.message : "Неизвестная ошибка"}`,
+        `Ошибка загрузки моделей: ${
+          error instanceof Error ? error.message : "Неизвестная ошибка"
+        }`,
         () => setSnackbar(null)
       );
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         loading: false,
         snackbar: errorSnackbar,
@@ -124,4 +139,3 @@ export const useModelsViewModel = () => {
     loadModels,
   };
 };
-
