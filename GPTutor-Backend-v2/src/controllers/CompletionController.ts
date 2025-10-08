@@ -120,6 +120,16 @@ export class CompletionController extends BaseController {
         );
       }
 
+      // Проверяем баланс пользователя
+      if (user.balance <= 0) {
+        this.logInfo("Insufficient balance", {
+          userId: user.id,
+          balance: user.balance,
+        }, request);
+        
+        return this.sendInsufficientBalance(reply, request);
+      }
+
       console.log({ user });
 
       request.userId = userId;

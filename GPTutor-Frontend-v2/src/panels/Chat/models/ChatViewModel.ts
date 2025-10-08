@@ -105,12 +105,21 @@ class ChatViewModel {
       await this.streamCompletion(assistantMessage);
     } catch (error) {
       console.error("Error sending message:", error);
-      this.setError(
-        error instanceof Error ? error.message : "Произошла ошибка"
-      );
-      assistantMessage.setContent(
-        "Извините, произошла ошибка при отправке сообщения."
-      );
+      
+      // Проверяем, это ошибка недостаточного баланса
+      if (error instanceof Error && error.message.includes("Insufficient balance")) {
+        this.setError("insufficient_balance");
+        assistantMessage.setContent(
+          "❌ Недостаточно средств на балансе для отправки сообщения."
+        );
+      } else {
+        this.setError(
+          error instanceof Error ? error.message : "Произошла ошибка"
+        );
+        assistantMessage.setContent(
+          "Извините, произошла ошибка при отправке сообщения."
+        );
+      }
     } finally {
       assistantMessage.setIsTyping(false);
       this.setIsTyping(false);
@@ -186,6 +195,10 @@ class ChatViewModel {
     console.log("Response headers:", response.headers);
 
     if (!response.ok) {
+      // Если статус 402 - недостаточно средств
+      if (response.status === 402) {
+        throw new Error("Insufficient balance");
+      }
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 

@@ -1,12 +1,13 @@
 import React, { useMemo } from "react";
-import { Avatar, Text, IconButton, Skeleton } from "@vkontakte/vkui";
+import { Avatar, Button, IconButton, Skeleton, Text } from "@vkontakte/vkui";
 import {
-  Icon28MessageOutline,
-  Icon28UserCircleOutline,
-  Icon16CopyOutline,
   Icon16ArrowDownOutline,
   Icon16ArrowUpOutline,
+  Icon16CopyOutline,
   Icon24MoneyCircleOutline,
+  Icon28MessageOutline,
+  Icon28MoneyCircleOutline,
+  Icon28UserCircleOutline,
 } from "@vkontakte/icons";
 import { MessageItemProps } from "../types";
 import Markdown from "../../../services/Markdown";
@@ -18,12 +19,20 @@ import {
   getDomainFromUrl,
 } from "../../../utils/citationFormatter";
 import { observer } from "mobx-react-lite";
+import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
+import { DEFAULT_VIEW_PANELS } from "../../../routes.ts";
 
 const markdown = new Markdown();
 
 export const MessageItem: React.FC<MessageItemProps> = observer(
   ({ message, userViewModel, getUserName, onCopyMessage }) => {
     const containerRef = useCodeCopyButtons(message.isTyping);
+    const routeNavigator = useRouteNavigator();
+
+    // Проверяем, это ошибка недостаточного баланса
+    const isInsufficientBalance = message.content.includes(
+      "Недостаточно средств на балансе"
+    );
 
     // Форматируем контент с цитированиями
     const formattedContent = useMemo(() => {
@@ -45,6 +54,8 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
 
       return renderedMarkdown;
     }, [message.content, message.citations]);
+
+    // Обработчик перехода на профиль
 
     return (
       <div
@@ -218,6 +229,67 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
                       __html: formattedContent,
                     }}
                   />
+
+                  {/* Предупреждение о недостаточном балансе */}
+                  {isInsufficientBalance && (
+                    <div
+                      style={{
+                        marginTop: "16px",
+                        padding: "16px",
+                        borderRadius: "12px",
+                        background:
+                          "linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%)",
+                        border: "2px solid #ffc107",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "12px",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          color: "#856404",
+                          fontWeight: 600,
+                          fontSize: "15px",
+                        }}
+                      >
+                        <Icon28MoneyCircleOutline width={24} height={24} />
+                        <span>Недостаточно средств</span>
+                      </div>
+                      <Text
+                        style={{
+                          color: "#856404",
+                          fontSize: "14px",
+                          lineHeight: "20px",
+                        }}
+                      >
+                        Для продолжения работы необходимо пополнить баланс.
+                        Перейдите в профиль, чтобы пополнить счет.
+                      </Text>
+                      <Button
+                        mode="primary"
+                        size="m"
+                        onClick={() => {
+                          routeNavigator.push(
+                            `/${DEFAULT_VIEW_PANELS.PROFILE}`
+                          );
+                        }}
+                        before={
+                          <Icon28MoneyCircleOutline width={20} height={20} />
+                        }
+                        style={{
+                          background: "#ffc107",
+                          color: "#856404",
+                          fontWeight: 600,
+                        }}
+                      >
+                        Пополнить баланс
+                      </Button>
+                    </div>
+                  )}
 
                   {/* Список цитирований */}
                   {message.citations && message.citations.length > 0 && (

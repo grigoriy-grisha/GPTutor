@@ -17,7 +17,7 @@ import { OneLight } from "./themes/OneLight";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { SnackbarProvider } from "./hooks/useSnackbar";
 
-import { Home, Models, Persik, Profile, Chat } from "./panels";
+import { Chat, Home, Models, Persik, Profile } from "./panels";
 import { DEFAULT_VIEW_PANELS } from "./routes.ts";
 import {
   Icon28HomeOutline,
