@@ -1,18 +1,16 @@
 import React from "react";
 import {
-  WriteBar,
-  WriteBarIcon,
-  Separator,
   Button,
   Div,
   Flex,
-  Switch,
-  Text,
+  Separator,
+  WriteBar,
+  WriteBarIcon,
 } from "@vkontakte/vkui";
 import {
+  Icon24DeleteOutline,
   Icon28Send,
   Icon28SettingsOutline,
-  Icon24DeleteOutline,
 } from "@vkontakte/icons";
 import { observer } from "mobx-react-lite";
 import { ChatInputProps } from "../types";
@@ -26,9 +24,7 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
     onSendMessage,
     disabled = false,
     currentModel,
-    isOnlineMode = false,
     onModelSelect,
-    onOnlineModeToggle,
     onClearMessages,
     attachedFiles = [],
     uploadingFiles = [],

@@ -1,18 +1,18 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Panel, NavIdProps, ScrollArrow } from "@vkontakte/vkui";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { NavIdProps, Panel, ScrollArrow } from "@vkontakte/vkui";
 import { observer } from "mobx-react-lite";
 import { userViewModel } from "../../viewModels/UserViewModel";
 import { chatViewModel } from "./models";
-import { ChatHeader, MessageList, ChatInput } from "./components";
+import { ChatHeader, ChatInput, MessageList } from "./components";
 import {
-  useMessengerScroll,
   useChatHandlers,
   useChatNavigation,
+  useMessengerScroll,
 } from "./hooks";
 import {
   chatContainerStyle,
-  messagesScrollContainerStyle,
   messagesInnerContainerStyle,
+  messagesScrollContainerStyle,
   scrollArrowContainerStyle,
 } from "./styles";
 import { useSnackbar } from "../../hooks/useSnackbar";
@@ -56,7 +56,7 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
 
   // Обработчики файлов
   const handleFileUpload = useCallback((file: File) => {
-    console.log('Starting file upload:', file.name);
+    console.log("Starting file upload:", file.name);
     // Не ждем завершения загрузки, чтобы можно было загружать несколько файлов параллельно
     chatViewModel.uploadFile(file).catch((error) => {
       console.error("Failed to upload file:", error);
@@ -78,11 +78,7 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
   return (
     <Panel id={id}>
       <div className="chat-container" style={chatContainerStyle}>
-        <ChatHeader
-          isTyping={chatViewModel.isTyping}
-          onBack={handleBack}
-          currentModel={chatViewModel.currentModel}
-        />
+        <ChatHeader isTyping={chatViewModel.isTyping} onBack={handleBack} />
 
         <div ref={scrollRef} style={messagesScrollContainerStyle}>
           <div style={messagesInnerContainerStyle}>
