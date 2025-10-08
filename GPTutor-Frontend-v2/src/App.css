@@ -169,3 +169,8 @@ code {
 .inline-citation:active {
     opacity: 0.5;
 }
+
+ol, ul {
+    margin-left: 4px;
+    padding-left: 12px;
+}
