@@ -41,6 +41,8 @@ COPY --from=builder /app/prisma ./prisma
 # Generate Prisma client in production
 RUN npx prisma generate
 
+RUN apk update && apk add ghostscript
+
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist
 
