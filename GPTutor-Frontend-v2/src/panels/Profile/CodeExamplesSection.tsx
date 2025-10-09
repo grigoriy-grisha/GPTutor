@@ -7,6 +7,7 @@ import {
   SegmentedControl,
   Spacing,
   Title,
+  useAdaptivityWithJSMediaQueries,
 } from "@vkontakte/vkui";
 import { Icon28CopyOutline, Icon28LinkOutline } from "@vkontakte/icons";
 import bridge from "@vkontakte/vk-bridge";
@@ -32,6 +33,7 @@ export const CodeExamplesSection: FC<CodeExamplesSectionProps> = ({
   const codeHTML = CodeExampleService.getCodeHTML(activeCodeExample, apiKey);
   const rawCode = CodeExampleService.getRawCode(activeCodeExample, apiKey);
   const { showInfo } = useSnackbar();
+  const { isDesktop } = useAdaptivityWithJSMediaQueries();
 
   const handleCopyCode = async () => {
     await bridge.send("VKWebAppCopyText", { text: rawCode });
@@ -75,7 +77,11 @@ export const CodeExamplesSection: FC<CodeExamplesSectionProps> = ({
 
         <Spacing size={16} />
 
-        <Flex align="center" gap={12} style={{ flexWrap: "nowrap" }}>
+        <Flex
+          align="center"
+          gap={12}
+          style={{ flexWrap: isDesktop ? "nowrap" : "wrap" }}
+        >
           <Button
             size="m"
             mode="outline"

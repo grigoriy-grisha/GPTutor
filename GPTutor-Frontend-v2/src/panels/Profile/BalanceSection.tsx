@@ -1,17 +1,10 @@
 import { FC } from "react";
-import {
-  Button,
-  Div,
-  Flex,
-  Group,
-  IconButton,
-  Spacing,
-  Title,
-} from "@vkontakte/vkui";
-import { Icon28CopyOutline, Icon28MoneySendOutline } from "@vkontakte/icons";
+import { Button, Div, Flex, Group, Spacing, Title } from "@vkontakte/vkui";
+import { Icon28MoneySendOutline } from "@vkontakte/icons";
 import bridge from "@vkontakte/vk-bridge";
 import { createCodeHTML } from "../../utils/codeFormatter";
 import { userViewModel } from "../../viewModels/UserViewModel";
+import { CopyButton } from "../../components";
 
 interface BalanceSectionProps {
   balance: number;
@@ -39,12 +32,6 @@ export const BalanceSection: FC<BalanceSectionProps> = ({ balance }) => {
       });
   };
 
-  const handleCopyUserId = () => {
-    bridge.send("VKWebAppCopyText", {
-      text: String(userViewModel.getUserId()),
-    });
-  };
-
   return (
     <Group>
       <Div>
@@ -66,13 +53,10 @@ export const BalanceSection: FC<BalanceSectionProps> = ({ balance }) => {
               ),
             }}
           />
-          <IconButton onClick={handleCopyUserId}>
-            <Icon28CopyOutline
-              color="var(--vkui--color_background_accent_themed)"
-              width={24}
-              height={24}
-            />
-          </IconButton>
+          <CopyButton
+            textToCopy={String(userViewModel.getUserId())}
+            size={24}
+          />
         </Flex>
         <Spacing size={12} />
         <div

@@ -6,16 +6,12 @@ import bridge from "@vkontakte/vk-bridge";
 import classes from "./components.module.css";
 
 interface CopyButtonProps {
-  /** Текст для копирования */
   textToCopy: string;
-  /** Дополнительные стили */
   style?: React.CSSProperties;
-  /** Колбэк при успешном копировании */
   onCopySuccess?: () => void;
-  /** Колбэк при ошибке копирования */
   onCopyError?: (error: Error) => void;
-  /** Длительность показа галочки в миллисекундах */
   successDuration?: number;
+  size?: number;
 }
 
 export const CopyButton: FC<CopyButtonProps> = ({
@@ -24,6 +20,7 @@ export const CopyButton: FC<CopyButtonProps> = ({
   onCopySuccess,
   onCopyError,
   successDuration = 1500,
+  size,
 }) => {
   const [isCopied, setIsCopied] = useState(false);
 
@@ -57,7 +54,19 @@ export const CopyButton: FC<CopyButtonProps> = ({
       onClick={handleCopy}
       style={buttonStyle}
     >
-      {isCopied ? <Icon16CheckCircle /> : <Icon16CopyOutline />}
+      {isCopied ? (
+        <Icon16CheckCircle
+          color="var(--vkui--color_background_accent_themed)"
+          width={size}
+          height={size}
+        />
+      ) : (
+        <Icon16CopyOutline
+          color="var(--vkui--color_background_accent_themed)"
+          width={size}
+          height={size}
+        />
+      )}
     </IconButton>
   );
 };

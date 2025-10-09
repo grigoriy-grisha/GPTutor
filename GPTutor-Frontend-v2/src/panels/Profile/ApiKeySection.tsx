@@ -1,16 +1,8 @@
 import { FC } from "react";
-import {
-  Button,
-  Div,
-  Flex,
-  Group,
-  IconButton,
-  Spacing,
-  Title,
-} from "@vkontakte/vkui";
-import { Icon28CopyOutline, Icon28RefreshOutline } from "@vkontakte/icons";
-import bridge from "@vkontakte/vk-bridge";
+import { Button, Div, Flex, Group, Spacing, Title } from "@vkontakte/vkui";
+import { Icon28RefreshOutline } from "@vkontakte/icons";
 import { createCodeHTML } from "../../utils/codeFormatter";
+import { CopyButton } from "../../components";
 
 interface ApiKeySectionProps {
   apiKey: string;
@@ -23,12 +15,6 @@ export const ApiKeySection: FC<ApiKeySectionProps> = ({
   updatingToken,
   onUpdateToken,
 }) => {
-  const handleCopyApiKey = () => {
-    bridge.send("VKWebAppCopyText", {
-      text: apiKey,
-    });
-  };
-
   return (
     <Group>
       <Div>
@@ -47,13 +33,7 @@ export const ApiKeySection: FC<ApiKeySectionProps> = ({
               __html: createCodeHTML(apiKey, "python"),
             }}
           />
-          <IconButton onClick={handleCopyApiKey}>
-            <Icon28CopyOutline
-              color="var(--vkui--color_background_accent_themed)"
-              width={24}
-              height={24}
-            />
-          </IconButton>
+          <CopyButton textToCopy={apiKey} size={24} />
         </Flex>
         <Spacing size={16} />
         <Button
