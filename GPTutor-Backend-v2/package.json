@@ -12,7 +12,7 @@
     "test:rate-limit-middleware": "npx ts-node src/middleware/rateLimitMiddleware.test.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
+    "db:migrate": "prisma migrate deploy",
     "db:studio": "prisma studio",
     "docs": "node docs/serve.js",
     "docs:open": "node docs/serve.js & start http://localhost:8080"
