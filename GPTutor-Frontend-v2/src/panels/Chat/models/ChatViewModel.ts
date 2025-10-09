@@ -279,6 +279,7 @@ class ChatViewModel {
               const content = delta?.content;
               const reasoning = delta?.reasoning;
               const annotations = delta?.annotations;
+              const images = delta?.images; // Сгенерированные изображения
               const citations = parsed.citations;
 
               console.log({ delta });
@@ -287,6 +288,7 @@ class ChatViewModel {
               console.log("Parsed reasoning:", reasoning);
               console.log("Parsed citations:", citations);
               console.log("Parsed annotations:", annotations);
+              console.log("Parsed images:", images);
 
               if (content) {
                 runInAction(() => {
@@ -297,6 +299,14 @@ class ChatViewModel {
               if (reasoning) {
                 runInAction(() => {
                   message.appendReasoning(reasoning);
+                });
+              }
+
+              // Обрабатываем сгенерированные изображения
+              if (images && Array.isArray(images) && images.length > 0) {
+                console.log("Adding generated images:", images.length, "images");
+                runInAction(() => {
+                  message.addGeneratedImages(images);
                 });
               }
 

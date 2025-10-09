@@ -177,6 +177,43 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
                       </div>
                     )}
 
+                  {/* Отображение сгенерированных изображений */}
+                  {message.generatedImages &&
+                    message.generatedImages.length > 0 && (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "12px",
+                          marginTop: "14px",
+                        }}
+                      >
+                        {message.generatedImages.map((image, index) => (
+                          <div
+                            key={index}
+                            style={{
+                              borderRadius: "8px",
+                              overflow: "hidden",
+                              maxWidth: "100%",
+                            }}
+                          >
+                            <img
+                              src={image.image_url.url}
+                              alt={`Generated image ${index + 1}`}
+                              style={{
+                                width: "100%",
+                                maxWidth: "512px",
+                                height: "auto",
+                                display: "block",
+                                borderRadius: "8px",
+                              }}
+                              loading="lazy"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
                   {/* Блок reasoning если есть */}
                   {message.reasoning && (
                     <div

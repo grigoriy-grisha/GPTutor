@@ -65,9 +65,10 @@ export class MessageModel {
   isTyping: boolean;
   timestamp: Date;
   usage: MessageUsage | null = null;
-  images?: ImageAttachment[];
+  images?: ImageAttachment[]; // Изображения от пользователя (входящие)
   files?: FileAttachment[];
   attachedFilesList?: FileInfo[]; // Список прикрепленных файлов для отображения
+  generatedImages: ImageAttachment[] = []; // Изображения сгенерированные моделью (исходящие)
 
   constructor(
     id: string,
@@ -170,6 +171,20 @@ export class MessageModel {
   }
 
   /**
+   * Добавить сгенерированные изображения (от модели)
+   */
+  addGeneratedImages(images: ImageAttachment[]) {
+    this.generatedImages.push(...images);
+  }
+
+  /**
+   * Установить сгенерированные изображения (от модели)
+   */
+  setGeneratedImages(images: ImageAttachment[]) {
+    this.generatedImages = images;
+  }
+
+  /**
    * Проверка, является ли сообщение пользовательским
    */
   get isUser() {
@@ -181,6 +196,13 @@ export class MessageModel {
    */
   get isAssistant() {
     return this.role === "assistant";
+  }
+
+  /**
+   * Проверка, есть ли сгенерированные изображения
+   */
+  get hasGeneratedImages() {
+    return this.generatedImages.length > 0;
   }
 }
 
