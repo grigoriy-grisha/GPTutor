@@ -6,8 +6,6 @@ mkdir -p /app/prisma
 # Check if database exists
 if [ ! -f /app/prisma/prod.db ]; then
     echo "Database does not exist, creating and applying migrations..."
-    # Для новой БД используем migrate deploy (применит все миграции)
-    npx prisma migrate deploy
 fi
 
 echo "Database exists, applying pending migrations..."
