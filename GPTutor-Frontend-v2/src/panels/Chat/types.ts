@@ -15,7 +15,6 @@ export interface MessageListProps {
   messages: MessageModel[];
   userViewModel: UserViewModel;
   getUserName: () => string;
-  onCopyMessage: (text: string) => void;
   onStartChat: () => void;
   isUploadingFiles?: boolean;
 }
@@ -24,7 +23,6 @@ export interface MessageItemProps {
   message: MessageModel;
   userViewModel: UserViewModel;
   getUserName: () => string;
-  onCopyMessage: (text: string) => void;
 }
 
 export interface UploadingFile {

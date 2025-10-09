@@ -1,38 +1,28 @@
-import { FC, useState } from "react";
-import {
-  DisplayTitle,
-  Div,
-  Group,
-  Headline,
-  Spacing,
-  WriteBar,
-  WriteBarIcon,
-} from "@vkontakte/vkui";
-import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
-import { chatViewModel } from "../Chat/models";
+import { FC } from "react";
+import { DisplayTitle, Div, Group, Headline, Spacing } from "@vkontakte/vkui";
 
-const DEFAULT_MESSAGE = "Что ты умеешь?";
+// const DEFAULT_MESSAGE = "Что ты умеешь?";
 
 export const HeroSection: FC = () => {
-  const [message, setMessage] = useState("");
-  const routeNavigator = useRouteNavigator();
+  // const [message, setMessage] = useState("");
+  // const routeNavigator = useRouteNavigator();
 
-  const handleSendMessage = () => {
-    const textToSend = message.trim() || DEFAULT_MESSAGE;
-    
-    // Отправляем сообщение
-    chatViewModel.sendMessage(textToSend);
-    
-    // Переходим в чат
-    routeNavigator.push("/chat");
-  };
+  // const handleSendMessage = () => {
+  //   const textToSend = message.trim() || DEFAULT_MESSAGE;
+  //
+  //   // Отправляем сообщение
+  //   chatViewModel.sendMessage(textToSend);
+  //
+  //   // Переходим в чат
+  //   routeNavigator.push("/chat");
+  // };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
+  // const handleKeyDown = (e: React.KeyboardEvent) => {
+  //   if (e.key === "Enter" && !e.shiftKey) {
+  //     e.preventDefault();
+  //     handleSendMessage();
+  //   }
+  // };
 
   return (
     <Group>
@@ -44,25 +34,24 @@ export const HeroSection: FC = () => {
         <Headline level="1" style={{ color: "#9c9c9c" }}>
           Без ВПН и зарубежных карт!
         </Headline>
-        <Spacing size={16} />
-        <WriteBar
-          style={{
-            border: "1px solid var(--vkui--color_separator_primary)",
-            borderRadius: "var(--vkui--size_border_radius_paper--regular)",
-          }}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyDown}
-          after={
-            <WriteBarIcon 
-              mode="send" 
-              onClick={handleSendMessage}
-            />
-          }
-          placeholder={DEFAULT_MESSAGE}
-        />
+        {/*<Spacing size={16} />*/}
+        {/*<WriteBar*/}
+        {/*  style={{*/}
+        {/*    border: "1px solid var(--vkui--color_separator_primary)",*/}
+        {/*    borderRadius: "var(--vkui--size_border_radius_paper--regular)",*/}
+        {/*  }}*/}
+        {/*  value={message}*/}
+        {/*  onChange={(e) => setMessage(e.target.value)}*/}
+        {/*  onKeyDown={handleKeyDown}*/}
+        {/*  after={*/}
+        {/*    <WriteBarIcon */}
+        {/*      mode="send" */}
+        {/*      onClick={handleSendMessage}*/}
+        {/*    />*/}
+        {/*  }*/}
+        {/*  placeholder={DEFAULT_MESSAGE}*/}
+        {/*/>*/}
       </Div>
     </Group>
   );
 };
-

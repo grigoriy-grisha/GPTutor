@@ -8,10 +8,7 @@ import {
   Spacing,
   Title,
 } from "@vkontakte/vkui";
-import {
-  Icon28CopyOutline,
-  Icon28MoneySendOutline,
-} from "@vkontakte/icons";
+import { Icon28CopyOutline, Icon28MoneySendOutline } from "@vkontakte/icons";
 import bridge from "@vkontakte/vk-bridge";
 import { createCodeHTML } from "../../utils/codeFormatter";
 import { userViewModel } from "../../viewModels/UserViewModel";
@@ -23,14 +20,21 @@ interface BalanceSectionProps {
 export const BalanceSection: FC<BalanceSectionProps> = ({ balance }) => {
   const handleTopUp = () => {
     bridge
-      .send("VKWebAppShowOrderBox", {
-        type: "item",
-        item: "item_id_123456",
+      .send("VKWebAppOpenPayForm", {
+        app_id: 54187353,
+        action: "pay-to-user",
+        params: {
+          user_id: userViewModel.getUserId(),
+        },
       })
       .then((data) => {
         console.log(data);
+        // if (data.status) {
+        //   // Экран VK Pay показан
+        // }
       })
       .catch((error) => {
+        // Ошибка
         console.log(error);
       });
   };
@@ -83,7 +87,7 @@ export const BalanceSection: FC<BalanceSectionProps> = ({ balance }) => {
         >
           <Icon28MoneySendOutline />
           <div>
-            <Title level="1">{balance}₽</Title>
+            <Title level="1">{balance.toFixed(4)}₽</Title>
             <div style={{ color: "#9c9c9c", fontSize: "14px" }}>
               Доступно для использования
             </div>
@@ -104,5 +108,3 @@ export const BalanceSection: FC<BalanceSectionProps> = ({ balance }) => {
     </Group>
   );
 };
-
-

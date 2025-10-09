@@ -20,9 +20,7 @@ export const Profile: FC<ProfileProps> = ({ id }) => {
     vkData,
     loading,
     updatingToken,
-    snackbar,
     activeCodeExample,
-    setSnackbar,
     setActiveCodeExample,
     loadProfile,
     updateToken,
@@ -55,25 +53,20 @@ export const Profile: FC<ProfileProps> = ({ id }) => {
   return (
     <Panel id={id}>
       <PanelHeader>Профиль</PanelHeader>
-      
+
       <BalanceSection balance={profile.balance} />
-      
+
       <ApiKeySection
         apiKey={profile.apiKey}
         updatingToken={updatingToken}
         onUpdateToken={updateToken}
       />
-      
+
       <CodeExamplesSection
         apiKey={profile.apiKey}
         activeCodeExample={activeCodeExample}
         onCodeExampleChange={setActiveCodeExample}
-        onShowSnackbar={setSnackbar}
       />
-      
-      {snackbar}
     </Panel>
   );
 };
-
-

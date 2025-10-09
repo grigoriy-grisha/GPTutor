@@ -33,13 +33,11 @@ export const CopyButton: FC<CopyButtonProps> = ({
     try {
       await bridge.send("VKWebAppCopyText", { text: textToCopy });
 
-      console.log("CopyButton: Copy successful, setting isCopied to true");
       setIsCopied(true);
       onCopySuccess?.();
 
       setTimeout(() => setIsCopied(false), successDuration);
     } catch (error) {
-      console.error("CopyButton: Failed to copy text:", error);
       onCopyError?.(error as Error);
     }
   };
@@ -49,7 +47,9 @@ export const CopyButton: FC<CopyButtonProps> = ({
     ...style,
   };
 
-  const buttonClassName = `${classes.copyButton} ${isCopied ? classes.copied : ''}`;
+  const buttonClassName = `${classes.copyButton} ${
+    isCopied ? classes.copied : ""
+  }`;
 
   return (
     <IconButton

@@ -1,13 +1,13 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ProcessedModel } from "../api";
 import { ModelsService } from "../services/ModelsService";
 import { chatViewModel } from "../panels/Chat/models";
+import { useSnackbar } from "../hooks";
 
 export interface ModelsViewModelState {
   models: ProcessedModel[];
   filteredModels: ProcessedModel[];
   searchQuery: string;
-  snackbar: React.ReactNode | null;
   sortOrder: "asc" | "desc";
   loading: boolean;
 }
@@ -17,14 +17,10 @@ export const useModelsViewModel = () => {
     models: [],
     filteredModels: [],
     searchQuery: "",
-    snackbar: null,
     sortOrder: "asc",
     loading: false,
   });
-
-  const setSnackbar = useCallback((snackbar: React.ReactNode | null) => {
-    setState((prev) => ({ ...prev, snackbar }));
-  }, []);
+  const { showSuccess, showError } = useSnackbar();
 
   const setSearchQuery = useCallback((searchQuery: string) => {
     setState((prev) => ({ ...prev, searchQuery }));
@@ -70,33 +66,19 @@ export const useModelsViewModel = () => {
     setSortOrder(newOrder);
   }, [state.sortOrder, setSortOrder]);
 
-  const copyModelId = useCallback(
-    async (modelId: string) => {
-      const success = await ModelsService.copyModelId(modelId);
+  const copyModelId = useCallback(async (modelId: string) => {
+    const success = await ModelsService.copyModelId(modelId);
 
-      if (success) {
-        const successSnackbar = ModelsService.createSuccessSnackbar(
-          `ID скопирован: ${modelId}`,
-          () => setSnackbar(null)
-        );
-        setSnackbar(successSnackbar);
-      } else {
-        const errorSnackbar = ModelsService.createErrorSnackbar(
-          "Не удалось скопировать",
-          () => setSnackbar(null)
-        );
-        setSnackbar(errorSnackbar);
-      }
-    },
-    [setSnackbar]
-  );
+    if (success) {
+      showSuccess(`ID скопирован: ${modelId}`);
+    } else {
+      showError("Не удалось скопировать");
+    }
+  }, []);
 
-  const tryModel = useCallback(
-    (modelId: string) => {
-      chatViewModel.setModel(modelId);
-    },
-    [setSnackbar]
-  );
+  const tryModel = useCallback((modelId: string) => {
+    chatViewModel.setModel(modelId);
+  }, []);
 
   const loadModels = useCallback(async () => {
     try {
@@ -109,28 +91,25 @@ export const useModelsViewModel = () => {
         loading: false,
       }));
     } catch (error) {
-      const errorSnackbar = ModelsService.createErrorSnackbar(
+      showError(
         `Ошибка загрузки моделей: ${
           error instanceof Error ? error.message : "Неизвестная ошибка"
-        }`,
-        () => setSnackbar(null)
+        }`
       );
+
       setState((prev) => ({
         ...prev,
         loading: false,
-        snackbar: errorSnackbar,
       }));
     }
-  }, [setSnackbar]);
+  }, []);
 
-  // Effect to re-filter when sort order changes
   useEffect(() => {
     filterModels(state.searchQuery);
   }, [state.sortOrder, filterModels, state.searchQuery]);
 
   return {
     ...state,
-    setSnackbar,
     handleSearchChange,
     handleQuickSearch,
     handleSortToggle,

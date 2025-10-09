@@ -8,10 +8,7 @@ import {
   Spacing,
   Title,
 } from "@vkontakte/vkui";
-import {
-  Icon28CopyOutline,
-  Icon28RefreshOutline,
-} from "@vkontakte/icons";
+import { Icon28CopyOutline, Icon28RefreshOutline } from "@vkontakte/icons";
 import bridge from "@vkontakte/vk-bridge";
 import { createCodeHTML } from "../../utils/codeFormatter";
 
@@ -74,5 +71,3 @@ export const ApiKeySection: FC<ApiKeySectionProps> = ({
     </Group>
   );
 };
-
-

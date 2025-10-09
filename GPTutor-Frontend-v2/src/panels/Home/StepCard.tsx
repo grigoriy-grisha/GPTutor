@@ -50,7 +50,7 @@ export const StepCard: FC<StepCardProps> = ({
           <DisplayTitle level="2">—</DisplayTitle>
           {description}
         </Flex>
-        <Spacing size={22} />
+        <Spacing size={14} />
         <Button
           onClick={onButtonClick}
           mode="outline"

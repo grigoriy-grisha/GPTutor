@@ -26,7 +26,6 @@ export const Models: FC<ModelsProps> = ({ id }) => {
   const {
     filteredModels,
     searchQuery,
-    snackbar,
     sortOrder,
     loading,
     handleSearchChange,
@@ -109,7 +108,6 @@ export const Models: FC<ModelsProps> = ({ id }) => {
           </Group>
         </>
       )}
-      {snackbar}
     </Panel>
   );
 };

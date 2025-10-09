@@ -1,9 +1,8 @@
 import React, { useMemo } from "react";
-import { Avatar, Button, IconButton, Skeleton, Text } from "@vkontakte/vkui";
+import { Avatar, Button, Skeleton, Text } from "@vkontakte/vkui";
 import {
   Icon16ArrowDownOutline,
   Icon16ArrowUpOutline,
-  Icon16CopyOutline,
   Icon24MoneyCircleOutline,
   Icon28MessageOutline,
   Icon28MoneyCircleOutline,
@@ -21,11 +20,12 @@ import {
 import { observer } from "mobx-react-lite";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 import { DEFAULT_VIEW_PANELS } from "../../../routes.ts";
+import { CopyButton } from "../../../components";
 
 const markdown = new Markdown();
 
 export const MessageItem: React.FC<MessageItemProps> = observer(
-  ({ message, userViewModel, getUserName, onCopyMessage }) => {
+  ({ message, userViewModel, getUserName }) => {
     const containerRef = useCodeCopyButtons(message.isTyping);
     const routeNavigator = useRouteNavigator();
 
@@ -69,9 +69,7 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
           paddingRight: "16px",
         }}
       >
-        <IconButton
-          size={20}
-          onClick={() => onCopyMessage(message.content)}
+        <div
           style={{
             position: "absolute",
             top: "8px",
@@ -80,9 +78,8 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
             zIndex: 1,
           }}
         >
-          <Icon16CopyOutline />
-        </IconButton>
-
+          <CopyButton textToCopy={message.content} />
+        </div>
         <div
           style={{
             display: "flex",

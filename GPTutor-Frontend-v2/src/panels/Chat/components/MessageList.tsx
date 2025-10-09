@@ -13,7 +13,10 @@ import {
  * Список сообщений чата с плейсхолдером для пустого состояния
  */
 export const MessageList = forwardRef<HTMLDivElement, MessageListProps>(
-  ({ messages, userViewModel, getUserName, onCopyMessage, onStartChat, isUploadingFiles }, ref) => {
+  (
+    { messages, userViewModel, getUserName, onStartChat, isUploadingFiles },
+    ref
+  ) => {
     if (messages.length === 0) {
       return (
         <div
@@ -54,7 +57,6 @@ export const MessageList = forwardRef<HTMLDivElement, MessageListProps>(
             message={message}
             userViewModel={userViewModel}
             getUserName={getUserName}
-            onCopyMessage={onCopyMessage}
           />
         ))}
         <div ref={ref} />

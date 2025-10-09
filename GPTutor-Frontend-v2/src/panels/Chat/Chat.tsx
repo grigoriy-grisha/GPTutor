@@ -31,11 +31,10 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
     chatViewModel.isTyping
   );
   const { handleBack, handleModelSelect } = useChatNavigation();
-  const { handleSendMessage, handleStartChat, handleCopyMessage } =
-    useChatHandlers({
-      scrollToBottom,
-      onMessageChange: setMessage,
-    });
+  const { handleSendMessage, handleStartChat } = useChatHandlers({
+    scrollToBottom,
+    onMessageChange: setMessage,
+  });
   const { showError } = useSnackbar();
 
   // Инициализация пользователя и snackbar callback
@@ -87,7 +86,6 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
               messages={chatViewModel.getMessages()}
               userViewModel={userViewModel}
               getUserName={getUserName}
-              onCopyMessage={handleCopyMessage}
               onStartChat={handleStartChat}
               isUploadingFiles={chatViewModel.getUploadingFiles().length > 0}
             />

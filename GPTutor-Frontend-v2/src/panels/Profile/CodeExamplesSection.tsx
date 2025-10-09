@@ -1,11 +1,10 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import {
   Button,
   Div,
   Flex,
   Group,
   SegmentedControl,
-  Snackbar,
   Spacing,
   Title,
 } from "@vkontakte/vkui";
@@ -17,34 +16,27 @@ import {
   CodeExampleType,
 } from "../../services/CodeExampleService";
 import { getCodeStyles } from "../../utils/codeFormatter";
+import { useSnackbar } from "../../hooks";
 
 interface CodeExamplesSectionProps {
   apiKey: string;
   activeCodeExample: CodeExampleType;
   onCodeExampleChange: (type: CodeExampleType) => void;
-  onShowSnackbar: (snackbar: React.ReactNode) => void;
 }
 
 export const CodeExamplesSection: FC<CodeExamplesSectionProps> = ({
   apiKey,
   activeCodeExample,
   onCodeExampleChange,
-  onShowSnackbar,
 }) => {
   const codeHTML = CodeExampleService.getCodeHTML(activeCodeExample, apiKey);
   const rawCode = CodeExampleService.getRawCode(activeCodeExample, apiKey);
+  const { showInfo } = useSnackbar();
 
   const handleCopyCode = async () => {
     await bridge.send("VKWebAppCopyText", { text: rawCode });
 
-    onShowSnackbar(
-      <Snackbar
-        onClose={() => onShowSnackbar(null)}
-        before={<Icon28CopyOutline />}
-      >
-        Код скопирован
-      </Snackbar>
-    );
+    showInfo("Код скопирован");
   };
 
   return (
@@ -108,4 +100,3 @@ export const CodeExamplesSection: FC<CodeExamplesSectionProps> = ({
     </Group>
   );
 };
-
