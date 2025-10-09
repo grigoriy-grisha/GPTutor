@@ -40,7 +40,7 @@ export class LLMCostEvaluate {
   }
 
   calculateCost(cost: number): number {
-    return cost * this.usdToRubRate * 2;
+    return cost * this.usdToRubRate;
   }
 
   getModelsWithRubPricing(searchTerm?: string, provider?: string): any[] {
