@@ -102,7 +102,7 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
             <FileUpload
               onFileSelect={handleFileUpload}
               disabled={disabled}
-              accept="image/*,application/pdf,text/*,.doc,.docx,.xls,.xlsx,.csv,.js,.html,.css,.json,.xml,.md,.log,.py,.java,.c,.cpp,.sql"
+              accept="image/*,application/pdf,text/*,.doc,.docx,.xls,.xlsx,.csv,.js,.html,.css,.json,.xml,.md,.log,.py,.java,.c,.cpp,.sql,.pptx,.ppt"
             />
           }
           after={

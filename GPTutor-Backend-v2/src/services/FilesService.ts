@@ -5,13 +5,12 @@ import EasyYandexS3 from "easy-yandex-s3";
 import crypto from "crypto";
 import { S3 } from "aws-sdk";
 import { logger } from "./LoggerService";
-import { exec } from "child_process";
+//@ts-ignore
+import libre from "libreoffice-convert";
 import { promisify } from "util";
-import * as fs from "fs";
-import * as path from "path";
-import * as os from "os";
 
-const execAsync = promisify(exec);
+// Используем extend для callback, чтобы избежать deprecation warning
+const libreConvert = promisify(libre.convert.bind(libre));
 
 const s3 = new EasyYandexS3({
   auth: {
@@ -45,132 +44,83 @@ export class FilesService {
   }
 
   /**
-   * Конвертирует документ в PDF с помощью LibreOffice
+   * Конвертирует документ в PDF с помощью LibreOffice (через libreoffice-convert)
+   * Работает напрямую с буферами без создания временных файлов
    */
   private async convertToPdf(
     buffer: Buffer,
     originalFileName: string
   ): Promise<{ buffer: Buffer; newFileName: string }> {
-    const tempDir = os.tmpdir();
-    const inputFileName = `${crypto.randomUUID()}_${originalFileName}`;
-    const inputFilePath = path.join(tempDir, inputFileName);
-    const outputDir = path.join(tempDir, crypto.randomUUID());
-
+    const startTime = Date.now();
+    
     try {
-      // Создаем временную директорию для вывода
-      await fs.promises.mkdir(outputDir, { recursive: true });
-
-      // Сохраняем входной файл
-      await fs.promises.writeFile(inputFilePath, buffer);
-
-      logger.info("Converting document to PDF", {
+      logger.info("Converting document to PDF using libreoffice-convert", {
         fileName: originalFileName,
-        inputPath: inputFilePath,
-        outputDir,
+        fileSize: buffer.length,
       });
 
-      // Конвертируем с помощью LibreOffice
-      // --headless - запуск без GUI
-      // --convert-to pdf - конвертация в PDF
-      // --outdir - директория для выходного файла
-      const libreOfficePaths = [
-        "libreoffice", // Linux
-        "/usr/bin/libreoffice", // Linux альтернативный путь
-        "soffice", // Windows/Mac
-        "/Applications/LibreOffice.app/Contents/MacOS/soffice", // Mac
-        "C:\\Program Files\\LibreOffice\\program\\soffice.exe", // Windows
-        "C:\\Program Files (x86)\\LibreOffice\\program\\soffice.exe", // Windows x86
-      ];
+      // Определяем расширение выходного файла
+      const ext = ".pdf";
 
-      let conversionSuccessful = false;
-      let lastError: Error | null = null;
+      // Конвертируем буфер напрямую в PDF
+      // @ts-ignore - libreoffice-convert не имеет типов TypeScript
+      const pdfBuffer: Buffer = await libreConvert(buffer, ext, undefined);
 
-      for (const libreOfficePath of libreOfficePaths) {
-        try {
-          const command = `"${libreOfficePath}" --headless --convert-to pdf --outdir "${outputDir}" "${inputFilePath}"`;
-          logger.info("Trying LibreOffice command", { command });
+      const duration = Date.now() - startTime;
 
-          const { stdout, stderr } = await execAsync(command, {
-            timeout: 60000, // 60 секунд таймаут
-          });
-
-          if (stderr) {
-            logger.warn("LibreOffice stderr", { stderr });
-          }
-          if (stdout) {
-            logger.info("LibreOffice stdout", { stdout });
-          }
-
-          conversionSuccessful = true;
-          break;
-        } catch (error) {
-          lastError = error as Error;
-          logger.warn("Failed with LibreOffice path", {
-            path: libreOfficePath,
-            error: (error as Error).message,
-          });
-          continue;
-        }
+      // Проверяем результат
+      if (!pdfBuffer || pdfBuffer.length === 0) {
+        throw new Error("Conversion resulted in empty buffer");
       }
 
-      if (!conversionSuccessful) {
-        throw new Error(
-          `LibreOffice not found or conversion failed. Last error: ${lastError?.message}`
-        );
-      }
-
-      // Находим сконвертированный PDF файл
+      // Формируем финальное имя файла
       const baseFileName = originalFileName.substring(
         0,
         originalFileName.lastIndexOf(".")
       );
-      const pdfFileName = `${baseFileName}.pdf`;
-      const outputFilePath = path.join(outputDir, pdfFileName);
-
-      // Проверяем, существует ли файл
-      if (!fs.existsSync(outputFilePath)) {
-        throw new Error(`Converted PDF file not found: ${outputFilePath}`);
-      }
-
-      // Читаем сконвертированный PDF
-      const pdfBuffer = await fs.promises.readFile(outputFilePath);
+      const finalPdfFileName = `${baseFileName}.pdf`;
 
       logger.info("Document converted to PDF successfully", {
         originalFileName,
-        pdfFileName,
+        finalPdfFileName,
         originalSize: buffer.length,
         pdfSize: pdfBuffer.length,
+        durationMs: duration,
       });
 
       return {
         buffer: pdfBuffer,
-        newFileName: pdfFileName,
+        newFileName: finalPdfFileName,
       };
     } catch (error) {
+      const duration = Date.now() - startTime;
+      const errorMessage = (error as Error).message;
+      
       logger.error("Failed to convert document to PDF", error, {
         fileName: originalFileName,
+        durationMs: duration,
+        errorMessage,
       });
-      throw new Error(
-        `Failed to convert document to PDF: ${(error as Error).message}`
-      );
-    } finally {
-      // Очищаем временные файлы
-      try {
-        if (fs.existsSync(inputFilePath)) {
-          await fs.promises.unlink(inputFilePath);
-        }
-        if (fs.existsSync(outputDir)) {
-          const files = await fs.promises.readdir(outputDir);
-          for (const file of files) {
-            await fs.promises.unlink(path.join(outputDir, file));
-          }
-          await fs.promises.rmdir(outputDir);
-        }
-      } catch (cleanupError) {
-        logger.warn("Failed to cleanup temporary files", {
-          error: (cleanupError as Error).message,
-        });
+
+      // Определяем тип ошибки для более понятного сообщения
+      if (errorMessage.includes("Could not find platform independent libraries") ||
+          errorMessage.includes("soffice") ||
+          errorMessage.includes("LibreOffice")) {
+        throw new Error(
+          "LibreOffice not found. Please install LibreOffice on your system. " +
+          "Visit: https://www.libreoffice.org/download/"
+        );
       }
+
+      if (errorMessage.includes("Document is empty")) {
+        throw new Error(
+          "Failed to read document. The file may be corrupted or in an unsupported format."
+        );
+      }
+
+      throw new Error(
+        `Failed to convert document to PDF: ${errorMessage}`
+      );
     }
   }
 
@@ -212,7 +162,7 @@ export class FilesService {
       logger.info("Document needs conversion to PDF", { fileName, extension });
       const buffer = Buffer.from(arrayBuffer);
       const { buffer: pdfBuffer } = await this.convertToPdf(buffer, fileName);
-      
+
       // Оптимизируем полученный PDF
       logger.info("Optimizing converted PDF");
       return await compress(pdfBuffer);
@@ -333,7 +283,10 @@ export class FilesService {
   }> {
     let finalFileName = fileName;
 
-    // Если файл требует конвертации в PDF, меняем расширение
+    console.log(
+      "this.needsConversionToPdf(fileName)",
+      this.needsConversionToPdf(fileName)
+    );
     if (this.needsConversionToPdf(fileName)) {
       const baseFileName = fileName.substring(0, fileName.lastIndexOf("."));
       finalFileName = `${baseFileName}.pdf`;

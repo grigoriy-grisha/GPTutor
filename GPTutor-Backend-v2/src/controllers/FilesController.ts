@@ -105,21 +105,18 @@ export class FilesController extends BaseController {
         });
       }
 
-      // Если файл не найден, загужаем в S3
       const result = await this.filesService.optimizeAndUploadFile(
         arrayBuffer,
         data.filename
       );
 
-      // Определяем финальный тип файла (для конвертированных документов это будет application/pdf)
       let finalMimeType = data.mimetype;
       let finalFileName = data.filename;
-      
+
       if (result.finalFileName !== data.filename) {
-        // Файл был конвертирован в PDF
         finalMimeType = "application/pdf";
         finalFileName = result.finalFileName;
-        
+
         this.logInfo("File was converted to PDF", {
           originalName: data.filename,
           originalType: data.mimetype,
@@ -145,9 +142,10 @@ export class FilesController extends BaseController {
       });
 
       return this.sendSuccess(reply, {
-        message: finalFileName !== data.filename 
-          ? "File converted to PDF and uploaded successfully!" 
-          : "File uploaded successfully!",
+        message:
+          finalFileName !== data.filename
+            ? "File converted to PDF and uploaded successfully!"
+            : "File uploaded successfully!",
         file: {
           id: savedFile.id,
           name: savedFile.name,
@@ -163,25 +161,40 @@ export class FilesController extends BaseController {
       this.logError("File upload failed", error);
 
       if (error instanceof Error) {
-        if (error.message.includes("Unknown or unsupported file type")) {
+        const errorMessage = error.message;
+
+        if (errorMessage.includes("Unknown or unsupported file type")) {
           return this.sendError(reply, "Unsupported file type", 400, request);
         }
-        if (error.message.includes("Invalid filename")) {
+        
+        if (errorMessage.includes("Invalid filename")) {
           return this.sendError(reply, "Invalid filename", 400, request);
         }
-        if (error.message.includes("Failed to convert document to PDF")) {
+        
+        if (errorMessage.includes("LibreOffice not found")) {
           return this.sendError(
             reply,
-            "Failed to convert document to PDF. Please ensure the file is not corrupted.",
+            "Document conversion requires LibreOffice. Please contact administrator.",
+            503,
+            request
+          );
+        }
+        
+        if (errorMessage.includes("Failed to read document") || 
+            errorMessage.includes("corrupted")) {
+          return this.sendError(
+            reply,
+            "Failed to convert document. The file may be corrupted or password-protected.",
             400,
             request
           );
         }
-        if (error.message.includes("LibreOffice not found")) {
+        
+        if (errorMessage.includes("Failed to convert document to PDF")) {
           return this.sendError(
             reply,
-            "Document conversion service is temporarily unavailable",
-            503,
+            "Failed to convert document to PDF. Please try again or use a different file.",
+            400,
             request
           );
         }
