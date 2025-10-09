@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { MessageModel, MessageRole } from "./MessageModel";
 import { API_BASE_URL, FileInfo, filesApi } from "../../../api";
 import { UploadingFile } from "../types";
+import bridge from "@vkontakte/vk-bridge";
 
 /**
  * ViewModel для управления состоянием чата
@@ -17,11 +18,51 @@ class ChatViewModel {
   uploadingFiles: UploadingFile[] = [];
 
   private readonly MAX_FILES = 4;
+  private readonly STORAGE_KEY_MODEL = "chat_current_model";
 
   private showSnackbar?: (text: string, subtitle?: string) => void;
 
   constructor() {
     makeAutoObservable(this);
+    this.loadModelFromStorage();
+  }
+
+  /**
+   * Загрузить модель из VK Storage
+   */
+  private async loadModelFromStorage() {
+    try {
+      const result = await bridge.send("VKWebAppStorageGet", {
+        keys: [this.STORAGE_KEY_MODEL],
+      });
+      
+      if (result.keys && result.keys.length > 0) {
+        const savedModel = result.keys[0].value;
+        if (savedModel) {
+          runInAction(() => {
+            this.currentModel = savedModel;
+          });
+          console.log("Loaded model from VK Storage:", savedModel);
+        }
+      }
+    } catch (error) {
+      console.error("Error loading model from VK Storage:", error);
+    }
+  }
+
+  /**
+   * Сохранить модель в VK Storage
+   */
+  private async saveModelToStorage(model: string) {
+    try {
+      await bridge.send("VKWebAppStorageSet", {
+        key: this.STORAGE_KEY_MODEL,
+        value: model,
+      });
+      console.log("Saved model to VK Storage:", model);
+    } catch (error) {
+      console.error("Error saving model to VK Storage:", error);
+    }
   }
 
   setSnackbarCallback(callback: (text: string, subtitle?: string) => void) {
@@ -35,6 +76,7 @@ class ChatViewModel {
   setModel(model: string) {
     console.log(this.currentModel);
     this.currentModel = model;
+    this.saveModelToStorage(model);
   }
 
   /**
