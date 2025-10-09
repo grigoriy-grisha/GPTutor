@@ -185,6 +185,15 @@ export class MessageModel {
   }
 
   /**
+   * Обновить URL конкретного сгенерированного изображения (для замены base64 на серверный URL)
+   */
+  updateGeneratedImageUrl(imageIndex: number, newUrl: string) {
+    if (this.generatedImages[imageIndex]) {
+      this.generatedImages[imageIndex].image_url.url = newUrl;
+    }
+  }
+
+  /**
    * Проверка, является ли сообщение пользовательским
    */
   get isUser() {

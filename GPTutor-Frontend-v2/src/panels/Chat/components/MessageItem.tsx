@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Avatar, Button, Skeleton, Text } from "@vkontakte/vkui";
+import React, { useMemo, useState } from "react";
+import { Avatar, Button, Skeleton, Spinner, Text } from "@vkontakte/vkui";
 import {
   Icon16ArrowDownOutline,
   Icon16ArrowUpOutline,
@@ -21,6 +21,8 @@ import { observer } from "mobx-react-lite";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 import { DEFAULT_VIEW_PANELS } from "../../../routes.ts";
 import { CopyButton } from "../../../components";
+import bridge from "@vkontakte/vk-bridge";
+import { filesApi } from "../../../api";
 
 const markdown = new Markdown();
 
@@ -29,10 +31,115 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
     const containerRef = useCodeCopyButtons(message.isTyping);
     const routeNavigator = useRouteNavigator();
 
+    // Состояние загрузки изображений: imageIndex -> uploading
+    const [uploadingImages, setUploadingImages] = useState<
+      Record<number, boolean>
+    >({});
+
     // Проверяем, это ошибка недостаточного баланса
     const isInsufficientBalance = message.content.includes(
       "Недостаточно средств на балансе"
     );
+
+    // Проверка, является ли URL base64
+    const isBase64Image = (url: string): boolean => {
+      return url.startsWith("data:image/");
+    };
+
+    // Функция для конвертации base64 в File
+    const base64ToFile = (base64String: string, fileName: string): File => {
+      // Извлекаем mime type и данные из base64
+      const arr = base64String.split(",");
+      const mimeMatch = arr[0].match(/:(.*?);/);
+      const mime = mimeMatch ? mimeMatch[1] : "image/png";
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], fileName, { type: mime });
+    };
+
+    // Функция для загрузки base64 изображения на сервер и получения URL
+    const uploadImageToServer = async (
+      base64Image: string,
+      imageIndex: number
+    ): Promise<string | null> => {
+      try {
+        setUploadingImages((prev) => ({
+          ...prev,
+          [imageIndex]: true,
+        }));
+
+        const mimeMatch = base64Image.match(/data:(.*?);/);
+        const mime = mimeMatch ? mimeMatch[1] : "image/png";
+        const extension = mime.split("/")[1] || "png";
+        const fileName = `generated_image_${Date.now()}.${extension}`;
+
+        const file = base64ToFile(base64Image, fileName);
+
+        const uploadResult = await filesApi.uploadFile(file);
+        const serverUrl = uploadResult.file.url;
+
+        message.updateGeneratedImageUrl(imageIndex, serverUrl);
+
+        setUploadingImages((prev) => ({
+          ...prev,
+          [imageIndex]: false,
+        }));
+
+        return serverUrl;
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        setUploadingImages((prev) => ({
+          ...prev,
+          [imageIndex]: false,
+        }));
+
+        // Показываем ошибку через bridge
+        bridge.send("VKWebAppTapticNotificationOccurred", { type: "error" });
+        return null;
+      }
+    };
+
+    // Функция для показа изображения (загружает на сервер если нужно)
+    const handleImageClick = async (imageUrl: string, imageIndex: number) => {
+      // Если сейчас загружается, ничего не делаем
+      if (uploadingImages[imageIndex]) {
+        return;
+      }
+
+      // Если это не base64 (уже серверная ссылка), показываем сразу
+      if (!isBase64Image(imageUrl)) {
+        bridge
+          .send("VKWebAppShowImages", {
+            images: [imageUrl],
+          })
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        return;
+      }
+
+      // Это base64 - загружаем на сервер и показываем
+      const serverUrl = await uploadImageToServer(imageUrl, imageIndex);
+      if (serverUrl) {
+        bridge
+          .send("VKWebAppShowImages", {
+            images: [serverUrl],
+          })
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    };
 
     // Форматируем контент с цитированиями
     const formattedContent = useMemo(() => {
@@ -188,29 +295,74 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
                           marginTop: "14px",
                         }}
                       >
-                        {message.generatedImages.map((image, index) => (
-                          <div
-                            key={index}
-                            style={{
-                              borderRadius: "8px",
-                              overflow: "hidden",
-                              maxWidth: "100%",
-                            }}
-                          >
-                            <img
-                              src={image.image_url.url}
-                              alt={`Generated image ${index + 1}`}
+                        {message.generatedImages.map((image, index) => {
+                          const isUploading = uploadingImages[index];
+                          return (
+                            <div
+                              key={index}
                               style={{
-                                width: "100%",
-                                maxWidth: "512px",
-                                height: "auto",
-                                display: "block",
+                                position: "relative",
                                 borderRadius: "8px",
+                                overflow: "hidden",
+                                maxWidth: "100%",
                               }}
-                              loading="lazy"
-                            />
-                          </div>
-                        ))}
+                            >
+                              <div
+                                style={{
+                                  position: "relative",
+                                  width: "100%",
+                                  maxWidth: "512px",
+                                }}
+                              >
+                                <img
+                                  onClick={() => {
+                                    handleImageClick(
+                                      image.image_url.url,
+                                      index
+                                    );
+                                  }}
+                                  src={image.image_url.url}
+                                  alt={`Generated image ${index + 1}`}
+                                  style={{
+                                    width: "100%",
+                                    height: "auto",
+                                    display: "block",
+                                    borderRadius: "8px",
+                                    cursor: isUploading ? "wait" : "pointer",
+                                    opacity: isUploading ? 0.7 : 1,
+                                    transition: "opacity 0.2s ease",
+                                  }}
+                                  loading="lazy"
+                                />
+
+                                {/* Индикатор загрузки */}
+                                {isUploading && (
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      top: "50%",
+                                      left: "50%",
+                                      transform: "translate(-50%, -50%)",
+                                      width: "48px",
+                                      height: "48px",
+                                      borderRadius: "50%",
+                                      backgroundColor: "rgba(0, 0, 0, 0.7)",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      backdropFilter: "blur(4px)",
+                                    }}
+                                  >
+                                    <Spinner
+                                      size="m"
+                                      style={{ color: "#fff" }}
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
 
