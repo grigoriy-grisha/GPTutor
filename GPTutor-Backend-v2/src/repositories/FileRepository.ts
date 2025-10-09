@@ -151,20 +151,12 @@ export class FileRepository {
     });
   }
 
-  /**
-   * Находит файл либо по текущему имени и размеру, либо по оригинальному
-   * Это объединенный поиск для обработки как оригинальных, так и конвертированных файлов
-   */
   async findByNameAndSizeOrOriginal(name: string, size: number) {
-    // Сначала ищем по текущему имени и размеру
     const byCurrentData = await this.findByNameAndSize(name, size);
     if (byCurrentData) {
       return byCurrentData;
     }
 
-    // Если не найден, ищем по оригинальному имени и размеру
-    // (на случай если этот файл уже был загружен и конвертирован)
-    const byOriginalData = await this.findByOriginalNameAndSize(name, size);
-    return byOriginalData;
+    return await this.findByOriginalNameAndSize(name, size);
   }
 }
