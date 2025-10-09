@@ -1,6 +1,20 @@
-import { FC } from "react";
-import { Button, Div, Flex, Group, Spacing, Title } from "@vkontakte/vkui";
-import { Icon28MoneySendOutline } from "@vkontakte/icons";
+import React, { FC } from "react";
+import {
+  Button,
+  Div,
+  Flex,
+  Group,
+  IconButton,
+  Link,
+  MiniInfoCell,
+  Spacing,
+  Title,
+  Tooltip,
+} from "@vkontakte/vkui";
+import {
+  Icon20InfoCircleOutline,
+  Icon28MoneySendOutline,
+} from "@vkontakte/icons";
 import bridge from "@vkontakte/vk-bridge";
 import { createCodeHTML } from "../../utils/codeFormatter";
 import { userViewModel } from "../../viewModels/UserViewModel";
@@ -80,14 +94,41 @@ export const BalanceSection: FC<BalanceSectionProps> = ({ balance }) => {
 
         <Spacing size={16} />
 
-        <Button
-          size="m"
-          mode="outline"
-          style={{ width: "100%" }}
-          onClick={handleTopUp}
-        >
-          Пополнить баланс
-        </Button>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <Button
+            size="m"
+            mode="outline"
+            style={{ width: "100%" }}
+            onClick={handleTopUp}
+          >
+            Пополнить баланс
+          </Button>
+          <Tooltip
+            maxWidth={300}
+            placement="top"
+            description={
+              <div style={{ width: 300 }}>
+                <MiniInfoCell style={{ padding: 0 }} textWrap="full">
+                  ИНН: <span style={{ fontWeight: 600 }}>027701131663</span>
+                </MiniInfoCell>
+                <Spacing size={4} />
+                <MiniInfoCell style={{ padding: 0 }} textWrap="full">
+                  <Link href="https://dev.vk.com/ru/user-agreement">
+                    Пользовательское соглашение
+                  </Link>
+                  <br />
+                  <Link href="https://dev.vk.com/ru/privacy-policy">
+                    Политика конфиденциальности
+                  </Link>{" "}
+                </MiniInfoCell>
+              </div>
+            }
+          >
+            <IconButton style={{ height: 20 }}>
+              <Icon20InfoCircleOutline />
+            </IconButton>
+          </Tooltip>
+        </div>
       </Div>
     </Group>
   );

@@ -10,7 +10,7 @@ import {
 } from "@vkontakte/icons";
 import { MessageItemProps } from "../types";
 import Markdown from "../../../services/Markdown";
-import { useCodeCopyButtons } from "../../../hooks/useCodeCopyButtons.tsx";
+import { useCodeCopyButtons } from "../../../hooks";
 import { FileDisplay } from "./FileDisplay";
 import { CitationLink } from "../../../components/CitationLink";
 import {
