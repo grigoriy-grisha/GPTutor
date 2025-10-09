@@ -111,10 +111,27 @@ export class FilesController extends BaseController {
         data.filename
       );
 
+      // Определяем финальный тип файла (для конвертированных документов это будет application/pdf)
+      let finalMimeType = data.mimetype;
+      let finalFileName = data.filename;
+      
+      if (result.finalFileName !== data.filename) {
+        // Файл был конвертирован в PDF
+        finalMimeType = "application/pdf";
+        finalFileName = result.finalFileName;
+        
+        this.logInfo("File was converted to PDF", {
+          originalName: data.filename,
+          originalType: data.mimetype,
+          finalName: finalFileName,
+          finalType: finalMimeType,
+        });
+      }
+
       const savedFile = await this.fileRepository.create({
         userId: request.dbUser.id,
-        type: data.mimetype,
-        name: data.filename,
+        type: finalMimeType,
+        name: finalFileName,
         url: result.url,
         size: data.file.bytesRead,
       });
@@ -124,10 +141,13 @@ export class FilesController extends BaseController {
         fileName: savedFile.name,
         url: savedFile.url,
         userId: request.dbUser.id,
+        wasConverted: finalFileName !== data.filename,
       });
 
       return this.sendSuccess(reply, {
-        message: "File uploaded successfully!",
+        message: finalFileName !== data.filename 
+          ? "File converted to PDF and uploaded successfully!" 
+          : "File uploaded successfully!",
         file: {
           id: savedFile.id,
           name: savedFile.name,
@@ -136,6 +156,7 @@ export class FilesController extends BaseController {
           size: savedFile.size,
           createdAt: savedFile.createdAt,
         },
+        converted: finalFileName !== data.filename,
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
@@ -147,6 +168,22 @@ export class FilesController extends BaseController {
         }
         if (error.message.includes("Invalid filename")) {
           return this.sendError(reply, "Invalid filename", 400, request);
+        }
+        if (error.message.includes("Failed to convert document to PDF")) {
+          return this.sendError(
+            reply,
+            "Failed to convert document to PDF. Please ensure the file is not corrupted.",
+            400,
+            request
+          );
+        }
+        if (error.message.includes("LibreOffice not found")) {
+          return this.sendError(
+            reply,
+            "Document conversion service is temporarily unavailable",
+            503,
+            request
+          );
         }
       }
 

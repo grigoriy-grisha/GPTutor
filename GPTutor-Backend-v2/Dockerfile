@@ -41,7 +41,16 @@ COPY --from=builder /app/prisma ./prisma
 # Generate Prisma client in production
 RUN npx prisma generate
 
-RUN apk update && apk add ghostscript
+# Install LibreOffice and dependencies for document conversion and PDF optimization
+RUN apk update && \
+    apk add --no-cache \
+    ghostscript \
+    libreoffice \
+    libreoffice-writer \
+    libreoffice-impress \
+    ttf-dejavu \
+    ttf-liberation \
+    font-noto
 
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist
