@@ -8,7 +8,7 @@ if [ ! -f /app/prisma/prod.db ]; then
     echo "Database does not exist, creating and applying migrations..."
     # Для новой БД используем migrate deploy (применит все миграции)
     npx prisma migrate deploy
-else
+fi
 
 echo "Database exists, applying pending migrations..."
 # Для существующей БД применяем только новые миграции
