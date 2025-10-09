@@ -10,12 +10,13 @@ import bridge from "@vkontakte/vk-bridge";
 class ChatViewModel {
   messages: MessageModel[] = [];
   isTyping: boolean = false;
-  currentModel: string = "google/gemini-2.5-flash-lite";
+  currentModel: string = "openai/gpt-5-nano";
   isOnlineMode: boolean = false; // Режим поиска в сети
   isLoading: boolean = false;
   error: string | null = null;
   attachedFiles: FileInfo[] = [];
   uploadingFiles: UploadingFile[] = [];
+  pendingGeneratedImages: any[] = []; // Сгенерированные изображения для добавления в следующее сообщение пользователя
 
   private readonly MAX_FILES = 4;
   private readonly STORAGE_KEY_MODEL = "chat_current_model";
@@ -35,7 +36,7 @@ class ChatViewModel {
       const result = await bridge.send("VKWebAppStorageGet", {
         keys: [this.STORAGE_KEY_MODEL],
       });
-      
+
       if (result.keys && result.keys.length > 0) {
         const savedModel = result.keys[0].value;
         if (savedModel) {
@@ -128,12 +129,28 @@ class ChatViewModel {
       return;
 
     // Создаем сообщение пользователя с прикрепленными файлами
-    this.addMessage(
+    const userMessage = this.addMessage(
       "user",
       content,
       false,
       this.attachedFiles.length > 0 ? [...this.attachedFiles] : undefined
     );
+
+    // Добавляем сгенерированные изображения к сообщению пользователя
+    if (this.pendingGeneratedImages.length > 0) {
+      runInAction(() => {
+        if (!userMessage.images) {
+          userMessage.images = [];
+        }
+        userMessage.images.push(...this.pendingGeneratedImages);
+        console.log(
+          "Added generated images to user message:",
+          this.pendingGeneratedImages.length
+        );
+        // Очищаем после добавления
+        this.pendingGeneratedImages = [];
+      });
+    }
 
     // Очищаем прикрепленные файлы сразу после добавления в сообщение
     this.clearAttachedFiles();
@@ -147,9 +164,12 @@ class ChatViewModel {
       await this.streamCompletion(assistantMessage);
     } catch (error) {
       console.error("Error sending message:", error);
-      
+
       // Проверяем, это ошибка недостаточного баланса
-      if (error instanceof Error && error.message.includes("Insufficient balance")) {
+      if (
+        error instanceof Error &&
+        error.message.includes("Insufficient balance")
+      ) {
         this.setError("insufficient_balance");
         assistantMessage.setContent(
           "❌ Недостаточно средств на балансе для отправки сообщения."
@@ -175,7 +195,6 @@ class ChatViewModel {
   private async streamCompletion(message: MessageModel) {
     const apiUrl = `${API_BASE_URL}/v1/chat/completions`;
 
-    // Формируем messages с поддержкой мультимодальности
     const formattedMessages = this.messages
       .filter((msg) => !msg.isTyping)
       .map((msg) => {
@@ -293,24 +312,34 @@ class ChatViewModel {
               if (content) {
                 runInAction(() => {
                   message.appendContent(content);
+                  // Убираем индикатор загрузки при получении первого контента
+                  if (message.isTyping) {
+                    message.setIsTyping(false);
+                  }
                 });
               }
 
               if (reasoning) {
                 runInAction(() => {
                   message.appendReasoning(reasoning);
+                  // Убираем индикатор загрузки при получении reasoning
+                  if (message.isTyping) {
+                    message.setIsTyping(false);
+                  }
                 });
               }
 
-              // Обрабатываем сгенерированные изображения
-              if (images && Array.isArray(images) && images.length > 0) {
-                console.log("Adding generated images:", images.length, "images");
+              if (images && images.length > 0) {
                 runInAction(() => {
                   message.addGeneratedImages(images);
+                  this.pendingGeneratedImages.push(...images);
+                  // Убираем индикатор загрузки при получении изображений
+                  if (message.isTyping) {
+                    message.setIsTyping(false);
+                  }
                 });
               }
 
-              // Обрабатываем citations если есть
               if (
                 citations &&
                 Array.isArray(citations) &&
@@ -399,6 +428,7 @@ class ChatViewModel {
     this.messages = [];
     this.clearAttachedFiles();
     this.clearUploadingFiles();
+    this.pendingGeneratedImages = [];
   }
 
   /**

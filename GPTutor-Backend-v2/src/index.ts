@@ -31,6 +31,7 @@ const openRouterService = new OpenRouterService(
 const fastify = Fastify({
   logger: true,
   disableRequestLogging: true,
+  bodyLimit: 80 * 1024 * 1024, // 80 МБ лимит для тела запроса
 });
 
 fastify.register(require("@fastify/cors"), {

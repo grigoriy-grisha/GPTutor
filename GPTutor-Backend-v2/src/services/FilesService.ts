@@ -52,7 +52,7 @@ export class FilesService {
     originalFileName: string
   ): Promise<{ buffer: Buffer; newFileName: string }> {
     const startTime = Date.now();
-    
+
     try {
       logger.info("Converting document to PDF using libreoffice-convert", {
         fileName: originalFileName,
@@ -95,7 +95,7 @@ export class FilesService {
     } catch (error) {
       const duration = Date.now() - startTime;
       const errorMessage = (error as Error).message;
-      
+
       logger.error("Failed to convert document to PDF", error, {
         fileName: originalFileName,
         durationMs: duration,
@@ -103,12 +103,16 @@ export class FilesService {
       });
 
       // Определяем тип ошибки для более понятного сообщения
-      if (errorMessage.includes("Could not find platform independent libraries") ||
-          errorMessage.includes("soffice") ||
-          errorMessage.includes("LibreOffice")) {
+      if (
+        errorMessage.includes(
+          "Could not find platform independent libraries"
+        ) ||
+        errorMessage.includes("soffice") ||
+        errorMessage.includes("LibreOffice")
+      ) {
         throw new Error(
           "LibreOffice not found. Please install LibreOffice on your system. " +
-          "Visit: https://www.libreoffice.org/download/"
+            "Visit: https://www.libreoffice.org/download/"
         );
       }
 
@@ -118,9 +122,7 @@ export class FilesService {
         );
       }
 
-      throw new Error(
-        `Failed to convert document to PDF: ${errorMessage}`
-      );
+      throw new Error(`Failed to convert document to PDF: ${errorMessage}`);
     }
   }
 
@@ -168,9 +170,9 @@ export class FilesService {
       return await compress(pdfBuffer);
     }
 
-    if (typeFile === "photo") {
-      return await this.optimizePhotos(arrayBuffer, fileName);
-    }
+    // if (typeFile === "photo") {
+    //   return await this.optimizePhotos(arrayBuffer, fileName);
+    // }
 
     if (typeFile === "text") {
       return Buffer.from(arrayBuffer).toString("utf-8");
