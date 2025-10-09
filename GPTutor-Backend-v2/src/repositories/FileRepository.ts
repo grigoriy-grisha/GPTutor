@@ -13,6 +13,9 @@ export class FileRepository {
     name: string;
     url: string;
     size: number;
+    originalName?: string;
+    originalSize?: number;
+    converted?: boolean;
   }) {
     return this.prisma.file.create({
       data: {
@@ -21,6 +24,9 @@ export class FileRepository {
         name: data.name,
         url: data.url,
         size: data.size,
+        originalName: data.originalName,
+        originalSize: data.originalSize,
+        converted: data.converted || false,
       },
     });
   }
@@ -126,5 +132,39 @@ export class FileRepository {
         createdAt: "desc",
       },
     });
+  }
+
+  /**
+   * Находит файл по оригинальному названию и размеру
+   * Используется для поиска конвертированных файлов по их оригинальным данным
+   */
+  async findByOriginalNameAndSize(originalName: string, originalSize: number) {
+    return this.prisma.file.findFirst({
+      where: {
+        originalName,
+        originalSize,
+        converted: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }
+
+  /**
+   * Находит файл либо по текущему имени и размеру, либо по оригинальному
+   * Это объединенный поиск для обработки как оригинальных, так и конвертированных файлов
+   */
+  async findByNameAndSizeOrOriginal(name: string, size: number) {
+    // Сначала ищем по текущему имени и размеру
+    const byCurrentData = await this.findByNameAndSize(name, size);
+    if (byCurrentData) {
+      return byCurrentData;
+    }
+
+    // Если не найден, ищем по оригинальному имени и размеру
+    // (на случай если этот файл уже был загружен и конвертирован)
+    const byOriginalData = await this.findByOriginalNameAndSize(name, size);
+    return byOriginalData;
   }
 }

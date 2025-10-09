@@ -79,20 +79,25 @@ export class FilesController extends BaseController {
         mimeType: data.mimetype,
       });
 
-      const existingFile = await this.fileRepository.findByNameAndSize(
-        data.filename,
-        data.file.bytesRead
-      );
+      const existingFile =
+        await this.fileRepository.findByNameAndSizeOrOriginal(
+          data.filename,
+          data.file.bytesRead
+        );
 
       if (existingFile) {
-        this.logInfo("File already exists, returning existing file", {
+        this.logInfo("File already exists, returning cached file", {
           fileId: existingFile.id,
           fileName: existingFile.name,
           url: existingFile.url,
+          wasConverted: existingFile.converted,
+          originalName: existingFile.originalName,
         });
 
         return this.sendSuccess(reply, {
-          message: "File already exists!",
+          message: existingFile.converted
+            ? "File already converted and cached!"
+            : "File already exists!",
           file: {
             id: existingFile.id,
             name: existingFile.name,
@@ -101,6 +106,8 @@ export class FilesController extends BaseController {
             size: existingFile.size,
             createdAt: existingFile.createdAt,
           },
+          converted: existingFile.converted,
+          fromCache: true,
           timestamp: new Date().toISOString(),
         });
       }
@@ -112,25 +119,32 @@ export class FilesController extends BaseController {
 
       let finalMimeType = data.mimetype;
       let finalFileName = data.filename;
+      let wasConverted = false;
 
       if (result.finalFileName !== data.filename) {
+        wasConverted = true;
         finalMimeType = "application/pdf";
         finalFileName = result.finalFileName;
 
         this.logInfo("File was converted to PDF", {
           originalName: data.filename,
           originalType: data.mimetype,
+          originalSize: data.file.bytesRead,
           finalName: finalFileName,
           finalType: finalMimeType,
         });
       }
 
+      // Сохраняем файл с информацией об оригинале (если был конвертирован)
       const savedFile = await this.fileRepository.create({
         userId: request.dbUser.id,
         type: finalMimeType,
         name: finalFileName,
         url: result.url,
-        size: data.file.bytesRead,
+        size: data.file.bytesRead, // Сохраняем оригинальный размер для правильного кеширования
+        originalName: wasConverted ? data.filename : undefined,
+        originalSize: wasConverted ? data.file.bytesRead : undefined,
+        converted: wasConverted,
       });
 
       this.logInfo("File uploaded successfully", {
@@ -138,14 +152,15 @@ export class FilesController extends BaseController {
         fileName: savedFile.name,
         url: savedFile.url,
         userId: request.dbUser.id,
-        wasConverted: finalFileName !== data.filename,
+        wasConverted: wasConverted,
+        originalName: savedFile.originalName,
+        originalSize: savedFile.originalSize,
       });
 
       return this.sendSuccess(reply, {
-        message:
-          finalFileName !== data.filename
-            ? "File converted to PDF and uploaded successfully!"
-            : "File uploaded successfully!",
+        message: wasConverted
+          ? "File converted to PDF and uploaded successfully!"
+          : "File uploaded successfully!",
         file: {
           id: savedFile.id,
           name: savedFile.name,
@@ -154,7 +169,14 @@ export class FilesController extends BaseController {
           size: savedFile.size,
           createdAt: savedFile.createdAt,
         },
-        converted: finalFileName !== data.filename,
+        converted: wasConverted,
+        fromCache: false,
+        ...(wasConverted && {
+          originalFile: {
+            name: savedFile.originalName,
+            size: savedFile.originalSize,
+          },
+        }),
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
@@ -166,11 +188,11 @@ export class FilesController extends BaseController {
         if (errorMessage.includes("Unknown or unsupported file type")) {
           return this.sendError(reply, "Unsupported file type", 400, request);
         }
-        
+
         if (errorMessage.includes("Invalid filename")) {
           return this.sendError(reply, "Invalid filename", 400, request);
         }
-        
+
         if (errorMessage.includes("LibreOffice not found")) {
           return this.sendError(
             reply,
@@ -179,9 +201,11 @@ export class FilesController extends BaseController {
             request
           );
         }
-        
-        if (errorMessage.includes("Failed to read document") || 
-            errorMessage.includes("corrupted")) {
+
+        if (
+          errorMessage.includes("Failed to read document") ||
+          errorMessage.includes("corrupted")
+        ) {
           return this.sendError(
             reply,
             "Failed to convert document. The file may be corrupted or password-protected.",
@@ -189,7 +213,7 @@ export class FilesController extends BaseController {
             request
           );
         }
-        
+
         if (errorMessage.includes("Failed to convert document to PDF")) {
           return this.sendError(
             reply,

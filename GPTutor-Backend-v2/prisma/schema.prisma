@@ -37,6 +37,10 @@ model File {
   size      Int
   notStatic Boolean @default(true)
 
+  originalName String?
+  originalSize Int?
+  converted    Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
