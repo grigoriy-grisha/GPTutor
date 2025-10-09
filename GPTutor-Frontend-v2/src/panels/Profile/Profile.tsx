@@ -11,10 +11,11 @@ import { BalanceSection } from "./BalanceSection";
 import { ApiKeySection } from "./ApiKeySection";
 import { CodeExamplesSection } from "./CodeExamplesSection";
 import "../../styles/prism.css";
+import { observer } from "mobx-react-lite";
 
 export interface ProfileProps extends NavIdProps {}
 
-export const Profile: FC<ProfileProps> = ({ id }) => {
+export const Profile: FC<ProfileProps> = observer(({ id }) => {
   const {
     profile,
     vkData,
@@ -69,4 +70,4 @@ export const Profile: FC<ProfileProps> = ({ id }) => {
       />
     </Panel>
   );
-};
+});
