@@ -9,11 +9,10 @@ if [ ! -f /app/prisma/prod.db ]; then
     # Для новой БД используем migrate deploy (применит все миграции)
     npx prisma migrate deploy
 else
-    echo "Database exists, applying pending migrations..."
-    # Для существующей БД применяем только новые миграции
-    npx prisma migrate deploy
-fi
 
+echo "Database exists, applying pending migrations..."
+# Для существующей БД применяем только новые миграции
+npx prisma migrate deploy
 # Verify migration status
 echo "Migration status:"
 npx prisma migrate status
