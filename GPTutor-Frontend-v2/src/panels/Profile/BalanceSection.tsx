@@ -90,44 +90,45 @@ export const BalanceSection: FC<BalanceSectionProps> = ({
           )}
         </div>
 
-        <Spacing size={16} />
-
         {isDesktop && (
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <Button
-              size="m"
-              mode="outline"
-              style={{ width: "100%" }}
-              onClick={handleTopUp}
-            >
-              Пополнить баланс
-            </Button>
-            <Tooltip
-              maxWidth={300}
-              placement="top"
-              description={
-                <div style={{ width: 300 }}>
-                  <MiniInfoCell style={{ padding: 0 }} textWrap="full">
-                    ИНН: <span style={{ fontWeight: 600 }}>027701131663</span>
-                  </MiniInfoCell>
-                  <Spacing size={4} />
-                  <MiniInfoCell style={{ padding: 0 }} textWrap="full">
-                    <Link href="https://dev.vk.com/ru/user-agreement">
-                      Пользовательское соглашение
-                    </Link>
-                    <br />
-                    <Link href="https://dev.vk.com/ru/privacy-policy">
-                      Политика конфиденциальности
-                    </Link>{" "}
-                  </MiniInfoCell>
-                </div>
-              }
-            >
-              <IconButton style={{ height: 20 }}>
-                <Icon20InfoCircleOutline />
-              </IconButton>
-            </Tooltip>
-          </div>
+          <>
+            <Spacing size={16} />
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <Button
+                size="m"
+                mode="outline"
+                style={{ width: "100%" }}
+                onClick={handleTopUp}
+              >
+                Пополнить баланс
+              </Button>
+              <Tooltip
+                maxWidth={300}
+                placement="top"
+                description={
+                  <div style={{ width: 300 }}>
+                    <MiniInfoCell style={{ padding: 0 }} textWrap="full">
+                      ИНН: <span style={{ fontWeight: 600 }}>027701131663</span>
+                    </MiniInfoCell>
+                    <Spacing size={4} />
+                    <MiniInfoCell style={{ padding: 0 }} textWrap="full">
+                      <Link href="https://dev.vk.com/ru/user-agreement">
+                        Пользовательское соглашение
+                      </Link>
+                      <br />
+                      <Link href="https://dev.vk.com/ru/privacy-policy">
+                        Политика конфиденциальности
+                      </Link>{" "}
+                    </MiniInfoCell>
+                  </div>
+                }
+              >
+                <IconButton style={{ height: 20 }}>
+                  <Icon20InfoCircleOutline />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </>
         )}
       </Div>
     </Group>
