@@ -9,23 +9,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci
 
-# Invalidate cache for copying source code
-ARG CACHEBUST=1
-
-# Copy source code
+# Copy source code (includes prisma folder with schema and migrations)
 COPY . .
-
-# Explicitly copy prisma schema and migrations to ensure they are included
-COPY prisma/schema.prisma ./prisma/schema.prisma
-COPY prisma/migrations ./prisma/migrations
-
-# Debug: Show what was copied
-RUN echo "=== Checking prisma/migrations ===" && \
-    ls -la prisma/ && \
-    echo "=== Contents of migrations folder ===" && \
-    ls -la prisma/migrations/ && \
-    echo "=== Migration files ===" && \
-    find prisma/migrations -name "*.sql" -exec echo {} \;
 
 # Accept DATABASE_URL as build argument
 ARG DATABASE_URL
@@ -51,14 +36,6 @@ RUN npm ci --only=production
 # Copy Prisma schema and ALL migrations from builder stage
 COPY --from=builder /app/prisma ./prisma
 
-# Debug: Show what was copied in production stage
-RUN echo "=== PRODUCTION: Checking prisma/migrations ===" && \
-    ls -la prisma/ && \
-    echo "=== PRODUCTION: Contents of migrations folder ===" && \
-    ls -la prisma/migrations/ && \
-    echo "=== PRODUCTION: Migration files ===" && \
-    find prisma/migrations -name "*.sql" -exec echo {} \;
-
 # Generate Prisma client in production
 RUN npx prisma generate
 
@@ -80,8 +57,8 @@ COPY --from=builder /app/dist ./dist
 COPY init-db.sh ./
 RUN chmod +x init-db.sh
 
-# Create logs directory
-RUN mkdir -p logs
+# Create directories
+RUN mkdir -p logs data
 
 # Expose port
 EXPOSE 3001

@@ -1,15 +1,15 @@
 #!/bin/sh
 
-# Create prisma directory if it doesn't exist
-mkdir -p /app/prisma
+# Create data directory for database if it doesn't exist
+mkdir -p /app/data
 
 # Check if database exists
-if [ ! -f /app/prisma/prod.db ]; then
+if [ ! -f /app/data/prod.db ]; then
     echo "Database does not exist, creating and applying migrations..."
 fi
 
-echo "Database exists, applying pending migrations..."
-# Для существующей БД применяем только новые миграции
+echo "Applying pending migrations..."
+# Apply new migrations to existing DB
 npx prisma migrate deploy
 # Verify migration status
 echo "Migration status:"
