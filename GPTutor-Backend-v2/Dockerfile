@@ -9,6 +9,9 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci
 
+# Invalidate cache for copying source code
+ARG CACHEBUST=1
+
 # Copy source code (includes prisma folder with schema and migrations)
 COPY . .
 
