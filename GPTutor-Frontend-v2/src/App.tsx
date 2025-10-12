@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import {
   Epic,
+  ModalRoot,
   SplitCol,
   SplitLayout,
   Tabbar,
@@ -18,7 +19,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { SnackbarProvider } from "./hooks/useSnackbar";
 
 import { Chat, Home, Models, Persik, Profile } from "./panels";
-import { DEFAULT_VIEW_PANELS } from "./routes.ts";
+import { DEFAULT_VIEW_PANELS, MODALS } from "./routes.ts";
 import {
   Icon28HomeOutline,
   Icon28MessageOutline,
@@ -27,9 +28,10 @@ import {
 
 import "./App.css";
 import { userViewModel } from "./viewModels/UserViewModel.ts";
+import { TopUpBalanceModal } from "./modals";
 
 export const App = () => {
-  const { view: activeView, panel: activePanel = DEFAULT_VIEW_PANELS.HOME } =
+  const { view: activeView, panel: activePanel = DEFAULT_VIEW_PANELS.HOME, modal: activeModal } =
     useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
@@ -39,6 +41,12 @@ export const App = () => {
   useEffect(() => {
     userViewModel.getUser();
   }, []);
+
+  const modal = (
+    <ModalRoot activeModal={activeModal}>
+      <TopUpBalanceModal id={MODALS.TOP_UP_BALANCE} />
+    </ModalRoot>
+  );
 
   return (
     <ThemeProvider isDarkTheme={isDarkTheme}>
@@ -91,6 +99,7 @@ export const App = () => {
                 <Chat id="chat" />
               </View>
             </Epic>
+            {modal}
           </SplitCol>
           {/*{userViewModel.loading ? <ScreenSpinner /> : null}*/}
 

@@ -1,5 +1,6 @@
 import {
   createHashRouter,
+  createModal,
   createPanel,
   createRoot,
   createView,
@@ -18,6 +19,10 @@ export const DEFAULT_VIEW_PANELS = {
   MODELS: 'models',
 } as const;
 
+export const MODALS = {
+  TOP_UP_BALANCE: 'top-up-balance',
+} as const;
+
 export const routes = RoutesConfig.create([
   createRoot(DEFAULT_ROOT, [
     createView('home', [
@@ -26,7 +31,9 @@ export const routes = RoutesConfig.create([
       createPanel(DEFAULT_VIEW_PANELS.MODELS, `/${DEFAULT_VIEW_PANELS.MODELS}`, []),
     ]),
     createView('profile', [
-      createPanel(DEFAULT_VIEW_PANELS.PROFILE, `/${DEFAULT_VIEW_PANELS.PROFILE}`, []),
+      createPanel(DEFAULT_VIEW_PANELS.PROFILE, `/${DEFAULT_VIEW_PANELS.PROFILE}`, [
+        createModal(MODALS.TOP_UP_BALANCE, MODALS.TOP_UP_BALANCE),
+      ]),
     ]),
     createView('chat', [
       createPanel(DEFAULT_VIEW_PANELS.CHAT, `/${DEFAULT_VIEW_PANELS.CHAT}`, []),

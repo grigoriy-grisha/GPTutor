@@ -4,12 +4,14 @@ import { AuthController } from './AuthController';
 import { CompletionController } from './CompletionController';
 import { ModelsController } from './ModelsController';
 import { FilesController } from './FilesController';
+import { PaymentController } from './PaymentController';
 import { AuthService } from '../services/AuthService';
 import { UserRepository } from '../repositories/UserRepository';
 import { FileRepository } from '../repositories/FileRepository';
 import { LLMCostEvaluate } from '../services/LLMCostEvaluate';
 import { OpenRouterService } from '../services/OpenRouterService';
 import { FilesService } from '../services/FilesService';
+import { YooKassaService } from '../services/YooKassaService';
 
 export function registerControllers(
   fastify: FastifyInstance,
@@ -20,6 +22,7 @@ export function registerControllers(
     filesService: FilesService;
     llmCostService: LLMCostEvaluate;
     openRouterService: OpenRouterService;
+    yooKassaService: YooKassaService;
   }
 ) {
   const controllers = [
@@ -41,6 +44,11 @@ export function registerControllers(
       dependencies.fileRepository,
       dependencies.authService
     ),
+    new PaymentController(
+      fastify,
+      dependencies.yooKassaService,
+      dependencies.authService
+    ),
   ];
 
   controllers.forEach(controller => controller.registerRoutes());
@@ -52,3 +60,4 @@ export * from './AuthController';
 export * from './CompletionController';
 export * from './ModelsController';
 export * from './FilesController';
+export * from './PaymentController';

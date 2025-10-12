@@ -30,6 +30,16 @@ export const RATE_LIMIT_CONFIG: RateLimitOptions = {
     max: 50,
     timeWindow: 60 * 1000,
   },
+
+  "/payments/create": {
+    max: 10,
+    timeWindow: 60 * 1000,
+  },
+
+  "/payments": {
+    max: 30,
+    timeWindow: 60 * 1000,
+  },
 };
 
 export function getRateLimitConfigForEnv(): RateLimitOptions {

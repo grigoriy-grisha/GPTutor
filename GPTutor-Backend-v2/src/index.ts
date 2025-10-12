@@ -2,17 +2,20 @@ import Fastify from "fastify";
 import { PrismaClient } from "@prisma/client";
 import { UserRepository } from "./repositories/UserRepository";
 import { FileRepository } from "./repositories/FileRepository";
+import { PaymentRepository } from "./repositories/PaymentRepository";
 import { AuthService } from "./services/AuthService";
 import { FilesService } from "./services/FilesService";
 import { FileCleanupService } from "./services/FileCleanupService";
 import { LLMCostEvaluate } from "./services/LLMCostEvaluate";
 import { OpenRouterService } from "./services/OpenRouterService";
+import { YooKassaService } from "./services/YooKassaService";
 import { logger } from "./services/LoggerService";
 import { registerControllers } from "./controllers";
 
 const prisma = new PrismaClient();
 const userRepository = new UserRepository(prisma);
 const fileRepository = new FileRepository(prisma);
+const paymentRepository = new PaymentRepository(prisma);
 
 console.log(process.env);
 
@@ -26,6 +29,12 @@ const fileCleanupService = new FileCleanupService(prisma, filesService);
 const llmCostService = new LLMCostEvaluate(100);
 const openRouterService = new OpenRouterService(
   process.env.OPENROUTER_API_KEY!
+);
+const yooKassaService = new YooKassaService(
+  process.env.YOOKASSA_SHOP_ID || "1184807",
+  process.env.YOOKASSA_SECRET_KEY || "test_XnTIPN_kQjZoX3ZYAbJ4DL6Z3Q-vo_4uXqWtf81-dm4",
+  paymentRepository,
+  userRepository
 );
 
 const fastify = Fastify({
@@ -117,6 +126,7 @@ registerControllers(fastify, {
   filesService,
   llmCostService,
   openRouterService,
+  yooKassaService,
 });
 
 const start = async () => {

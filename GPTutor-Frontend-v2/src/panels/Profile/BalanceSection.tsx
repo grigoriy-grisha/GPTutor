@@ -14,36 +14,24 @@ import {
 import {
   Icon20InfoCircleOutline,
   Icon28MoneySendOutline,
+  Icon24RefreshOutline,
 } from "@vkontakte/icons";
-import bridge from "@vkontakte/vk-bridge";
+import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 import { createCodeHTML } from "../../utils/codeFormatter";
 import { userViewModel } from "../../viewModels/UserViewModel";
 import { CopyButton } from "../../components";
+import { MODALS } from "../../routes";
 
 interface BalanceSectionProps {
   balance: number;
+  onReload?: () => void;
 }
 
-export const BalanceSection: FC<BalanceSectionProps> = ({ balance }) => {
+export const BalanceSection: FC<BalanceSectionProps> = ({ balance, onReload }) => {
+  const routeNavigator = useRouteNavigator();
+
   const handleTopUp = () => {
-    bridge
-      .send("VKWebAppOpenPayForm", {
-        app_id: 54187353,
-        action: "pay-to-user",
-        params: {
-          user_id: userViewModel.getUserId(),
-        },
-      })
-      .then((data) => {
-        console.log(data);
-        // if (data.status) {
-        //   // Экран VK Pay показан
-        // }
-      })
-      .catch((error) => {
-        // Ошибка
-        console.log(error);
-      });
+    routeNavigator.showModal(MODALS.TOP_UP_BALANCE);
   };
 
   return (
@@ -84,12 +72,17 @@ export const BalanceSection: FC<BalanceSectionProps> = ({ balance }) => {
           }}
         >
           <Icon28MoneySendOutline />
-          <div>
+          <div style={{ flex: 1 }}>
             <Title level="1">{balance.toFixed(4)}₽</Title>
             <div style={{ color: "#9c9c9c", fontSize: "14px" }}>
               Доступно для использования
             </div>
           </div>
+          {onReload && (
+            <IconButton onClick={onReload}>
+              <Icon24RefreshOutline />
+            </IconButton>
+          )}
         </div>
 
         <Spacing size={16} />

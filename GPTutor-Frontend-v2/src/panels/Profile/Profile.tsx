@@ -55,7 +55,7 @@ export const Profile: FC<ProfileProps> = observer(({ id }) => {
     <Panel id={id}>
       <PanelHeader>Профиль</PanelHeader>
 
-      <BalanceSection balance={profile.balance} />
+      <BalanceSection balance={profile.balance} onReload={loadProfile} />
 
       <ApiKeySection
         apiKey={profile.apiKey}

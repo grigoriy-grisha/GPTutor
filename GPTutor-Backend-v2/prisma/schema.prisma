@@ -23,7 +23,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  files File[]
+  files    File[]
+  payments Payment[]
 
   @@map("users")
 }
@@ -47,4 +48,22 @@ model File {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("files")
+}
+
+model Payment {
+  id              String   @id @default(cuid())
+  userId          String
+  yookassaId      String   @unique
+  amount          Float
+  currency        String   @default("RUB")
+  status          String   @default("pending") // pending, succeeded, canceled
+  description     String?
+  confirmationUrl String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
 }
