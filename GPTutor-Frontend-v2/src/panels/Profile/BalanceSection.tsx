@@ -10,7 +10,7 @@ import {
   Spacing,
   Title,
   Tooltip,
-  useAdaptivityConditionalRender,
+  useAdaptivityWithJSMediaQueries,
 } from "@vkontakte/vkui";
 import {
   Icon20InfoCircleOutline,
@@ -28,9 +28,12 @@ interface BalanceSectionProps {
   onReload?: () => void;
 }
 
-export const BalanceSection: FC<BalanceSectionProps> = ({ balance, onReload }) => {
+export const BalanceSection: FC<BalanceSectionProps> = ({
+  balance,
+  onReload,
+}) => {
   const routeNavigator = useRouteNavigator();
-  const { sizeX } = useAdaptivityConditionalRender();
+  const { isDesktop } = useAdaptivityWithJSMediaQueries();
 
   const handleTopUp = () => {
     routeNavigator.showModal(MODALS.TOP_UP_BALANCE);
@@ -89,7 +92,7 @@ export const BalanceSection: FC<BalanceSectionProps> = ({ balance, onReload }) =
 
         <Spacing size={16} />
 
-        {!sizeX.compact && (
+        {isDesktop && (
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <Button
               size="m"
