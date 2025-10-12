@@ -41,6 +41,7 @@ const fastify = Fastify({
   logger: true,
   disableRequestLogging: true,
   bodyLimit: 80 * 1024 * 1024, // 80 МБ лимит для тела запроса
+  trustProxy: true, // Доверяем заголовкам от reverse proxy (Traefik)
 });
 
 fastify.register(require("@fastify/cors"), {

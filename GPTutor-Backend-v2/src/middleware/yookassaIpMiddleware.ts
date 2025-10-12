@@ -50,15 +50,25 @@ export function yookassaIpCheck(
   reply: FastifyReply,
   done: Function
 ) {
-  const clientIp =
-    request.ip ||
-    request.headers["x-real-ip"] ||
-    request.headers["x-forwarded-for"];
-  const ip = Array.isArray(clientIp) ? clientIp[0] : clientIp;
+  // С trustProxy: true, request.ip уже содержит правильный IP из X-Forwarded-For
+  let ip = request.ip;
 
-  console.log(YOOKASSA_IPS);
-  console.log(clientIp);
-  logger.info("Checking IP for YooKassa webhook", { ip });
+  // Если X-Forwarded-For содержит несколько IP (через запятую), берем первый (оригинальный клиент)
+  if (ip && ip.includes(",")) {
+    ip = ip.split(",")[0].trim();
+  }
+
+  // Удаляем ::ffff: префикс для IPv4-mapped IPv6 адресов
+  if (ip && ip.startsWith("::ffff:")) {
+    ip = ip.substring(7);
+  }
+
+  logger.info("Checking IP for YooKassa webhook", { 
+    ip,
+    rawIp: request.ip,
+    xForwardedFor: request.headers["x-forwarded-for"],
+    xRealIp: request.headers["x-real-ip"]
+  });
 
   // Проверяем IP в списке разрешенных
   const isAllowed = YOOKASSA_IPS.some((allowedIp) => {
