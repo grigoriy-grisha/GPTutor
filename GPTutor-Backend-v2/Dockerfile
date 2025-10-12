@@ -12,8 +12,12 @@ RUN npm ci
 # Invalidate cache for copying source code
 ARG CACHEBUST=1
 
-# Copy source code (includes prisma folder with schema and migrations)
+# Copy source code
 COPY . .
+
+# Explicitly copy prisma schema and migrations to ensure they are included
+COPY prisma/schema.prisma ./prisma/schema.prisma
+COPY prisma/migrations ./prisma/migrations
 
 # Debug: Show what was copied
 RUN echo "=== Checking prisma/migrations ===" && \
