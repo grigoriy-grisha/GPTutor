@@ -6,13 +6,10 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Copy Prisma schema and migrations
-COPY prisma ./prisma/
-
 # Install dependencies
 RUN npm ci
 
-# Copy source code
+# Copy source code (includes prisma folder with schema and migrations)
 COPY . .
 
 # Accept DATABASE_URL as build argument
