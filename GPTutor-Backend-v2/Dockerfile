@@ -15,6 +15,14 @@ ARG CACHEBUST=1
 # Copy source code (includes prisma folder with schema and migrations)
 COPY . .
 
+# Debug: Show what was copied
+RUN echo "=== Checking prisma/migrations ===" && \
+    ls -la prisma/ && \
+    echo "=== Contents of migrations folder ===" && \
+    ls -la prisma/migrations/ && \
+    echo "=== Migration files ===" && \
+    find prisma/migrations -name "*.sql" -exec echo {} \;
+
 # Accept DATABASE_URL as build argument
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
@@ -38,6 +46,14 @@ RUN npm ci --only=production
 
 # Copy Prisma schema and ALL migrations from builder stage
 COPY --from=builder /app/prisma ./prisma
+
+# Debug: Show what was copied in production stage
+RUN echo "=== PRODUCTION: Checking prisma/migrations ===" && \
+    ls -la prisma/ && \
+    echo "=== PRODUCTION: Contents of migrations folder ===" && \
+    ls -la prisma/migrations/ && \
+    echo "=== PRODUCTION: Migration files ===" && \
+    find prisma/migrations -name "*.sql" -exec echo {} \;
 
 # Generate Prisma client in production
 RUN npx prisma generate
