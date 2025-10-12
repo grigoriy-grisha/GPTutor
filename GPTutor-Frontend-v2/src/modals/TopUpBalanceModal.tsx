@@ -72,7 +72,6 @@ export const TopUpBalanceModal: FC<TopUpBalanceModalProps> = ({ id }) => {
 
       console.log("Платеж создан:", response);
 
-      console.log(response);
       // Открываем страницу оплаты ЮКассы в новой вкладке
       if (response.payment.confirmationUrl) {
         window.open(response.payment.confirmationUrl, "_blank");
