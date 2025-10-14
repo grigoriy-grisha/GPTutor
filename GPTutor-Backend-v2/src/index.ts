@@ -53,6 +53,7 @@ fastify.register(require("@fastify/cors"), {
     "Accept",
     "Cache-Control",
     "Pragma",
+    "x-admin-secret-key",
   ],
   credentials: true,
   optionsSuccessStatus: 200,
@@ -128,6 +129,7 @@ registerControllers(fastify, {
   llmCostService,
   openRouterService,
   yooKassaService,
+  adminSecretKey: process.env.ADMIN_SECRET_KEY || '',
 });
 
 const start = async () => {

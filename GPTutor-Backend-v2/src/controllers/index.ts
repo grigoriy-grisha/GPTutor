@@ -5,6 +5,7 @@ import { CompletionController } from './CompletionController';
 import { ModelsController } from './ModelsController';
 import { FilesController } from './FilesController';
 import { PaymentController } from './PaymentController';
+import { AdminController } from './AdminController';
 import { AuthService } from '../services/AuthService';
 import { UserRepository } from '../repositories/UserRepository';
 import { FileRepository } from '../repositories/FileRepository';
@@ -23,6 +24,7 @@ export function registerControllers(
     llmCostService: LLMCostEvaluate;
     openRouterService: OpenRouterService;
     yooKassaService: YooKassaService;
+    adminSecretKey: string;
   }
 ) {
   const controllers = [
@@ -49,6 +51,11 @@ export function registerControllers(
       dependencies.yooKassaService,
       dependencies.authService
     ),
+    new AdminController(
+      fastify,
+      dependencies.userRepository,
+      dependencies.adminSecretKey
+    ),
   ];
 
   controllers.forEach(controller => controller.registerRoutes());
@@ -61,3 +68,4 @@ export * from './CompletionController';
 export * from './ModelsController';
 export * from './FilesController';
 export * from './PaymentController';
+export * from './AdminController';
