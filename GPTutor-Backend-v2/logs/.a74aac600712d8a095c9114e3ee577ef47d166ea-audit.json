@@ -6,21 +6,6 @@
     "auditLog": "C:\\Users\\grisha_blyat\\PhpstormProjects\\untitled10\\GPTutor\\GPTutor-Backend-v2\\logs\\.a74aac600712d8a095c9114e3ee577ef47d166ea-audit.json",
     "files": [
         {
-            "date": 1759130099607,
-            "name": "C:\\Users\\grisha_blyat\\PhpstormProjects\\untitled10\\GPTutor\\GPTutor-Backend-v2\\logs\\error-2025-09-29.log",
-            "hash": "ec94d179357db104be684479471f9a2c06f699cd183d6709579d1621b49680d5"
-        },
-        {
-            "date": 1759255316942,
-            "name": "C:\\Users\\grisha_blyat\\PhpstormProjects\\untitled10\\GPTutor\\GPTutor-Backend-v2\\logs\\error-2025-09-30.log",
-            "hash": "50044335c2d0a27ad7c3971fc01f1f746eae00007be30ccea781abbd1be872f6"
-        },
-        {
-            "date": 1759267854241,
-            "name": "C:\\Users\\grisha_blyat\\PhpstormProjects\\untitled10\\GPTutor\\GPTutor-Backend-v2\\logs\\error-2025-10-01.log",
-            "hash": "adb260c700d352485dc583372d9ec391bd0b9705114b564f1d58a1a3c38f27ee"
-        },
-        {
             "date": 1759354501238,
             "name": "C:\\Users\\grisha_blyat\\PhpstormProjects\\untitled10\\GPTutor\\GPTutor-Backend-v2\\logs\\error-2025-10-02.log",
             "hash": "3405c5f8ad5db499e61b2e15e2b37ee8f9a705eb56f1d76f0ca0063203532a0e"
@@ -54,6 +39,11 @@
             "date": 1760278745761,
             "name": "C:\\Users\\grisha_blyat\\PhpstormProjects\\untitled10\\GPTutor\\GPTutor-Backend-v2\\logs\\error-2025-10-12.log",
             "hash": "75047cbb1887023fe63d092a7d4df08f0d28fe5bd7923cbc31b16f3d2f269966"
+        },
+        {
+            "date": 1760526675178,
+            "name": "C:\\Users\\grisha_blyat\\PhpstormProjects\\untitled10\\GPTutor\\GPTutor-Backend-v2\\logs\\error-2025-10-15.log",
+            "hash": "cf3368b7109396531516f4fb4eb4e6174357df9cfe98d8da52f81b4957c0d775"
         }
     ],
     "hashType": "sha256"
