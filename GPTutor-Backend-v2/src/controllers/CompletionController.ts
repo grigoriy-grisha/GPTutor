@@ -1,6 +1,7 @@
 import { FastifyReply } from "fastify";
 import { BaseController } from "./BaseController";
 import { UserRepository } from "../repositories/UserRepository";
+import { UsageRepository } from "../repositories/UsageRepository";
 import { LLMCostEvaluate } from "../services/LLMCostEvaluate";
 import { OpenRouterService } from "../services/OpenRouterService";
 import { RequestWithLogging } from "../middleware/loggingMiddleware";
@@ -46,6 +47,7 @@ export class CompletionController extends BaseController {
   constructor(
     fastify: any,
     private userRepository: UserRepository,
+    private usageRepository: UsageRepository,
     private llmCostService: LLMCostEvaluate,
     private openRouterService: OpenRouterService,
     private vkSecretKey: string = process.env.VK_SECRET_KEY || ""
@@ -230,6 +232,7 @@ export class CompletionController extends BaseController {
     reply.raw.setHeader("Content-type", "text/event-stream");
 
     let totalCost = 0;
+    let usageData: any = null;
 
     try {
       logger.llmRequest(model, user.id.toString(), undefined, undefined, {
@@ -254,6 +257,13 @@ export class CompletionController extends BaseController {
           console.log({ usage: chunk.usage as any });
           const cost = this.llmCostService.calculateCost(responseUsage?.cost);
           totalCost = cost;
+
+          usageData = {
+            prompt_tokens: responseUsage?.prompt_tokens,
+            completion_tokens: responseUsage?.completion_tokens,
+            total_tokens: responseUsage?.total_tokens,
+            originalCostUsd: responseUsage?.cost,
+          };
 
           chunk.usage = {
             prompt_tokens: responseUsage?.prompt_tokens,
@@ -295,6 +305,16 @@ export class CompletionController extends BaseController {
       );
 
       await this.userRepository.decreaseBalance(user.id, totalCost);
+
+      if (usageData) {
+        await this.usageRepository.create({
+          userId: user.id,
+          costRub: totalCost,
+          usage: usageData,
+          model: model,
+          date: new Date(),
+        });
+      }
 
       return;
     } catch (streamError) {
@@ -358,6 +378,19 @@ export class CompletionController extends BaseController {
     const totalTokens = (completion.usage as any)?.total_tokens || 0;
 
     await this.userRepository.decreaseBalance(user.id, cost);
+
+    await this.usageRepository.create({
+      userId: user.id,
+      costRub: cost,
+      usage: {
+        prompt_tokens: responseUsage?.prompt_tokens,
+        completion_tokens: responseUsage?.completion_tokens,
+        total_tokens: totalTokens,
+        originalCostUsd,
+      },
+      model: openRouterParams.model,
+      date: new Date(),
+    });
 
     const updatedUser =
       (await this.userRepository.findByVkId(user.vkId || "")) ||

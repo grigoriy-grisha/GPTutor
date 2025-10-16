@@ -9,6 +9,7 @@ import { AdminController } from './AdminController';
 import { AuthService } from '../services/AuthService';
 import { UserRepository } from '../repositories/UserRepository';
 import { FileRepository } from '../repositories/FileRepository';
+import { UsageRepository } from '../repositories/UsageRepository';
 import { LLMCostEvaluate } from '../services/LLMCostEvaluate';
 import { OpenRouterService } from '../services/OpenRouterService';
 import { FilesService } from '../services/FilesService';
@@ -20,6 +21,7 @@ export function registerControllers(
     authService: AuthService;
     userRepository: UserRepository;
     fileRepository: FileRepository;
+    usageRepository: UsageRepository;
     filesService: FilesService;
     llmCostService: LLMCostEvaluate;
     openRouterService: OpenRouterService;
@@ -33,6 +35,7 @@ export function registerControllers(
     new CompletionController(
       fastify,
       dependencies.userRepository,
+      dependencies.usageRepository,
       dependencies.llmCostService,
       dependencies.openRouterService
     ),
