@@ -44,7 +44,7 @@ export const StepsSection: FC = () => {
           icon={<Icon28MoneySendOutline style={{ marginLeft: 4 }} />}
           description={
             <DisplayTitle level="4" weight="1">
-              100₽ Бесплатно!
+              50₽ Бесплатно!
             </DisplayTitle>
           }
           buttonText="Посмотреть баланс"
@@ -147,5 +147,3 @@ export const StepsSection: FC = () => {
     </Group>
   );
 };
-
-
