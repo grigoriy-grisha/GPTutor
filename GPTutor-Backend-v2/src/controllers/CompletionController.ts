@@ -142,8 +142,7 @@ export class CompletionController extends BaseController {
         );
       }
 
-      // const model = requestBody.model || "google/gemini-2.5-flash-lite";
-      const model = "openai/gpt-5-nano";
+      const model = requestBody.model || "google/gemini-2.5-flash-lite";
 
       const hasFiles = this.hasFilesInMessages(requestBody.messages);
 

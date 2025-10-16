@@ -22,7 +22,7 @@ export const RATE_LIMIT_CONFIG: RateLimitOptions = {
   },
 
   "/v1/chat/completions": {
-    max: 500,
+    max: 5,
     timeWindow: 60 * 1000,
   },
 
@@ -55,4 +55,3 @@ export function getRateLimitForRoute(route: string) {
     }
   );
 }
-
