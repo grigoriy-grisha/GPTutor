@@ -75,8 +75,6 @@ export class CompletionController extends BaseController {
         this.userRepository
       );
 
-      console.log({ authResult });
-
       if (!authResult) {
         return this.sendUnauthorized(
           reply,
@@ -120,7 +118,6 @@ export class CompletionController extends BaseController {
         );
       }
 
-      // Проверяем баланс пользователя
       if (user.balance <= 0) {
         this.logInfo(
           "Insufficient balance",
@@ -134,8 +131,6 @@ export class CompletionController extends BaseController {
         return this.sendInsufficientBalance(reply, request);
       }
 
-      console.log({ user });
-
       request.userId = userId;
 
       const requestBody = request.body;
@@ -147,7 +142,8 @@ export class CompletionController extends BaseController {
         );
       }
 
-      const model = requestBody.model || "google/gemini-2.5-flash-lite";
+      // const model = requestBody.model || "google/gemini-2.5-flash-lite";
+      const model = "openai/gpt-5-nano";
 
       const hasFiles = this.hasFilesInMessages(requestBody.messages);
 
