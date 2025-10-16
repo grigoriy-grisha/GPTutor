@@ -99,17 +99,6 @@ export const BalanceSection: FC<BalanceSectionProps> = ({
             </div>
             <Spacing size={8} />
             <div>
-              <span style={{ color: "#9c9c9c", fontSize: "14px" }}>
-                ИНН:{" "}
-                <span
-                  style={{
-                    fontWeight: 600,
-                    color: "var(--vkui--color_text_primary)",
-                  }}
-                >
-                  027701131663
-                </span>
-              </span>
               <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
                 <div>
                   <Link
@@ -127,6 +116,17 @@ export const BalanceSection: FC<BalanceSectionProps> = ({
                   Политика конфиденциальности
                 </Link>
               </div>
+              <span style={{ color: "#9c9c9c", fontSize: "14px" }}>
+                ИНН:{" "}
+                <span
+                  style={{
+                    fontWeight: 600,
+                    color: "var(--vkui--color_text_primary)",
+                  }}
+                >
+                  027701131663
+                </span>
+              </span>
             </div>
           </>
         )}
