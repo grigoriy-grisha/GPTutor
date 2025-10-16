@@ -75,8 +75,6 @@ export class CompletionController extends BaseController {
         this.userRepository
       );
 
-      console.log({ authResult });
-
       if (!authResult) {
         return this.sendUnauthorized(
           reply,
@@ -120,7 +118,6 @@ export class CompletionController extends BaseController {
         );
       }
 
-      // Проверяем баланс пользователя
       if (user.balance <= 0) {
         this.logInfo(
           "Insufficient balance",
@@ -133,8 +130,6 @@ export class CompletionController extends BaseController {
 
         return this.sendInsufficientBalance(reply, request);
       }
-
-      console.log({ user });
 
       request.userId = userId;
 

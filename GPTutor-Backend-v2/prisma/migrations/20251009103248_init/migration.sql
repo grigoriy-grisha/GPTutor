@@ -4,7 +4,7 @@ CREATE TABLE "users" (
     "email" TEXT,
     "username" TEXT,
     "vkId" TEXT,
-    "balance" REAL NOT NULL DEFAULT 100.0,
+    "balance" REAL NOT NULL DEFAULT 50.0,
     "apiKey" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
