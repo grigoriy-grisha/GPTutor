@@ -1,35 +1,30 @@
 import { FastifyReply } from 'fastify';
 import { BaseController } from './BaseController';
 import { UserRepository } from '../repositories/UserRepository';
+import { createAdminAuthMiddleware } from '../middleware/adminMiddleware';
 
 export class AdminController extends BaseController {
+  private adminAuthMiddleware: any;
+
   constructor(
     fastify: any,
     private userRepository: UserRepository,
-    private adminSecretKey: string
+    adminSecretKey: string
   ) {
     super(fastify);
+    this.adminAuthMiddleware = createAdminAuthMiddleware(adminSecretKey);
   }
 
   registerRoutes(): void {
     this.fastify.post(
       '/admin/update-balance',
+      { preHandler: this.adminAuthMiddleware },
       this.updateBalance.bind(this)
     );
   }
 
   private async updateBalance(request: any, reply: FastifyReply) {
     try {
-      const adminKey = request.headers['x-admin-secret-key'] as string;
-
-      if (!adminKey || adminKey !== this.adminSecretKey) {
-        this.logWarn('Unauthorized admin access attempt', {
-          providedKey: adminKey ? 'present' : 'missing',
-          ip: request.ip
-        }, request);
-        return this.sendUnauthorized(reply, 'Invalid admin secret key', request);
-      }
-
       const { userId, newBalance } = request.body;
 
       if (!userId) {
