@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { UserRepository } from "./repositories/UserRepository";
 import { FileRepository } from "./repositories/FileRepository";
 import { PaymentRepository } from "./repositories/PaymentRepository";
+import { UsageRepository } from "./repositories/UsageRepository";
 import { AuthService } from "./services/AuthService";
 import { FilesService } from "./services/FilesService";
 import { FileCleanupService } from "./services/FileCleanupService";
@@ -16,6 +17,7 @@ const prisma = new PrismaClient();
 const userRepository = new UserRepository(prisma);
 const fileRepository = new FileRepository(prisma);
 const paymentRepository = new PaymentRepository(prisma);
+const usageRepository = new UsageRepository(prisma);
 
 console.log(process.env);
 
@@ -53,6 +55,7 @@ fastify.register(require("@fastify/cors"), {
     "Accept",
     "Cache-Control",
     "Pragma",
+    "x-admin-secret-key",
   ],
   credentials: true,
   optionsSuccessStatus: 200,
@@ -124,10 +127,12 @@ registerControllers(fastify, {
   authService,
   userRepository,
   fileRepository,
+  usageRepository,
   filesService,
   llmCostService,
   openRouterService,
   yooKassaService,
+  adminSecretKey: process.env.ADMIN_SECRET_KEY || '',
 });
 
 const start = async () => {
