@@ -9,15 +9,16 @@ import {
   Title,
   useAdaptivityWithJSMediaQueries,
 } from "@vkontakte/vkui";
-import { Icon28CopyOutline, Icon28LinkOutline } from "@vkontakte/icons";
-import bridge from "@vkontakte/vk-bridge";
+import { Icon24BrainOutline, Icon28LinkOutline } from "@vkontakte/icons";
 
 import {
   CodeExampleService,
   CodeExampleType,
 } from "../../services/CodeExampleService";
 import { getCodeStyles } from "../../utils/codeFormatter";
-import { useSnackbar } from "../../hooks";
+import { CopyButton } from "../../components";
+import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
+import { DEFAULT_VIEW_PANELS } from "../../routes.ts";
 
 interface CodeExamplesSectionProps {
   apiKey: string;
@@ -32,13 +33,11 @@ export const CodeExamplesSection: FC<CodeExamplesSectionProps> = ({
 }) => {
   const codeHTML = CodeExampleService.getCodeHTML(activeCodeExample, apiKey);
   const rawCode = CodeExampleService.getRawCode(activeCodeExample, apiKey);
-  const { showInfo } = useSnackbar();
   const { isDesktop } = useAdaptivityWithJSMediaQueries();
+  const navigator = useRouteNavigator();
 
-  const handleCopyCode = async () => {
-    await bridge.send("VKWebAppCopyText", { text: rawCode });
-
-    showInfo("Код скопирован");
+  const handleModelsClick = () => {
+    navigator.push(`/${DEFAULT_VIEW_PANELS.MODELS}`);
   };
 
   return (
@@ -65,13 +64,18 @@ export const CodeExamplesSection: FC<CodeExamplesSectionProps> = ({
           ]}
         />
         <Spacing size={16} />
-        <div
-          className="code-block"
-          style={{
-            overflow: "auto",
-          }}
-          dangerouslySetInnerHTML={{ __html: codeHTML }}
-        />
+        <Flex style={{ flexWrap: "nowrap" }} wrap="nowrap" gap={6}>
+          <div
+            className="code-block"
+            style={{
+              width: "100%",
+              overflow: "auto",
+            }}
+            dangerouslySetInnerHTML={{ __html: codeHTML }}
+          />
+
+          <CopyButton textToCopy={rawCode} size={24} />
+        </Flex>
 
         <style>{getCodeStyles()}</style>
 
@@ -85,11 +89,11 @@ export const CodeExamplesSection: FC<CodeExamplesSectionProps> = ({
           <Button
             size="m"
             mode="outline"
-            onClick={handleCopyCode}
-            after={<Icon28CopyOutline />}
+            after={<Icon24BrainOutline />}
+            onClick={handleModelsClick}
             style={{ width: "100%" }}
           >
-            Копировать код
+            Доступные модели
           </Button>
           <Button
             target="_blank"

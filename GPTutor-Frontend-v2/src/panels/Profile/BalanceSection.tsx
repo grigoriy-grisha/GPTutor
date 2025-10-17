@@ -35,7 +35,7 @@ export const BalanceSection: FC<BalanceSectionProps> = observer(
     return (
       <Group>
         <Div>
-          <Title level="3">Баланс</Title>
+          <Title level="3">Профиль</Title>
           <Spacing size={12} />
           <Flex
             align="center"
@@ -58,33 +58,34 @@ export const BalanceSection: FC<BalanceSectionProps> = observer(
               size={24}
             />
           </Flex>
-          <Spacing size={12} />
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              padding: "16px",
-              background: "var(--vkui--color_background_secondary)",
-              borderRadius: "8px",
-            }}
-          >
-            <Icon28MoneySendOutline />
-            <div style={{ flex: 1 }}>
-              <Title level="1">{balance.toFixed(4)}₽</Title>
-              <div style={{ color: "#9c9c9c", fontSize: "14px" }}>
-                Доступно для использования
-              </div>
-            </div>
-            {onReload && (
-              <IconButton onClick={onReload}>
-                <Icon24RefreshOutline />
-              </IconButton>
-            )}
-          </div>
 
           {isDesktop && (
             <>
+              <Spacing size={12} />
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  padding: "16px",
+                  background: "var(--vkui--color_background_secondary)",
+                  borderRadius: "8px",
+                }}
+              >
+                <Icon28MoneySendOutline />
+                <div style={{ flex: 1 }}>
+                  <Title level="1">{balance.toFixed(4)}₽</Title>
+                  <div style={{ color: "#9c9c9c", fontSize: "14px" }}>
+                    Доступно для использования
+                  </div>
+                </div>
+                {onReload && (
+                  <IconButton onClick={onReload}>
+                    <Icon24RefreshOutline />
+                  </IconButton>
+                )}
+              </div>
               <Spacing size={16} />
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 <Button
