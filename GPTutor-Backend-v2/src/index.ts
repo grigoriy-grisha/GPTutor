@@ -11,6 +11,11 @@ import { OpenRouterService } from "./services/OpenRouterService";
 import { YooKassaService } from "./services/YooKassaService";
 import { logger } from "./services/LoggerService";
 import { registerControllers } from "./controllers";
+import {
+  serializerCompiler,
+  validatorCompiler,
+  ZodTypeProvider,
+} from "fastify-type-provider-zod";
 
 const prisma = new PrismaClient();
 const userRepository = new UserRepository(prisma);
@@ -42,7 +47,10 @@ const fastify = Fastify({
   disableRequestLogging: true,
   bodyLimit: 80 * 1024 * 1024, // 80 МБ лимит для тела запроса
   trustProxy: true, // Доверяем заголовкам от reverse proxy (Traefik)
-});
+}).withTypeProvider<ZodTypeProvider>();
+
+fastify.setValidatorCompiler(validatorCompiler);
+fastify.setSerializerCompiler(serializerCompiler);
 
 fastify.register(require("@fastify/cors"), {
   origin: "*",
@@ -53,6 +61,7 @@ fastify.register(require("@fastify/cors"), {
     "Accept",
     "Cache-Control",
     "Pragma",
+    "x-admin-secret-key",
   ],
   credentials: true,
   optionsSuccessStatus: 200,
@@ -128,6 +137,7 @@ registerControllers(fastify, {
   llmCostService,
   openRouterService,
   yooKassaService,
+  adminSecretKey: process.env.ADMIN_SECRET_KEY || '',
 });
 
 const start = async () => {
