@@ -2,18 +2,18 @@ import { FC } from "react";
 import {
   Button,
   Card,
+  EllipsisText,
+  Flex,
+  Spacing,
   Text,
   Title,
-  Flex,
   useAdaptivityWithJSMediaQueries,
-  Spacing,
-  EllipsisText,
 } from "@vkontakte/vkui";
 import { Icon16Message } from "@vkontakte/icons";
 import {
-  ProcessedModel,
   formatContextLength,
   formatModalities,
+  ProcessedModel,
 } from "../../api";
 import { ModelIconService } from "../../services/ModelIconService";
 import { CopyButton } from "../../components";
@@ -88,6 +88,7 @@ export const ModelCard: FC<ModelCardProps> = ({
         </Flex>
 
         {/* Price and Action Section */}
+
         <Flex
           direction={"column"}
           align={isDesktop ? "end" : "start"}
@@ -95,30 +96,34 @@ export const ModelCard: FC<ModelCardProps> = ({
           gap="s"
           style={{ width: isDesktop ? "auto" : "100%" }}
         >
-          <Flex direction="column" align={isDesktop ? "end" : "start"}>
-            <Text
-              weight="2"
-              style={{
-                fontSize: "16px",
-                color:
-                  model.price === "Бесплатно"
-                    ? "var(--vkui--color_text_positive)"
-                    : "var(--vkui--color_text_primary)",
-              }}
-            >
-              {model.price}
-            </Text>
-            {model.price !== "Бесплатно" && (
+          {isDesktop ? (
+            <Flex direction="column" align={isDesktop ? "end" : "start"}>
               <Text
+                weight="2"
                 style={{
-                  color: "var(--vkui--color_text_secondary)",
-                  fontSize: "11px",
+                  fontSize: "16px",
+                  color:
+                    model.price === "Бесплатно"
+                      ? "var(--vkui--color_text_positive)"
+                      : "var(--vkui--color_text_primary)",
                 }}
               >
-                за 1М токенов
+                {model.price}
               </Text>
-            )}
-          </Flex>
+              {model.price !== "Бесплатно" && (
+                <Text
+                  style={{
+                    color: "var(--vkui--color_text_secondary)",
+                    fontSize: "11px",
+                  }}
+                >
+                  за 1М токенов
+                </Text>
+              )}
+            </Flex>
+          ) : (
+            <div></div>
+          )}
 
           <Button
             style={{ width: "100%" }}
