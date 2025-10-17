@@ -133,7 +133,7 @@ export const StepsSection: FC = () => {
               >
                 <img
                   width="24px"
-                  src="https://storage.yandexcloud.net/gptutor-bucket/68747470733a2f2f7a6f72676c652e636f2e756b2f77702d636f6e74656e742f75706c6f6164732f323032342f31312f436c617564652d61692d6c6f676f2e706e67.png"
+                  src="https://storage.yandexcloud.net/giga-router/claude-icon-logo.svg"
                   alt=""
                 />
               </div>
