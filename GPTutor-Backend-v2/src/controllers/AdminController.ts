@@ -2,6 +2,14 @@ import { FastifyReply } from 'fastify';
 import { BaseController } from './BaseController';
 import { UserRepository } from '../repositories/UserRepository';
 import { createAdminAuthMiddleware } from '../middleware/adminMiddleware';
+import { z } from 'zod';
+
+const updateBalanceSchema = z.object({
+  userId: z.union([z.number(), z.string()]).describe('ID пользователя (число или строка)'),
+  newBalance: z.number().nonnegative().describe('Новый баланс (неотрицательное число)')
+});
+
+type UpdateBalanceBody = z.infer<typeof updateBalanceSchema>;
 
 export class AdminController extends BaseController {
   private adminAuthMiddleware: any;
@@ -18,24 +26,21 @@ export class AdminController extends BaseController {
   registerRoutes(): void {
     this.fastify.post(
       '/admin/update-balance',
-      { preHandler: this.adminAuthMiddleware },
+      {
+        preHandler: this.adminAuthMiddleware,
+        schema: {
+          body: updateBalanceSchema
+        }
+      },
       this.updateBalance.bind(this)
     );
   }
 
   private async updateBalance(request: any, reply: FastifyReply) {
     try {
-      const { userId, newBalance } = request.body;
+      const { userId, newBalance } = request.body as UpdateBalanceBody;
 
-      if (!userId) {
-        return this.sendValidationError(reply, 'userId is required', request);
-      }
-
-      if (typeof newBalance !== 'number' || newBalance < 0) {
-        return this.sendValidationError(reply, 'newBalance must be a non-negative number', request);
-      }
-
-      let user = await this.userRepository.findById(userId);
+      let user = await this.userRepository.findById(String(userId));
 
       if (!user) {
         user = await this.userRepository.findByVkId(String(userId));
