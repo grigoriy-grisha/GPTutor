@@ -294,6 +294,7 @@ class ChatViewModel {
 
             try {
               const parsed = JSON.parse(data);
+              console.log(parsed);
               const delta = parsed.choices?.[0]?.delta;
               const content = delta?.content;
               const reasoning = delta?.reasoning;
@@ -309,23 +310,15 @@ class ChatViewModel {
               console.log("Parsed annotations:", annotations);
               console.log("Parsed images:", images);
 
-              if (content) {
+              if (content !== undefined) {
                 runInAction(() => {
                   message.appendContent(content);
-                  // Убираем индикатор загрузки при получении первого контента
-                  if (message.isTyping) {
-                    message.setIsTyping(false);
-                  }
                 });
               }
 
               if (reasoning) {
                 runInAction(() => {
                   message.appendReasoning(reasoning);
-                  // Убираем индикатор загрузки при получении reasoning
-                  if (message.isTyping) {
-                    message.setIsTyping(false);
-                  }
                 });
               }
 
@@ -333,10 +326,6 @@ class ChatViewModel {
                 runInAction(() => {
                   message.addGeneratedImages(images);
                   this.pendingGeneratedImages.push(...images);
-                  // Убираем индикатор загрузки при получении изображений
-                  if (message.isTyping) {
-                    message.setIsTyping(false);
-                  }
                 });
               }
 
@@ -351,7 +340,6 @@ class ChatViewModel {
                 });
               }
 
-              console.log({ annotations });
               if (
                 annotations &&
                 Array.isArray(annotations) &&
@@ -384,6 +372,8 @@ class ChatViewModel {
                   "При выполнении запроса что-то пошло не так! \n Попробуйте позже!"
                 );
               }
+
+              message.setIsTyping(false);
             } catch (parseError) {
               console.warn(
                 "Failed to parse SSE data:",

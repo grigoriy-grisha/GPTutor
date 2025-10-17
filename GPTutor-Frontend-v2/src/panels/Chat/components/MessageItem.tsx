@@ -248,7 +248,7 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
                 marginBottom: "4px",
               }}
             >
-              {message.isAssistant && !message.content && !message.reasoning ? (
+              {message.isTyping ? (
                 <div
                   style={{
                     display: "flex",
