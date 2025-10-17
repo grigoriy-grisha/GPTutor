@@ -16,7 +16,7 @@ model User {
   username String? @unique
   vkId     String? @unique
 
-  balance  Float   @default(100.0)
+  balance  Float   @default(50.0)
   apiKey   String  @unique
   isActive Boolean @default(true)
 
@@ -52,17 +52,17 @@ model File {
 }
 
 model Payment {
-  id              String   @id @default(cuid())
+  id              String  @id @default(cuid())
   userId          String
-  yookassaId      String   @unique
+  yookassaId      String  @unique
   amount          Float
-  currency        String   @default("RUB")
-  status          String   @default("pending") // pending, succeeded, canceled
+  currency        String  @default("RUB")
+  status          String  @default("pending") // pending, succeeded, canceled
   description     String?
   confirmationUrl String?
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
