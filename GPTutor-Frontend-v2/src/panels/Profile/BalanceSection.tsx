@@ -103,6 +103,7 @@ export const BalanceSection: FC<BalanceSectionProps> = observer(
                   <div>
                     <Link
                       href="https://telegra.ph/Polzovatelskoe-soglashenie-Giga-Router-10-25"
+                      target="_blank"
                       style={{ fontSize: "14px" }}
                     >
                       Пользовательское соглашение
@@ -111,6 +112,7 @@ export const BalanceSection: FC<BalanceSectionProps> = observer(
                   </div>
                   <Link
                     href="https://telegra.ph/Politika-konfidencialnosti-Giga-Router-10-25"
+                    target="_blank"
                     style={{ fontSize: "14px" }}
                   >
                     Политика конфиденциальности
