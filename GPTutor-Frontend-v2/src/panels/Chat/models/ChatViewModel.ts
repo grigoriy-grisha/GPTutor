@@ -371,6 +371,8 @@ class ChatViewModel {
                 message.appendContent(
                   "При выполнении запроса что-то пошло не так! \n Попробуйте позже!"
                 );
+                message.setIsTyping(false);
+                return;
               }
 
               message.setIsTyping(false);
