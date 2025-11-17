@@ -1,14 +1,15 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import {
   Epic,
   ModalRoot,
+  Platform,
   SplitCol,
   SplitLayout,
   Tabbar,
   TabbarItem,
+  usePlatform,
   View,
 } from "@vkontakte/vkui";
-import { parseURLSearchParamsForGetLaunchParams } from "@vkontakte/vk-bridge";
 import {
   useActiveVkuiLocation,
   useRouteNavigator,
@@ -38,15 +39,10 @@ export const App = () => {
 
   const vkAppearance = useAppearance();
   const isDarkTheme = vkAppearance === "dark";
-  const { vk_platform } = useMemo(
-    () =>
-      parseURLSearchParamsForGetLaunchParams(window.location.search) ?? {
-        vk_platform: undefined,
-      },
-    []
-  );
-  const isVkMobile =
-    vk_platform?.startsWith("mobile") || vk_platform === "mobile_web";
+  const platform = usePlatform();
+  const isVkMobile = platform !== Platform.VKCOM;
+  const isIPhone = navigator.userAgent.includes("iPhone");
+  const shouldAddPadding = isVkMobile && isIPhone;
 
   useEffect(() => {
     userViewModel.getUser();
@@ -67,7 +63,7 @@ export const App = () => {
               activeStory={activeView || "home"}
               tabbar={
                 activeView !== "chat" ? (
-                  <Tabbar style={isVkMobile ? { paddingBottom: 8 } : undefined}>
+                  <Tabbar style={shouldAddPadding ? { paddingBottom: 8 } : undefined}>
                     <TabbarItem
                       selected={activeView === "home" || !activeView}
                       onClick={() => routeNavigator.push("/")}
