@@ -1,13 +1,14 @@
-import { YooCheckout, ICreatePayment } from '@a2seven/yoo-checkout';
-import { PaymentRepository } from '../repositories/PaymentRepository';
-import { UserRepository } from '../repositories/UserRepository';
-import { logger } from './LoggerService';
+import { YooCheckout, ICreatePayment } from "@a2seven/yoo-checkout";
+import { PaymentRepository } from "../repositories/PaymentRepository";
+import { UserRepository } from "../repositories/UserRepository";
+import { logger } from "./LoggerService";
 
 export interface CreatePaymentParams {
   userId: string;
   amount: number;
   description?: string;
   returnUrl?: string;
+  email?: string;
 }
 
 export class YooKassaService {
@@ -23,37 +24,58 @@ export class YooKassaService {
       shopId: this.shopId,
       secretKey: this.secretKey,
     });
-    
-    logger.info('YooKassaService initialized', { shopId });
+
+    logger.info("YooKassaService initialized", { shopId });
   }
 
   async createPayment(params: CreatePaymentParams) {
-    const { userId, amount, description, returnUrl } = params;
+    const { userId, amount, description, returnUrl, email } = params;
 
-    logger.info('Creating payment', { userId, amount });
+    logger.info("Creating payment", { userId, amount, email });
 
     try {
       const idempotenceKey = `${userId}-${Date.now()}-${Math.random()}`;
-      
+
       const createPayload: ICreatePayment = {
         amount: {
           value: amount.toFixed(2),
-          currency: 'RUB',
+          currency: "RUB",
         },
+
         capture: true,
         confirmation: {
-          type: 'redirect',
-          return_url: returnUrl || 'https://vk.com/app54187353#/profile',
+          type: "redirect",
+          return_url: "https://vk.com/app54187353#/profile",
         },
         description: description || `Пополнение баланса на ${amount}₽`,
       };
 
+      const paymentData = email
+        ? {
+            ...createPayload,
+            receipt: {
+              customer: { email },
+              items: [
+                {
+                  description: description || `Пополнение баланса GPTutor`,
+                  quantity: "1",
+                  amount: {
+                    value: amount.toFixed(2),
+                    currency: "RUB",
+                  },
+                  vat_code: 1,
+                },
+              ],
+            },
+          }
+        : createPayload;
+
       const payment = await this.yooCheckout.createPayment(
-        createPayload,
+        paymentData,
         idempotenceKey
       );
 
-      logger.info('YooKassa payment created', {
+      logger.info("YooKassa payment created", {
         paymentId: payment.id,
         status: payment.status,
         amount: payment.amount.value,
@@ -64,13 +86,13 @@ export class YooKassaService {
         userId,
         yookassaId: payment.id,
         amount,
-        currency: 'RUB',
+        currency: "RUB",
         description: createPayload.description,
         confirmationUrl: payment.confirmation?.confirmation_url,
         status: payment.status,
       });
 
-      logger.info('Payment saved to database', {
+      logger.info("Payment saved to database", {
         dbPaymentId: dbPayment.id,
         yookassaId: payment.id,
       });
@@ -84,7 +106,7 @@ export class YooKassaService {
         createdAt: dbPayment.createdAt,
       };
     } catch (error) {
-      logger.error('Failed to create payment', error, { userId, amount });
+      logger.error("Failed to create payment", error, { userId, amount });
       throw error;
     }
   }
@@ -92,15 +114,15 @@ export class YooKassaService {
   async getPaymentInfo(paymentId: string) {
     try {
       const payment = await this.yooCheckout.getPayment(paymentId);
-      
-      logger.info('Payment info retrieved', {
+
+      logger.info("Payment info retrieved", {
         paymentId,
         status: payment.status,
       });
 
       return payment;
     } catch (error) {
-      logger.error('Failed to get payment info', error, { paymentId });
+      logger.error("Failed to get payment info", error, { paymentId });
       throw error;
     }
   }
@@ -109,7 +131,7 @@ export class YooKassaService {
     try {
       const { id, status, amount } = paymentData.object;
 
-      logger.info('Processing payment webhook', {
+      logger.info("Processing payment webhook", {
         paymentId: id,
         status,
         amount: amount?.value,
@@ -118,22 +140,22 @@ export class YooKassaService {
       const dbPayment = await this.paymentRepository.findByYookassaId(id);
 
       if (!dbPayment) {
-        logger.warn('Payment not found in database', { paymentId: id });
-        return { success: false, message: 'Payment not found' };
+        logger.warn("Payment not found in database", { paymentId: id });
+        return { success: false, message: "Payment not found" };
       }
 
       // Обновляем статус платежа
       await this.paymentRepository.updateStatus(id, status);
 
       // Если платеж успешен, пополняем баланс пользователя
-      if (status === 'succeeded') {
+      if (status === "succeeded") {
         const user = await this.userRepository.findById(dbPayment.userId);
-        
+
         if (user) {
           const newBalance = user.balance + dbPayment.amount;
           await this.userRepository.updateBalance(dbPayment.userId, newBalance);
 
-          logger.info('User balance updated', {
+          logger.info("User balance updated", {
             userId: dbPayment.userId,
             oldBalance: user.balance,
             newBalance,
@@ -148,7 +170,7 @@ export class YooKassaService {
         paymentId: id,
       };
     } catch (error) {
-      logger.error('Failed to process payment webhook', error, {
+      logger.error("Failed to process payment webhook", error, {
         paymentData,
       });
       throw error;
@@ -159,4 +181,3 @@ export class YooKassaService {
     return await this.paymentRepository.findByUserId(userId);
   }
 }
-

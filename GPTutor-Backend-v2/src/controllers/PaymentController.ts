@@ -19,6 +19,7 @@ interface CreatePaymentBody {
   amount: number;
   description?: string;
   returnUrl?: string;
+  email?: string;
 }
 
 interface PaymentWebhookBody {
@@ -45,7 +46,6 @@ export class PaymentController extends BaseController {
       getRateLimitConfig("/payments")!
     );
 
-    // Создание платежа
     this.fastify.post(
       "/payments/create",
       {
@@ -54,7 +54,6 @@ export class PaymentController extends BaseController {
       this.createPayment.bind(this)
     );
 
-    // Получение списка платежей пользователя
     this.fastify.get(
       "/payments",
       {
@@ -82,7 +81,7 @@ export class PaymentController extends BaseController {
 
   private async createPayment(request: any, reply: FastifyReply) {
     try {
-      const { amount, description, returnUrl } =
+      const { amount, description, returnUrl, email } =
         request.body as CreatePaymentBody;
 
       if (!amount || typeof amount !== "number") {
@@ -115,6 +114,7 @@ export class PaymentController extends BaseController {
           userId: request.dbUser.id,
           amount,
           vkId: request.dbUser.vkId,
+          email,
         },
         request
       );
@@ -124,6 +124,7 @@ export class PaymentController extends BaseController {
         amount,
         description,
         returnUrl,
+        email,
       });
 
       this.logInfo(

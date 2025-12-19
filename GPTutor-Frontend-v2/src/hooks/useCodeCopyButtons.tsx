@@ -3,12 +3,14 @@ import { renderToString } from "react-dom/server";
 import { Button } from "@vkontakte/vkui";
 import { Icon16CopyOutline } from "@vkontakte/icons";
 import bridge from "@vkontakte/vk-bridge";
+import { useSnackbar } from "./useSnackbar";
 
 export const useCodeCopyButtons = (
   isTyping: boolean,
   isStreaming: boolean
 ) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { showSuccess, showError } = useSnackbar();
 
   const renderCopyButton = (
     code: string,
@@ -64,8 +66,8 @@ export const useCodeCopyButtons = (
         const codeElement = preElement.querySelector("code");
         if (!codeElement) return;
 
-        const cleanCode =
-          codeElement.textContent || codeElement.innerText || "";
+        // Используем innerText для сохранения отступов и переносов строк
+        const cleanCode = codeElement.innerText || "";
         const blockId = `code-block-${index}`;
 
         const buttonHtml = renderCopyButton(
@@ -90,8 +92,10 @@ export const useCodeCopyButtons = (
                   copyButton.getAttribute("data-code") || ""
                 );
                 await bridge.send("VKWebAppCopyText", { text: codeToCopy });
+                showSuccess("Код скопирован в буфер обмена");
               } catch (error) {
                 console.error("Failed to copy code:", error);
+                showError("Не удалось скопировать код");
               }
             });
           }
@@ -107,7 +111,7 @@ export const useCodeCopyButtons = (
     const timer = setTimeout(addCopyButtons, 500);
 
     return () => clearTimeout(timer);
-  }, [isTyping, isStreaming]);
+  }, [isTyping, isStreaming, showSuccess, showError]);
 
   useEffect(() => {
     if (!containerRef.current) return;

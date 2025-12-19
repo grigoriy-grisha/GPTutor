@@ -19,6 +19,7 @@ import { OneDark } from "./themes/OneDark";
 import { OneLight } from "./themes/OneLight";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { SnackbarProvider } from "./hooks/useSnackbar";
+import { ConfirmProvider } from "./hooks/useConfirm";
 
 import { Chat, Home, Models, Persik, Profile } from "./panels";
 import { DEFAULT_VIEW_PANELS, MODALS } from "./routes.ts";
@@ -57,61 +58,63 @@ export const App = () => {
   return (
     <ThemeProvider isDarkTheme={isDarkTheme}>
       <SnackbarProvider>
-        <SplitLayout>
-          <SplitCol>
-            <Epic
-              activeStory={activeView || "home"}
-              tabbar={
-                activeView !== "chat" ? (
-                  <Tabbar style={shouldAddPadding ? { paddingBottom: 8 } : undefined}>
-                    <TabbarItem
-                      selected={activeView === "home" || !activeView}
-                      onClick={() => routeNavigator.push("/")}
-                      label="Главная"
-                    >
-                      <Icon28HomeOutline />
-                    </TabbarItem>
-                    <TabbarItem
-                      selected={activeView === "profile"}
-                      onClick={() =>
-                        routeNavigator.push(`/${DEFAULT_VIEW_PANELS.PROFILE}`)
-                      }
-                      label="Профиль"
-                    >
-                      <Icon28UserCircleOutline />
-                    </TabbarItem>
-                    <TabbarItem
-                      selected={activeView === "chat"}
-                      onClick={() =>
-                        routeNavigator.push(`/${DEFAULT_VIEW_PANELS.CHAT}`)
-                      }
-                      label="Чат"
-                    >
-                      <Icon28MessageOutline />
-                    </TabbarItem>
-                  </Tabbar>
-                ) : null
-              }
-            >
-              <View id="home" activePanel={activePanel}>
-                <Home id="home" />
-                <Persik id="persik" />
-                <Models id="models" />
-              </View>
-              <View id="profile" activePanel={activePanel}>
-                <Profile id="profile" />
-              </View>
-              <View id="chat" activePanel={activePanel}>
-                <Chat id="chat" />
-              </View>
-            </Epic>
-            {modal}
-          </SplitCol>
-          {/*{userViewModel.loading ? <ScreenSpinner /> : null}*/}
+        <ConfirmProvider>
+          <SplitLayout>
+            <SplitCol>
+              <Epic
+                activeStory={activeView || "home"}
+                tabbar={
+                  activeView !== "chat" ? (
+                    <Tabbar style={shouldAddPadding ? { paddingBottom: 8 } : undefined}>
+                      <TabbarItem
+                        selected={activeView === "home" || !activeView}
+                        onClick={() => routeNavigator.push("/")}
+                        label="Главная"
+                      >
+                        <Icon28HomeOutline />
+                      </TabbarItem>
+                      <TabbarItem
+                        selected={activeView === "profile"}
+                        onClick={() =>
+                          routeNavigator.push(`/${DEFAULT_VIEW_PANELS.PROFILE}`)
+                        }
+                        label="Профиль"
+                      >
+                        <Icon28UserCircleOutline />
+                      </TabbarItem>
+                      <TabbarItem
+                        selected={activeView === "chat"}
+                        onClick={() =>
+                          routeNavigator.push(`/${DEFAULT_VIEW_PANELS.CHAT}`)
+                        }
+                        label="Чат"
+                      >
+                        <Icon28MessageOutline />
+                      </TabbarItem>
+                    </Tabbar>
+                  ) : null
+                }
+              >
+                <View id="home" activePanel={activePanel}>
+                  <Home id="home" />
+                  <Persik id="persik" />
+                  <Models id="models" />
+                </View>
+                <View id="profile" activePanel={activePanel}>
+                  <Profile id="profile" />
+                </View>
+                <View id="chat" activePanel={activePanel}>
+                  <Chat id="chat" />
+                </View>
+              </Epic>
+              {modal}
+            </SplitCol>
+            {/*{userViewModel.loading ? <ScreenSpinner /> : null}*/}
 
-          {/* Code Themes */}
-          {isDarkTheme ? <OneDark /> : <OneLight />}
-        </SplitLayout>
+            {/* Code Themes */}
+            {isDarkTheme ? <OneDark /> : <OneLight />}
+          </SplitLayout>
+        </ConfirmProvider>
       </SnackbarProvider>
     </ThemeProvider>
   );

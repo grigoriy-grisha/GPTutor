@@ -13,7 +13,6 @@ export class UserViewModel {
     try {
       this.loading = true;
       this.user = await bridge.send("VKWebAppGetUserInfo");
-      console.log(this.user);
     } finally {
       this.loading = false;
     }

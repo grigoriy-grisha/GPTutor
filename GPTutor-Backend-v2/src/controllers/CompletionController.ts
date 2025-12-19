@@ -157,7 +157,6 @@ export class CompletionController extends BaseController {
         request
       );
 
-      //todo добавить отнимание баланса
       const openRouterParams = {
         model,
         messages: requestBody.messages,
@@ -241,6 +240,25 @@ export class CompletionController extends BaseController {
 
       let chunkCount = 0;
 
+      reply.raw.write(
+        `data: ${JSON.stringify({
+          id: new Date().getTime(),
+          provider: "GigaRouter",
+          model,
+          object: "chat.completion.chunk",
+          created: new Date().getTime(),
+          choices: [
+            {
+              index: 0,
+              delta: { role: "assistant", content: "" },
+              finish_reason: null,
+              native_finish_reason: null,
+              logprobs: null,
+            },
+          ],
+        })}\n\n`
+      );
+
       for await (const chunk of stream) {
         chunkCount++;
 
@@ -269,6 +287,8 @@ export class CompletionController extends BaseController {
           );
         }
       }
+
+      console.log("DONE");
 
       reply.raw.write("data: [DONE]\n\n");
 

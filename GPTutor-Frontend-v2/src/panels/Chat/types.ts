@@ -46,4 +46,5 @@ export interface ChatInputProps {
   onFileUpload?: (file: File) => void;
   onFileRemove?: (fileId: string) => void;
   onCancelUpload?: (uploadId: string) => void;
+  messagesCount?: number;
 }

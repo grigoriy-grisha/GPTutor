@@ -19,7 +19,9 @@ interface TopUpBalanceModalProps {
 export const TopUpBalanceModal: FC<TopUpBalanceModalProps> = ({ id }) => {
   const routeNavigator = useRouteNavigator();
   const [amount, setAmount] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleClose = () => {
@@ -33,6 +35,16 @@ export const TopUpBalanceModal: FC<TopUpBalanceModalProps> = ({ id }) => {
       setAmount(value);
       setError("");
     }
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setEmailError("");
+  };
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,14 +72,26 @@ export const TopUpBalanceModal: FC<TopUpBalanceModalProps> = ({ id }) => {
       return;
     }
 
+    if (!email.trim()) {
+      setEmailError("Введите email для чека");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setEmailError("Введите корректный email");
+      return;
+    }
+
     setLoading(true);
     setError("");
+    setEmailError("");
 
     try {
       const response = await paymentApi.createPayment({
         amount: numAmount,
         description: `Пополнение баланса на ${numAmount}₽`,
         returnUrl: window.location.origin + "/profile",
+        email: email.trim(),
       });
 
       console.log("Платеж создан:", response);
@@ -102,6 +126,19 @@ export const TopUpBalanceModal: FC<TopUpBalanceModalProps> = ({ id }) => {
       }
     >
       <form onSubmit={handleSubmit}>
+        <FormItem
+          top="Email для чека"
+          status={emailError ? "error" : "default"}
+          bottom={emailError || "На этот email будет отправлен чек"}
+        >
+          <Input
+            type="email"
+            placeholder="example@mail.ru"
+            value={email}
+            onChange={handleEmailChange}
+          />
+        </FormItem>
+
         <FormItem
           top="Сумма пополнения"
           status={error ? "error" : "default"}
@@ -150,7 +187,7 @@ export const TopUpBalanceModal: FC<TopUpBalanceModalProps> = ({ id }) => {
             stretched
             mode="primary"
             type="submit"
-            disabled={!amount || !!error || loading}
+            disabled={!email || !amount || !!error || !!emailError || loading}
             before={loading ? <Spinner size="s" /> : undefined}
           >
             {loading

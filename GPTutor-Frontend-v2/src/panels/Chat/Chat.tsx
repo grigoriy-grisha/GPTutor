@@ -113,6 +113,7 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
           onFileUpload={handleFileUpload}
           onFileRemove={handleFileRemove}
           onCancelUpload={handleCancelUpload}
+          messagesCount={chatViewModel.getMessages().length}
         />
       </div>
     </Panel>

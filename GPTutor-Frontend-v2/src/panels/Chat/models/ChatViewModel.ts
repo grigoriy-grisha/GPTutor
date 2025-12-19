@@ -121,19 +121,25 @@ class ChatViewModel {
   }
 
   async sendMessage(content: string) {
+    const hasContent = content.trim().length > 0;
+    const hasFiles = this.attachedFiles.length > 0;
+    
+    // Разрешаем отправку если есть хотя бы контент или файлы
     if (
-      (!content.trim() && this.attachedFiles.length === 0) ||
+      (!hasContent && !hasFiles) ||
       this.isLoading ||
       this.uploadingFiles.length > 0
-    )
+    ) {
       return;
+    }
 
     // Создаем сообщение пользователя с прикрепленными файлами
+    // Если нет контента, но есть файлы - отправляем пустое сообщение с файлами
     const userMessage = this.addMessage(
       "user",
       content,
       false,
-      this.attachedFiles.length > 0 ? [...this.attachedFiles] : undefined
+      hasFiles ? [...this.attachedFiles] : undefined
     );
 
     // Добавляем сгенерированные изображения к сообщению пользователя
@@ -206,7 +212,8 @@ class ChatViewModel {
         ) {
           const content: any[] = [];
 
-          if (msg.content) {
+          // Добавляем текст, даже если он пустой (для файлов без описания)
+          if (msg.content || msg.content === "") {
             content.push({
               type: "text",
               text: msg.content,
@@ -234,7 +241,7 @@ class ChatViewModel {
       });
 
     const requestBody = {
-      model: this.getModelWithModifier(), // Используем модель с :online если включен режим
+      model: this.getModelWithModifier(),
       messages: formattedMessages,
       stream: true,
       temperature: 0.7,
@@ -272,6 +279,7 @@ class ChatViewModel {
 
     const decoder = new TextDecoder();
     let buffer = "";
+    let hasReceivedFirstChunk = false; // Флаг для отслеживания первого чанка с content или reasoning
 
     try {
       while (true) {
@@ -291,6 +299,12 @@ class ChatViewModel {
 
             if (data === "[DONE]") {
               console.log("Stream completed");
+              // Если поток завершился, но первый чанк так и не пришел, убираем isTyping
+              if (!hasReceivedFirstChunk) {
+                runInAction(() => {
+                  message.setIsTyping(false);
+                });
+              }
               return;
             }
 
@@ -311,6 +325,20 @@ class ChatViewModel {
               console.log("Parsed citations:", citations);
               console.log("Parsed annotations:", annotations);
               console.log("Parsed images:", images);
+
+              // Проверяем, пришел ли первый чанк с content или reasoning
+              const hasContent = content !== undefined && content !== null && content !== "";
+              const hasReasoning = reasoning !== undefined && reasoning !== null && reasoning !== "";
+
+              if (hasContent || hasReasoning) {
+                // Если это первый чанк с content или reasoning, убираем isTyping
+                if (!hasReceivedFirstChunk) {
+                  hasReceivedFirstChunk = true;
+                  runInAction(() => {
+                    message.setIsTyping(false);
+                  });
+                }
+              }
 
               if (content !== undefined) {
                 runInAction(() => {
@@ -373,11 +401,11 @@ class ChatViewModel {
                 message.appendContent(
                   "При выполнении запроса что-то пошло не так! \n Попробуйте позже!"
                 );
-                message.setIsTyping(false);
+                runInAction(() => {
+                  message.setIsTyping(false);
+                });
                 return;
               }
-
-              message.setIsTyping(false);
             } catch (parseError) {
               console.warn(
                 "Failed to parse SSE data:",
@@ -391,6 +419,12 @@ class ChatViewModel {
       }
     } finally {
       reader.releaseLock();
+      // Если поток завершился с ошибкой и первый чанк не пришел, убираем isTyping
+      if (!hasReceivedFirstChunk) {
+        runInAction(() => {
+          message.setIsTyping(false);
+        });
+      }
     }
   }
 

@@ -4,6 +4,7 @@ export interface CreatePaymentRequest {
   amount: number;
   description?: string;
   returnUrl?: string;
+  email?: string;
 }
 
 export interface Payment {

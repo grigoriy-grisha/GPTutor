@@ -36,8 +36,8 @@ const openRouterService = new OpenRouterService(
   process.env.OPENROUTER_API_KEY!
 );
 const yooKassaService = new YooKassaService(
-  process.env.YOOKASSA_SHOP_ID || "1184807",
-  process.env.YOOKASSA_SECRET_KEY || "test_XnTIPN_kQjZoX3ZYAbJ4DL6Z3Q-vo_4uXqWtf81-dm4",
+  process.env.YOOKASSA_SHOP_ID!,
+  process.env.YOOKASSA_SECRET_KEY!,
   paymentRepository,
   userRepository
 );

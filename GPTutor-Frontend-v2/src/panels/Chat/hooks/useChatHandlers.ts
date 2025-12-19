@@ -23,7 +23,11 @@ export const useChatHandlers = ({
 }: UseChatHandlersProps): UseChatHandlersReturn => {
   const handleSendMessage = useCallback(
     (message: string) => {
-      if (!message.trim()) return;
+      const hasContent = message.trim().length > 0;
+      const hasFiles = chatViewModel.attachedFiles.length > 0;
+      
+      // Разрешаем отправку если есть хотя бы сообщение или файлы
+      if (!hasContent && !hasFiles) return;
 
       chatViewModel.sendMessage(message);
       onMessageChange("");

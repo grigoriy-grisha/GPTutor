@@ -16,6 +16,7 @@ import { observer } from "mobx-react-lite";
 import { ChatInputProps } from "../types";
 import { AttachedFiles } from "./AttachedFiles";
 import { FileUpload } from "./FileUpload";
+import { useConfirm } from "../../../hooks";
 
 export const ChatInput: React.FC<ChatInputProps> = observer(
   ({
@@ -31,7 +32,11 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
     onFileUpload,
     onFileRemove,
     onCancelUpload,
+    messagesCount = 0,
   }) => {
+    const { confirm } = useConfirm();
+    const hasMessages = messagesCount > 0;
+
     const handleKeyDown = (e: React.KeyboardEvent) => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
@@ -52,6 +57,20 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
     const handleFileRemove = (fileId: string) => {
       if (onFileRemove) {
         onFileRemove(fileId);
+      }
+    };
+
+    const handleClearMessages = async () => {
+      const confirmed = await confirm({
+        title: 'Очистить историю чата?',
+        description: 'Все сообщения будут удалены без возможности восстановления.',
+        confirmText: 'Удалить',
+        cancelText: 'Отмена',
+        mode: 'destructive',
+      });
+
+      if (confirmed) {
+        onClearMessages();
       }
     };
 
@@ -108,9 +127,10 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
           after={
             <>
               <WriteBarIcon
-                onClick={onClearMessages}
-                disabled={disabled}
+                onClick={handleClearMessages}
+                disabled={disabled || !hasMessages}
                 style={{ color: "var(--vkui--color_icon_negative)" }}
+                title={hasMessages ? "Очистить историю" : "Нет сообщений для удаления"}
               >
                 <Icon24DeleteOutline />
               </WriteBarIcon>
@@ -118,6 +138,7 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
                 mode="send"
                 onClick={onSendMessage}
                 disabled={
+                  // Разрешаем отправку если есть хотя бы сообщение или файлы
                   (!message.trim() && attachedFiles.length === 0) ||
                   disabled ||
                   (uploadingFiles && uploadingFiles.length > 0)
@@ -125,7 +146,9 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
                 title={
                   uploadingFiles && uploadingFiles.length > 0
                     ? "Дождитесь загрузки файлов"
-                    : undefined
+                    : !message.trim() && attachedFiles.length === 0
+                    ? "Введите сообщение или прикрепите файл"
+                    : "Отправить"
                 }
               >
                 <Icon28Send />

@@ -2,7 +2,6 @@ import { FC } from "react";
 import {
   Button,
   Card,
-  EllipsisText,
   Flex,
   Spacing,
   Text,
@@ -63,10 +62,7 @@ export const ModelCard: FC<ModelCardProps> = ({
               >
                 <Title level="3" style={{ margin: 0 }}>
                   <Spacing size={2} />
-
-                  <EllipsisText maxWidth={isDesktop ? 500 : 200}>
-                    {model.name}
-                  </EllipsisText>
+                  {model.name}
                 </Title>
                 <CopyButton
                   textToCopy={model.id}
