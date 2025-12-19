@@ -225,6 +225,31 @@ export class CompletionController extends BaseController {
 
     let totalCost = 0;
 
+    // Создаем AbortController для отмены запроса к OpenRouter
+    const abortController = new AbortController();
+    let isAborted = false;
+
+    // Слушаем закрытие соединения клиентом
+    request.raw.on("close", () => {
+      if (!isAborted) {
+        isAborted = true;
+        abortController.abort();
+        this.logInfo(
+          "Client disconnected, aborting stream",
+          { model },
+          request
+        );
+      }
+    });
+
+    request.raw.on("aborted", () => {
+      if (!isAborted) {
+        isAborted = true;
+        abortController.abort();
+        this.logInfo("Request aborted by client", { model }, request);
+      }
+    });
+
     try {
       logger.llmRequest(model, user.id.toString(), undefined, undefined, {
         requestId: request.requestId,
@@ -233,12 +258,16 @@ export class CompletionController extends BaseController {
 
       const streamStartTime = Date.now();
 
-      const stream = await this.openRouterService.createCompletionStream({
-        ...openRouterParams,
-        stream: true,
-      });
+      const stream = await this.openRouterService.createCompletionStream(
+        {
+          ...openRouterParams,
+          stream: true,
+        },
+        abortController.signal
+      );
 
       let chunkCount = 0;
+      let generationId: string | null = null; // ID генерации для получения стоимости при аборте
 
       reply.raw.write(
         `data: ${JSON.stringify({
@@ -260,11 +289,25 @@ export class CompletionController extends BaseController {
       );
 
       for await (const chunk of stream) {
+        // Проверяем, был ли запрос отменен
+        if (isAborted) {
+          this.logInfo(
+            "Stream aborted, stopping iteration",
+            { model, chunkCount, generationId },
+            request
+          );
+          break;
+        }
+
         chunkCount++;
+
+        // Сохраняем ID генерации из первого чанка для логирования
+        if (!generationId && chunk.id) {
+          generationId = chunk.id;
+        }
 
         if (chunk.usage) {
           const responseUsage = chunk.usage as any;
-          console.log({ usage: chunk.usage as any });
           const cost = this.llmCostService.calculateCost(responseUsage?.cost);
           totalCost = cost;
 
@@ -288,13 +331,15 @@ export class CompletionController extends BaseController {
         }
       }
 
-      console.log("DONE");
-
-      reply.raw.write("data: [DONE]\n\n");
-
-      reply.raw.end();
-
       const streamDuration = Date.now() - streamStartTime;
+
+      // Отправляем [DONE] и закрываем соединение
+      try {
+        reply.raw.write("data: [DONE]\n\n");
+        reply.raw.end();
+      } catch {
+        // Игнорируем ошибки если клиент уже отключился
+      }
 
       logger.llmResponse(
         model,
@@ -306,13 +351,33 @@ export class CompletionController extends BaseController {
           requestId: request.requestId,
           chunks: chunkCount,
           stream: true,
+          aborted: isAborted,
+          generationId,
         }
       );
 
-      await this.userRepository.decreaseBalance(user.id, totalCost);
+      // Списываем баланс если что-то было сгенерировано
+      if (totalCost > 0) {
+        await this.userRepository.decreaseBalance(user.id, totalCost);
+      }
 
       return;
     } catch (streamError) {
+      // Проверяем, это ошибка отмены
+      if (
+        isAborted ||
+        (streamError instanceof Error && streamError.name === "AbortError")
+      ) {
+        this.logInfo("Stream was aborted", { model }, request);
+        try {
+          reply.raw.write("data: [DONE]\n\n");
+          reply.raw.end();
+        } catch {
+          // Игнорируем ошибки записи при отмене
+        }
+        return;
+      }
+
       this.logError("Stream error", streamError, { model }, request);
 
       try {

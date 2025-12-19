@@ -13,6 +13,7 @@ class ChatViewModel {
   currentModel: string = "openai/gpt-5-nano";
   isOnlineMode: boolean = false; // Режим поиска в сети
   isLoading: boolean = false;
+  isStreaming: boolean = false; // Флаг активного стриминга для кнопки отмены
   error: string | null = null;
   attachedFiles: FileInfo[] = [];
   uploadingFiles: UploadingFile[] = [];
@@ -22,6 +23,7 @@ class ChatViewModel {
   private readonly STORAGE_KEY_MODEL = "chat_current_model";
 
   private showSnackbar?: (text: string, subtitle?: string) => void;
+  private abortController: AbortController | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -165,18 +167,26 @@ class ChatViewModel {
     assistantMessage.setIsStreaming(true);
     this.setIsTyping(true);
     this.setIsLoading(true);
+    this.setIsStreaming(true);
     this.setError(null);
 
+    // Создаем новый AbortController для этого запроса
+    this.abortController = new AbortController();
+
     try {
-      await this.streamCompletion(assistantMessage);
+      await this.streamCompletion(assistantMessage, this.abortController.signal);
     } catch (error) {
       console.error("Error sending message:", error);
 
-      // Проверяем, это ошибка недостаточного баланса
-      if (
+      // Проверяем, это ошибка отмены
+      if (error instanceof Error && error.name === "AbortError") {
+        console.log("Request was aborted by user");
+        // Не показываем ошибку при отмене пользователем
+      } else if (
         error instanceof Error &&
         error.message.includes("Insufficient balance")
       ) {
+        // Проверяем, это ошибка недостаточного баланса
         this.setError("insufficient_balance");
         assistantMessage.setContent(
           "❌ Недостаточно средств на балансе для отправки сообщения."
@@ -194,13 +204,32 @@ class ChatViewModel {
       assistantMessage.setIsStreaming(false);
       this.setIsTyping(false);
       this.setIsLoading(false);
+      this.setIsStreaming(false);
+      this.abortController = null;
     }
+  }
+
+  /**
+   * Отменить текущую генерацию
+   */
+  abortGeneration() {
+    if (this.abortController) {
+      this.abortController.abort();
+      console.log("Generation aborted by user");
+    }
+  }
+
+  /**
+   * Установить состояние стриминга
+   */
+  setIsStreaming(isStreaming: boolean) {
+    this.isStreaming = isStreaming;
   }
 
   /**
    * Получить потоковый ответ от API
    */
-  private async streamCompletion(message: MessageModel) {
+  private async streamCompletion(message: MessageModel, signal?: AbortSignal) {
     const apiUrl = `${API_BASE_URL}/v1/chat/completions`;
 
     const formattedMessages = this.messages
@@ -259,6 +288,7 @@ class ChatViewModel {
         Authorization: `Bearer ${window.location}`,
       },
       body: JSON.stringify(requestBody),
+      signal, // Передаем signal для возможности отмены запроса
     });
 
     console.log("Response status:", response.status);

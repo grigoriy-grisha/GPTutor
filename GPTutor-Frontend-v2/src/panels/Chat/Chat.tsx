@@ -74,6 +74,11 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
     chatViewModel.toggleOnlineMode();
   }, []);
 
+  // Отмена генерации
+  const handleAbortGeneration = useCallback(() => {
+    chatViewModel.abortGeneration();
+  }, []);
+
   return (
     <Panel id={id}>
       <div className="chat-container" style={chatContainerStyle}>
@@ -114,6 +119,8 @@ export const Chat: React.FC<ChatProps> = observer(({ id }) => {
           onFileRemove={handleFileRemove}
           onCancelUpload={handleCancelUpload}
           messagesCount={chatViewModel.getMessages().length}
+          isStreaming={chatViewModel.isStreaming}
+          onAbortGeneration={handleAbortGeneration}
         />
       </div>
     </Panel>

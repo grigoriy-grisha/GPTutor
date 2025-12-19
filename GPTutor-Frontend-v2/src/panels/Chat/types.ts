@@ -47,4 +47,6 @@ export interface ChatInputProps {
   onFileRemove?: (fileId: string) => void;
   onCancelUpload?: (uploadId: string) => void;
   messagesCount?: number;
+  isStreaming?: boolean;
+  onAbortGeneration?: () => void;
 }

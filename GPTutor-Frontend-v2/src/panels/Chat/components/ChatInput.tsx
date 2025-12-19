@@ -9,6 +9,7 @@ import {
 } from "@vkontakte/vkui";
 import {
   Icon24DeleteOutline,
+  Icon24Cancel,
   Icon28Send,
   Icon28SettingsOutline,
 } from "@vkontakte/icons";
@@ -33,6 +34,8 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
     onFileRemove,
     onCancelUpload,
     messagesCount = 0,
+    isStreaming = false,
+    onAbortGeneration,
   }) => {
     const { confirm } = useConfirm();
     const hasMessages = messagesCount > 0;
@@ -134,25 +137,35 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
               >
                 <Icon24DeleteOutline />
               </WriteBarIcon>
-              <WriteBarIcon
-                mode="send"
-                onClick={onSendMessage}
-                disabled={
-                  // Разрешаем отправку если есть хотя бы сообщение или файлы
-                  (!message.trim() && attachedFiles.length === 0) ||
-                  disabled ||
-                  (uploadingFiles && uploadingFiles.length > 0)
-                }
-                title={
-                  uploadingFiles && uploadingFiles.length > 0
-                    ? "Дождитесь загрузки файлов"
-                    : !message.trim() && attachedFiles.length === 0
-                    ? "Введите сообщение или прикрепите файл"
-                    : "Отправить"
-                }
-              >
-                <Icon28Send />
-              </WriteBarIcon>
+              {isStreaming ? (
+                <WriteBarIcon
+                  onClick={onAbortGeneration}
+                  style={{ color: "var(--vkui--color_icon_negative)" }}
+                  title="Остановить генерацию"
+                >
+                  <Icon24Cancel />
+                </WriteBarIcon>
+              ) : (
+                <WriteBarIcon
+                  mode="send"
+                  onClick={onSendMessage}
+                  disabled={
+                    // Разрешаем отправку если есть хотя бы сообщение или файлы
+                    (!message.trim() && attachedFiles.length === 0) ||
+                    disabled ||
+                    (uploadingFiles && uploadingFiles.length > 0)
+                  }
+                  title={
+                    uploadingFiles && uploadingFiles.length > 0
+                      ? "Дождитесь загрузки файлов"
+                      : !message.trim() && attachedFiles.length === 0
+                      ? "Введите сообщение или прикрепите файл"
+                      : "Отправить"
+                  }
+                >
+                  <Icon28Send />
+                </WriteBarIcon>
+              )}
             </>
           }
           placeholder="Сообщение"

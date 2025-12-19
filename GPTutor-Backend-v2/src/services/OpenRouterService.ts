@@ -34,16 +34,24 @@ export class OpenRouterService {
     }
   }
 
-  async createCompletionStream(params: ChatCompletionCreateParams) {
+  async createCompletionStream(
+    params: ChatCompletionCreateParams,
+    signal?: AbortSignal
+  ) {
     try {
       //@ts-ignore
-      return this.client.chat.completions.create({
-        ...params,
-        stream: true,
-        usage: {
-          include: true,
+      return this.client.chat.completions.create(
+        {
+          ...params,
+          stream: true,
+          usage: {
+            include: true,
+          },
         },
-      });
+        {
+          signal,
+        }
+      );
     } catch (error) {
       console.error("OpenRouter API stream request failed:", error);
       throw error;
@@ -58,5 +66,84 @@ export class OpenRouterService {
       console.error("Failed to get Models from OpenRouter:", error);
       throw error;
     }
+  }
+
+  /**
+   * Получить информацию о генерации по ID
+   * Полезно для получения стоимости при аборте запроса
+   * @param maxRetries - максимальное количество попыток (данные могут появиться не сразу)
+   * @param retryDelayMs - задержка между попытками в мс
+   */
+  async getGenerationInfo(
+    generationId: string,
+    maxRetries: number = 5,
+    retryDelayMs: number = 200
+  ): Promise<{
+    id: string;
+    total_cost: number;
+    tokens_prompt: number;
+    tokens_completion: number;
+    cancelled: boolean;
+    model: string;
+  } | null> {
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        const response = await fetch(
+          `https://openrouter.ai/api/v1/generation?id=${encodeURIComponent(
+            generationId
+          )}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${this.client.apiKey}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          console.error(
+            `Failed to get generation info (attempt ${attempt + 1}):`,
+            response.status
+          );
+          // Если 404 - данные еще не готовы, пробуем снова
+          if (response.status === 404 && attempt < maxRetries - 1) {
+            await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+            continue;
+          }
+          return null;
+        }
+
+        const data = (await response.json()) as {
+          data?: {
+            id: string;
+            total_cost: number;
+            tokens_prompt: number;
+            tokens_completion: number;
+            cancelled: boolean;
+            model: string;
+          };
+        };
+
+        // Проверяем, что данные о стоимости уже доступны
+        if (data.data && data.data.total_cost !== undefined) {
+          return data.data;
+        }
+
+        // Если данные еще не готовы, пробуем снова
+        if (attempt < maxRetries - 1) {
+          await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+        }
+      } catch (error) {
+        console.error(
+          `Error getting generation info (attempt ${attempt + 1}):`,
+          error
+        );
+        if (attempt < maxRetries - 1) {
+          await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+        }
+      }
+    }
+
+    return null;
   }
 }
