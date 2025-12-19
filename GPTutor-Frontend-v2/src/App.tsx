@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import {
   Epic,
   ModalRoot,
+  Platform,
   SplitCol,
   SplitLayout,
   Tabbar,
   TabbarItem,
+  usePlatform,
   View,
 } from "@vkontakte/vkui";
 import {
@@ -37,6 +39,10 @@ export const App = () => {
 
   const vkAppearance = useAppearance();
   const isDarkTheme = vkAppearance === "dark";
+  const platform = usePlatform();
+  const isVkMobile = platform !== Platform.VKCOM;
+  const isIPhone = navigator.userAgent.includes("iPhone");
+  const shouldAddPadding = isVkMobile && isIPhone;
 
   useEffect(() => {
     userViewModel.getUser();
@@ -57,7 +63,7 @@ export const App = () => {
               activeStory={activeView || "home"}
               tabbar={
                 activeView !== "chat" ? (
-                  <Tabbar>
+                  <Tabbar style={shouldAddPadding ? { paddingBottom: 8 } : undefined}>
                     <TabbarItem
                       selected={activeView === "home" || !activeView}
                       onClick={() => routeNavigator.push("/")}

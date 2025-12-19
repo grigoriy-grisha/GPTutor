@@ -28,7 +28,10 @@ const markdown = new Markdown();
 
 export const MessageItem: React.FC<MessageItemProps> = observer(
   ({ message, userViewModel, getUserName }) => {
-    const containerRef = useCodeCopyButtons(message.isTyping);
+    const containerRef = useCodeCopyButtons(
+      message.isTyping,
+      message.isStreaming
+    );
     const routeNavigator = useRouteNavigator();
 
     // Состояние загрузки изображений: imageIndex -> uploading
@@ -185,7 +188,13 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
             zIndex: 1,
           }}
         >
-          <CopyButton textToCopy={message.content} />
+          <CopyButton
+            textToCopy={message.content}
+            disabled={message.isStreaming}
+            style={{
+              cursor: message.isStreaming ? "not-allowed" : "pointer",
+            }}
+          />
         </div>
         <div
           style={{

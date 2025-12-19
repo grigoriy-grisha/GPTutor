@@ -42,7 +42,7 @@ export const ModelsCard: FC = () => {
             </Headline>
           }
           caption={
-            <Link onClick={handleModelsClick} after={<Icon16LinkOutline />}>
+            <Link after={<Icon16LinkOutline />}>
               Посмотреть модели
             </Link>
           }
