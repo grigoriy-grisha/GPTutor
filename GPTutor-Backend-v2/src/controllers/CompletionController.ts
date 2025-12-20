@@ -1,6 +1,7 @@
 import { FastifyReply } from "fastify";
 import { BaseController } from "./BaseController";
 import { UserRepository } from "../repositories/UserRepository";
+import { UsageRepository } from "../repositories/UsageRepository";
 import { LLMCostEvaluate } from "../services/LLMCostEvaluate";
 import { OpenRouterService } from "../services/OpenRouterService";
 import { RequestWithLogging } from "../middleware/loggingMiddleware";
@@ -46,6 +47,7 @@ export class CompletionController extends BaseController {
   constructor(
     fastify: any,
     private userRepository: UserRepository,
+    private usageRepository: UsageRepository,
     private llmCostService: LLMCostEvaluate,
     private openRouterService: OpenRouterService,
     private vkSecretKey: string = process.env.VK_SECRET_KEY || ""
@@ -224,6 +226,9 @@ export class CompletionController extends BaseController {
     reply.raw.setHeader("Content-type", "text/event-stream");
 
     let totalCost = 0;
+    let promptTokens = 0;
+    let completionTokens = 0;
+    let totalTokens = 0;
 
     // Создаем AbortController для отмены запроса к OpenRouter
     const abortController = new AbortController();
@@ -310,11 +315,14 @@ export class CompletionController extends BaseController {
           const responseUsage = chunk.usage as any;
           const cost = this.llmCostService.calculateCost(responseUsage?.cost);
           totalCost = cost;
+          promptTokens = responseUsage?.prompt_tokens || 0;
+          completionTokens = responseUsage?.completion_tokens || 0;
+          totalTokens = responseUsage?.total_tokens || 0;
 
           chunk.usage = {
-            prompt_tokens: responseUsage?.prompt_tokens,
-            completion_tokens: responseUsage?.completion_tokens,
-            total_tokens: responseUsage?.total_tokens,
+            prompt_tokens: promptTokens,
+            completion_tokens: completionTokens,
+            total_tokens: totalTokens,
             cost,
           } as any;
         }
@@ -356,9 +364,23 @@ export class CompletionController extends BaseController {
         }
       );
 
-      // Списываем баланс если что-то было сгенерировано
-      if (totalCost > 0) {
-        await this.userRepository.decreaseBalance(user.id, totalCost);
+      // Записываем usage и списываем баланс если что-то было сгенерировано
+      if (totalCost > 0 || totalTokens > 0) {
+        await Promise.all([
+          this.usageRepository.create({
+            userId: user.id,
+            model,
+            promptTokens,
+            completionTokens,
+            totalTokens,
+            cost: totalCost,
+            generationId: generationId || undefined,
+            aborted: isAborted,
+          }),
+          totalCost > 0
+            ? this.userRepository.decreaseBalance(user.id, totalCost)
+            : Promise.resolve(),
+        ]);
       }
 
       return;

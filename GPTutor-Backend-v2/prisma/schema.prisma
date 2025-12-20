@@ -25,6 +25,7 @@ model User {
 
   files    File[]
   payments Payment[]
+  usages   Usage[]
 
   @@map("users")
 }
@@ -66,4 +67,25 @@ model Payment {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("payments")
+}
+
+model Usage {
+  id               String  @id @default(cuid())
+  userId           String
+  model            String
+  promptTokens     Int
+  completionTokens Int
+  totalTokens      Int
+  cost             Float
+  generationId     String?
+  aborted          Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([model])
+  @@map("usages")
 }

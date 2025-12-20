@@ -5,17 +5,23 @@ import {
   PanelHeader,
   Placeholder,
   ScreenSpinner,
+  Group,
+  SimpleCell,
 } from "@vkontakte/vkui";
+import { Icon28MoneyHistoryBackwardOutline, Icon24ChevronRight } from "@vkontakte/icons";
+import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 import { useProfileViewModel } from "../../viewModels/ProfileViewModel";
 import { BalanceSection } from "./BalanceSection";
 import { ApiKeySection } from "./ApiKeySection";
 import { CodeExamplesSection } from "./CodeExamplesSection";
+import { DEFAULT_VIEW_PANELS } from "../../routes";
 import "../../styles/prism.css";
 import { observer } from "mobx-react-lite";
 
 export interface ProfileProps extends NavIdProps {}
 
 export const Profile: FC<ProfileProps> = observer(({ id }) => {
+  const routeNavigator = useRouteNavigator();
   const {
     profile,
     vkData,
@@ -26,6 +32,10 @@ export const Profile: FC<ProfileProps> = observer(({ id }) => {
     loadProfile,
     updateToken,
   } = useProfileViewModel();
+
+  const handleOpenUsage = () => {
+    routeNavigator.push(`/${DEFAULT_VIEW_PANELS.USAGE}`);
+  };
 
   useEffect(() => {
     loadProfile();
@@ -56,6 +66,16 @@ export const Profile: FC<ProfileProps> = observer(({ id }) => {
       <PanelHeader>Профиль</PanelHeader>
 
       <BalanceSection balance={profile.balance} onReload={loadProfile} />
+
+      <Group>
+        <SimpleCell
+          before={<Icon28MoneyHistoryBackwardOutline />}
+          after={<Icon24ChevronRight />}
+          onClick={handleOpenUsage}
+        >
+          История использования
+        </SimpleCell>
+      </Group>
 
       <ApiKeySection
         apiKey={profile.apiKey}

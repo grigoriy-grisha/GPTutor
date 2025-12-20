@@ -28,6 +28,10 @@
     color: inherit;
 }
 
+.code-block h1, .code-block h2, .code-block h3, .code-block h4, .code-block h5, .code-block h6 {
+    line-height: 110%;
+}
+
 /* Code buttons */
 .code-buttons {
     position: absolute;

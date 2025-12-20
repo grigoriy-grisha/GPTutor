@@ -17,6 +17,7 @@ export const DEFAULT_VIEW_PANELS = {
   PROFILE: 'profile',
   CHAT: 'chat',
   MODELS: 'models',
+  USAGE: 'usage',
 } as const;
 
 export const MODALS = {
@@ -34,6 +35,7 @@ export const routes = RoutesConfig.create([
       createPanel(DEFAULT_VIEW_PANELS.PROFILE, `/${DEFAULT_VIEW_PANELS.PROFILE}`, [
         createModal(MODALS.TOP_UP_BALANCE, MODALS.TOP_UP_BALANCE),
       ]),
+      createPanel(DEFAULT_VIEW_PANELS.USAGE, `/${DEFAULT_VIEW_PANELS.USAGE}`, []),
     ]),
     createView('chat', [
       createPanel(DEFAULT_VIEW_PANELS.CHAT, `/${DEFAULT_VIEW_PANELS.CHAT}`, []),

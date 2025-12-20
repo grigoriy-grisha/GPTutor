@@ -21,7 +21,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { SnackbarProvider } from "./hooks/useSnackbar";
 import { ConfirmProvider } from "./hooks/useConfirm";
 
-import { Chat, Home, Models, Persik, Profile } from "./panels";
+import { Chat, Home, Models, Persik, Profile, Usage } from "./panels";
 import { DEFAULT_VIEW_PANELS, MODALS } from "./routes.ts";
 import {
   Icon28HomeOutline,
@@ -102,6 +102,7 @@ export const App = () => {
                 </View>
                 <View id="profile" activePanel={activePanel}>
                   <Profile id="profile" />
+                  <Usage id="usage" />
                 </View>
                 <View id="chat" activePanel={activePanel}>
                   <Chat id="chat" />
