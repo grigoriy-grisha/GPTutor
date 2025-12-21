@@ -20,11 +20,28 @@ export const Copy: FC<CopyProps> = ({
 
   const handleCopy = async () => {
     try {
-      await bridge.send("VKWebAppCopyText", { text: textToClickBoard });
+      // Пробуем сначала нативный API — он не вызывает клавиатуру
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(textToClickBoard);
+      } else {
+        await bridge.send("VKWebAppCopyText", { text: textToClickBoard });
+      }
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      // Fallback на VK Bridge если нативный API не сработал
+      try {
+        await bridge.send("VKWebAppCopyText", { text: textToClickBoard });
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (bridgeErr) {
+        console.error('Failed to copy text: ', bridgeErr);
+      }
+    }
+
+    // Убираем фокус чтобы не триггерить клавиатуру
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
     }
   };
 

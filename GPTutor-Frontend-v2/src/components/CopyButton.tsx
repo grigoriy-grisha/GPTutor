@@ -32,14 +32,28 @@ export const CopyButton: FC<CopyButtonProps> = ({
     (e.currentTarget as HTMLElement).blur();
 
     try {
-      await bridge.send("VKWebAppCopyText", { text: textToCopy });
+      // Пробуем сначала нативный API — он не вызывает клавиатуру
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(textToCopy);
+      } else {
+        // Fallback на VK Bridge
+        await bridge.send("VKWebAppCopyText", { text: textToCopy });
+      }
 
       setIsCopied(true);
       onCopySuccess?.();
 
       setTimeout(() => setIsCopied(false), successDuration);
     } catch (error) {
-      onCopyError?.(error as Error);
+      // Если нативный API не сработал, пробуем VK Bridge
+      try {
+        await bridge.send("VKWebAppCopyText", { text: textToCopy });
+        setIsCopied(true);
+        onCopySuccess?.();
+        setTimeout(() => setIsCopied(false), successDuration);
+      } catch (bridgeError) {
+        onCopyError?.(bridgeError as Error);
+      }
     }
 
     if (document.activeElement instanceof HTMLElement) {
