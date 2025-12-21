@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useCallback } from "react";
 import {
   Button,
   Div,
@@ -12,7 +12,7 @@ import {
   Text,
   Title,
 } from "@vkontakte/vkui";
-import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
+import { useRouteNavigator, useFirstPageCheck } from "@vkontakte/vk-mini-apps-router";
 import { useModelsViewModel } from "../../viewModels/ModelsViewModel";
 import { SearchSection } from "./SearchSection";
 import { QuickSearchSection } from "./QuickSearchSection";
@@ -23,6 +23,7 @@ export interface ModelsProps extends NavIdProps {}
 
 export const Models: FC<ModelsProps> = ({ id }) => {
   const navigator = useRouteNavigator();
+  const isFirstPage = useFirstPageCheck();
   const {
     filteredModels,
     searchQuery,
@@ -41,6 +42,14 @@ export const Models: FC<ModelsProps> = ({ id }) => {
     navigator.push("/chat");
   };
 
+  const handleBack = useCallback(() => {
+    if (isFirstPage) {
+      navigator.replace("/");
+    } else {
+      navigator.back();
+    }
+  }, [navigator, isFirstPage]);
+
   useEffect(() => {
     loadModels();
   }, [loadModels]);
@@ -48,7 +57,7 @@ export const Models: FC<ModelsProps> = ({ id }) => {
   return (
     <Panel id={id}>
       <PanelHeader
-        before={<PanelHeaderBack onClick={() => navigator.back()} />}
+        before={<PanelHeaderBack onClick={handleBack} />}
       >
         Модели
       </PanelHeader>

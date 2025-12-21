@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
+import { useRouteNavigator, useFirstPageCheck } from "@vkontakte/vk-mini-apps-router";
 
 interface UseChatNavigationReturn {
   handleBack: () => void;
@@ -11,15 +11,15 @@ interface UseChatNavigationReturn {
  */
 export const useChatNavigation = (): UseChatNavigationReturn => {
   const routeNavigator = useRouteNavigator();
+  const isFirstPage = useFirstPageCheck();
 
   const handleBack = useCallback(() => {
-    const viewHistory = (routeNavigator as any).viewHistory?.history;
-    if (!viewHistory || viewHistory.length <= 1) {
-      routeNavigator.push("/");
+    if (isFirstPage) {
+      routeNavigator.replace("/");
     } else {
       routeNavigator.back();
     }
-  }, [routeNavigator]);
+  }, [routeNavigator, isFirstPage]);
 
   const handleModelSelect = useCallback(() => {
     routeNavigator.push("/models");

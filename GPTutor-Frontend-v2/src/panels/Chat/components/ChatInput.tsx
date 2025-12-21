@@ -9,9 +9,9 @@ import {
 } from "@vkontakte/vkui";
 import {
   Icon24DeleteOutline,
-  Icon24Cancel,
   Icon28Send,
   Icon28SettingsOutline,
+  Icon28StopCircleOutline,
 } from "@vkontakte/icons";
 import { observer } from "mobx-react-lite";
 import { ChatInputProps } from "../types";
@@ -65,11 +65,12 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
 
     const handleClearMessages = async () => {
       const confirmed = await confirm({
-        title: 'Очистить историю чата?',
-        description: 'Все сообщения будут удалены без возможности восстановления.',
-        confirmText: 'Удалить',
-        cancelText: 'Отмена',
-        mode: 'destructive',
+        title: "Очистить историю чата?",
+        description:
+          "Все сообщения будут удалены без возможности восстановления.",
+        confirmText: "Удалить",
+        cancelText: "Отмена",
+        mode: "destructive",
       });
 
       if (confirmed) {
@@ -133,7 +134,11 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
                 onClick={handleClearMessages}
                 disabled={disabled || !hasMessages}
                 style={{ color: "var(--vkui--color_icon_negative)" }}
-                title={hasMessages ? "Очистить историю" : "Нет сообщений для удаления"}
+                title={
+                  hasMessages
+                    ? "Очистить историю"
+                    : "Нет сообщений для удаления"
+                }
               >
                 <Icon24DeleteOutline />
               </WriteBarIcon>
@@ -143,7 +148,7 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
                   style={{ color: "var(--vkui--color_icon_negative)" }}
                   title="Остановить генерацию"
                 >
-                  <Icon24Cancel />
+                  <Icon28StopCircleOutline width={24} height={24} />
                 </WriteBarIcon>
               ) : (
                 <WriteBarIcon

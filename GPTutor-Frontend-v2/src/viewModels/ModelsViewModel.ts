@@ -67,13 +67,7 @@ export const useModelsViewModel = () => {
   }, [state.sortOrder, setSortOrder]);
 
   const copyModelId = useCallback(async (modelId: string) => {
-    const success = await ModelsService.copyModelId(modelId);
-
-    if (success) {
-      showSuccess(`ID скопирован: ${modelId}`);
-    } else {
-      showError("Не удалось скопировать");
-    }
+    showSuccess(`ID скопирован: ${modelId}`);
   }, []);
 
   const tryModel = useCallback((modelId: string) => {
