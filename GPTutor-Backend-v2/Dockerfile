@@ -6,8 +6,11 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+# Copy prisma schema first (needed for postinstall)
+COPY prisma ./prisma
+
+# Install dependencies with retry logic for unstable networks
+RUN npm ci --retry 3 || npm ci --retry 3 || npm ci --retry 3
 
 # Copy source code (includes prisma folder with schema and migrations)
 COPY . .
@@ -30,8 +33,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install production dependencies only
-RUN npm ci --only=production
+# Install production dependencies only with retry logic
+RUN npm ci --only=production --retry 3 || npm ci --only=production --retry 3
 
 # Copy Prisma schema and ALL migrations from builder stage
 COPY --from=builder /app/prisma ./prisma

@@ -22,7 +22,7 @@ export const RATE_LIMIT_CONFIG: RateLimitOptions = {
   },
 
   "/v1/chat/completions": {
-    max: 5,
+    max: 1000,
     timeWindow: 60 * 1000,
   },
 
