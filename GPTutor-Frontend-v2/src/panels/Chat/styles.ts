@@ -24,7 +24,6 @@ export const chatContainerStyle: CSSProperties = {
   right: 0,
   bottom: 0,
   zIndex: CONTAINER_Z_INDEX,
-  overflowX: "hidden",
 };
 
 export const chatHeaderStyle: CSSProperties = {
@@ -44,7 +43,6 @@ export const chatHeaderStyle: CSSProperties = {
 export const messagesScrollContainerStyle: CSSProperties = {
   flexGrow: 1,
   overflowY: "auto",
-  overflowX: "hidden",
   scrollBehavior: "smooth",
   background: "var(--vkui--color_background_content)",
   marginTop: `${HEADER_HEIGHT}px`,
@@ -58,7 +56,6 @@ export const messagesInnerContainerStyle: CSSProperties = {
   minHeight: "100%",
   display: "flex",
   flexDirection: "column",
-  overflowX: "hidden",
 };
 
 export const scrollArrowContainerStyle: CSSProperties = {
@@ -67,7 +64,3 @@ export const scrollArrowContainerStyle: CSSProperties = {
   right: `${SCROLL_ARROW_RIGHT_OFFSET}px`,
   zIndex: SCROLL_ARROW_Z_INDEX,
 };
-
-
-
-

@@ -178,7 +178,6 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
           paddingLeft: "16px",
           paddingRight: "16px",
           maxWidth: "100%",
-          overflowX: "hidden",
         }}
       >
         <div
