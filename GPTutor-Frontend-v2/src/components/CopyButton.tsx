@@ -26,8 +26,10 @@ export const CopyButton: FC<CopyButtonProps> = ({
 }) => {
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleCopy = async () => {
+  const handleCopy = async (e: React.MouseEvent<HTMLElement>) => {
     if (isCopied || disabled) return;
+
+    (e.currentTarget as HTMLElement).blur();
 
     try {
       await bridge.send("VKWebAppCopyText", { text: textToCopy });
@@ -38,6 +40,10 @@ export const CopyButton: FC<CopyButtonProps> = ({
       setTimeout(() => setIsCopied(false), successDuration);
     } catch (error) {
       onCopyError?.(error as Error);
+    }
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
     }
   };
 
