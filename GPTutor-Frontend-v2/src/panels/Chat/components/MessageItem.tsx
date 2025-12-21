@@ -177,6 +177,8 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
           marginBottom: "2px",
           paddingLeft: "16px",
           paddingRight: "16px",
+          maxWidth: "100%",
+          overflowX: "hidden",
         }}
       >
         <div
@@ -419,6 +421,9 @@ export const MessageItem: React.FC<MessageItemProps> = observer(
                       fontSize: "15px",
                       lineHeight: "20px",
                       color: "var(--vkui--color_text_primary)",
+                      maxWidth: "100%",
+                      overflowX: "auto",
+                      wordBreak: "break-word",
                     }}
                     dangerouslySetInnerHTML={{
                       __html: formattedContent,

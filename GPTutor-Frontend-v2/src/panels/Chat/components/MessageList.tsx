@@ -50,7 +50,13 @@ export const MessageList = forwardRef<HTMLDivElement, MessageListProps>(
     }
 
     return (
-      <div style={{ marginTop: "12px", paddingBottom: "20px" }}>
+      <div style={{ 
+        marginTop: "12px", 
+        paddingBottom: "20px",
+        maxWidth: "100vw",
+        overflowX: "hidden",
+        wordBreak: "break-word",
+      }}>
         {messages.map((message) => (
           <MessageItem
             key={message.id}

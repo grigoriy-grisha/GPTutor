@@ -1,9 +1,80 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useCallback } from "react";
 import { IconButton } from "@vkontakte/vkui";
 import { Icon16CopyOutline, Icon16CheckCircle } from "@vkontakte/icons";
 import bridge from "@vkontakte/vk-bridge";
 
 import classes from "./components.module.css";
+
+/**
+ * Копирует текст без показа клавиатуры на мобильных устройствах
+ */
+const copyTextSilently = async (text: string): Promise<boolean> => {
+  // 1. Пробуем современный Clipboard API
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // Продолжаем к следующему методу
+    }
+  }
+
+  // 2. Fallback через невидимый textarea с readonly (не показывает клавиатуру)
+  try {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    
+    // Делаем textarea невидимым и readonly
+    textarea.setAttribute("readonly", "");
+    textarea.style.cssText = `
+      position: fixed;
+      top: -9999px;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      border: none;
+      outline: none;
+      opacity: 0;
+      pointer-events: none;
+    `;
+    
+    document.body.appendChild(textarea);
+    
+    // Сохраняем текущий активный элемент
+    const activeElement = document.activeElement as HTMLElement;
+    
+    // Выделяем текст
+    textarea.select();
+    textarea.setSelectionRange(0, text.length);
+    
+    // Копируем
+    const success = document.execCommand("copy");
+    
+    // Удаляем textarea
+    document.body.removeChild(textarea);
+    
+    // Восстанавливаем фокус или убираем его
+    if (activeElement && activeElement !== document.body) {
+      // Если был активен input — не возвращаем на него фокус
+      if (activeElement.tagName !== "INPUT" && activeElement.tagName !== "TEXTAREA") {
+        activeElement.focus();
+      }
+    }
+    
+    if (success) return true;
+  } catch {
+    // Продолжаем к VK Bridge
+  }
+
+  // 3. Последний fallback — VK Bridge (может показать клавиатуру)
+  try {
+    await bridge.send("VKWebAppCopyText", { text });
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 interface CopyButtonProps {
   textToCopy: string;
@@ -26,52 +97,34 @@ export const CopyButton: FC<CopyButtonProps> = ({
 }) => {
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleCopy = async (e: React.MouseEvent<HTMLElement>) => {
-    // Предотвращаем всплытие и дефолтное поведение
+  const handleCopy = useCallback(async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
     
     if (isCopied || disabled) return;
 
     // Убираем фокус со всех input/textarea перед копированием
-    const activeEl = document.activeElement as HTMLElement;
-    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
-      activeEl.blur();
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
     }
 
-    try {
-      // Пробуем сначала нативный API — он не вызывает клавиатуру
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(textToCopy);
-      } else {
-        // Fallback на VK Bridge
-        await bridge.send("VKWebAppCopyText", { text: textToCopy });
-      }
+    const success = await copyTextSilently(textToCopy);
 
+    if (success) {
       setIsCopied(true);
       onCopySuccess?.();
-
       setTimeout(() => setIsCopied(false), successDuration);
-    } catch (error) {
-      // Если нативный API не сработал, пробуем VK Bridge
-      try {
-        await bridge.send("VKWebAppCopyText", { text: textToCopy });
-        setIsCopied(true);
-        onCopySuccess?.();
-        setTimeout(() => setIsCopied(false), successDuration);
-      } catch (bridgeError) {
-        onCopyError?.(bridgeError as Error);
-      }
+    } else {
+      onCopyError?.(new Error("Failed to copy text"));
     }
 
-    // Убираем фокус с любого активного элемента после копирования
-    // Используем setTimeout чтобы дать браузеру время обработать событие
-    setTimeout(() => {
+    // Гарантируем что фокус убран после всех операций
+    requestAnimationFrame(() => {
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
-    }, 0);
-  };
+    });
+  }, [isCopied, disabled, textToCopy, onCopySuccess, onCopyError, successDuration]);
 
   const disabledStyles: React.CSSProperties = disabled
     ? {

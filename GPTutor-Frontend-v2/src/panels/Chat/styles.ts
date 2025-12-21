@@ -16,12 +16,15 @@ export const chatContainerStyle: CSSProperties = {
   display: "flex",
   flexDirection: "column",
   height: "100vh",
+  width: "100vw",
+  maxWidth: "100vw",
   position: "fixed",
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
   zIndex: CONTAINER_Z_INDEX,
+  overflowX: "hidden",
 };
 
 export const chatHeaderStyle: CSSProperties = {
@@ -40,18 +43,22 @@ export const chatHeaderStyle: CSSProperties = {
 
 export const messagesScrollContainerStyle: CSSProperties = {
   flexGrow: 1,
-  overflow: "auto",
+  overflowY: "auto",
+  overflowX: "hidden",
   scrollBehavior: "smooth",
   background: "var(--vkui--color_background_content)",
   marginTop: `${HEADER_HEIGHT}px`,
+  maxWidth: "100vw",
 };
 
 export const messagesInnerContainerStyle: CSSProperties = {
   boxSizing: "border-box",
   width: "100%",
+  maxWidth: "100vw",
   minHeight: "100%",
   display: "flex",
   flexDirection: "column",
+  overflowX: "hidden",
 };
 
 export const scrollArrowContainerStyle: CSSProperties = {
