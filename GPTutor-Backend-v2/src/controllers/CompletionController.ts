@@ -159,15 +159,36 @@ export class CompletionController extends BaseController {
         request
       );
 
-      const openRouterParams = {
-        model,
-        messages: requestBody.messages,
+      // Фильтруем параметры в зависимости от модели
+      const originalParams = {
         max_tokens: requestBody.max_tokens,
         temperature: requestBody.temperature,
         top_p: requestBody.top_p,
         frequency_penalty: requestBody.frequency_penalty,
         presence_penalty: requestBody.presence_penalty,
         stop: requestBody.stop,
+      };
+      const filteredParams = this.filterParamsForModel(model, originalParams);
+
+      // Логируем если параметры были изменены
+      const originalKeys = Object.keys(originalParams).filter(k => originalParams[k as keyof typeof originalParams] !== undefined);
+      const filteredKeys = Object.keys(filteredParams);
+      if (originalKeys.length !== filteredKeys.length || originalKeys.some(k => !filteredKeys.includes(k === 'max_tokens' && filteredParams.max_completion_tokens ? 'max_completion_tokens' : k))) {
+        this.logDebug(
+          `Parameters filtered for model`,
+          {
+            model,
+            original: originalParams,
+            filtered: filteredParams,
+          },
+          request
+        );
+      }
+
+      const openRouterParams = {
+        model,
+        messages: requestBody.messages,
+        ...filteredParams,
         ...(hasFiles && {
           plugins: [
             {
@@ -543,5 +564,84 @@ export class CompletionController extends BaseController {
 
       return false;
     });
+  }
+
+  /**
+   * Фильтрует параметры запроса в зависимости от модели
+   * Некоторые модели не поддерживают определённые параметры
+   */
+  private filterParamsForModel(
+    model: string,
+    params: {
+      max_tokens?: number;
+      temperature?: number;
+      top_p?: number;
+      frequency_penalty?: number;
+      presence_penalty?: number;
+      stop?: string[];
+    }
+  ): Record<string, any> {
+    const modelLower = model.toLowerCase();
+    const result: Record<string, any> = {};
+
+    // GPT-5 Image модели - ограниченные параметры
+    const isGpt5Image = modelLower.includes("gpt-5-image") || modelLower.includes("gpt-4o-image");
+    
+    // Perplexity модели - особые ограничения
+    const isPerplexity = modelLower.includes("perplexity/");
+    
+    // O1/O3 модели - не поддерживают temperature, top_p
+    const isReasoningModel = modelLower.includes("/o1") || 
+                             modelLower.includes("/o3") || 
+                             modelLower.includes("reasoning");
+
+    // max_tokens -> max_completion_tokens для GPT-5
+    if (params.max_tokens !== undefined) {
+      if (isGpt5Image) {
+        result.max_completion_tokens = params.max_tokens;
+      } else {
+        result.max_tokens = params.max_tokens;
+      }
+    }
+
+    // temperature - не поддерживается reasoning моделями и GPT-5 Image
+    if (params.temperature !== undefined) {
+      if (!isGpt5Image && !isReasoningModel) {
+        result.temperature = params.temperature;
+      }
+    }
+
+    // top_p - не поддерживается многими моделями
+    if (params.top_p !== undefined) {
+      if (!isGpt5Image && !isReasoningModel && !isPerplexity) {
+        result.top_p = params.top_p;
+      }
+    }
+
+    // frequency_penalty - Perplexity требует > 0, другие не поддерживают
+    if (params.frequency_penalty !== undefined) {
+      if (isPerplexity) {
+        // Perplexity требует > 0, иначе ошибка
+        if (params.frequency_penalty > 0) {
+          result.frequency_penalty = params.frequency_penalty;
+        }
+      } else if (!isGpt5Image && !isReasoningModel) {
+        result.frequency_penalty = params.frequency_penalty;
+      }
+    }
+
+    // presence_penalty - не поддерживается многими моделями
+    if (params.presence_penalty !== undefined) {
+      if (!isGpt5Image && !isReasoningModel && !isPerplexity) {
+        result.presence_penalty = params.presence_penalty;
+      }
+    }
+
+    // stop - поддерживается большинством моделей
+    if (params.stop !== undefined) {
+      result.stop = params.stop;
+    }
+
+    return result;
   }
 }
