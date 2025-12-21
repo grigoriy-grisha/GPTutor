@@ -587,13 +587,15 @@ export class CompletionController extends BaseController {
     // GPT-5 Image модели - ограниченные параметры
     const isGpt5Image = modelLower.includes("gpt-5-image") || modelLower.includes("gpt-4o-image");
     
-    // Perplexity модели - особые ограничения
+    // Perplexity модели - особые ограничения (не поддерживают многие параметры)
     const isPerplexity = modelLower.includes("perplexity/");
     
-    // O1/O3 модели - не поддерживают temperature, top_p
-    const isReasoningModel = modelLower.includes("/o1") || 
-                             modelLower.includes("/o3") || 
-                             modelLower.includes("reasoning");
+    // O1/O3 reasoning модели OpenAI - не поддерживают temperature, top_p
+    // НЕ включаем perplexity sonar-reasoning сюда
+    const isOpenAIReasoningModel = (modelLower.includes("openai/o1") || 
+                                    modelLower.includes("openai/o3") ||
+                                    modelLower.includes("openai/o4")) &&
+                                   !isPerplexity;
 
     // max_tokens -> max_completion_tokens для GPT-5
     if (params.max_tokens !== undefined) {
@@ -604,42 +606,40 @@ export class CompletionController extends BaseController {
       }
     }
 
-    // temperature - не поддерживается reasoning моделями и GPT-5 Image
+    // temperature - не поддерживается OpenAI reasoning моделями и GPT-5 Image
+    // Perplexity поддерживает temperature
     if (params.temperature !== undefined) {
-      if (!isGpt5Image && !isReasoningModel) {
+      if (!isGpt5Image && !isOpenAIReasoningModel) {
         result.temperature = params.temperature;
       }
     }
 
-    // top_p - не поддерживается многими моделями
+    // top_p - не поддерживается многими моделями, включая Perplexity
     if (params.top_p !== undefined) {
-      if (!isGpt5Image && !isReasoningModel && !isPerplexity) {
+      if (!isGpt5Image && !isOpenAIReasoningModel && !isPerplexity) {
         result.top_p = params.top_p;
       }
     }
 
-    // frequency_penalty - Perplexity требует > 0, другие не поддерживают
+    // frequency_penalty - Perplexity НЕ поддерживает вообще (или требует > 0)
     if (params.frequency_penalty !== undefined) {
-      if (isPerplexity) {
-        // Perplexity требует > 0, иначе ошибка
-        if (params.frequency_penalty > 0) {
-          result.frequency_penalty = params.frequency_penalty;
-        }
-      } else if (!isGpt5Image && !isReasoningModel) {
+      if (!isGpt5Image && !isOpenAIReasoningModel && !isPerplexity) {
         result.frequency_penalty = params.frequency_penalty;
       }
     }
 
-    // presence_penalty - не поддерживается многими моделями
+    // presence_penalty - не поддерживается многими моделями, включая Perplexity
     if (params.presence_penalty !== undefined) {
-      if (!isGpt5Image && !isReasoningModel && !isPerplexity) {
+      if (!isGpt5Image && !isOpenAIReasoningModel && !isPerplexity) {
         result.presence_penalty = params.presence_penalty;
       }
     }
 
-    // stop - поддерживается большинством моделей
+    // stop - НЕ поддерживается Perplexity (вызывает ошибку 400)
     if (params.stop !== undefined) {
-      result.stop = params.stop;
+      if (!isPerplexity) {
+        result.stop = params.stop;
+      }
     }
 
     return result;
