@@ -27,9 +27,17 @@ export const CopyButton: FC<CopyButtonProps> = ({
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = async (e: React.MouseEvent<HTMLElement>) => {
+    // Предотвращаем всплытие и дефолтное поведение
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (isCopied || disabled) return;
 
-    (e.currentTarget as HTMLElement).blur();
+    // Убираем фокус со всех input/textarea перед копированием
+    const activeEl = document.activeElement as HTMLElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+      activeEl.blur();
+    }
 
     try {
       // Пробуем сначала нативный API — он не вызывает клавиатуру
@@ -56,9 +64,13 @@ export const CopyButton: FC<CopyButtonProps> = ({
       }
     }
 
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
+    // Убираем фокус с любого активного элемента после копирования
+    // Используем setTimeout чтобы дать браузеру время обработать событие
+    setTimeout(() => {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    }, 0);
   };
 
   const disabledStyles: React.CSSProperties = disabled
