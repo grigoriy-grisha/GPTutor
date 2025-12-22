@@ -5,7 +5,6 @@ import {
   Input,
   ModalPage,
   ModalPageHeader,
-  PanelHeaderClose,
   Spacing,
   Spinner,
 } from "@vkontakte/vkui";
