@@ -671,7 +671,13 @@ class ChatViewModel {
       return;
     }
 
-    this.clearMessages();
+    const savedFiles = [...this.attachedFiles];
+    
+    this.messages = [];
+    this.pendingGeneratedImages = [];
+    
+    this.attachedFiles = savedFiles;
+    
     await this.sendMessage(
       "Привет! Представься и расскажи, чем ты можешь помочь."
     );
