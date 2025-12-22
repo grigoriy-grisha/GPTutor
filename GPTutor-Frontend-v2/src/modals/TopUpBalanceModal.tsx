@@ -119,11 +119,7 @@ export const TopUpBalanceModal: FC<TopUpBalanceModalProps> = ({ id }) => {
     <ModalPage
       id={id}
       onClose={handleClose}
-      header={
-        <ModalPageHeader before={<PanelHeaderClose onClick={handleClose} />}>
-          Пополнить баланс
-        </ModalPageHeader>
-      }
+      header={<ModalPageHeader>Пополнить баланс</ModalPageHeader>}
     >
       <form onSubmit={handleSubmit}>
         <FormItem
