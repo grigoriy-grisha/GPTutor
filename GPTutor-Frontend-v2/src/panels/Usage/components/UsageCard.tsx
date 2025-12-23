@@ -1,9 +1,20 @@
 import { FC } from "react";
-import { Card, Flex, Text, Caption, useAdaptivityWithJSMediaQueries } from "@vkontakte/vkui";
+import {
+  Card,
+  Flex,
+  Text,
+  Caption,
+  useAdaptivityWithJSMediaQueries,
+} from "@vkontakte/vkui";
 import { Icon20ClockOutline, Icon20ArticleBoxOutline } from "@vkontakte/icons";
 import { Usage } from "../../../api/usageApi";
 import { ModelIconService } from "../../../services/ModelIconService";
-import { getModelName, formatDate, formatCost, formatTokens } from "../utils/usageFormatters";
+import {
+  getModelName,
+  formatDate,
+  formatCost,
+  formatTokens,
+} from "../utils/usageFormatters";
 
 interface UsageCardProps {
   usage: Usage;
@@ -13,17 +24,9 @@ export const UsageCard: FC<UsageCardProps> = ({ usage }) => {
   const { isDesktop } = useAdaptivityWithJSMediaQueries();
 
   return (
-    <Card
-      mode="outline"
-      style={{ transition: "background-color 0.15s ease" }}
-    >
+    <Card mode="outline" style={{ transition: "background-color 0.15s ease" }}>
       <div style={{ padding: isDesktop ? "14px 16px" : "12px 14px" }}>
-        <Flex
-          direction="row"
-          align="center"
-          justify="space-between"
-          gap={12}
-        >
+        <Flex direction="row" align="center" justify="space-between" gap={12}>
           {/* Левая часть: иконка + инфо */}
           <Flex align="center" gap={12} style={{ flex: 1, minWidth: 0 }}>
             <div
@@ -35,19 +38,12 @@ export const UsageCard: FC<UsageCardProps> = ({ usage }) => {
               {ModelIconService.getModelIcon(usage.model)}
             </div>
 
-            <Flex
-              direction="column"
-              gap={2}
-              style={{ flex: 1, minWidth: 0 }}
-            >
+            <Flex direction="column" gap={2} style={{ flex: 1, minWidth: 0 }}>
               <Flex align="center" gap={6}>
                 <Text
                   weight="2"
                   style={{
                     fontSize: isDesktop ? "15px" : "14px",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
                   }}
                 >
                   {getModelName(usage.model)}
@@ -97,7 +93,8 @@ export const UsageCard: FC<UsageCardProps> = ({ usage }) => {
                     level="1"
                     style={{ color: "var(--vkui--color_text_secondary)" }}
                   >
-                    {formatTokens(usage.promptTokens)} → {formatTokens(usage.completionTokens)}
+                    {formatTokens(usage.promptTokens)} →{" "}
+                    {formatTokens(usage.completionTokens)}
                   </Caption>
                 </Flex>
               </Flex>
@@ -105,15 +102,8 @@ export const UsageCard: FC<UsageCardProps> = ({ usage }) => {
           </Flex>
 
           {/* Правая часть: стоимость */}
-          <Flex
-            direction="column"
-            align="end"
-            style={{ flexShrink: 0 }}
-          >
-            <Text
-              weight="2"
-              style={{ fontSize: isDesktop ? "15px" : "14px" }}
-            >
+          <Flex direction="column" align="end" style={{ flexShrink: 0 }}>
+            <Text weight="2" style={{ fontSize: isDesktop ? "15px" : "14px" }}>
               {formatCost(usage.cost)}
             </Text>
             <Caption
@@ -128,5 +118,3 @@ export const UsageCard: FC<UsageCardProps> = ({ usage }) => {
     </Card>
   );
 };
-
-
