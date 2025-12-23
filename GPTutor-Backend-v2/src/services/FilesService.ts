@@ -12,6 +12,34 @@ import { promisify } from "util";
 // Используем extend для callback, чтобы избежать deprecation warning
 const libreConvert = promisify(libre.convert.bind(libre));
 
+const FILE_EXTENSIONS = {
+  photo: ["jpg", "jpeg", "png", "gif", "svg", "webp"],
+  document: ["pdf", "doc", "docx", "ppt", "pptx"],
+  text: [
+    "txt",
+    "js",
+    "html",
+    "css",
+    "json",
+    "xml",
+    "md",
+    "log",
+    "py",
+    "java",
+    "c",
+    "cpp",
+    "h",
+    "sh",
+    "config",
+    "conf",
+    "ini",
+    "yml",
+    "yaml",
+    "sql",
+  ],
+  convertible: ["doc", "docx", "ppt", "pptx"],
+} as const;
+
 const s3 = new EasyYandexS3({
   auth: {
     accessKeyId: process.env.YANDEX_ACCESS_KEY_ID!,
@@ -39,8 +67,9 @@ export class FilesService {
    */
   private needsConversionToPdf(fileName: string): boolean {
     const extension = this.getExtension(fileName);
-    const convertibleExtensions = ["doc", "docx", "ppt", "pptx"];
-    return convertibleExtensions.includes(extension);
+    return FILE_EXTENSIONS.convertible.includes(
+      extension as (typeof FILE_EXTENSIONS.convertible)[number]
+    );
   }
 
   /**
@@ -110,19 +139,14 @@ export class FilesService {
         errorMessage.includes("soffice") ||
         errorMessage.includes("LibreOffice")
       ) {
-        throw new Error(
-          "LibreOffice not found. Please install LibreOffice on your system. " +
-            "Visit: https://www.libreoffice.org/download/"
-        );
+        throw new Error("Конвертация временно недоступна");
       }
 
       if (errorMessage.includes("Document is empty")) {
-        throw new Error(
-          "Failed to read document. The file may be corrupted or in an unsupported format."
-        );
+        throw new Error("Файл повреждён или пуст");
       }
 
-      throw new Error(`Failed to convert document to PDF: ${errorMessage}`);
+      throw new Error("Ошибка конвертации в PDF");
     }
   }
 
@@ -187,74 +211,39 @@ export class FilesService {
 
   private determineFileType(filename: string): "photo" | "document" | "text" {
     if (filename.length === 0) {
-      throw new Error("Invalid filename: Must be a non-empty string.");
+      throw new Error("Пустое имя файла");
     }
 
-    const photoExtensions: string[] = [
-      "jpg",
-      "jpeg",
-      "png",
-      "gif",
-      "bmp",
-      "svg",
-      "webp",
-      "tiff",
-      "tif",
-    ];
-
-    const documentExtensions: string[] = [
-      "pdf",
-      "doc",
-      "docx",
-      "xls",
-      "xlsx",
-      "csv",
-      "ppt",
-      "pptx",
-    ];
-
-    const textExtensions: string[] = [
-      "txt",
-      "js",
-      "html",
-      "css",
-      "json",
-      "xml",
-      "md",
-      "log",
-      "py",
-      "java",
-      "c",
-      "cpp",
-      "h",
-      "sh",
-      "config",
-      "conf",
-      "ini",
-      "yml",
-      "yaml",
-      "sql",
-    ];
-
-    const dotIndex: number = filename.lastIndexOf(".");
-
+    const dotIndex = filename.lastIndexOf(".");
     if (dotIndex === -1 || dotIndex === filename.length - 1) {
-      throw new Error(`Unknown file type: '${filename}' has no extension.`);
+      throw new Error("Файл без расширения");
     }
 
-    const extension: string = filename.slice(dotIndex + 1).toLowerCase();
+    const extension = filename.slice(dotIndex + 1).toLowerCase();
 
-    if (photoExtensions.includes(extension)) {
+    if (
+      FILE_EXTENSIONS.photo.includes(
+        extension as (typeof FILE_EXTENSIONS.photo)[number]
+      )
+    ) {
       return "photo";
-    } else if (documentExtensions.includes(extension)) {
-      return "document";
-    } else if (textExtensions.includes(extension)) {
-      return "text";
-    } else {
-      throw new Error(
-        `Unknown or unsupported file type with extension '.${extension}'.`
-      );
     }
+    if (
+      FILE_EXTENSIONS.document.includes(
+        extension as (typeof FILE_EXTENSIONS.document)[number]
+      )
+    ) {
+      return "document";
+    }
+    if (
+      FILE_EXTENSIONS.text.includes(
+        extension as (typeof FILE_EXTENSIONS.text)[number]
+      )
+    ) {
+      return "text";
+    }
+
+    throw new Error(`Формат .${extension} не поддерживается`);
   }
 
   async uploadFile(

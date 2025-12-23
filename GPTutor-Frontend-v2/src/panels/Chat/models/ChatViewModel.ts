@@ -493,7 +493,6 @@ class ChatViewModel {
    * Загрузить файл
    */
   async uploadFile(file: File) {
-    // Проверяем лимит файлов
     const totalFiles = this.attachedFiles.length + this.uploadingFiles.length;
     if (totalFiles >= this.MAX_FILES) {
       this.showSnackbar?.(
@@ -597,12 +596,13 @@ class ChatViewModel {
         );
       });
 
+      // Получаем сообщение об ошибке от сервера или используем fallback
       const errorMessage =
-        error instanceof Error ? error.message : "Ошибка загрузки файла";
+        error instanceof Error ? error.message : "Произошла ошибка при загрузке файла";
       this.setError(errorMessage);
 
-      // Показываем уведомление об ошибке
-      this.showSnackbar?.("Ошибка загрузки файла", uploadingFile.file.name);
+      // Показываем уведомление об ошибке с конкретным сообщением от сервера
+      this.showSnackbar?.(errorMessage, uploadingFile.file.name);
 
       throw error;
     }

@@ -42,7 +42,7 @@ export const MessageList = forwardRef<HTMLDivElement, MessageListProps>(
               style={{ marginTop: "16px" }}
               after={<Icon28QuestionOutline />}
             >
-              {isUploadingFiles ? "Загрузка файлов..." : START_CHAT_BUTTON_TEXT}
+              {START_CHAT_BUTTON_TEXT}
             </Button>
           </Placeholder>
         </div>

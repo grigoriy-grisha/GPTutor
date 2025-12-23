@@ -19,6 +19,19 @@ import { AttachedFiles } from "./AttachedFiles";
 import { FileUpload } from "./FileUpload";
 import { useConfirm } from "../../../hooks";
 
+function extractImageFromClipboard(clipboardData: DataTransfer): File | null {
+  for (const item of Array.from(clipboardData.items)) {
+    if (item.type.startsWith("image/")) {
+      const file = item.getAsFile();
+      if (file) {
+        const fileName = file.name || `image_${Date.now()}.png`;
+        return new File([file], fileName, { type: file.type });
+      }
+    }
+  }
+  return null;
+}
+
 export const ChatInput: React.FC<ChatInputProps> = observer(
   ({
     message,
@@ -48,6 +61,16 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
           return;
         }
         onSendMessage();
+      }
+    };
+
+    const handlePaste = (e: React.ClipboardEvent) => {
+      if (!e.clipboardData || !onFileUpload) return;
+
+      const imageFile = extractImageFromClipboard(e.clipboardData);
+      if (imageFile) {
+        e.preventDefault();
+        onFileUpload(imageFile);
       }
     };
 
@@ -120,6 +143,7 @@ export const ChatInput: React.FC<ChatInputProps> = observer(
           value={message}
           onChange={(e) => onMessageChange(e.target.value)}
           onKeyDown={handleKeyDown}
+          onPaste={handlePaste}
           disabled={disabled}
           before={
             <FileUpload

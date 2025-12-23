@@ -10,10 +10,42 @@ import {
   getRateLimitConfig,
 } from "../middleware/rateLimitMiddleware";
 
-interface FileUploadRequest extends RequestWithLogging {
-  vkUser: any;
-  dbUser: any;
-}
+const UPLOAD_ERROR_MAPPINGS: ReadonlyArray<{
+  patterns: string[];
+  status: number;
+  message?: string;
+}> = [
+  { patterns: ["не поддерживается", "Формат"], status: 400 },
+  { patterns: ["Пустое имя"], status: 400 },
+  { patterns: ["без расширения"], status: 400 },
+  { patterns: ["временно недоступна", "Конвертация"], status: 503 },
+  { patterns: ["повреждён", "пуст"], status: 400 },
+  { patterns: ["Ошибка конвертации"], status: 400 },
+
+  {
+    patterns: ["Unknown or unsupported file type"],
+    status: 400,
+    message: "Формат не поддерживается",
+  },
+  { patterns: ["Invalid filename"], status: 400, message: "Некорректное имя" },
+  {
+    patterns: ["LibreOffice not found"],
+    status: 503,
+    message: "Конвертация недоступна",
+  },
+  {
+    patterns: ["Failed to read document", "corrupted"],
+    status: 400,
+    message: "Файл повреждён",
+  },
+  {
+    patterns: ["Failed to convert document to PDF"],
+    status: 400,
+    message: "Ошибка конвертации",
+  },
+];
+
+const DEFAULT_UPLOAD_ERROR = { message: "Ошибка загрузки", status: 500 };
 
 export class FilesController extends BaseController {
   constructor(
@@ -54,14 +86,14 @@ export class FilesController extends BaseController {
       const data = await (request as any).file();
 
       if (!data) {
-        return this.sendError(reply, "No file provided", 400, request);
+        return this.sendError(reply, "Файл не выбран", 400, request);
       }
 
       const maxSize = 50 * 1024 * 1024;
       if (data.file.bytesRead > maxSize) {
         return this.sendError(
           reply,
-          "File too large. Maximum size is 50MB",
+          "Файл слишком большой. Максимальный размер файла 50 МБ",
           413,
           request
         );
@@ -182,49 +214,27 @@ export class FilesController extends BaseController {
     } catch (error) {
       this.logError("File upload failed", error);
 
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-
-        if (errorMessage.includes("Unknown or unsupported file type")) {
-          return this.sendError(reply, "Unsupported file type", 400, request);
-        }
-
-        if (errorMessage.includes("Invalid filename")) {
-          return this.sendError(reply, "Invalid filename", 400, request);
-        }
-
-        if (errorMessage.includes("LibreOffice not found")) {
-          return this.sendError(
-            reply,
-            "Document conversion requires LibreOffice. Please contact administrator.",
-            503,
-            request
-          );
-        }
-
-        if (
-          errorMessage.includes("Failed to read document") ||
-          errorMessage.includes("corrupted")
-        ) {
-          return this.sendError(
-            reply,
-            "Failed to convert document. The file may be corrupted or password-protected.",
-            400,
-            request
-          );
-        }
-
-        if (errorMessage.includes("Failed to convert document to PDF")) {
-          return this.sendError(
-            reply,
-            "Failed to convert document to PDF. Please try again or use a different file.",
-            400,
-            request
-          );
-        }
-      }
-
-      return this.sendError(reply, "Failed to upload file", 500, request);
+      const { message, status } = this.mapUploadError(error);
+      return this.sendError(reply, message, status, request);
     }
+  }
+
+  private mapUploadError(error: unknown): { message: string; status: number } {
+    if (!(error instanceof Error)) {
+      return DEFAULT_UPLOAD_ERROR;
+    }
+
+    const errorMessage = error.message;
+
+    for (const mapping of UPLOAD_ERROR_MAPPINGS) {
+      if (mapping.patterns.some((pattern) => errorMessage.includes(pattern))) {
+        return {
+          message: mapping.message ?? errorMessage,
+          status: mapping.status,
+        };
+      }
+    }
+
+    return DEFAULT_UPLOAD_ERROR;
   }
 }

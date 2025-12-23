@@ -34,6 +34,15 @@ export interface DeleteFileResponse {
   };
 }
 
+/** Fallback-сообщения об ошибках по HTTP-статусу */
+const HTTP_ERROR_MESSAGES: Record<number, string> = {
+  400: 'Некорректный файл',
+  413: 'Файл больше 50 МБ',
+  503: 'Сервис недоступен',
+};
+
+const DEFAULT_ERROR_MESSAGE = 'Ошибка загрузки';
+
 class FilesApi {
   private baseUrl = API_BASE_URL;
 
@@ -50,14 +59,27 @@ class FilesApi {
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      const errorMessage = await this.extractErrorMessage(response);
+      throw new Error(errorMessage);
     }
 
     const result = await response.json();
-    console.log('Upload response:', result); // Для отладки
+    console.log('Upload response:', result);
     
     return result;
+  }
+
+  /**
+   * Извлекает сообщение об ошибке из ответа сервера или использует fallback по статусу
+   */
+  private async extractErrorMessage(response: Response): Promise<string> {
+    const errorData = await response.json().catch(() => ({ error: null }));
+    
+    if (errorData.error) {
+      return errorData.error;
+    }
+
+    return HTTP_ERROR_MESSAGES[response.status] ?? DEFAULT_ERROR_MESSAGE;
   }
 
   async getFiles(): Promise<FilesListResponse> {
@@ -95,7 +117,6 @@ class FilesApi {
   }
 
   private getAuthToken(): string {
-    // Используем тот же подход, что и в profileApi
     return window.location.toString();
   }
 }
