@@ -35,7 +35,8 @@ const filesService = new FilesService();
 const fileCleanupService = new FileCleanupService(prisma, filesService);
 const llmCostService = new LLMCostEvaluate(100);
 const openRouterService = new OpenRouterService(
-  process.env.OPENROUTER_API_KEY!
+  process.env.OPENROUTER_API_KEY!,
+    "http://pAUMt6:KXeVen@138.59.206.14:9314"
 );
 const yooKassaService = new YooKassaService(
   process.env.YOOKASSA_SHOP_ID!,
