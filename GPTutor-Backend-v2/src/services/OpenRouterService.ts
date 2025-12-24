@@ -3,19 +3,32 @@ import type {
   ChatCompletion,
   ChatCompletionCreateParams,
 } from "openai/resources/chat/completions";
+import { ProxyAgent, fetch as undiciFetch } from "undici";
 
 export class OpenRouterService {
   private client: OpenAI;
+  private proxyUrl?: string;
 
-  constructor(apiKey: string) {
-    this.client = new OpenAI({
+  constructor(apiKey: string, proxyUrl?: string) {
+    this.proxyUrl = proxyUrl;
+
+    const options: ConstructorParameters<typeof OpenAI>[0] = {
       apiKey: apiKey,
       baseURL: "https://openrouter.ai/api/v1",
       defaultHeaders: {
-        "HTTP-Referer": "http://localhost:3001",
-        "X-Title": "GPTutor API v2",
+        "HTTP-Referer": "https://giga-router.ru",
+        "X-Title": "GigaRouter",
       },
-    });
+    };
+
+    if (proxyUrl) {
+      const proxyAgent = new ProxyAgent(proxyUrl);
+      (options as any).fetch = (url: string, init: any) => {
+        return undiciFetch(url, { ...init, dispatcher: proxyAgent });
+      };
+    }
+
+    this.client = new OpenAI(options);
   }
 
   async createCompletion(
@@ -88,16 +101,23 @@ export class OpenRouterService {
   } | null> {
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
-        const response = await fetch(
+        const fetchOptions: any = {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${this.client.apiKey}`,
+          },
+        };
+
+        // Добавляем прокси для fetch если указан
+        if (this.proxyUrl) {
+          fetchOptions.dispatcher = new ProxyAgent(this.proxyUrl);
+        }
+
+        const response = await undiciFetch(
           `https://openrouter.ai/api/v1/generation?id=${encodeURIComponent(
             generationId
           )}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${this.client.apiKey}`,
-            },
-          }
+          fetchOptions
         );
 
         if (!response.ok) {
