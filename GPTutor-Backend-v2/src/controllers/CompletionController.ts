@@ -120,7 +120,7 @@ export class CompletionController extends BaseController {
         );
       }
 
-      if (user.balance <= 0) {
+      if (user.balance < 0) {
         this.logInfo(
           "Insufficient balance",
           {
@@ -171,9 +171,21 @@ export class CompletionController extends BaseController {
       const filteredParams = this.filterParamsForModel(model, originalParams);
 
       // Логируем если параметры были изменены
-      const originalKeys = Object.keys(originalParams).filter(k => originalParams[k as keyof typeof originalParams] !== undefined);
+      const originalKeys = Object.keys(originalParams).filter(
+        (k) => originalParams[k as keyof typeof originalParams] !== undefined
+      );
       const filteredKeys = Object.keys(filteredParams);
-      if (originalKeys.length !== filteredKeys.length || originalKeys.some(k => !filteredKeys.includes(k === 'max_tokens' && filteredParams.max_completion_tokens ? 'max_completion_tokens' : k))) {
+      if (
+        originalKeys.length !== filteredKeys.length ||
+        originalKeys.some(
+          (k) =>
+            !filteredKeys.includes(
+              k === "max_tokens" && filteredParams.max_completion_tokens
+                ? "max_completion_tokens"
+                : k
+            )
+        )
+      ) {
         this.logDebug(
           `Parameters filtered for model`,
           {
@@ -585,17 +597,19 @@ export class CompletionController extends BaseController {
     const result: Record<string, any> = {};
 
     // GPT-5 Image модели - ограниченные параметры
-    const isGpt5Image = modelLower.includes("gpt-5-image") || modelLower.includes("gpt-4o-image");
-    
+    const isGpt5Image =
+      modelLower.includes("gpt-5-image") || modelLower.includes("gpt-4o-image");
+
     // Perplexity модели - особые ограничения (не поддерживают многие параметры)
     const isPerplexity = modelLower.includes("perplexity/");
-    
+
     // O1/O3 reasoning модели OpenAI - не поддерживают temperature, top_p
     // НЕ включаем perplexity sonar-reasoning сюда
-    const isOpenAIReasoningModel = (modelLower.includes("openai/o1") || 
-                                    modelLower.includes("openai/o3") ||
-                                    modelLower.includes("openai/o4")) &&
-                                   !isPerplexity;
+    const isOpenAIReasoningModel =
+      (modelLower.includes("openai/o1") ||
+        modelLower.includes("openai/o3") ||
+        modelLower.includes("openai/o4")) &&
+      !isPerplexity;
 
     // max_tokens -> max_completion_tokens для GPT-5
     if (params.max_tokens !== undefined) {

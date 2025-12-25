@@ -1,5 +1,4 @@
 import { PrismaClient, User } from "@prisma/client";
-import { randomBytes } from "crypto";
 
 export class UserRepository {
   private prisma: PrismaClient;
@@ -67,9 +66,6 @@ export class UserRepository {
     }
 
     const newBalance = user.balance - amount;
-    if (newBalance < 0) {
-      throw new Error("Insufficient balance");
-    }
 
     return this.updateBalance(userId, newBalance);
   }
