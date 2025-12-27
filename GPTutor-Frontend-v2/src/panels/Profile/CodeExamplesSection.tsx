@@ -74,7 +74,7 @@ export const CodeExamplesSection: FC<CodeExamplesSectionProps> = ({
             dangerouslySetInnerHTML={{ __html: codeHTML }}
           />
 
-          <CopyButton textToCopy={rawCode} size={24} />
+          <CopyButton textToCopy={rawCode} size={20} />
         </Flex>
 
         <style>{getCodeStyles()}</style>

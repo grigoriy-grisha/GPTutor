@@ -55,7 +55,7 @@ export const BalanceSection: FC<BalanceSectionProps> = observer(
             />
             <CopyButton
               textToCopy={String(userViewModel.getUserId())}
-              size={24}
+              size={20}
             />
           </Flex>
 
@@ -68,7 +68,7 @@ export const BalanceSection: FC<BalanceSectionProps> = observer(
                   display: "flex",
                   alignItems: "center",
                   gap: "12px",
-                  padding: "16px",
+                  padding: "8px 16px",
                   background: "var(--vkui--color_background_secondary)",
                   borderRadius: "8px",
                 }}
@@ -76,9 +76,6 @@ export const BalanceSection: FC<BalanceSectionProps> = observer(
                 <Icon28MoneySendOutline />
                 <div style={{ flex: 1 }}>
                   <Title level="1">{balance.toFixed(4)}₽</Title>
-                  <div style={{ color: "#9c9c9c", fontSize: "14px" }}>
-                    Доступно для использования
-                  </div>
                 </div>
                 {onReload && (
                   <IconButton onClick={onReload}>

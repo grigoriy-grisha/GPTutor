@@ -14,6 +14,7 @@ import { useProfileViewModel } from "../../viewModels/ProfileViewModel";
 import { BalanceSection } from "./BalanceSection";
 import { ApiKeySection } from "./ApiKeySection";
 import { CodeExamplesSection } from "./CodeExamplesSection";
+import { DiscountSection } from "./DiscountSection";
 import { DEFAULT_VIEW_PANELS } from "../../routes";
 import "../../styles/prism.css";
 import { observer } from "mobx-react-lite";
@@ -64,6 +65,7 @@ export const Profile: FC<ProfileProps> = observer(({ id }) => {
   return (
     <Panel id={id}>
       <PanelHeader>Профиль</PanelHeader>
+      <DiscountSection />
 
       <BalanceSection balance={profile.balance} onReload={loadProfile} />
 
@@ -82,6 +84,8 @@ export const Profile: FC<ProfileProps> = observer(({ id }) => {
         updatingToken={updatingToken}
         onUpdateToken={updateToken}
       />
+
+ 
 
       <CodeExamplesSection
         apiKey={profile.apiKey}

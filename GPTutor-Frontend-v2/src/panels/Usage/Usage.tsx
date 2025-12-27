@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { NavIdProps, Panel, PanelHeader, PanelHeaderBack, Group } from "@vkontakte/vkui";
+import { NavIdProps, Panel, PanelHeader, PanelHeaderBack, Group, SimpleCell } from "@vkontakte/vkui";
+import { Icon24CommentAddBadgeOutline, Icon24ExternalLinkOutline } from "@vkontakte/icons";
 import { useRouteNavigator, useFirstPageCheck } from "@vkontakte/vk-mini-apps-router";
 import { observer } from "mobx-react-lite";
 
@@ -61,6 +62,18 @@ export const Usage: FC<UsageProps> = observer(({ id }) => {
         <UsageStatsCards stats={stats} />
       </Group>
 
+      <Group>
+        <SimpleCell
+          before={<Icon24CommentAddBadgeOutline width={28} height={28} />}
+          after={<Icon24ExternalLinkOutline />}
+          subtitle="Напишите нам — предложим индивидуальные условия!"
+          href="https://vk.com/gigarouter"
+          target="_blank"
+        >
+          Хотите оптимизировать расходы?
+        </SimpleCell>
+      </Group>
+      
       {/* Фильтры и история */}
       <Group>
         <UsageFilters
@@ -86,6 +99,8 @@ export const Usage: FC<UsageProps> = observer(({ id }) => {
           loadMoreRef={loadMoreRef}
         />
       </Group>
+
+      
     </Panel>
   );
 });

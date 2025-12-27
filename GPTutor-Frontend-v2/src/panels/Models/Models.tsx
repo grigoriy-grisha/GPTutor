@@ -7,6 +7,7 @@ import {
   Panel,
   PanelHeader,
   PanelHeaderBack,
+  SimpleCell,
   Spacing,
   Spinner,
   Text,
@@ -17,7 +18,7 @@ import { useModelsViewModel } from "../../viewModels/ModelsViewModel";
 import { SearchSection } from "./SearchSection";
 import { QuickSearchSection } from "./QuickSearchSection";
 import { ModelsList } from "./ModelsList";
-import { Icon28LinkOutline } from "@vkontakte/icons";
+import { Icon28LinkOutline, Icon24CommentAddBadgeOutline, Icon24ExternalLinkOutline } from "@vkontakte/icons";
 
 export interface ModelsProps extends NavIdProps {}
 
@@ -61,6 +62,18 @@ export const Models: FC<ModelsProps> = ({ id }) => {
       >
         Модели
       </PanelHeader>
+
+      <Group>
+        <SimpleCell
+          before={<Icon24CommentAddBadgeOutline width={28} height={28} />}
+          after={<Icon24ExternalLinkOutline />}
+          subtitle="Поможем с интеграцией или создадим любой проект под ключ для вас!"
+          href="https://vk.com/gigarouter"
+          target="_blank"
+        >
+          Нужна помощь?
+        </SimpleCell>
+      </Group>
 
       {loading ? (
         <Group>

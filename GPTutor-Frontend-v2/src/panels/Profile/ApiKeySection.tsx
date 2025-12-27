@@ -33,7 +33,7 @@ export const ApiKeySection: FC<ApiKeySectionProps> = ({
               __html: createCodeHTML(apiKey, "python"),
             }}
           />
-          <CopyButton textToCopy={apiKey} size={24} />
+          <CopyButton textToCopy={apiKey} size={20} />
         </Flex>
         <Spacing size={16} />
         <Button
