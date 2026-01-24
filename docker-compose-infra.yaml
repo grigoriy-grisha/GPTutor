@@ -34,29 +34,6 @@ services:
     networks:
       - trfk
 
-
-  desktop:
-    image: portainer/portainer-ce:latest
-    container_name: "desktop"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.desktop.entrypoints=web"
-      - "traefik.http.routers.desktop.rule=Host(`desktop.${HOST}`)"
-      - "traefik.http.middlewares.desktop-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.desktop.middlewares=desktop-https-redirect"
-      - "traefik.http.routers.desktop-secure.entrypoints=websecure"
-      - "traefik.http.routers.desktop-secure.rule=Host(`desktop.${HOST}`)"
-      - "traefik.http.routers.desktop-secure.tls=true"
-      - "traefik.http.routers.desktop-secure.tls.certresolver=myresolver"
-      - "traefik.http.routers.desktop-secure.service=desktop"
-      - "traefik.http.services.desktop.loadbalancer.server.port=9000"
-    volumes:
-      - "desktop_volume:/data"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    restart: unless-stopped
-    networks:
-      - trfk
-
 networks:
   trfk:
     driver: bridge
