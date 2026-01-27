@@ -213,6 +213,8 @@ export class CompletionController extends BaseController {
         }),
       };
 
+      console.log({openRouterParams})
+
       if (requestBody.stream) {
         return this.handleStreamingResponse(
           reply,
