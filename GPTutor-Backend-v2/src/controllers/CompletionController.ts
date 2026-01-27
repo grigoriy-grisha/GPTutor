@@ -160,38 +160,26 @@ export class CompletionController extends BaseController {
       );
 
       // Фильтруем параметры в зависимости от модели
-      const originalParams = {
-        max_tokens: requestBody.max_tokens,
-        temperature: requestBody.temperature,
-        top_p: requestBody.top_p,
-        frequency_penalty: requestBody.frequency_penalty,
-        presence_penalty: requestBody.presence_penalty,
-        stop: requestBody.stop,
-      };
-      const filteredParams = this.filterParamsForModel(model, originalParams);
+      // Исключаем model, messages, stream - они обрабатываются отдельно
+      const allParams = { ...requestBody };
+      delete allParams.model;
+      delete allParams.messages;
+      delete allParams.stream;
+
+      const filteredParams = this.filterParamsForModel(model, allParams);
 
       // Логируем если параметры были изменены
-      const originalKeys = Object.keys(originalParams).filter(
-        (k) => originalParams[k as keyof typeof originalParams] !== undefined
+      const originalKeys = Object.keys(allParams).filter(
+        (k) => allParams[k] !== undefined
       );
       const filteredKeys = Object.keys(filteredParams);
-      if (
-        originalKeys.length !== filteredKeys.length ||
-        originalKeys.some(
-          (k) =>
-            !filteredKeys.includes(
-              k === "max_tokens" && filteredParams.max_completion_tokens
-                ? "max_completion_tokens"
-                : k
-            )
-        )
-      ) {
+      if (originalKeys.length !== filteredKeys.length) {
+        const removedKeys = originalKeys.filter((k) => !filteredKeys.includes(k));
         this.logDebug(
           `Parameters filtered for model`,
           {
             model,
-            original: originalParams,
-            filtered: filteredParams,
+            removed: removedKeys,
           },
           request
         );
@@ -582,18 +570,11 @@ export class CompletionController extends BaseController {
 
   /**
    * Фильтрует параметры запроса в зависимости от модели
-   * Некоторые модели не поддерживают определённые параметры
+   * Известные параметры фильтруются, остальные передаются без изменений (passthrough)
    */
   private filterParamsForModel(
     model: string,
-    params: {
-      max_tokens?: number;
-      temperature?: number;
-      top_p?: number;
-      frequency_penalty?: number;
-      presence_penalty?: number;
-      stop?: string[];
-    }
+    params: Record<string, any>
   ): Record<string, any> {
     const modelLower = model.toLowerCase();
     const result: Record<string, any> = {};
@@ -655,6 +636,17 @@ export class CompletionController extends BaseController {
     if (params.stop !== undefined) {
       if (!isPerplexity) {
         result.stop = params.stop;
+      }
+    }
+
+    // Все остальные параметры передаём без изменений (response_format, tools, tool_choice, и т.д.)
+    const knownKeys = new Set([
+      "max_tokens", "temperature", "top_p", "frequency_penalty",
+      "presence_penalty", "stop"
+    ]);
+    for (const [key, value] of Object.entries(params)) {
+      if (!knownKeys.has(key) && value !== undefined) {
+        result[key] = value;
       }
     }
 
